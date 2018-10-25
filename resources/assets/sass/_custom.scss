@@ -1,0 +1,127 @@
+body {
+    padding-top: 90px;
+    padding-left: 20px;
+    color:rgb(0, 0, 0);
+    background-color: rgb(255, 235, 209);
+    font-family: Calibri, sans-serif;
+    font-size: 18px;
+    line-height: 1;
+}
+
+tbody#measurementTBodyForm {
+    display: table;
+    table-layout: fixed;
+    width: 1900px;
+}
+.allinputs {
+    width: 115px;
+}
+
+.horainputs {
+    width: 110px;
+}
+
+.fechainputs {
+    width: 160px;
+}
+/* td.formcolumnlabels {
+    text-align: center;
+} */
+
+td.cuadrante {
+    text-align: center;
+}
+
+.myspacer {
+    border-bottom: 1px solid #000;
+}
+
+.formtitles {
+    font-weight: bold;
+    font-size: 16px;
+
+}
+
+td.especie_title {
+    padding-left: 20px;
+}
+
+td.formcolumnlabels {
+    padding-left: 10px;
+}
+.cuadranteinput {
+    width: 20px;
+    text-align: center;
+}
+
+.dropDownTitles {
+    font-weight: bold;
+    font-size: 16px;
+    padding-right: 10px;
+    padding-top: 9px;
+}
+
+
+
+.hiddenrows{
+    display:none;
+}
+
+p.spec::after {
+    content: "        ";
+    white-space: pre;
+  }
+
+/* .hideme{
+    display:none;
+} */
+
+.mytable {
+    empty-cells: show;
+}
+
+.wrapper2{
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+
+/* a:visited {
+    color:saddlebrown;
+} */
+/* a:link {
+    color:rgb(255, 247, 228);
+} */
+a:hover {
+    color:rgb(57, 30, 0);
+}
+.btn-custom {
+    color:saddlebrown;
+    background-color: antiquewhite;
+}
+/* nav a:visited {
+    color:beige;
+} */
+/* nav a:link {
+    color:rgb(0, 35, 66);
+} */
+a {
+    color: #000000;
+}
+nav a:hover {
+    color:saddlebrown;
+}
+
+.navbar {
+    color:rgb(39, 22, 0);
+    background-color: rgb(66, 214, 96);
+}
+
+img{
+
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        width: 50%;
+
+}
