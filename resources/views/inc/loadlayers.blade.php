@@ -26,7 +26,6 @@ $layer1->opacity = 1;
 $layer1->weight = 1;
 $layer1->fillOpacity = 0.5;
 
-
 $layersArray = array($layer1, $layer2);
 
 foreach ($layersArray as $layer) {
@@ -50,14 +49,8 @@ foreach ($layersArray as $layer) {
 $geojson=json_encode($layersArray);
 ?>
 
-
-
 <script>
 var something = {!! $geojson !!};
-console.log(something)
-
-
-
 </script>
 
 

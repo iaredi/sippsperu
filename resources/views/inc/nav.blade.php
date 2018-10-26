@@ -1,37 +1,44 @@
-    <nav class="navbar navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <span class="navbar-brand">MTP Biodiversidad</span>
-            </div>
-            <div id="navbar" class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li><a href="/descargar">Descargar</a></li>
-                    <li><a href="/ingresardatos">Ingresar Datos</a></li>
-                    <li><a href="/mostrarmapas">Mostrar Mapas</a></li>
-                    <li><a href="/ingresarexcel">Ingresar Excel</a></li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                <?php
-                    $root_directory = "testdir";
-                        if (session('email')) {
-                            $useremail=session('email');
-                            if (session('admin')){
-                                echo "<li><a href='/admin'>Admin</a></li>";
-                            }
-                            echo "<li><a >{$useremail}</a></li>";
-                            echo "<li><a href='/logout'>Logout</a></li>";
-                        } else {
-                            echo "<li><a href='/login'>Login</a></li>";
-                            echo "<li><a href='/register'>Registro</a></li>";
-                        }
-                    ?>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<nav class="mynavbar navbar navbar-expand-lg navbar-light" style="background-color: rgb(66, 214, 96);">
+  <a class="navbar-brand" href="#">MTP Biodiversidad</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="ingresardatos">Ingresar Datos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/descargar">Descargar</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/mostrarmapas">Mostrar Mapas</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/ingresarexcel">Ingresar Excel</a>
+      </li>
+    </ul>
+
+    <ul class="navbar-nav ml-auto">
+        <?php
+            $root_directory = "testdir";
+                if (session('email')) {
+                    $useremail=session('email');
+                    if (session('admin')){
+                        echo "<li class='nav-item'><a class='nav-link' href='/admin'>Admin</a></li>";
+
+                    }
+                    echo "<li class='nav-item'><a class='nav-link' >{$useremail}</a></li>";
+
+                    echo "<li class='nav-item'><a class='nav-link' href='/logout'>Logout</a></li>";
+
+                } else {
+                    echo "<li class='nav-item'><a class='nav-link' href='/login'>Login</a></li>";
+
+                    echo "<li class='nav-item'><a class='nav-link' href='/register'>Registro</a></li>";
+                }
+        ?>
+    </ul>
+  </div>
+</nav>
+ <div class='bodycontainer'>

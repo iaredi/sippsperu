@@ -60,20 +60,20 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 143);
+/******/ 	return __webpack_require__(__webpack_require__.s = 144);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 143:
+/***/ 144:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(144);
+module.exports = __webpack_require__(145);
 
 
 /***/ }),
 
-/***/ 144:
+/***/ 145:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -115,7 +115,7 @@ function buildDropdowns(tableName, menu) {
     if (jsTable === "Form") {
 
         var myCols = tabletoColumns[tableName];
-        newColRows = createRows(tableName, menu, myCols, myNumRow = 0);
+        var newColRows = createRows(tableName, menu, myCols, 0);
         var spacer1 = document.createElement("td");
         spacer1.innerHTML = "&nbsp;";
         var spacer2 = document.createElement("td");
@@ -211,6 +211,9 @@ function selectOptionsCreate(tableName, menu) {
 //////////////////////////////////////////////////////////////////////////////////////        
 
 function clearForm(menu, jsTable) {
+    if (!menu) {
+        menu = 'measurement';
+    }
     var myTBody = document.getElementById(menu + "TBody" + jsTable);
     if (!!myTBody) {
         while (myTBody.hasChildNodes()) {
@@ -231,7 +234,7 @@ function addOnChangeMTP(tableName, menu) {
             clearForm(menu, "Numero");
             clearForm(menu, "Form");
             buildForm("linea_mtp", menu, "Coordenadas de Linea");
-            newMTPdropdowns = ["predio", "municipio", "estado"];
+            var newMTPdropdowns = ["predio", "municipio", "estado"];
             newMTPdropdowns.forEach(function (newTable) {
                 buildDropdowns(newTable, menu, "Form");
                 selectOptionsCreate(newTable, menu);
@@ -259,7 +262,7 @@ function addOnChangeMTP(tableName, menu) {
 function addOnChangeFKey(tableName, menu) {
     var getSelection = document.getElementById(menu + tableName + "Form");
     var currentFunction3 = function currentFunction3(tableName, menu) {
-        var myChoice = document.getElementById(menu + tableName + "Form").value;
+        var myChoice = getSelection.value;
         var inputRow = document.getElementById(tableName + "inputrow");
         var colRow = document.getElementById(tableName + "columnsrow");
         if (myChoice === "Nuevo") {
@@ -270,7 +273,7 @@ function addOnChangeFKey(tableName, menu) {
             inputRow.classList.add("hiddenrows");
         }
     };
-    var currentOnChange3 = function currentOnChange3(tableName, menu) {
+    var currentOnChange3 = function currentOnChange3() {
         currentFunction3(tableName, menu);
     };
     getSelection.onchange = currentOnChange3;
@@ -331,7 +334,7 @@ function createRows(tableName, menu, myCols, myNumRow) {
             var cuadranteBox = document.createElement("td");
             var cuadranteInput = document.createElement("INPUT");
             cuadranteInput.setAttribute("type", "text");
-            cuadranteInput.name = "row" + myNumRow + 'cuadrante';
+            cuadranteInput.name = "row" + myNumRow + '*' + tableName + '*cuadrante';
             cuadranteInput.id = "row" + myNumRow + "cuadrante";
             cuadranteInput.value = 1;
             cuadranteInput.className = "cuadranteinput";
@@ -351,6 +354,7 @@ function createRows(tableName, menu, myCols, myNumRow) {
         speciesInput.id = "row" + myNumRow + tableName + "Form"; //this needs to
         speciesInput.setAttribute("class", _speciesTable);
         speciesInput.classList.add('allinputs');
+        speciesInput.classList.add('form-control');
 
         speciesInput.name = "row" + myNumRow + "*" + tableName + "*" + "species";
         var inputBox = document.createElement("td");
@@ -371,6 +375,8 @@ function createRows(tableName, menu, myCols, myNumRow) {
         speciesBoxComun.setAttribute("type", "text");
         speciesBoxComun.classList.add("row" + myNumRow + "disableme");
         speciesBoxComun.classList.add('allinputs');
+        speciesBoxComun.classList.add('form-control');
+
         speciesBoxComun.disabled = true;
         speciesBoxComun.name = "row" + myNumRow + "*" + tableName + "*" + "comun";
         var boxContainerComun = document.createElement("td");
@@ -382,6 +388,7 @@ function createRows(tableName, menu, myCols, myNumRow) {
 
         speciesBoxCien.classList.add("row" + myNumRow + "disableme");
         speciesBoxCien.classList.add('allinputs');
+        speciesBoxCien.classList.add('form-control');
 
         speciesBoxCien.disabled = true;
         speciesBoxCien.name = "row" + myNumRow + "*" + tableName + "*" + "cientifico";
@@ -420,6 +427,7 @@ function createRows(tableName, menu, myCols, myNumRow) {
                 textInput.classList.add("row" + myNumRow + "*" + tableName);
             }
             textInput.classList.add('allinputs');
+            textInput.classList.add('form-control');
 
             textInput.name = ("row" + myNumRow + "*" + tableName + "*" + val).toLowerCase();
             var _inputBox = document.createElement("td");

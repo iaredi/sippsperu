@@ -3,12 +3,12 @@ if (!session('admin')){
     return redirect()->to('/login')->send();
 }
 ?>
-@include('inc/header')
-@include('inc/nav')
 @include('inc/saveadmin')
 @include('inc/setuppage')
+@include('inc/header')
+@include('inc/nav')
 
-    <body>
+
    <img src="{{ asset('img/malinche.jpg') }}"  alt="Italian Trulli" style="width:500px;height:200px;">
    <div>
         <div class="row">
@@ -74,5 +74,4 @@ if (!session('admin')){
 <script src="{{ asset('js/jsfunc.js') }}" >
 </script>
 @include('inc/footer');
-    </body>
-</html>
+   

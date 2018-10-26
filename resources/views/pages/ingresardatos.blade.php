@@ -6,27 +6,24 @@ if (!session('email')){
 @include('inc/php_functions')
 @include('inc/setuppage')
 @include('inc/checkdata')
+@include('inc/savedata')
 @include('inc/header')
 @include('inc/nav')
-@include('inc/savedata')
 
-<body>
-    <img src="{{ asset('img/malinche.jpg') }}"  alt="Italian Trulli" style="width:500px;height:200px;">
-    <div>
-        <div class="row">
-            <div class="col-lg-6 col-lg-offset-3">
+
+    <img src="{{ asset('img/malinche.jpg') }}"  alt="Italian Trulli" style="height:200px;">
+            <div class=" warnings">
                 <?php
                 $hint1="Si no hizo la observacion, ingrese 0000.";
                 $hint2="Si hiciera observacion y no hubiera especies, ingrese 000.";
                 $hint3="Si no sabe con certeza algún dato, ingrese 00.";
-                echo "<p class='bg-info text-center'>{$hint1}</p>";
-                echo "<p class='bg-info text-center'>{$hint2}</p>";
-                echo "<p class='bg-info text-center'>{$hint3}</p>";
+                echo "<p class='text-dark text-center' style='background-color: lightsteelblue;'>{$hint1}</p>";
+                echo "<p class='text-dark text-center'style='background-color: lightsteelblue;'>{$hint2}</p>";
+                echo "<p class='text-dark text-center'style='background-color: lightsteelblue;'>{$hint3}</p>";
                         foreach (session('error') as $msg) {
                             echo "<p class='bg-danger text-center'>{$msg}</p>";
                         }
                 ?>
-            </div>
         </div>
 
     <div class="wrapper2" id="startMenuDiv">
@@ -64,5 +61,4 @@ if (!session('email')){
 @include('inc/repopulate')
 @include('inc/footer')
 
-</body>
-</html>
+

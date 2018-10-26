@@ -99,6 +99,30 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
     } 
 
 
+    function buildcolumnsarray($tablename, $rowandnum){
+        try {
+            $sql="SELECT column_name FROM information_schema.columns WHERE table_schema = 'public' AND table_name   = :tablename";
+            $result= DB::select($sql,[':tablename'=>$tablename]);
+            $colarray=array();
+                foreach($result as $colobj){
+                    if (explode("_" , $tablename)[0]!='observacion'){
+                        $tablename='observacion_'.explode("_" , $tablename)[1];
+                    };
+
+                    $col=$colobj->column_name;
+                    if (substr($col,0,4)!='iden'){
+                        $colarray[$col]=$_POST["{$rowandnum}*{$tablename}*{$col}"];
+                    }
+                }
+            return $colarray;
+           
+       } catch(PDOException $e) {
+            return $e->getMessage();
+       }
+  }
+
+
+
 
 
     

@@ -11,6 +11,11 @@ let mix = require('laravel-mix');
  |
  */
 
+mix.autoload({
+    'jquery': ['$', 'window.jQuery', "jQuery", "window.$", "jquery", "window.jquery"],
+    'popper.js/dist/umd/popper.js': ['Popper', 'window.Popper']
+});
+
 mix.js('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css')
    .copyDirectory('resources/img', 'public/img')
@@ -20,8 +25,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
    .js('resources/leaflet_assets/components/Mapapp.js', 'public/leaflet_assets/components/Mapapp.js')
    .js('resources/leaflet_assets/index.js', 'public/leaflet_assets/index.js')
    .copy('resources/leaflet_assets/index.html', 'public/leaflet_assets/index.html')
-   .copy('resources/leaflet_assets/leaflet.css', 'public/leaflet_assets/leaflet.css')
-   .copyDirectory('responders', 'public/responders');
+   .copy('resources/leaflet_assets/leaflet.css', 'public/leaflet_assets/leaflet.css');
    
 
    mix.browserSync({

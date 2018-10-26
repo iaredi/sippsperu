@@ -47,14 +47,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
 ?>
 
 @include('inc/header')
-
 @include('inc/nav')
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-    <body>
 
 
 
@@ -87,5 +80,3 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
 </div >
 
 @include('inc/footer')    
-</body>
-</html>

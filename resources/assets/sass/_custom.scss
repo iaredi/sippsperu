@@ -1,11 +1,23 @@
 body {
-    padding-top: 90px;
-    padding-left: 20px;
+    
     color:rgb(0, 0, 0);
     background-color: rgb(255, 235, 209);
     font-family: Calibri, sans-serif;
     font-size: 18px;
     line-height: 1;
+}
+
+.warnings {
+    margin: 1rem 0 1rem 0;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    
+}
+
+.bodycontainer{
+    padding: 20px ;
 }
 
 tbody#measurementTBodyForm {
@@ -112,7 +124,7 @@ nav a:hover {
     color:saddlebrown;
 }
 
-.navbar {
+.mynavbar {
     color:rgb(39, 22, 0);
     background-color: rgb(66, 214, 96);
 }

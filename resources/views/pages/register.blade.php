@@ -1,5 +1,5 @@
-@include('inc/header')
 @include('inc/php_functions')
+@include('inc/header')
 @include('inc/nav')
 
 <?php
@@ -71,8 +71,6 @@
         $notas="";
     }
 ?>
-
-    <body>
       
 
         <div class="container">
@@ -143,7 +141,4 @@
                 </div>
             </div>
         </div>
-        @include('inc/footer')
-
-    </body>
-</html>
+    @include('inc/footer')

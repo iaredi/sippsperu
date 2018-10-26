@@ -1,6 +1,8 @@
 
 <?php
 $resultofquery=[];
+
+
 if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
 
     $mtpchoice =$_POST['selectlinea_mtp'];    
@@ -14,6 +16,10 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
             "clave"=> $_POST['row0*estado*clave'],
             "nombre"=> $_POST['row0*estado*nombre']
                 );
+            
+           
+
+
             $resultofquery[]= savenewentry("estado", $estadocolumns);
         }
 
@@ -179,20 +185,11 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                 $unit='Punto';
                 $unitlower=strtolower($unit);
                 $unitnum= $_POST["select{$unit}"];  
-                $unitcolumns=array(
-                    "sampling_unit_point"=> $unitnum,
-                    "latitud_gps"=> $_POST["row0*{$obstype}*latitud_gps"],
-                    "longitud_gps"=> $_POST["row0*{$obstype}*longitud_gps"],
-                    "tipo_vegetacion"=> $_POST["row0*{$obstype}*tipo_vegetacion"],
-                    "letra_m"=> $_POST["row0*{$obstype}*m"],
-                    "letra_e"=> $_POST["row0*{$obstype}*e"],
-                    "ts_y_ac"=> $_POST["row0*{$obstype}*ts_y_ac"],
-                    "estado_del_tiempo"=> $_POST["row0*{$obstype}*estado_del_tiempo"],
-                    "hora_inicio"=> $_POST["row0*{$obstype}*hora_inicio"],
-                    "hora_fin"=> $_POST["row0*{$obstype}*hora_fin"],
-                    "iden_medicion"=> $medicionkey,
-                    
-                        );
+
+                $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
+                $unitcolumns["iden_sampling_unit_point"]= $unitnum;
+                $unitcolumns["iden_medicion"]= $medicionkey;
+
                 $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
                 //Handle ave Species
                 $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
@@ -208,21 +205,11 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                         $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
                     }
                     
-                    $obscolumns=array(
-                        "actividad"=> $_POST["row{$i}*{$obstype}*actividad"],
-                        "tr_arbol"=> $_POST["row{$i}*{$obstype}*tr_arbol"],
-                        "tr_arbusto"=> $_POST["row{$i}*{$obstype}*tr_arbusto"],
-                        "fo_arbol"=> $_POST["row{$i}*{$obstype}*fo_arbol"],
-                        "fo_arbusto"=> $_POST["row{$i}*{$obstype}*fo_arbusto"],
-                        "su"=> $_POST["row{$i}*{$obstype}*su"],
-                        "ro"=> $_POST["row{$i}*{$obstype}*ro"],
-                        "notas"=> $_POST["row{$i}*{$obstype}*notas"],
-                        "abundancia_0_5_min"=> $_POST["row{$i}*{$obstype}*abundancia_0-5_min"],
-                        "abundancia_5_10_min"=> $_POST["row{$i}*{$obstype}*abundancia_5-10_min"],
-                        "iden_especie"=> $iden_especie,
-                        "iden_foto"=> $iden_foto,
-                        "iden_{$unitlower}"=> $unitmax,
-                            );
+                    $obscolumns=buildcolumnsarray($obstype, "row{$i}");
+                    $obscolumns["iden_especie"]= $iden_especie;
+                    $obscolumns["iden_foto"]= $iden_foto;
+                    $obscolumns["iden_{$unitlower}"]= $unitmax;
+
                     $resultofquery[] = savenewentry($obstype, $obscolumns);
                 }
             }
@@ -234,15 +221,13 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                 $unitlower=strtolower($unit);
                 $unitnum= $_POST["select{$unit}"];  
                
-                $unitcolumns=array(
-                    "sampling_unit"=> $unitnum,
-                    "comienzo_latitud"=> $_POST["row0*{$obstype}*comienzo_latitud"],
-                    "comienzo_longitud"=> $_POST["row0*{$obstype}*comienzo_longitud"],
-                    "fin_latitud"=> $_POST["row0*{$obstype}*fin_latitud"],
-                    "fin_longitud"=> $_POST["row0*{$obstype}*fin_longitud"],
-                    "iden_medicion"=> $medicionkey,
+                
+
+                    $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
+                    $unitcolumns["iden_sampling_unit_point"]= $unitnum;
+                    $unitcolumns["iden_medicion"]= $medicionkey;
                     
-                        );
+                        
                 $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
 
                 $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
@@ -256,15 +241,13 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                     }else{
                         $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
                     }
-                    $obscolumns=array(
-                        "ind"=> $_POST["row{$i}*{$obstype}*ind"],
-                        "letra_m"=> $_POST["row{$i}*{$obstype}*m"],
-                        "letra_i"=> $_POST["row{$i}*{$obstype}*i"],
-                        "notas"=> $_POST["row{$i}*{$obstype}*notas"],
-                        "iden_especie"=> $iden_especie,
-                        "iden_foto"=> $iden_foto,
-                        "iden_{$unitlower}"=> $unitmax,
-                            );
+                   
+    
+                    $obscolumns=buildcolumnsarray($obstype, "row{$i}");
+                    $obscolumns["iden_especie"]= $iden_especie;
+                    $obscolumns["iden_foto"]= $iden_foto;
+                    $obscolumns["iden_{$unitlower}"]= $unitmax;
+
                     $resultofquery[] = savenewentry( $obstype, $obscolumns);
                 }
             }
@@ -274,22 +257,16 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                 $unit='Punto';
                 $unitlower=strtolower($unit);
                 $unitnum= $_POST["select{$unit}"];  
-                $unitcolumns=array(
-                    "sampling_unit"=> $unitnum,
-                    "latitud_gps"=> $_POST["row0*{$obstype}*latitud_gps"],
-                    "longitud_gps"=> $_POST["row0*{$obstype}*longitud_gps"],
-                    "letra_n"=> $_POST["row0*{$obstype}*n"],
-                    "letra_a"=> $_POST["row0*{$obstype}*a"],
-                    "letra_m"=> $_POST["row0*{$obstype}*m"],
-                    "letra_e"=> $_POST["row0*{$obstype}*e"],
-                    
-                    "numero_punto62"=> $_POST["selectPunto"],
-                    "iden_medicion"=> $medicionkey,
-                        );
+                
+                $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
+                $unitcolumns["iden_sampling_unit"]= $unitnum;
+                $unitcolumns["iden_numero_punto62"]= $_POST["selectPunto"];
+                $unitcolumns["iden_medicion"]= $medicionkey;
+
                 $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
 
                 $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
-            for($i=0; $i<countrows($obstype); $i++) {
+                for($i=0; $i<countrows($obstype); $i++) {
                     //Handle fotos
                     $iden_foto=uploadfoto("row{$i}", $obstype);
                     //Handle Species
@@ -300,22 +277,13 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                         $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
                     }
                     
-                    $obscolumns=array(
-                        "distancia"=> $_POST["row{$i}*{$obstype}*distancia"],
-                        "azimut"=> $_POST["row{$i}*{$obstype}*azimut"],
-                        "altura"=> $_POST["row{$i}*{$obstype}*altura"],
-                        "dn"=> $_POST["row{$i}*{$obstype}*dn"],
-                        "acc1"=> $_POST["row{$i}*{$obstype}*acc1"],
-                        "acc2"=> $_POST["row{$i}*{$obstype}*acc2"],
-                        "acc3"=> $_POST["row{$i}*{$obstype}*acc3"],
-                        "dc1"=> $_POST["row{$i}*{$obstype}*dc1"],
-                        "dc2"=> $_POST["row{$i}*{$obstype}*dc2"],
-                        "cuadrante"=> $_POST["row{$i}cuadrante"],
-                        "notas"=> $_POST["row{$i}*{$obstype}*notas"],
-                        "iden_especie"=> $iden_especie,
-                        "iden_foto"=> $iden_foto,
-                        "iden_{$unitlower}"=> $unitmax,
-                            );
+    
+                    $obscolumns=buildcolumnsarray($obstype, "row{$i}");
+                    $obscolumns["iden_especie"]= $iden_especie;
+                    $obscolumns["iden_foto"]= $iden_foto;
+                    $obscolumns["iden_{$unitlower}"]= $unitmax;
+                    
+
                     $resultofquery[] = savenewentry( $obstype, $obscolumns);
                 }
             }
@@ -326,15 +294,11 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                 $unit='Transecto';
                 $unitlower=strtolower($unit);
                 $unitnum= $_POST["select{$unit}"];  
-                $unitcolumns=array(
-                    "sampling_unit"=> $unitnum,
-                    "comienzo_latitud"=> $_POST["row0*{$obstype}*comienzo_latitud"],
-                    "comienzo_longitud"=> $_POST["row0*{$obstype}*comienzo_longitud"],
-                    "fin_latitud"=> $_POST["row0*{$obstype}*fin_latitud"],
-                    "fin_longitud"=> $_POST["row0*{$obstype}*fin_longitud"],
-                    "estado_del_tiempo"=> $_POST["row0*{$obstype}*estado_del_tiempo"],
-                    "iden_medicion"=> $medicionkey,
-                        );
+               
+                $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
+                $unitcolumns["iden_sampling_unit_point"]= $unitnum;
+                $unitcolumns["iden_medicion"]= $medicionkey;
+
                 $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
 
                 $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
@@ -348,16 +312,13 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                     }else{
                         $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
                     }
-                    $obscolumns=array(
-                        "sexo"=> $_POST["row{$i}*{$obstype}*sexo"],
-                        "estadio"=> $_POST["row{$i}*{$obstype}*estadio"],
-                        "actividad"=> $_POST["row{$i}*{$obstype}*actividad"],
-                        "microhabitat"=> $_POST["row{$i}*{$obstype}*microhabitat"],
-                        "hora"=> $_POST["row{$i}*{$obstype}*hora"],
-                        "iden_especie"=> $iden_especie,
-                        "iden_foto"=> $iden_foto,
-                        "iden_{$unitlower}"=> $unitmax,
-                            );
+                
+                                
+                    $obscolumns=buildcolumnsarray($obstype, "row{$i}");
+                    $obscolumns["iden_especie"]= $iden_especie;
+                    $obscolumns["iden_foto"]= $iden_foto;
+                    $obscolumns["iden_{$unitlower}"]= $unitmax;
+
                     $resultofquery[] = savenewentry( $obstype, $obscolumns);
                 }
             }
@@ -368,22 +329,12 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                 $unit='Punto';
                 $unitlower=strtolower($unit);
                 $unitnum= $_POST["select{$unit}"];  
-                $unitcolumns=array(
-                    "sampling_unit_point"=> $unitnum,
-                    "latitud_gps"=> $_POST["row0*{$obstype}*latitud_gps"],
-                    "longitud_gps"=> $_POST["row0*{$obstype}*longitud_gps"],
-                    "tipo_vegetacion"=> $_POST["row0*{$obstype}*tipo_vegetacion"],
-                    "anio"=> $_POST["row0*{$obstype}*anio"],
-                    "marca"=> $_POST["row0*{$obstype}*marca"],
-                    "modelo"=> $_POST["row0*{$obstype}*modelo"],
-                    "fecha_de_activacion"=> $_POST["row0*{$obstype}*fecha_de_activacion"],
-                    "fecha_de_apagado"=> $_POST["row0*{$obstype}*fecha_de_apagado"],
-                    "numero_de_dias_operables"=> $_POST["row0*{$obstype}*numero_de_dias_operables"],
-                    "numero_de_fotos_totales"=> $_POST["row0*{$obstype}*numero_de_fotos_totales"],
-                    "numero_de_fotos_efectivas"=> $_POST["row0*{$obstype}*numero_de_fotos_efectivas"],
-                    "iden_medicion"=> $medicionkey,
-                    
-                        );
+
+                    $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
+                    $unitcolumns["iden_sampling_unit_point"]= $unitnum;
+                    $unitcolumns["iden_medicion"]= $medicionkey;
+         
+
                 $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
                 //Handle Species
                 $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
@@ -398,19 +349,17 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                         $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
                     }
                     
-                    $obscolumns=array(
-                        "numero_de_repeticion"=> $_POST["row{$i}*{$obstype}*numero_de_repeticion"],
-                        "fecha_de_captura"=> $_POST["row{$i}*{$obstype}*fecha_de_captura"],
-                        "hora_de_captura"=> $_POST["row{$i}*{$obstype}*hora_de_captura"],
-                        "numero_de_individulos_capturados"=> $_POST["row{$i}*{$obstype}*numero_de_individulos_capturados"],
-                        "numero_de_foto"=> $_POST["row{$i}*{$obstype}*numero_de_foto"],
-                        "etapa_de_vida"=> $_POST["row{$i}*{$obstype}*etapa_de_vida"],
-                        "sexo"=> $_POST["row{$i}*{$obstype}*sexo"],
-                        "notas"=> $_POST["row{$i}*{$obstype}*notas"],
-                        "iden_especie"=> $iden_especie,
-                        "iden_foto"=> $iden_foto,
-                        "iden_{$unitlower}"=> $unitmax,
-                    );
+                    
+
+
+                    
+                    $obscolumns=buildcolumnsarray($obstype, "row{$i}");
+                    $obscolumns["iden_especie"]= $iden_especie;
+                    $obscolumns["iden_foto"]= $iden_foto;
+                    $obscolumns["iden_{$unitlower}"]= $unitmax;
+
+
+
                     $resultofquery[] = savenewentry( $obstype, $obscolumns);
                 }
             }
