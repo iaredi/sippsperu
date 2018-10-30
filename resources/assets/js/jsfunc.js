@@ -226,11 +226,32 @@ function createRows (tableName,menu,myCols, myNumRow, obs=false,customList=[]){
     const columnRowOld = document.createElement("tr");
     const firstDataRow = document.createElement("tr");
     firstDataRow.class="dataRows";
-         myCols.sort(function(a, b){
-                if(a < b) return -1;
-                if(a > b) return 1;
-                return 0;
-                        })
+
+    myCols.sort(function(a, b){
+            if(a < b) return -1;
+            if(a > b) return 1;
+            return 0;
+                    })
+                    console.log(myCols)           
+    myCols.sort(function(a, b){
+        if(a=='notas') return 1;
+        if(b=='notas') return -1;
+        if(a.indexOf('long')!==-1) return -1;
+        if(b.indexOf('long')!==-1)return 1;
+        if(a.indexOf('lat')!==-1) return -1;
+        if(b.indexOf('lat')!==-1)return 1;
+        if(a.indexOf('hora')!==-1) return -1;
+        if(b.indexOf('hora')!==-1)return 1;
+        if(a.indexOf('fecha')!==-1) return -1;
+        if(b.indexOf('fecha')!==-1)return 1;
+        if(a.length==1) return 1;
+        if(b.length==1) return -1;
+        if(a.length==2) return 1;
+        if(b.length==2) return -1;
+        return 0;
+                })
+    
+
 
     if (customList.length>=1) myCols=customList
 
@@ -314,7 +335,8 @@ function createRows (tableName,menu,myCols, myNumRow, obs=false,customList=[]){
         }
             if (!(val.includes("iden")) && !found){
                 const nameBox = document.createElement("td");
-                nameBox.innerText=val.split("_").join(" ");
+                const spacedval=val.split("_").join(" ");
+                nameBox.innerText=spacedval.charAt(0).toUpperCase() + spacedval.slice(1);
                 nameBox.className="formcolumnlabels"
                 
                 columnRowOld.appendChild(nameBox);
@@ -508,9 +530,8 @@ function addOnChangeObservaciones(menu){
                 numberPoints = 5;
             }
             if (myChoice=="observacion_arbol" || myChoice=="observacion_arbusto" ){
-                let puntoName="Punto"
-                buildDropdowns(puntoName,menu, "Numero");
-                const mySelectionPunto = document.getElementById(`measurement${puntoName}Numero`);
+                buildDropdowns("Punto",menu, "Numero");
+                const mySelectionPunto = document.getElementById(`measurementPuntoNumero`);
                 //Add Number Options
                 let fragPunto = document.createDocumentFragment(),elOption;
                 elOption = fragPunto.appendChild(document.createElement('option'));
@@ -541,6 +562,7 @@ function addOnChangeObservaciones(menu){
             }
             mySelection.appendChild(frag);
             clearForm(menu,"Form")
+            
             buildCustomForm(myChoice,menu)
     }
     }
@@ -587,58 +609,15 @@ function selectSpeciesOnChange(tableName, menu, numRows){
 
 
 function buildCustomForm(obName,menu){
+    let transPunto='punto';
+    if(obName=='observacion_hierba'||obName=='observacion_herpetofauna'){
+        transPunto='transecto';
+    }
+    let obsNameContext=(transPunto+"_" +obName.split('_')[1]);
 
-    let ContextList=[];
-    if (obName=='observacion_ave'){
-        ContextList=['Tipo_vegetacion','M', 'E', 'TS_y_AC','Estado_del_Tiempo', 'Hora_inicio','Hora_fin','Longitud_GPS','Latitud_GPS' ]
-    }
-    if (obName=='observacion_hierba'){
-        ContextList=['Comienzo_longitud','Comienzo_latitud', 'Fin_longitud','Fin_latitud']
-    }
-    if (obName=='observacion_arbol'){
-        ContextList=['N','A', 'M','E','Longitud_GPS','Latitud_GPS',]
-    }
-    if (obName=='observacion_arbusto'){
-        ContextList=['N','A', 'M','E','Longitud_GPS','Latitud_GPS',]
-    }
-    if (obName=='observacion_herpetofauna'){
-        ContextList=['Estado_del_Tiempo','Comienzo_longitud','Comienzo_latitud', 'Fin_longitud','Fin_latitud']
-    }
-    if (obName=='observacion_mamifero'){
-        ContextList=['Tipo_vegetacion','Anio', 'Marca', 'Modelo','Numero_de_Serie', 'Fecha_de_activacion',
-            'Fecha_de_Apagado','Longitud_GPS','Latitud_GPS','Numero_de_Dias_Operables','Numero_de_Fotos_Totales','Numero_de_Fotos_Efectivas' ]
-    }
-
-
-    buildForm(obName, menu, ' ', false, false, ContextList, false)
-
+    buildForm(obsNameContext, menu, ' ', false, false, [], false)
     
-    let obsColumnsList=[];
-    if (obName=='observacion_ave'){
-        obsColumnsList=['Abundancia_0-5_min','Abundancia_5-10_min','Actividad',
-        'TR_arbol', 'TR_arbusto','FO_arbol', 'FO_arbusto','Especie_arbol', 'Especie_arbusto', 'SU', 'RO' ,'Notas','Foto']
-    }
-    if (obName=='observacion_hierba'){
-        obsColumnsList=['Ind', 'I', 'M', 'Notas','Foto']
-    }
-    if (obName=='observacion_arbol'){
-        obsColumnsList=['Distancia', 'Azimut', 'Altura', 'DN','DC1','DC2','ACC1','ACC2','ACC3', 'Notas','Foto']
-    }
-    if (obName=='observacion_arbusto'){
-        obsColumnsList=['Distancia', 'Azimut', 'Altura', 'DN','DC1','DC2','ACC1','ACC2','ACC3', 'Notas','Foto']
-    }
-    if (obName=='observacion_herpetofauna'){
-        obsColumnsList=['Sexo', 'Estadio', 'Actividad','Microhabitat','Hora', 'Notas','Foto']
-    }
-    if (obName=='observacion_mamifero'){
-        obsColumnsList=['Sexo', 'Fecha_de_Captura', 'Hora_de_Captura','Numero_de_Individulos_Capturados','Numero_de_Foto',
-         'Etapa_de_Vida','Numero_de_Repeticion', 'Notas','Foto']
-
-
-    }
-
-    
-    buildForm(obName, menu, ' ', true, true, obsColumnsList)
+    buildForm(obName, menu, ' ', true, true, [])
 
     if (obName=='observacion_arbol'||obName=='observacion_arbusto'){
         const getSelectionAdd = document.getElementById(`addElementRow${obName}`)
@@ -658,14 +637,45 @@ function buildCustomForm(obName,menu){
 
 }
 
+function addOnChangeAdminTable(){
+    const getSelection = document.getElementById('table_option');
+    const currentFunction3 = function(tableName, menu){
+
+        const myChoice = getSelection.value;
+        const mySelection = document.getElementById('field_option')
+        const mycurrentlist= tabletoColumns[myChoice]
+        let frag = document.createDocumentFragment(),elOption;
+
+        for (let i = 0; i<mycurrentlist.length; i++){
+            if(!mycurrentlist[i].includes("iden")){
+                elOption = frag.appendChild(document.createElement('option'));
+                elOption.value = mycurrentlist[i];
+                elOption.innerHTML =mycurrentlist[i];
+            }
+        }
+    while (mySelection.hasChildNodes()) {
+        mySelection.removeChild(mySelection.lastChild);
+    }
+    mySelection.appendChild(frag);
+
+
+
+    }  
+    const currentOnChange3 =function() {currentFunction3()}   
+             getSelection.onchange=currentOnChange3;
+            }
+            
+
+
+
 var numRows=0;
-
-
 if(window.location.href.substr(-5)==='admin'){
     buildDropdowns( "usuario", "measurement", "Select" );
     selectOptionsCreate( "usuario",  "measurement",  true,  "Select", [],  false,  false);
     buildDropdowns( "usuario_permitido", "measurement", "Medicion" );
     selectOptionsCreate( "usuario_permitido",  "measurement",  true,  "Medicion", [],  false, false);
+    addOnChangeAdminTable()
+
  
 }else{
     buildDropdowns( "linea_mtp", "measurement", "Select" );

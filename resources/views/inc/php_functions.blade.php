@@ -105,9 +105,9 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
             $result= DB::select($sql,[':tablename'=>$tablename]);
             $colarray=array();
                 foreach($result as $colobj){
-                    if (explode("_" , $tablename)[0]!='observacion'){
-                        $tablename='observacion_'.explode("_" , $tablename)[1];
-                    };
+                    //if (explode("_" , $tablename)[0]!='observacion'){
+                    //    $tablename='observacion_'.explode("_" , $tablename)[1];
+                    //};
 
                     $col=$colobj->column_name;
                     if (substr($col,0,4)!='iden'){

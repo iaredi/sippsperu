@@ -18863,7 +18863,7 @@ var Mapapp = function (_React$Component) {
                 });
 
                 _context.next = 3;
-                return fetch('http://localhost:3000/api/tester7', {
+                return fetch('http://localhost:3000/api/getudp', {
                   method: 'POST',
                   headers: {
                     'Accept': 'application/json',

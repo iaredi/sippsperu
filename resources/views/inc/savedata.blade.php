@@ -185,11 +185,17 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                 $unit='Punto';
                 $unitlower=strtolower($unit);
                 $unitnum= $_POST["select{$unit}"];  
+                //Save UDP
+                $mylong = $_POST["row0*{$unitlower}_{$speciestype}*longitud_gps"];
+                $mylat = $_POST["row0*{$unitlower}_{$speciestype}*latitud_gps"];
+                $sql="SELECT udp_puebla_4326.iden FROM udp_puebla_4326 WHERE ST_Intersects(udp_puebla_4326.geom, ST_GeomFromText('POINT({$mylong} {$mylat})',4326))";
+                $result= $stmnt = DB::select($sql, []);
+                $iden_udp= $result[0]->iden;
 
                 $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
                 $unitcolumns["iden_sampling_unit_point"]= $unitnum;
                 $unitcolumns["iden_medicion"]= $medicionkey;
-
+                $unitcolumns["iden_udp"]= $iden_udp;
                 $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
                 //Handle ave Species
                 $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
@@ -222,11 +228,19 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                 $unitnum= $_POST["select{$unit}"];  
                
                 
+          //Save UDP
+                $mylong = $_POST["row0*{$unitlower}_{$speciestype}*comienzo_longitud"];
+                $mylat = $_POST["row0*{$unitlower}_{$speciestype}*comienzo_latitud"];
+                $sql="SELECT udp_puebla_4326.iden FROM udp_puebla_4326 WHERE ST_Intersects(udp_puebla_4326.geom, ST_GeomFromText('POINT({$mylong} {$mylat})',4326))";
+                $result= $stmnt = DB::select($sql, []);
+                $iden_udp= $result[0]->iden;
+
 
                     $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
                     $unitcolumns["iden_sampling_unit_point"]= $unitnum;
                     $unitcolumns["iden_medicion"]= $medicionkey;
-                    
+                    $unitcolumns["iden_udp"]= $iden_udp;
+
                         
                 $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
 
@@ -257,11 +271,20 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                 $unit='Punto';
                 $unitlower=strtolower($unit);
                 $unitnum= $_POST["select{$unit}"];  
+
+                //Save UDP
+                $mylong = $_POST["row0*{$unitlower}_{$speciestype}*longitud_gps"];
+                $mylat = $_POST["row0*{$unitlower}_{$speciestype}*latitud_gps"];
+                $sql="SELECT udp_puebla_4326.iden FROM udp_puebla_4326 WHERE ST_Intersects(udp_puebla_4326.geom, ST_GeomFromText('POINT({$mylong} {$mylat})',4326))";
+                $result= $stmnt = DB::select($sql, []);
+                $iden_udp= $result[0]->iden;
                 
                 $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
                 $unitcolumns["iden_sampling_unit"]= $unitnum;
                 $unitcolumns["iden_numero_punto62"]= $_POST["selectPunto"];
                 $unitcolumns["iden_medicion"]= $medicionkey;
+                $unitcolumns["iden_udp"]= $iden_udp;
+
 
                 $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
 
@@ -295,9 +318,21 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                 $unitlower=strtolower($unit);
                 $unitnum= $_POST["select{$unit}"];  
                
+
+                            //Save UDP
+                $mylong = $_POST["row0*{$unitlower}_{$speciestype}*comienzo_longitud"];
+                $mylat = $_POST["row0*{$unitlower}_{$speciestype}*comienzo_latitud"];
+                $sql="SELECT udp_puebla_4326.iden FROM udp_puebla_4326 WHERE ST_Intersects(udp_puebla_4326.geom, ST_GeomFromText('POINT({$mylong} {$mylat})',4326))";
+                $result= $stmnt = DB::select($sql, []);
+                $iden_udp= $result[0]->iden;
+
+
                 $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
                 $unitcolumns["iden_sampling_unit_point"]= $unitnum;
                 $unitcolumns["iden_medicion"]= $medicionkey;
+                $unitcolumns["iden_udp"]= $iden_udp;
+
+                
 
                 $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
 
@@ -313,11 +348,13 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                         $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
                     }
                 
-                                
+                    
+
                     $obscolumns=buildcolumnsarray($obstype, "row{$i}");
                     $obscolumns["iden_especie"]= $iden_especie;
                     $obscolumns["iden_foto"]= $iden_foto;
                     $obscolumns["iden_{$unitlower}"]= $unitmax;
+
 
                     $resultofquery[] = savenewentry( $obstype, $obscolumns);
                 }
@@ -329,10 +366,19 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                 $unit='Punto';
                 $unitlower=strtolower($unit);
                 $unitnum= $_POST["select{$unit}"];  
+                
+                        //Save UDP
+                    $mylong = $_POST["row0*{$unitlower}_{$speciestype}*longitud_gps"];
+                    $mylat = $_POST["row0*{$unitlower}_{$speciestype}*latitud_gps"];
+                    $sql="SELECT udp_puebla_4326.iden FROM udp_puebla_4326 WHERE ST_Intersects(udp_puebla_4326.geom, ST_GeomFromText('POINT({$mylong} {$mylat})',4326))";
+                    $result= $stmnt = DB::select($sql, []);
+                    $iden_udp= $result[0]->iden;
 
                     $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
                     $unitcolumns["iden_sampling_unit_point"]= $unitnum;
                     $unitcolumns["iden_medicion"]= $medicionkey;
+                     $unitcolumns["iden_udp"]= $iden_udp;
+
          
 
                 $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
@@ -352,11 +398,12 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                     
 
 
-                    
+
                     $obscolumns=buildcolumnsarray($obstype, "row{$i}");
                     $obscolumns["iden_especie"]= $iden_especie;
                     $obscolumns["iden_foto"]= $iden_foto;
                     $obscolumns["iden_{$unitlower}"]= $unitmax;
+
 
 
 

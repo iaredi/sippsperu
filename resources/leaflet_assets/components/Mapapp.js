@@ -26,7 +26,7 @@ class Mapapp extends React.Component {
       }
     }));
 
-    const rawResponse = await fetch('http://localhost:3000/api/tester7', {
+    const rawResponse = await fetch('http://localhost:3000/api/getudp', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
