@@ -10,15 +10,24 @@ class Map extends React.Component {
   constructor(props) {
     super(props);
     this.handleMapClick = this.handleMapClick.bind(this);
-    
-  }
-  handleMapClick(event) {
-    //e.preventDefault();
-    const mylat=  event.latlng.lat
-    const mylong=  event.latlng.lng
-    const error = this.props.handleMapClick(mylat,mylong);
+    this.getColor = this.getColor.bind(this);
 
   }
+  handleMapClick(event) {
+    this.props.handleMapClick(event.latlng.lat,event.latlng.lng);
+  }
+  getColor(x) {
+
+    return x < 1     ?    '#ffffcc':
+           x < 2     ?   '#d9f0a3':
+           x < 3     ?   '#addd8e':
+           x < 4     ?   '#78c679':
+           x < 5     ?   '#31a354':
+           x < 6     ?   '#006837':
+                            '#ffffb2' ;
+  };
+
+ 
   
   componentDidMount() {  
     // create map
@@ -28,6 +37,8 @@ class Map extends React.Component {
       layers: []
     });
 
+
+    
     const streets = L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -44,25 +55,16 @@ class Map extends React.Component {
       "Imagery":imagery,
       "Streets": streets
   };
-  function getColor(x) {
 
-    return x < 1     ?    '#ffffcc':
-           x < 2     ?   '#d9f0a3':
-           x < 3     ?   '#addd8e':
-           x < 4     ?   '#78c679':
-           x < 5     ?   '#31a354':
-           x < 6     ?   '#006837':
-                            '#ffffb2' ;
-  };
-    const get_shp =(item,mymap)=>{
+  
+
+    const get_shp =(item,mymap,getColor)=>{
       let myStyle={};
-      const distinctOrTotal="distinct_species"
-      const myobstype="ave"
+      
 
-      const targetProperty = `${distinctOrTotal}_${myobstype}`;
+      const targetProperty = `${this.props.mapSettings.distinctOrTotal}_${this.props.mapSettings.myObsType}`;
       
       if (item.colorGradient){
-
         myStyle=function (feature) {
           return {
            "fillColor": getColor(feature.properties[targetProperty]),
@@ -81,37 +83,52 @@ class Map extends React.Component {
           fillOpacity: item.fillOpacity
         } 
       }
-      console.log(item);
-      console.log(myStyle);
+      
       let c2 = L.geoJson(item.geom, {
         style: myStyle
       }).addTo(mymap);
       return c2;
     }
-    const processArray=(array, mymap, mybaseMaps)=>{
+    const processArray=(array, mymap, mybaseMaps,getColor)=>{
+      var dynamicLayer='notset'
       const overlayMaps=this.overlayMaps || {};
       array.forEach(function(item){
-        let myLayer = get_shp(item,mymap);
+        let myLayer = get_shp(item,mymap,getColor);
         if (item.tableName =='udp_puebla_4326'){
+          dynamicLayer=myLayer
           mymap.fitBounds(myLayer.getBounds())
         }
         overlayMaps[item.displayName]=myLayer;
       });
       L.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
+      return dynamicLayer
     }
 
-    processArray(something, this.map, this.baseMaps)
+    this.dynamicLayer=processArray(something, this.map, this.baseMaps, this.getColor)
 
     this.map.on("click", this.handleMapClick);
     this.map.scrollWheelZoom.disable()
     
     
   }
-  componentDidUpdate({ markerPosition }) {
+  componentDidUpdate({ mapSettings }) {
     // check if position has changed
-    // if (this.props.markerPosition !== markerPosition) {
-    //   this.marker.setLatLng(this.props.markerPosition);
-    // }
+    if (this.props.mapSettings !== mapSettings) {
+      const getColor=this.getColor;
+     
+      const targetProperty = `${this.props.mapSettings.distinctOrTotal}_${this.props.mapSettings.myObsType}`;
+      let myStyle={};
+      myStyle=function (feature) {
+        return {
+         "fillColor": getColor(feature.properties[targetProperty]),
+         "opacity": 1,
+         "weight": .3,
+         "color": "black",
+         "fillOpacity": 0.9
+        }
+      } 
+      this.dynamicLayer.setStyle(myStyle)
+    }
   }
   render() {
     return <div id="map" style={style} />;
