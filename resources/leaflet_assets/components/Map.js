@@ -17,14 +17,13 @@ class Map extends React.Component {
     this.props.handleMapClick(event.latlng.lat,event.latlng.lng);
   }
   getColor(x) {
-
-    return x < 1     ?    '#ffffcc':
-           x < 2     ?   '#d9f0a3':
-           x < 3     ?   '#addd8e':
-           x < 4     ?   '#78c679':
-           x < 5     ?   '#31a354':
-           x < 6     ?   '#006837':
-                            '#ffffb2' ;
+    return x < this.props.mapSettings.maxValue*(1/6)      ?    '#edf8fb':
+           x < this.props.mapSettings.maxValue*(2/6)      ?   '#ccece6':
+           x < this.props.mapSettings.maxValue*(3/6)      ?   '#99d8c9':
+           x < this.props.mapSettings.maxValue*(4/6)      ?   '#66c2a4':
+           x < this.props.mapSettings.maxValue*(5/6)     ?   '#41ae76':
+           x < this.props.mapSettings.maxValue     ?   '#238b45':
+                            '#005824' ;
   };
 
  
@@ -105,32 +104,83 @@ class Map extends React.Component {
     }
 
     this.dynamicLayer=processArray(something, this.map, this.baseMaps, this.getColor)
+    /////////////////////////////////////////////////
+    var legend = L.control({position: 'bottomright'});
 
+
+this.makeDiv=  (map)=> {
+  grades=[];
+  for (var i = 1; i <= 6; i++) {
+    grades.push(this.props.mapSettings.maxValue*(i/6)),
+    labels = [];
+}
+  const getColor=this.getColor;
+    var div = L.DomUtil.create('div', 'info legend'),
+
+    grades,
+    labels = [];
+    L.DomUtil.addClass(div, "colorLegend")
+    
+    // loop through our density intervals and generate a label with a colored square for each interval
+    for (var i = 0; i < grades.length; i++) {
+        div.innerHTML +=
+            '<i style="background:' + getColor(grades[i] ) + '">&nbsp&nbsp&nbsp&nbsp</i> ' +
+            Math.floor(grades[i]) + (grades[i + 1] ? '&ndash;' + Math.floor(grades[i + 1]) + '<br>' : '+');
+    }
+
+    return div;
+};
+legend.onAdd=this.makeDiv;
+
+legend.addTo(this.map);
+this.legend=legend;
+/////////////////////////////////////////////////////
     this.map.on("click", this.handleMapClick);
     this.map.scrollWheelZoom.disable()
     
     
   }
   componentDidUpdate({ mapSettings }) {
+    this.map.removeControl(this.legend); 
+    /////////////////////////////////////////////////
+    var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = this.makeDiv
+
+legend.addTo(this.map);
+this.legend=legend;
+/////////////////////////////////////////////////////
     // check if position has changed
     if (this.props.mapSettings !== mapSettings) {
       const getColor=this.getColor;
-     
       const targetProperty = `${this.props.mapSettings.distinctOrTotal}_${this.props.mapSettings.myObsType}`;
-      let myStyle={};
-      myStyle=function (feature) {
+      
+      //const maxValue=Math.max(feature.properties[targetProperty])
+      const myStyle= (feature, maxValue)=> {
         return {
-         "fillColor": getColor(feature.properties[targetProperty]),
+         "fillColor": getColor(feature.properties[targetProperty],maxValue),
          "opacity": 1,
          "weight": .3,
          "color": "black",
-         "fillOpacity": 0.9
+         "fillOpacity": this.props.mapSettings.fillOpacity
         }
       } 
       this.dynamicLayer.setStyle(myStyle)
     }
   }
   render() {
+
+
+
+
+
+
+
+
+
+
+
+    
     return <div id="map" style={style} />;
   }
 }

@@ -232,7 +232,6 @@ function createRows (tableName,menu,myCols, myNumRow, obs=false,customList=[]){
             if(a > b) return 1;
             return 0;
                     })
-                    console.log(myCols)           
     myCols.sort(function(a, b){
         if(a=='notas') return 1;
         if(b=='notas') return -1;
@@ -586,14 +585,22 @@ function selectSpeciesOnChange(tableName, menu, numRows){
             colRow[0].value=""
             colRow[1].value=""     
         }
-        if (myChoice==="000"){
-            for(let  i=0;i<allMyRows.length;i++){
-            allMyRows[i].value="000"
-            }  
-        }
         if (myChoice==="0000"){
             for(let  i=0;i<allMyRows.length;i++){
-            allMyRows[i].value="0000"
+                if (allMyRows[i].name.includes("hora")){
+                    allMyRows[i].value="00:01"
+                }
+                else if(allMyRows[i].name.includes("fecha")){
+                    allMyRows[i].value="1000-01-01"
+                    
+                }else{
+                    allMyRows[i].value="0000"
+                }
+            }  
+        }
+        if (myChoice==="000"){
+            for(let  i=0;i<allMyRows.length;i++){
+                allMyRows[i].value="000"
             }  
         }
 

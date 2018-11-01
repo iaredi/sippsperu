@@ -8,12 +8,15 @@ class Mapapp extends React.Component {
     this.handleMapClick = this.handleMapClick.bind(this);
     this.handleSpeciesChange = this.handleSpeciesChange.bind(this);
     this.handleTotalDistinctChange = this.handleTotalDistinctChange.bind(this);
+    this.handleOpacityChange = this.handleOpacityChange.bind(this);
+    this.handleMaxChange = this.handleMaxChange.bind(this);
+
 
 
     this.state={
       udp:0,
       markerPosition: { lat: 18.69349, lng: 360-98.16245 },
-      mapSettings:{distinctOrTotal:"total_observaciones", myObsType:"ave"},
+      mapSettings:{distinctOrTotal:"total_observaciones", myObsType:"ave", fillOpacity:1, maxValue:6},
      
       table: [
         {tableName:'udp_puebla_4326',color: 'blue'},
@@ -46,10 +49,13 @@ class Mapapp extends React.Component {
     
   }
   handleSpeciesChange(value) {
+
     this.setState((prevState) => ({
       mapSettings: {
         distinctOrTotal:prevState.mapSettings.distinctOrTotal,
-        myObsType:value
+        myObsType:value,
+        fillOpacity:prevState.mapSettings.fillOpacity,
+        maxValue:prevState.mapSettings.maxValue
       }
     }));
   }
@@ -58,10 +64,35 @@ class Mapapp extends React.Component {
     this.setState((prevState) => ({
       mapSettings: {
         distinctOrTotal:value,
-        myObsType:prevState.mapSettings.myObsType
+        myObsType:prevState.mapSettings.myObsType,
+        fillOpacity:prevState.mapSettings.fillOpacity,
+        maxValue:prevState.mapSettings.maxValue
       }
     }));
   }
+
+  handleOpacityChange(value) {
+    this.setState((prevState) => ({
+      mapSettings: {
+        distinctOrTotal:prevState.mapSettings.distinctOrTotal,
+        myObsType:prevState.mapSettings.myObsType,
+        fillOpacity:value,
+        maxValue:prevState.mapSettings.maxValue
+      }
+    }));
+  }
+
+  handleMaxChange(value) {
+    this.setState((prevState) => ({
+      mapSettings: {
+        distinctOrTotal:prevState.mapSettings.distinctOrTotal,
+        myObsType:prevState.mapSettings.myObsType,
+        fillOpacity:prevState.mapSettings.fillOpacity,
+        maxValue:value
+      }
+    }));
+  }
+
   
   updateMarkers(markersData) {
     this.layer.clearLayers();
@@ -92,6 +123,9 @@ class Mapapp extends React.Component {
           <MapControl
           handleSpeciesChange={this.handleSpeciesChange}
           handleTotalDistinctChange={this.handleTotalDistinctChange}
+          handleOpacityChange={this.handleOpacityChange}
+          handleMaxChange={this.handleMaxChange}
+          mapSettings={this.state.mapSettings} 
           />
         </div>
           

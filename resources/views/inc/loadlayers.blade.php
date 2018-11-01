@@ -39,24 +39,41 @@ foreach ($layersArray as $layer) {
     $obtype=explode('-', $layer->displayName)[0];
     $table=$layer->tableName;
     if ($layer->colorGradient){
-        $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count",[]);
+        $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count5",[]);
     }else{
         $result = DB::select("SELECT iden, ST_AsGeoJSON(geom, 5) AS geojson FROM {$table}",[]);
 
     }
     $features=[];
-    foreach($result AS $row) {
-        unset($row->geom);
-        $geometry=$row->geojson=json_decode($row->geojson);
-        unset($row->geojson);
-        
-        $feature=["type"=>"Feature", "geometry"=>$geometry, "properties"=>$row];
-        array_push($features, $feature);
-        
+    if ($layer->colorGradient){
+        foreach($result AS $row) {
+            unset($row->geom);
+            $geometry=$row->geojson=json_decode($row->geojson);
+            unset($row->geojson);
+
+
+
+            if ($row->iden == 944){
+
+            }
+            //$shanon='blank';
+            //$row->shanon = $shanon;
+            $feature=["type"=>"Feature", "geometry"=>$geometry, "properties"=>$row];
+            array_push($features, $feature);
+        }
+    }else{
+        foreach($result AS $row) {
+            unset($row->geom);
+            $geometry=$row->geojson=json_decode($row->geojson);
+            unset($row->geojson);
+            $feature=["type"=>"Feature", "geometry"=>$geometry, "properties"=>$row];
+            array_push($features, $feature);
+        }
     }
     $featureCollection=["type"=>"FeatureCollection", "features"=>$features];
     $layer->geom=$featureCollection;
-    //$geojson= json_encode($featureCollection);
+    $features=[];
+    $featureCollection=[];
 
 }
 $geojson=json_encode($layersArray);
@@ -64,6 +81,7 @@ $geojson=json_encode($layersArray);
 
 <script>
 var something = {!! $geojson !!};
+//console.log(something[0])
 </script>
 
 

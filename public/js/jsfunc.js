@@ -60,20 +60,20 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 144);
+/******/ 	return __webpack_require__(__webpack_require__.s = 145);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 144:
+/***/ 145:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(145);
+module.exports = __webpack_require__(146);
 
 
 /***/ }),
 
-/***/ 145:
+/***/ 146:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -324,7 +324,6 @@ function createRows(tableName, menu, myCols, myNumRow) {
         if (a > b) return 1;
         return 0;
     });
-    console.log(myCols);
     myCols.sort(function (a, b) {
         if (a == 'notas') return 1;
         if (b == 'notas') return -1;
@@ -681,14 +680,20 @@ function selectSpeciesOnChange(tableName, menu, numRows) {
             colRow[0].value = "";
             colRow[1].value = "";
         }
-        if (myChoice === "000") {
+        if (myChoice === "0000") {
             for (var i = 0; i < allMyRows.length; i++) {
-                allMyRows[i].value = "000";
+                if (allMyRows[i].name.includes("hora")) {
+                    allMyRows[i].value = "00:01";
+                } else if (allMyRows[i].name.includes("fecha")) {
+                    allMyRows[i].value = "1000-01-01";
+                } else {
+                    allMyRows[i].value = "0000";
+                }
             }
         }
-        if (myChoice === "0000") {
+        if (myChoice === "000") {
             for (var _i3 = 0; _i3 < allMyRows.length; _i3++) {
-                allMyRows[_i3].value = "0000";
+                allMyRows[_i3].value = "000";
             }
         }
     };

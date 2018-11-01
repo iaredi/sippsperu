@@ -5,14 +5,25 @@ class MapControl extends React.Component {
     super(props);
     this.handleSpeciesChange = this.handleSpeciesChange.bind(this);
     this.handleTotalDistinctChange = this.handleTotalDistinctChange.bind(this);
+    this.handleOpacityChange = this.handleOpacityChange.bind(this);
+    this.handleMaxChange = this.handleMaxChange.bind(this);
+
 }
 
-    handleSpeciesChange(event) {
+handleSpeciesChange(event) {
     const error = this.props.handleSpeciesChange(event.target.value);
-  }
-
-    handleTotalDistinctChange(event) {
+}
+handleTotalDistinctChange(event) {
     this.props.handleTotalDistinctChange(event.target.value);
+  }
+  handleOpacityChange(event) {
+    this.props.handleOpacityChange(event.target.value);
+  }
+  handleOpacityChange(event) {
+    this.props.handleOpacityChange(event.target.value);
+  }
+  handleMaxChange(event) {
+    this.props.handleMaxChange(event.target.value);
   }
     
     render(){
@@ -40,6 +51,26 @@ class MapControl extends React.Component {
                     </select>
                 </div>
             </div>
+            <div className="row">
+                <div className="form-group col-6 border border-secondary p-1 mx-3">
+                    <label className="style_option">Eliger Max Numero por colores</label>
+                    <input name='maxNumber' type="number" value={this.props.mapSettings.maxValue} id='table_optionOpacity' onChange={this.handleMaxChange} className='table_option form-control '/> 
+                </div>
+            </div>
+            <div className="row">
+                <div className="form-group col-6 border border-secondary p-1 mx-3">
+                    <label className="style_option">Eliger Opacidad</label>
+                    <select name='table_option' id='table_optionOpacity' onChange={this.handleOpacityChange} className='table_option form-control '>
+                        <option value="1.0">1.0</option>
+                        <option value="0.8">0.8</option>
+                        <option value="0.6">0.6</option>
+                        <option value="0.4">0.4</option>
+                        <option value="0.2">0.2</option>
+                    </select>
+                </div>
+            </div>
+            
+            
         </div>
         )
     }

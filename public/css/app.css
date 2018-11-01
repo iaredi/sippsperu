@@ -10474,6 +10474,17 @@ body {
   line-height: 1;
 }
 
+.colorLegend {
+  background: white;
+  padding: .2rem;
+}
+
+.btn-success {
+  color: #000;
+  background-color: #42d660;
+  border-color: #f8e8d2;
+}
+
 .warnings {
   margin: 1rem 0 1rem 0;
   display: block;
