@@ -30,7 +30,7 @@ handleTotalDistinctChange(event) {
         return(
         <div>
             <div className="row">
-                <div className="form-group col-6 border border-secondary p-1 mx-3">
+                <div className="form-group col-3 border border-secondary p-1 mx-3">
                     <label className="table_option">Eliger Clase</label>
                     <select name='table_option' id='table_option' onChange={this.handleSpeciesChange} className='table_option form-control '>
                         <option value="ave">Ave</option>
@@ -43,7 +43,7 @@ handleTotalDistinctChange(event) {
                 </div>
             </div>
             <div className="row">
-                <div className="form-group col-6 border border-secondary p-1 mx-3">
+                <div className="form-group col-3 border border-secondary p-1 mx-3">
                     <label className="table_option">Eliger Total Observaciones o Especies Distintos </label>
                     <select name='table_option' id='table_option' onChange={this.handleTotalDistinctChange} className='table_option form-control '>
                         <option value="total_observaciones">Total</option>
@@ -52,13 +52,13 @@ handleTotalDistinctChange(event) {
                 </div>
             </div>
             <div className="row">
-                <div className="form-group col-6 border border-secondary p-1 mx-3">
+                <div className="form-group col-3 border border-secondary p-1 mx-3">
                     <label className="style_option">Eliger Max Numero por colores</label>
-                    <input name='maxNumber' type="number" value={this.props.mapSettings.maxValue} id='table_optionOpacity' onChange={this.handleMaxChange} className='table_option form-control '/> 
+                    <input name='maxNumber' type="number" min="1" value={this.props.mapSettings.maxValue} id='table_optionOpacity' onChange={this.handleMaxChange} className='table_option form-control '/> 
                 </div>
             </div>
             <div className="row">
-                <div className="form-group col-6 border border-secondary p-1 mx-3">
+                <div className="form-group col-3 border border-secondary p-1 mx-3">
                     <label className="style_option">Eliger Opacidad</label>
                     <select name='table_option' id='table_optionOpacity' onChange={this.handleOpacityChange} className='table_option form-control '>
                         <option value="1.0">1.0</option>
@@ -69,6 +69,23 @@ handleTotalDistinctChange(event) {
                     </select>
                 </div>
             </div>
+            <div>{this.props.featureInfo.name}</div>
+            <div>
+            <ul>
+            {
+                
+                this.props.featureInfo.properties.map((property,index) => {
+                
+                    if (index%2==0){
+                        return <li key={property}> {property} : {this.props.featureInfo.properties[index+1]} </li> 
+                    }
+                }
+    
+                )
+            }
+            </ul>
+            </div>
+            
             
             
         </div>

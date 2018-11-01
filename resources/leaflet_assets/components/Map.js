@@ -7,37 +7,33 @@ const style = {
 };
 
 class Map extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleMapClick = this.handleMapClick.bind(this);
-    this.getColor = this.getColor.bind(this);
-
-  }
+    constructor(props) {
+        super(props);
+        this.handleMapClick = this.handleMapClick.bind(this);
+        this.getColor = this.getColor.bind(this);
+    }
   handleMapClick(event) {
     this.props.handleMapClick(event.latlng.lat,event.latlng.lng);
   }
-  getColor(x) {
-    return x < this.props.mapSettings.maxValue*(1/6)      ?    '#edf8fb':
-           x < this.props.mapSettings.maxValue*(2/6)      ?   '#ccece6':
-           x < this.props.mapSettings.maxValue*(3/6)      ?   '#99d8c9':
-           x < this.props.mapSettings.maxValue*(4/6)      ?   '#66c2a4':
-           x < this.props.mapSettings.maxValue*(5/6)     ?   '#41ae76':
-           x < this.props.mapSettings.maxValue     ?   '#238b45':
-                            '#005824' ;
-  };
-
- 
   
+    getColor(x) {
+        return x < this.props.mapSettings.maxValue*(1/6)      ?    '#edf8fb':
+            x < this.props.mapSettings.maxValue*(2/6)      ?   '#ccece6':
+            x < this.props.mapSettings.maxValue*(3/6)      ?   '#99d8c9':
+            x < this.props.mapSettings.maxValue*(4/6)      ?   '#66c2a4':
+            x < this.props.mapSettings.maxValue*(5/6)     ?   '#41ae76':
+            x < this.props.mapSettings.maxValue         ?   '#238b45':
+                                                         '#005824' ;
+    };
+
   componentDidMount() {  
     // create map
     this.map = L.map("map", {
       center: [18.69349,360-98.16245],
-      zoom: 8,
+      zoom: 9,
       layers: []
     });
 
-
-    
     const streets = L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
@@ -50,41 +46,43 @@ class Map extends React.Component {
     });
 
     this.baseMaps = {
-      
       "Imagery":imagery,
       "Streets": streets
-  };
-
-  
+    };
 
     const get_shp =(item,mymap,getColor)=>{
-      let myStyle={};
-      
+        let myStyle={};
 
-      const targetProperty = `${this.props.mapSettings.distinctOrTotal}_${this.props.mapSettings.myObsType}`;
-      
-      if (item.colorGradient){
-        myStyle=function (feature) {
-          return {
-           "fillColor": getColor(feature.properties[targetProperty]),
-           "opacity": 1,
-           "weight": .3,
-           "color": "black",
-           "fillOpacity": 0.9
-          }
-        } 
-      }else{
-        myStyle={
-          weight: item.weight,
-          color: item.color,
-          opacity: item.opacity,
-          fillColor: item.fillColor,
-          fillOpacity: item.fillOpacity
-        } 
-      }
-      
-      let c2 = L.geoJson(item.geom, {
-        style: myStyle
+        const targetProperty = `${this.props.mapSettings.distinctOrTotal}_${this.props.mapSettings.myObsType}`;
+        if (item.tableName=='udp_puebla_4326'){
+            myStyle= (feature)=> {
+                return {
+                    "fillColor": getColor(feature.properties[targetProperty]),
+                    "opacity": 1,
+                    "weight": .3,
+                    "color": "black",
+                    "fillOpacity":this.props.mapSettings.fillOpacity
+                    }
+            } 
+            
+        }else{
+            myStyle={
+                weight: item.weight,
+                color: item.color,
+                opacity: item.opacity,
+                fillColor: item.fillColor,
+                fillOpacity: item.fillOpacity
+            } 
+        }
+        const onEachFeature =(feature, layer)=> {
+            const handleFeatureClick=(event)=> {
+                this.props.handleFeatureClick(event.target);
+            }
+            layer.on('click',handleFeatureClick)
+        }
+        let c2 = L.geoJson(item.geom, {
+        style: myStyle,
+        onEachFeature: onEachFeature
       }).addTo(mymap);
       return c2;
     }
@@ -103,84 +101,62 @@ class Map extends React.Component {
       return dynamicLayer
     }
 
-    this.dynamicLayer=processArray(something, this.map, this.baseMaps, this.getColor)
-    /////////////////////////////////////////////////
-    var legend = L.control({position: 'bottomright'});
-
-
-this.makeDiv=  (map)=> {
-  grades=[];
-  for (var i = 1; i <= 6; i++) {
-    grades.push(this.props.mapSettings.maxValue*(i/6)),
-    labels = [];
-}
-  const getColor=this.getColor;
-    var div = L.DomUtil.create('div', 'info legend'),
-
-    grades,
-    labels = [];
-    L.DomUtil.addClass(div, "colorLegend")
-    
-    // loop through our density intervals and generate a label with a colored square for each interval
-    for (var i = 0; i < grades.length; i++) {
-        div.innerHTML +=
-            '<i style="background:' + getColor(grades[i] ) + '">&nbsp&nbsp&nbsp&nbsp</i> ' +
-            Math.floor(grades[i]) + (grades[i + 1] ? '&ndash;' + Math.floor(grades[i + 1]) + '<br>' : '+');
-    }
-
-    return div;
-};
-legend.onAdd=this.makeDiv;
-
-legend.addTo(this.map);
-this.legend=legend;
-/////////////////////////////////////////////////////
+    this.dynamicLayer=processArray(something, this.map, this.baseMaps, this.getColor,)
     this.map.on("click", this.handleMapClick);
     this.map.scrollWheelZoom.disable()
-    
-    
-  }
-  componentDidUpdate({ mapSettings }) {
-    this.map.removeControl(this.legend); 
-    /////////////////////////////////////////////////
+    ///////////LEGEND////////////
     var legend = L.control({position: 'bottomright'});
 
-legend.onAdd = this.makeDiv
-
-legend.addTo(this.map);
-this.legend=legend;
-/////////////////////////////////////////////////////
-    // check if position has changed
-    if (this.props.mapSettings !== mapSettings) {
-      const getColor=this.getColor;
-      const targetProperty = `${this.props.mapSettings.distinctOrTotal}_${this.props.mapSettings.myObsType}`;
-      
-      //const maxValue=Math.max(feature.properties[targetProperty])
-      const myStyle= (feature, maxValue)=> {
-        return {
-         "fillColor": getColor(feature.properties[targetProperty],maxValue),
-         "opacity": 1,
-         "weight": .3,
-         "color": "black",
-         "fillOpacity": this.props.mapSettings.fillOpacity
+    this.makeDiv=  (map)=> {
+    grades=[];
+    for (var i = 0; i <= 6; i++) {
+        grades.push(this.props.mapSettings.maxValue*(i/6)),
+        labels = [];
         }
-      } 
-      this.dynamicLayer.setStyle(myStyle)
-    }
+    const getColor=this.getColor;
+        var div = L.DomUtil.create('div', 'info legend'),grades,labels = [];
+        L.DomUtil.addClass(div, "colorLegend")
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<i style="background:' + getColor(grades[i] ) + '">&nbsp&nbsp&nbsp&nbsp</i> ' +
+                Math.floor(grades[i]) + (grades[i + 1] ? '&ndash;' + Math.floor(grades[i + 1]) + '<br>' : '+');
+        }
+        return div;
+    };
+    legend.onAdd=this.makeDiv;
+    legend.addTo(this.map);
+    this.legend=legend;
+    /////////////////////////////////////////////////////
+        
   }
+
+    componentDidUpdate({ mapSettings }) {
+        
+        if (this.props.mapSettings !== mapSettings) {
+            this.map.removeControl(this.legend); 
+            var legend = L.control({position: 'bottomright'});
+            legend.onAdd = this.makeDiv
+            legend.addTo(this.map);
+            this.legend=legend;
+            const getColor=this.getColor;
+            const targetProperty = `${this.props.mapSettings.distinctOrTotal}_${this.props.mapSettings.myObsType}`;
+
+        const myStyle= (feature, maxValue)=> {
+            return {
+            "fillColor": getColor(feature.properties[targetProperty]),
+            "opacity": 1,
+            "weight": .3,
+            "color": "black",
+            "fillOpacity": this.props.mapSettings.fillOpacity
+            }
+          } 
+          this.dynamicLayer.setStyle(myStyle)
+        }
+    }
+
   render() {
 
-
-
-
-
-
-
-
-
-
-
-    
     return <div id="map" style={style} />;
   }
 }
