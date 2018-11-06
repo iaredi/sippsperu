@@ -1,4 +1,6 @@
 import React from 'react';
+import BootstrapTable from 'react-bootstrap-table-next';
+
 import Map from './Map';
 import MapControl from './MapControl';
 import FeatureInfoDisplay from './FeatureInfoDisplay';
@@ -17,7 +19,7 @@ class Mapapp extends React.Component {
             udp:0,
             markerPosition: { lat: 18.69349, lng: 360-98.16245 },
             mapSettings:{distinctOrTotal:"total_observaciones", myObsType:"ave", fillOpacity:1, maxValue:6},
-            featureInfo: { name:'click somewhere', properties:{message:'click somewhere'}},
+            featureInfo: { properties:{message:'click somewhere'}},
             table: [
                 {tableName:'udp_puebla_4326',color: 'blue'},
             ] 
@@ -59,16 +61,25 @@ class Mapapp extends React.Component {
       }
     }));
   }
-  handleFeatureClick(event) {
-      console.log(event.target)
-    if (this.state.previous){
-        this.state.previous.setStyle({
-            'color': 'black',
-            'weight': .3,
-            'opacity': 1
-        });
-        this.state.previous.setStyle(event.target.defaultOptions.style);
-    }
+    handleFeatureClick(event) {
+        let myColor='green'
+        let myWeight=5
+        let myOpacity=5
+      
+        if (this.state.previous){
+            something.forEach((thing)=>{
+                if (thing.tableName==this.state.previous.feature.properties.name){
+                    myColor=thing.color
+                    myWeight=thing.weight
+                    myOpacity=thing.opacity
+            }
+          })
+            this.state.previous.setStyle({
+                'color': myColor,
+                'weight': myWeight,
+                'opacity': myOpacity
+            });
+        }
 
     this.setState((prevState) => ({
         previous: event.target
@@ -80,13 +91,13 @@ class Mapapp extends React.Component {
         'opacity': 1
     };
       event.target.setStyle(highlight);
+
       
       
       
       let name = event.target.feature.geometry.type=='MultiPolygon'?'Unidad de Paisaje':'Linea MTP'
     this.setState((prevState) => ({
         featureInfo: {
-            name:name,
             properties:event.target.feature.properties
         }
         }));
@@ -134,24 +145,26 @@ class Mapapp extends React.Component {
   }
   
   render() {
-    //const { markerPosition } = this.state.markerPosition;
     return (
       <div>
-        <div>
-          <Map
-            handleMapClick={this.handleMapClick}
-            handleFeatureClick={this.handleFeatureClick}
-
-            markerPosition={this.state.markerPosition} 
-            mapSettings={this.state.mapSettings} 
-            table = {this.state.table}
-            />
-        </div>
-        <div>
-          Current marker Position: lat: {this.state.markerPosition.lat}, lng: {this.state.markerPosition.lng}, 
-        </div>
-        <div>
-          Current UDP: {this.state.udp}
+        <div className='container p-0 m-0'>
+            <div className='row border border-dark justify-content-around'>
+            <div className='col-8 p-0'>
+                <Map
+                    handleMapClick={this.handleMapClick}
+                    handleFeatureClick={this.handleFeatureClick}
+                    mapSettings={this.state.mapSettings} 
+                    table = {this.state.table}
+                    />
+            </div>
+            
+            <div className='col-4 p-3'>
+                <FeatureInfoDisplay 
+                    markerPosition={this.state.markerPosition} 
+                    featureInfo={this.state.featureInfo}
+                />
+            </div>
+            </div>
         </div>
         <div>
           <MapControl
@@ -163,9 +176,7 @@ class Mapapp extends React.Component {
           />
         </div>
           
-          <FeatureInfoDisplay
-          featureInfo={this.state.featureInfo} 
-          />
+        
           
       </div>
     );

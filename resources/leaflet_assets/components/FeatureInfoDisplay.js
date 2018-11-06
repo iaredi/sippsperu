@@ -1,37 +1,85 @@
 import React from "react";
+import BootstrapTable from 'react-bootstrap-table-next';
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 class FeatureInfoDisplay extends React.Component {
     constructor(props) {
         super(props);
     }
-    render(){
-        return(
-        <div>
-            <div>{this.props.featureInfo.name}</div>
-            <div>
-            <ul>
-            {
-                ['0Ave','ave','0Mamifero','mamifero','0Herpetofauna','herpetofauna','0Arbol','arbol','0Arbusto','arbusto','0Hierba','hierba','0Totales','totales'].map((life,ind)=>{
-                    if (!isNaN(life.slice(0,1))){
-                        return <h4 key={life.slice(1)}> {life.slice(1)}</h4>
+    
 
-                    }else{return(
-                        ['total_observaciones','distinct_species','dominancia','shannon'].map((category,ind)=>{
-                            if (life==='totales'){
-                                let mysum= +this.props.featureInfo.properties[`${category}_ave`] + +this.props.featureInfo.properties[`${category}_hierba`] + +this.props.featureInfo.properties[`${category}_arbusto`] + +this.props.featureInfo.properties[`${category}_arbol`] + +this.props.featureInfo.properties[`${category}_herpetofauna`] + +this.props.featureInfo.properties[`${category}_mamifero`]                                
-                                if (ind>1) mysum=(mysum/6).toPrecision(4)
-                                return <li key={`${category}_${life}`}> {category} :  {mysum} </li> 
-                            }else{
-                                return <li key={`${category}_${life}`}> {category} :  {this.props.featureInfo.properties[`${category}_${life}`]} </li> 
-                            }
-                        })
-                      
-                    )}
-                })
-            }
-            </ul>
-            </div>
+    render(){
+        const allproducts=[];
+        if(!this.props.featureInfo.properties.message){
+            let mya1= ['ave','arbol','arbusto','hierba', 'herpetofauna','mamifero','juntos']
+            let mya2=['total_observaciones','distinct_species','dominancia','shannon']
             
+            mya1.map((life)=>{
+                let oneproduct={}
+                oneproduct['name']= life=='herpetofauna'?'herpeto fauna':life
+
+                mya2.map((category,ind)=>{
+                    if (life=='juntos'){
+                        let mysum= +this.props.featureInfo.properties[`${category}_ave`] + +this.props.featureInfo.properties[`${category}_hierba`] + +this.props.featureInfo.properties[`${category}_arbusto`] + +this.props.featureInfo.properties[`${category}_arbol`] + +this.props.featureInfo.properties[`${category}_herpetofauna`] + +this.props.featureInfo.properties[`${category}_mamifero`]                                
+                        if (ind>1) mysum=(mysum/6).toPrecision(4)
+                        oneproduct[category]=mysum
+                    }else{
+                        let newCat=category.replace(`_${life}`,'')
+                        let myValue=  ind>1 ? (+this.props.featureInfo.properties[`${category}_${life}`]).toPrecision(4):this.props.featureInfo.properties[`${category}_${life}`]
+                        oneproduct[newCat]=myValue
+                    }
+                })
+                allproducts.push(oneproduct)
+            })
+        }
+        const columns = [{
+            dataField: 'name',
+            text: 'Nombre'
+            },{
+            dataField: 'total_observaciones',
+            text: 'Especies Total'
+            }, {
+            dataField: 'distinct_species',
+            text: 'Especie Distinctos'
+            }, {
+            dataField: 'dominancia',
+            text: 'Domin ancia',
+            classes: 'testme'
+              
+            }, {
+            dataField: 'shannon',
+            text: 'Shannon'
+            }];
+            console.log(this.props.markerPosition)
+        return(
+            
+        <div>
+            <div className="container">
+                <div className='flex-column d-flex justify-content-around align-items-center p-3'>
+
+                    <div>
+                        Ultimo Click:
+                    </div>
+                    <div>
+                        lat: {this.props.markerPosition.lat.toPrecision(7)}, lng: {this.props.markerPosition.lng.toPrecision(7)}
+                    </div>
+                    <div>
+                        {this.props.featureInfo.properties.displayName} = {this.props.featureInfo.properties[this.props.featureInfo.properties.featureColumn]}
+                    </div>
+                </div>
+            </div>
+
+                <BootstrapTable 
+                    keyField='name' 
+                    data={ allproducts } 
+                    columns={ columns } 
+                    bordered={ true }
+                    classes={ 'featureInfoTable' }
+                    striped
+                    hover
+                    condensed
+                    noDataIndication={ 'Click for data' }
+                />
         </div>
         )
     }

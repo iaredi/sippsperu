@@ -13,6 +13,7 @@ class layer
 $layer1 = new layer();
 $layer1->tableName = 'udp_puebla_4326';
 $layer1->displayName = 'Unidad de Paisaje';
+$layer1->featureColumn = 'iden';
 $layer1->color = 'black';
 $layer1->fillColor = 'blue';
 $layer1->opacity = 1;
@@ -22,15 +23,26 @@ $layer1->fillOpacity = 0.5;
 $layer2 = new layer();
 $layer2->tableName = 'linea_mtp';
 $layer2->displayName = 'Linea MTP';
+$layer2->featureColumn = 'iden';
 $layer2->color = 'red';
 $layer2->fillColor = 'black';
 $layer2->opacity = 1;
 $layer2->weight = 5;
 $layer2->fillOpacity = 1;
 
+$layer3 = new layer();
+$layer3->tableName = 'municipio_puebla_4326';
+$layer3->displayName = 'Municipio';
+$layer3->featureColumn = 'nomgeo';
+$layer3->color = 'black';
+$layer3->fillColor = 'purple';
+$layer3->opacity = 0.5;
+$layer3->weight = 1;
+$layer3->fillOpacity = 0.5;
 
 
-$layersArray = array($layer1, $layer2);
+
+$layersArray = array($layer1, $layer2 );
 
 foreach ($layersArray as $layer) {
     $obtype=explode('-', $layer->displayName)[0];
@@ -40,7 +52,7 @@ foreach ($layersArray as $layer) {
     }elseif ($layer->tableName=='linea_mtp'){
         $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6_linea",[]);
     }else{
-        $result = DB::select("SELECT iden, ST_AsGeoJSON(geom, 5) AS geojson FROM {$table}",[]);
+        $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM {$table}",[]);
     }
     $features=[];
     
@@ -48,6 +60,9 @@ foreach ($layersArray as $layer) {
             unset($row->geom);
             $geometry=$row->geojson=json_decode($row->geojson);
             unset($row->geojson);
+            $row->name=$table;
+            $row->displayName=$layer->displayName;
+            $row->featureColumn=$layer->featureColumn;
             $feature=["type"=>"Feature", "geometry"=>$geometry, "properties"=>$row];
             array_push($features, $feature);
         }

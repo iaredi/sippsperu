@@ -2,8 +2,8 @@ import React from "react";
 import L from "leaflet";
 
 const style = {
-  width: "70%",
-  height: "500px"
+  width: "100%",
+  height: "100%"
 };
 
 class Map extends React.Component {
@@ -83,7 +83,12 @@ class Map extends React.Component {
         let c2 = L.geoJson(item.geom, {
         style: myStyle,
         onEachFeature: onEachFeature
-      }).addTo(mymap);
+      })
+      if (item.tableName=='linea_mtp'||item.tableName=='udp_puebla_4326'){
+        c2.addTo(mymap)
+      }
+
+
       return c2;
     }
     const processArray=(array, mymap, mybaseMaps,getColor)=>{

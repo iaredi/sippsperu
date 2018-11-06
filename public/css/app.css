@@ -10507,6 +10507,19 @@ tbody#measurementTBodyForm {
   width: 115px;
 }
 
+.table-bordered th,
+.table-bordered td {
+  background-color: #ffffff;
+  border: 0.5px solid #000;
+  padding-left: 3px;
+}
+
+.table thead th {
+  background-color: #42d660;
+  border: 0.5px solid #000;
+  padding: 2px;
+}
+
 .horainputs {
   width: 110px;
 }
