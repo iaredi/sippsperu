@@ -69,22 +69,7 @@ handleTotalDistinctChange(event) {
                     </select>
                 </div>
             </div>
-            <div>{this.props.featureInfo.name}</div>
-            <div>
-            <ul>
-            {
-                
-                this.props.featureInfo.properties.map((property,index) => {
-                
-                    if (index%2==0){
-                        return <li key={property}> {property} : {this.props.featureInfo.properties[index+1]} </li> 
-                    }
-                }
-    
-                )
-            }
-            </ul>
-            </div>
+            
             
             
             

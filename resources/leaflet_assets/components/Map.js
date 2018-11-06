@@ -58,9 +58,9 @@ class Map extends React.Component {
             myStyle= (feature)=> {
                 return {
                     "fillColor": getColor(feature.properties[targetProperty]),
-                    "opacity": 1,
-                    "weight": .3,
-                    "color": "black",
+                    "opacity": item.opacity,
+                    "weight": item.weight,
+                    "color": item.color,
                     "fillOpacity":this.props.mapSettings.fillOpacity
                     }
             } 
@@ -76,7 +76,7 @@ class Map extends React.Component {
         }
         const onEachFeature =(feature, layer)=> {
             const handleFeatureClick=(event)=> {
-                this.props.handleFeatureClick(event.target);
+                this.props.handleFeatureClick(event);
             }
             layer.on('click',handleFeatureClick)
         }
@@ -100,7 +100,6 @@ class Map extends React.Component {
       L.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
       return dynamicLayer
     }
-
     this.dynamicLayer=processArray(something, this.map, this.baseMaps, this.getColor,)
     this.map.on("click", this.handleMapClick);
     this.map.scrollWheelZoom.disable()

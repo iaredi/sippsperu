@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 148);
+/******/ 	return __webpack_require__(__webpack_require__.s = 149);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1163,8 +1163,18 @@ module.exports = canDefineProperty;
 
 /***/ }),
 /* 12 */,
-/* 13 */,
-/* 14 */
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = __webpack_require__(17);
+
+
+/***/ }),
+/* 14 */,
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1232,7 +1242,7 @@ if (true) {
 module.exports = lowPriorityWarning;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -1422,16 +1432,6 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = __webpack_require__(17);
-
-
-/***/ }),
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1463,7 +1463,7 @@ var createFactory = ReactElement.createFactory;
 var cloneElement = ReactElement.cloneElement;
 
 if (true) {
-  var lowPriorityWarning = __webpack_require__(14);
+  var lowPriorityWarning = __webpack_require__(15);
   var canDefineProperty = __webpack_require__(11);
   var ReactElementValidator = __webpack_require__(25);
   var didWarnPropTypesDeprecated = false;
@@ -1614,7 +1614,7 @@ var ReactNoopUpdateQueue = __webpack_require__(22);
 var canDefineProperty = __webpack_require__(11);
 var emptyObject = __webpack_require__(18);
 var invariant = __webpack_require__(0);
-var lowPriorityWarning = __webpack_require__(14);
+var lowPriorityWarning = __webpack_require__(15);
 
 /**
  * Base class helpers for the updating state of a component.
@@ -1933,7 +1933,7 @@ var checkReactTypeSpec = __webpack_require__(38);
 var canDefineProperty = __webpack_require__(11);
 var getIteratorFn = __webpack_require__(24);
 var warning = __webpack_require__(1);
-var lowPriorityWarning = __webpack_require__(14);
+var lowPriorityWarning = __webpack_require__(15);
 
 function getDeclarationErrorAddendum() {
   if (ReactCurrentOwner.current) {
@@ -2222,7 +2222,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(16);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -2300,9 +2300,9 @@ var Map = function (_React$Component) {
                     myStyle = function myStyle(feature) {
                         return {
                             "fillColor": getColor(feature.properties[targetProperty]),
-                            "opacity": 1,
-                            "weight": .3,
-                            "color": "black",
+                            "opacity": item.opacity,
+                            "weight": item.weight,
+                            "color": item.color,
                             "fillOpacity": _this2.props.mapSettings.fillOpacity
                         };
                     };
@@ -2317,7 +2317,7 @@ var Map = function (_React$Component) {
                 }
                 var onEachFeature = function onEachFeature(feature, layer) {
                     var handleFeatureClick = function handleFeatureClick(event) {
-                        _this2.props.handleFeatureClick(event.target);
+                        _this2.props.handleFeatureClick(event);
                     };
                     layer.on('click', handleFeatureClick);
                 };
@@ -2341,7 +2341,6 @@ var Map = function (_React$Component) {
                 _leaflet2.default.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
                 return dynamicLayer;
             };
-
             this.dynamicLayer = processArray(something, this.map, this.baseMaps, this.getColor);
             this.map.on("click", this.handleMapClick);
             this.map.scrollWheelZoom.disable();
@@ -3222,7 +3221,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 }
 
 module.exports = checkReactTypeSpec;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16)))
 
 /***/ }),
 /* 39 */
@@ -18875,11 +18874,9 @@ var _regenerator = __webpack_require__(63);
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(16);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -18890,6 +18887,10 @@ var _Map2 = _interopRequireDefault(_Map);
 var _MapControl = __webpack_require__(66);
 
 var _MapControl2 = _interopRequireDefault(_MapControl);
+
+var _FeatureInfoDisplay = __webpack_require__(67);
+
+var _FeatureInfoDisplay2 = _interopRequireDefault(_FeatureInfoDisplay);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -18915,12 +18916,12 @@ var Mapapp = function (_React$Component) {
     _this.handleOpacityChange = _this.handleOpacityChange.bind(_this);
     _this.handleMaxChange = _this.handleMaxChange.bind(_this);
     _this.handleFeatureClick = _this.handleFeatureClick.bind(_this);
-
     _this.state = {
+      previous: 0,
       udp: 0,
       markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
       mapSettings: { distinctOrTotal: "total_observaciones", myObsType: "ave", fillOpacity: 1, maxValue: 6 },
-      featureInfo: { name: 'click somewhere', properties: ['click somewhere'] },
+      featureInfo: { name: 'click somewhere', properties: { message: 'click somewhere' } },
       table: [{ tableName: 'udp_puebla_4326', color: 'blue' }]
     };
     return _this;
@@ -18990,30 +18991,39 @@ var Mapapp = function (_React$Component) {
     }
   }, {
     key: 'handleFeatureClick',
-    value: function handleFeatureClick(target) {
-      console.log(target);
-      var propertiesArray = [];
-      Object.entries(target.feature.properties).forEach(function (_ref2) {
-        var _ref3 = _slicedToArray(_ref2, 2),
-            key = _ref3[0],
-            value = _ref3[1];
+    value: function handleFeatureClick(event) {
+      console.log(event.target);
+      if (this.state.previous) {
+        this.state.previous.setStyle({
+          'color': 'black',
+          'weight': .3,
+          'opacity': 1
+        });
+        this.state.previous.setStyle(event.target.defaultOptions.style);
+      }
 
-        return propertiesArray.push(key, value);
+      this.setState(function (prevState) {
+        return {
+          previous: event.target
+        };
       });
-      console.log(propertiesArray);
-      var name = target.feature.geometry.type == 'MultiPolygon' ? 'UPD' : 'Linea-MTP';
-      var properties = propertiesArray;
 
+      var highlight = {
+        'color': 'blue',
+        'weight': 3,
+        'opacity': 1
+      };
+      event.target.setStyle(highlight);
+
+      var name = event.target.feature.geometry.type == 'MultiPolygon' ? 'Unidad de Paisaje' : 'Linea MTP';
       this.setState(function (prevState) {
         return {
           featureInfo: {
             name: name,
-            properties: properties
-
+            properties: event.target.feature.properties
           }
         };
       });
-      console.log(target);
     }
   }, {
     key: 'handleTotalDistinctChange',
@@ -19109,15 +19119,12 @@ var Mapapp = function (_React$Component) {
             handleTotalDistinctChange: this.handleTotalDistinctChange,
             handleOpacityChange: this.handleOpacityChange,
             handleMaxChange: this.handleMaxChange,
-            mapSettings: this.state.mapSettings,
-            featureInfo: this.state.featureInfo
+            mapSettings: this.state.mapSettings
           })
         ),
-        _react2.default.createElement(
-          'button',
-          null,
-          'Move marker'
-        )
+        _react2.default.createElement(_FeatureInfoDisplay2.default, {
+          featureInfo: this.state.featureInfo
+        })
       );
     }
   }]);
@@ -19921,7 +19928,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(16);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -19977,8 +19984,6 @@ var MapControl = function (_React$Component) {
     }, {
         key: "render",
         value: function render() {
-            var _this2 = this;
-
             return _react2.default.createElement(
                 "div",
                 null,
@@ -20111,33 +20116,6 @@ var MapControl = function (_React$Component) {
                             )
                         )
                     )
-                ),
-                _react2.default.createElement(
-                    "div",
-                    null,
-                    this.props.featureInfo.name
-                ),
-                _react2.default.createElement(
-                    "div",
-                    null,
-                    _react2.default.createElement(
-                        "ul",
-                        null,
-                        this.props.featureInfo.properties.map(function (property, index) {
-
-                            if (index % 2 == 0) {
-                                return _react2.default.createElement(
-                                    "li",
-                                    { key: property },
-                                    " ",
-                                    property,
-                                    " : ",
-                                    _this2.props.featureInfo.properties[index + 1],
-                                    " "
-                                );
-                            }
-                        })
-                    )
                 )
             );
         }
@@ -20149,7 +20127,106 @@ var MapControl = function (_React$Component) {
 exports.default = MapControl;
 
 /***/ }),
-/* 67 */,
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(13);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FeatureInfoDisplay = function (_React$Component) {
+    _inherits(FeatureInfoDisplay, _React$Component);
+
+    function FeatureInfoDisplay(props) {
+        _classCallCheck(this, FeatureInfoDisplay);
+
+        return _possibleConstructorReturn(this, (FeatureInfoDisplay.__proto__ || Object.getPrototypeOf(FeatureInfoDisplay)).call(this, props));
+    }
+
+    _createClass(FeatureInfoDisplay, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    this.props.featureInfo.name
+                ),
+                _react2.default.createElement(
+                    'div',
+                    null,
+                    _react2.default.createElement(
+                        'ul',
+                        null,
+                        ['0Ave', 'ave', '0Mamifero', 'mamifero', '0Herpetofauna', 'herpetofauna', '0Arbol', 'arbol', '0Arbusto', 'arbusto', '0Hierba', 'hierba', '0Totales', 'totales'].map(function (life, ind) {
+                            if (!isNaN(life.slice(0, 1))) {
+                                return _react2.default.createElement(
+                                    'h4',
+                                    { key: life.slice(1) },
+                                    ' ',
+                                    life.slice(1)
+                                );
+                            } else {
+                                return ['total_observaciones', 'distinct_species', 'dominancia', 'shannon'].map(function (category, ind) {
+                                    if (life === 'totales') {
+                                        var mysum = +_this2.props.featureInfo.properties[category + '_ave'] + +_this2.props.featureInfo.properties[category + '_hierba'] + +_this2.props.featureInfo.properties[category + '_arbusto'] + +_this2.props.featureInfo.properties[category + '_arbol'] + +_this2.props.featureInfo.properties[category + '_herpetofauna'] + +_this2.props.featureInfo.properties[category + '_mamifero'];
+                                        if (ind > 1) mysum = (mysum / 6).toPrecision(4);
+                                        return _react2.default.createElement(
+                                            'li',
+                                            { key: category + '_' + life },
+                                            ' ',
+                                            category,
+                                            ' :  ',
+                                            mysum,
+                                            ' '
+                                        );
+                                    } else {
+                                        return _react2.default.createElement(
+                                            'li',
+                                            { key: category + '_' + life },
+                                            ' ',
+                                            category,
+                                            ' :  ',
+                                            _this2.props.featureInfo.properties[category + '_' + life],
+                                            ' '
+                                        );
+                                    }
+                                });
+                            }
+                        })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return FeatureInfoDisplay;
+}(_react2.default.Component);
+
+exports.default = FeatureInfoDisplay;
+
+/***/ }),
 /* 68 */,
 /* 69 */,
 /* 70 */,
@@ -20230,7 +20307,8 @@ exports.default = MapControl;
 /* 145 */,
 /* 146 */,
 /* 147 */,
-/* 148 */
+/* 148 */,
+/* 149 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(62);

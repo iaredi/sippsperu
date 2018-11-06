@@ -83,21 +83,27 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                         );
                     $resultofquery[]= savenewentry("linea_mtp", $linea_mtpcolumns);
                     $max_line = getserialmax( "linea_mtp");
+
+                    /////////////////////
+                    $updatesql = "UPDATE linea_mtp set iden_geom = (SELECT ST_GeomFromText('MultiLineString(({$comienzo_longitud} {$comienzo_latitud}, {$fin_longitud} {$fin_latitud}))',4326)) where iden = {$max_line}";
+                    $stmnt9 = DB::update($updatesql, []);
+                    //////////////////////
+                    
                 //Save Line
-                if (is_numeric($comienzo_longitud) && is_numeric($comienzo_latitud) && is_numeric($fin_longitud) && is_numeric($fin_latitud)){
-                    $sql = "INSERT INTO linea_mtp_4326 (iden_linea_mtp, geom) SELECT {$max_line}, ST_GeomFromText('MultiLineString(({$comienzo_longitud} {$comienzo_latitud}, {$fin_longitud} {$fin_latitud}))',4326)";
-                    $stmnt = DB::insert($sql, []);
+                //if (is_numeric($comienzo_longitud) && is_numeric($comienzo_latitud) && is_numeric($fin_longitud) && is_numeric($fin_latitud)){
+                    //$sql = "INSERT INTO linea_mtp_4326 (iden_linea_mtp, geom) SELECT {$max_line}, ST_GeomFromText('MultiLineString(({$comienzo_longitud} {$comienzo_latitud}, {$fin_longitud} {$fin_latitud}))',4326)";
+                    //$stmnt = DB::insert($sql, []);
                     //Save Linking table
-                    $sql = "SELECT udp_puebla_4326.iden FROM udp_puebla_4326 WHERE ST_Crosses(udp_puebla_4326.geom,  ST_GeomFromText('MultiLineString(({$comienzo_longitud} {$comienzo_latitud}, {$fin_longitud} {$fin_latitud}))',4326))";
-                    $result = DB::select($sql, []);
-                    foreach($result as $row) {
-                        $linea_mtp_udp=array(
-                            "iden_linea_mtp"=> $max_line,
-                            "iden_udp_puebla_4326"=> $row->iden
-                                );
-                        $resultofquery[]= savenewentry("linea_mtp_udp", $linea_mtp_udp,false);
-                    }
-                }
+                    //$sql = "SELECT udp_puebla_4326.iden FROM udp_puebla_4326 WHERE ST_Crosses(udp_puebla_4326.geom,  ST_GeomFromText('MultiLineString(({$comienzo_longitud} {$comienzo_latitud}, {$fin_longitud} {$fin_latitud}))',4326))";
+                    //$result = DB::select($sql, []);
+                    //foreach($result as $row) {
+                        //$linea_mtp_udp=array(
+                            //"iden_linea_mtp"=> $max_line,
+                            //"iden_udp_puebla_4326"=> $row->iden
+                              //  );
+                       // $resultofquery[]= savenewentry("linea_mtp_udp", $linea_mtp_udp,false);
+                   // }
+                //}
             }
 
 

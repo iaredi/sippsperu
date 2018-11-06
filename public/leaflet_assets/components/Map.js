@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 147);
+/******/ 	return __webpack_require__(__webpack_require__.s = 148);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1163,8 +1163,18 @@ module.exports = canDefineProperty;
 
 /***/ }),
 /* 12 */,
-/* 13 */,
-/* 14 */
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = __webpack_require__(17);
+
+
+/***/ }),
+/* 14 */,
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1232,7 +1242,7 @@ if (true) {
 module.exports = lowPriorityWarning;
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -1422,16 +1432,6 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 16 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-module.exports = __webpack_require__(17);
-
-
-/***/ }),
 /* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -1463,7 +1463,7 @@ var createFactory = ReactElement.createFactory;
 var cloneElement = ReactElement.cloneElement;
 
 if (true) {
-  var lowPriorityWarning = __webpack_require__(14);
+  var lowPriorityWarning = __webpack_require__(15);
   var canDefineProperty = __webpack_require__(11);
   var ReactElementValidator = __webpack_require__(25);
   var didWarnPropTypesDeprecated = false;
@@ -1614,7 +1614,7 @@ var ReactNoopUpdateQueue = __webpack_require__(22);
 var canDefineProperty = __webpack_require__(11);
 var emptyObject = __webpack_require__(18);
 var invariant = __webpack_require__(0);
-var lowPriorityWarning = __webpack_require__(14);
+var lowPriorityWarning = __webpack_require__(15);
 
 /**
  * Base class helpers for the updating state of a component.
@@ -1933,7 +1933,7 @@ var checkReactTypeSpec = __webpack_require__(38);
 var canDefineProperty = __webpack_require__(11);
 var getIteratorFn = __webpack_require__(24);
 var warning = __webpack_require__(1);
-var lowPriorityWarning = __webpack_require__(14);
+var lowPriorityWarning = __webpack_require__(15);
 
 function getDeclarationErrorAddendum() {
   if (ReactCurrentOwner.current) {
@@ -2222,7 +2222,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(16);
+var _react = __webpack_require__(13);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -2300,9 +2300,9 @@ var Map = function (_React$Component) {
                     myStyle = function myStyle(feature) {
                         return {
                             "fillColor": getColor(feature.properties[targetProperty]),
-                            "opacity": 1,
-                            "weight": .3,
-                            "color": "black",
+                            "opacity": item.opacity,
+                            "weight": item.weight,
+                            "color": item.color,
                             "fillOpacity": _this2.props.mapSettings.fillOpacity
                         };
                     };
@@ -2317,7 +2317,7 @@ var Map = function (_React$Component) {
                 }
                 var onEachFeature = function onEachFeature(feature, layer) {
                     var handleFeatureClick = function handleFeatureClick(event) {
-                        _this2.props.handleFeatureClick(event.target);
+                        _this2.props.handleFeatureClick(event);
                     };
                     layer.on('click', handleFeatureClick);
                 };
@@ -2341,7 +2341,6 @@ var Map = function (_React$Component) {
                 _leaflet2.default.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
                 return dynamicLayer;
             };
-
             this.dynamicLayer = processArray(something, this.map, this.baseMaps, this.getColor);
             this.map.on("click", this.handleMapClick);
             this.map.scrollWheelZoom.disable();
@@ -3222,7 +3221,7 @@ function checkReactTypeSpec(typeSpecs, values, location, componentName, element,
 }
 
 module.exports = checkReactTypeSpec;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(15)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(16)))
 
 /***/ }),
 /* 39 */
@@ -18946,7 +18945,8 @@ window.L = exports;
 /* 144 */,
 /* 145 */,
 /* 146 */,
-/* 147 */
+/* 147 */,
+/* 148 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(32);

@@ -1,6 +1,7 @@
 import React from 'react';
 import Map from './Map';
 import MapControl from './MapControl';
+import FeatureInfoDisplay from './FeatureInfoDisplay';
 
 class Mapapp extends React.Component {
   constructor(props){
@@ -11,14 +12,12 @@ class Mapapp extends React.Component {
         this.handleOpacityChange = this.handleOpacityChange.bind(this);
         this.handleMaxChange = this.handleMaxChange.bind(this);
         this.handleFeatureClick = this.handleFeatureClick.bind(this);
-
-
-
         this.state={
+            previous:0,
             udp:0,
             markerPosition: { lat: 18.69349, lng: 360-98.16245 },
             mapSettings:{distinctOrTotal:"total_observaciones", myObsType:"ave", fillOpacity:1, maxValue:6},
-            featureInfo: { name:'click somewhere', properties:['click somewhere']},
+            featureInfo: { name:'click somewhere', properties:{message:'click somewhere'}},
             table: [
                 {tableName:'udp_puebla_4326',color: 'blue'},
             ] 
@@ -60,24 +59,37 @@ class Mapapp extends React.Component {
       }
     }));
   }
-  handleFeatureClick(target) {
-      console.log(target)
-      const propertiesArray=[]
-      Object.entries(target.feature.properties).forEach(
-        ([key, value]) => propertiesArray.push(key, value)
-    );
-    console.log(propertiesArray)
-    const name = (target.feature.geometry.type=='MultiPolygon'?'UPD':'Linea-MTP')
-    const properties= propertiesArray;
+  handleFeatureClick(event) {
+      console.log(event.target)
+    if (this.state.previous){
+        this.state.previous.setStyle({
+            'color': 'black',
+            'weight': .3,
+            'opacity': 1
+        });
+        this.state.previous.setStyle(event.target.defaultOptions.style);
+    }
 
+    this.setState((prevState) => ({
+        previous: event.target
+        }));
+        
+    var highlight = {
+        'color': 'blue',
+        'weight': 3,
+        'opacity': 1
+    };
+      event.target.setStyle(highlight);
+      
+      
+      
+      let name = event.target.feature.geometry.type=='MultiPolygon'?'Unidad de Paisaje':'Linea MTP'
     this.setState((prevState) => ({
         featureInfo: {
             name:name,
-            properties:properties
-           
+            properties:event.target.feature.properties
         }
         }));
-    console.log(target)
   }
 
   handleTotalDistinctChange(value) {
@@ -148,15 +160,13 @@ class Mapapp extends React.Component {
           handleOpacityChange={this.handleOpacityChange}
           handleMaxChange={this.handleMaxChange}
           mapSettings={this.state.mapSettings} 
-          featureInfo={this.state.featureInfo} 
           />
         </div>
           
-          <button
-            //onClick={this.moveMarker}
-          >
-            Move marker
-          </button>
+          <FeatureInfoDisplay
+          featureInfo={this.state.featureInfo} 
+          />
+          
       </div>
     );
   }
