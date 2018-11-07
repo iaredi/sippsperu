@@ -10,8 +10,9 @@ class FeatureInfoDisplay extends React.Component {
 
     render(){
         const allproducts=[];
-        if(!this.props.featureInfo.properties.message){
-            let mya1= ['ave','arbol','arbusto','hierba', 'herpetofauna','mamifero','juntos']
+        if(!this.props.featureInfo.properties.message && this.props.featureInfo.name !='municipio_puebla_4326'){
+            
+            let mya1= ['ave','arbol','arbusto','hierba', 'herpetofauna','mamifero','Dato acumulado']
             let mya2=['total_observaciones','distinct_species','dominancia','shannon']
             
             mya1.map((life)=>{
@@ -19,7 +20,7 @@ class FeatureInfoDisplay extends React.Component {
                 oneproduct['name']= life=='herpetofauna'?'herpeto fauna':life
 
                 mya2.map((category,ind)=>{
-                    if (life=='juntos'){
+                    if (life=='Dato acumulado'){
                         let mysum= +this.props.featureInfo.properties[`${category}_ave`] + +this.props.featureInfo.properties[`${category}_hierba`] + +this.props.featureInfo.properties[`${category}_arbusto`] + +this.props.featureInfo.properties[`${category}_arbol`] + +this.props.featureInfo.properties[`${category}_herpetofauna`] + +this.props.featureInfo.properties[`${category}_mamifero`]                                
                         if (ind>1) mysum=(mysum/6).toPrecision(4)
                         oneproduct[category]=mysum
@@ -50,7 +51,6 @@ class FeatureInfoDisplay extends React.Component {
             dataField: 'shannon',
             text: 'Shannon'
             }];
-            console.log(this.props.markerPosition)
         return(
             
         <div>

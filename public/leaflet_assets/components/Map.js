@@ -149,25 +149,23 @@ var Map = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this, props));
 
-        _this.handleMapClick = _this.handleMapClick.bind(_this);
         _this.getColor = _this.getColor.bind(_this);
         return _this;
     }
 
     _createClass(Map, [{
-        key: "handleMapClick",
-        value: function handleMapClick(event) {
-            this.props.handleMapClick(event.latlng.lat, event.latlng.lng);
-        }
-    }, {
         key: "getColor",
         value: function getColor(x) {
+            //let myMax = this.props.mapSettings.maxValue==-1? this.props.mapSettings.distinctOrTotal_: this.props.mapSettings.maxValue
+
             return x < this.props.mapSettings.maxValue * (1 / 6) ? '#edf8fb' : x < this.props.mapSettings.maxValue * (2 / 6) ? '#ccece6' : x < this.props.mapSettings.maxValue * (3 / 6) ? '#99d8c9' : x < this.props.mapSettings.maxValue * (4 / 6) ? '#66c2a4' : x < this.props.mapSettings.maxValue * (5 / 6) ? '#41ae76' : x < this.props.mapSettings.maxValue ? '#238b45' : '#005824';
         }
     }, {
         key: "componentDidMount",
         value: function componentDidMount() {
             var _this2 = this;
+
+            this.props.setDefaultMax(defaultmax[this.props.mapSettings.distinctOrTotal + "_" + this.props.mapSettings.myObsType]);
 
             // create map
             this.map = _leaflet2.default.map("map", {
@@ -195,6 +193,7 @@ var Map = function (_React$Component) {
 
                 var targetProperty = _this2.props.mapSettings.distinctOrTotal + "_" + _this2.props.mapSettings.myObsType;
                 if (item.tableName == 'udp_puebla_4326') {
+                    console.log(_this2.props.mapSettings);
                     myStyle = function myStyle(feature) {
                         return {
                             "fillColor": getColor(feature.properties[targetProperty]),
@@ -244,7 +243,7 @@ var Map = function (_React$Component) {
                 return dynamicLayer;
             };
             this.dynamicLayer = processArray(something, this.map, this.baseMaps, this.getColor);
-            this.map.on("click", this.handleMapClick);
+            this.map.on("click", this.props.handleMapClick);
             this.map.scrollWheelZoom.disable();
             ///////////LEGEND////////////
             var legend = _leaflet2.default.control({ position: 'bottomright' });

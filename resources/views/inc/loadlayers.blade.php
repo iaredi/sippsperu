@@ -55,7 +55,20 @@ foreach ($layersArray as $layer) {
         $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM {$table}",[]);
     }
     $features=[];
-    
+        
+        $dslist=[];
+        $tolist=[];
+        $dsmax=[];
+        $tomax=[];
+        $categorylist=['ave','arbol', 'arbusto', 'mamifero', 'herpetofauna', 'hierba'];
+        foreach($categorylist as $cat){
+            $dslist[]="distinct_species_{$cat}";
+            $tolist[]="total_observaciones_{$cat}";
+            $defaultmax["total_observaciones_{$cat}"]=0;
+            $defaultmax["distinct_species_{$cat}"]=0;
+        }
+
+       
         foreach($result AS $row) {
             unset($row->geom);
             $geometry=$row->geojson=json_decode($row->geojson);
@@ -63,23 +76,41 @@ foreach ($layersArray as $layer) {
             $row->name=$table;
             $row->displayName=$layer->displayName;
             $row->featureColumn=$layer->featureColumn;
+            if ($table=='udp_puebla_4326'){
+                 foreach($dslist as $ds){
+                     if($defaultmax[$ds]<$row->$ds){
+                         $defaultmax[$ds]=$row->$ds;
+                     }
+                 }
+                foreach($tolist as $to){
+                     if($defaultmax[$to]<$row->$to){
+
+                         $defaultmax[$to]=$row->$to;
+
+                     }
+                }
+                
+            
+            }
+
             $feature=["type"=>"Feature", "geometry"=>$geometry, "properties"=>$row];
             array_push($features, $feature);
         }
+        
+
    
         
     $featureCollection=["type"=>"FeatureCollection", "features"=>$features];
     $layer->geom=$featureCollection;
     $features=[];
     $featureCollection=[];
-
+    $defaultmaxjson[$table]=json_encode($defaultmax);
 }
 $geojson=json_encode($layersArray);
 ?>
-
 <script>
-var something = {!! $geojson !!};
-//console.log(something[0])
+    var something = {!! $geojson !!};
+    var defaultmax = {!! $defaultmaxjson['udp_puebla_4326'] !!};     
 </script>
 
 

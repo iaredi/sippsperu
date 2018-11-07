@@ -9,14 +9,9 @@ const style = {
 class Map extends React.Component {
     constructor(props) {
         super(props);
-        this.handleMapClick = this.handleMapClick.bind(this);
         this.getColor = this.getColor.bind(this);
     }
-  handleMapClick(event) {
-    this.props.handleMapClick(event.latlng.lat,event.latlng.lng);
-  }
-  
-    getColor(x) {
+    getColor(x) {        
         return x < this.props.mapSettings.maxValue*(1/6)      ?    '#edf8fb':
             x < this.props.mapSettings.maxValue*(2/6)      ?   '#ccece6':
             x < this.props.mapSettings.maxValue*(3/6)      ?   '#99d8c9':
@@ -26,7 +21,12 @@ class Map extends React.Component {
                                                          '#005824' ;
     };
 
-  componentDidMount() {  
+  componentDidMount() {
+
+
+    this.props.setDefaultMax(defaultmax[`${this.props.mapSettings.distinctOrTotal}_${this.props.mapSettings.myObsType}`])
+
+
     // create map
     this.map = L.map("map", {
       center: [18.69349,360-98.16245],
@@ -55,6 +55,7 @@ class Map extends React.Component {
 
         const targetProperty = `${this.props.mapSettings.distinctOrTotal}_${this.props.mapSettings.myObsType}`;
         if (item.tableName=='udp_puebla_4326'){
+            console.log(this.props.mapSettings)
             myStyle= (feature)=> {
                 return {
                     "fillColor": getColor(feature.properties[targetProperty]),
@@ -106,7 +107,7 @@ class Map extends React.Component {
       return dynamicLayer
     }
     this.dynamicLayer=processArray(something, this.map, this.baseMaps, this.getColor,)
-    this.map.on("click", this.handleMapClick);
+    this.map.on("click", this.props.handleMapClick);
     this.map.scrollWheelZoom.disable()
     ///////////LEGEND////////////
     var legend = L.control({position: 'bottomright'});
@@ -136,6 +137,11 @@ class Map extends React.Component {
   }
 
     componentDidUpdate({ mapSettings }) {
+        
+
+
+
+
         
         if (this.props.mapSettings !== mapSettings) {
             this.map.removeControl(this.legend); 

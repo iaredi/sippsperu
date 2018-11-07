@@ -54,7 +54,7 @@ handleTotalDistinctChange(event) {
             <div className="row">
                 <div className="form-group col-3 border border-secondary p-1 mx-3">
                     <label className="style_option">Eliger Max Numero por colores</label>
-                    <input name='maxNumber' type="number" min="1" value={this.props.mapSettings.maxValue} id='table_optionOpacity' onChange={this.handleMaxChange} className='table_option form-control '/> 
+                    <input name='maxNumber' type="number" min="6" value={this.props.mapSettings.maxValue} id='table_optionOpacity' onChange={this.handleMaxChange} className='table_option form-control '/> 
                 </div>
             </div>
             <div className="row">

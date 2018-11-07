@@ -1042,25 +1042,23 @@ var Map = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this, props));
 
-        _this.handleMapClick = _this.handleMapClick.bind(_this);
         _this.getColor = _this.getColor.bind(_this);
         return _this;
     }
 
     _createClass(Map, [{
-        key: "handleMapClick",
-        value: function handleMapClick(event) {
-            this.props.handleMapClick(event.latlng.lat, event.latlng.lng);
-        }
-    }, {
         key: "getColor",
         value: function getColor(x) {
+            //let myMax = this.props.mapSettings.maxValue==-1? this.props.mapSettings.distinctOrTotal_: this.props.mapSettings.maxValue
+
             return x < this.props.mapSettings.maxValue * (1 / 6) ? '#edf8fb' : x < this.props.mapSettings.maxValue * (2 / 6) ? '#ccece6' : x < this.props.mapSettings.maxValue * (3 / 6) ? '#99d8c9' : x < this.props.mapSettings.maxValue * (4 / 6) ? '#66c2a4' : x < this.props.mapSettings.maxValue * (5 / 6) ? '#41ae76' : x < this.props.mapSettings.maxValue ? '#238b45' : '#005824';
         }
     }, {
         key: "componentDidMount",
         value: function componentDidMount() {
             var _this2 = this;
+
+            this.props.setDefaultMax(defaultmax[this.props.mapSettings.distinctOrTotal + "_" + this.props.mapSettings.myObsType]);
 
             // create map
             this.map = _leaflet2.default.map("map", {
@@ -1088,6 +1086,7 @@ var Map = function (_React$Component) {
 
                 var targetProperty = _this2.props.mapSettings.distinctOrTotal + "_" + _this2.props.mapSettings.myObsType;
                 if (item.tableName == 'udp_puebla_4326') {
+                    console.log(_this2.props.mapSettings);
                     myStyle = function myStyle(feature) {
                         return {
                             "fillColor": getColor(feature.properties[targetProperty]),
@@ -1137,7 +1136,7 @@ var Map = function (_React$Component) {
                 return dynamicLayer;
             };
             this.dynamicLayer = processArray(something, this.map, this.baseMaps, this.getColor);
-            this.map.on("click", this.handleMapClick);
+            this.map.on("click", this.props.handleMapClick);
             this.map.scrollWheelZoom.disable();
             ///////////LEGEND////////////
             var legend = _leaflet2.default.control({ position: 'bottomright' });
@@ -17887,6 +17886,7 @@ var Mapapp = function (_React$Component) {
     _this.handleOpacityChange = _this.handleOpacityChange.bind(_this);
     _this.handleMaxChange = _this.handleMaxChange.bind(_this);
     _this.handleFeatureClick = _this.handleFeatureClick.bind(_this);
+    _this.setDefaultMax = _this.setDefaultMax.bind(_this);
     _this.state = {
       previous: 0,
       udp: 0,
@@ -17901,7 +17901,7 @@ var Mapapp = function (_React$Component) {
   _createClass(Mapapp, [{
     key: 'handleMapClick',
     value: function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(mylat, mylong) {
+      var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(event) {
         return _regenerator2.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
@@ -17909,27 +17909,11 @@ var Mapapp = function (_React$Component) {
                 this.setState(function (prevState) {
                   return {
                     markerPosition: {
-                      lat: mylat,
-                      lng: mylong
+                      lat: event.latlng.lat,
+                      lng: event.latlng.lng
                     }
                   };
                 });
-
-                // const rawResponse = await fetch('http://localhost:3000/api/getudp', {
-                //   method: 'POST',
-                //   headers: {
-                //     'Accept': 'application/json',
-                //     "Content-Type": "application/json;",
-                //   },
-                //   body: JSON.stringify({
-                //     "lat": mylat,
-                //     "lng":mylong
-                //   })
-                // });
-                //   let currentudp = await rawResponse.json()
-                //   this.setState((prevState) => ({
-                //     udp:currentudp
-                //   }));
 
               case 1:
               case 'end':
@@ -17939,7 +17923,7 @@ var Mapapp = function (_React$Component) {
         }, _callee, this);
       }));
 
-      function handleMapClick(_x, _x2) {
+      function handleMapClick(_x) {
         return _ref.apply(this, arguments);
       }
 
@@ -17948,14 +17932,46 @@ var Mapapp = function (_React$Component) {
   }, {
     key: 'handleSpeciesChange',
     value: function handleSpeciesChange(value) {
-
+      var max = defaultmax[this.state.mapSettings.distinctOrTotal + '_' + value];
+      max = max < 6 ? 6 : max;
       this.setState(function (prevState) {
         return {
           mapSettings: {
             distinctOrTotal: prevState.mapSettings.distinctOrTotal,
             myObsType: value,
             fillOpacity: prevState.mapSettings.fillOpacity,
-            maxValue: prevState.mapSettings.maxValue
+            maxValue: max
+          }
+        };
+      });
+    }
+  }, {
+    key: 'handleTotalDistinctChange',
+    value: function handleTotalDistinctChange(value) {
+      var max = defaultmax[value + '_' + this.state.mapSettings.myObsType];
+      max = max < 6 ? 6 : max;
+      this.setState(function (prevState) {
+        return {
+          mapSettings: {
+            distinctOrTotal: value,
+            myObsType: prevState.mapSettings.myObsType,
+            fillOpacity: prevState.mapSettings.fillOpacity,
+            maxValue: max
+          }
+        };
+      });
+    }
+  }, {
+    key: 'setDefaultMax',
+    value: function setDefaultMax(max) {
+      max = max < 6 ? 6 : max;
+      this.setState(function (prevState) {
+        return {
+          mapSettings: {
+            distinctOrTotal: prevState.mapSettings.distinctOrTotal,
+            myObsType: prevState.mapSettings.myObsType,
+            fillOpacity: prevState.mapSettings.fillOpacity,
+            maxValue: max
           }
         };
       });
@@ -17997,25 +18013,10 @@ var Mapapp = function (_React$Component) {
       };
       event.target.setStyle(highlight);
 
-      var name = event.target.feature.geometry.type == 'MultiPolygon' ? 'Unidad de Paisaje' : 'Linea MTP';
       this.setState(function (prevState) {
         return {
           featureInfo: {
             properties: event.target.feature.properties
-          }
-        };
-      });
-    }
-  }, {
-    key: 'handleTotalDistinctChange',
-    value: function handleTotalDistinctChange(value) {
-      this.setState(function (prevState) {
-        return {
-          mapSettings: {
-            distinctOrTotal: value,
-            myObsType: prevState.mapSettings.myObsType,
-            fillOpacity: prevState.mapSettings.fillOpacity,
-            maxValue: prevState.mapSettings.maxValue
           }
         };
       });
@@ -18076,6 +18077,7 @@ var Mapapp = function (_React$Component) {
               _react2.default.createElement(_Map2.default, {
                 handleMapClick: this.handleMapClick,
                 handleFeatureClick: this.handleFeatureClick,
+                setDefaultMax: this.setDefaultMax,
                 mapSettings: this.state.mapSettings,
                 table: this.state.table
               })
@@ -24456,7 +24458,7 @@ var MapControl = function (_React$Component) {
                             { className: "style_option" },
                             "Eliger Max Numero por colores"
                         ),
-                        _react2.default.createElement("input", { name: "maxNumber", type: "number", min: "1", value: this.props.mapSettings.maxValue, id: "table_optionOpacity", onChange: this.handleMaxChange, className: "table_option form-control " })
+                        _react2.default.createElement("input", { name: "maxNumber", type: "number", min: "6", value: this.props.mapSettings.maxValue, id: "table_optionOpacity", onChange: this.handleMaxChange, className: "table_option form-control " })
                     )
                 ),
                 _react2.default.createElement(
@@ -24556,8 +24558,9 @@ var FeatureInfoDisplay = function (_React$Component) {
             var _this2 = this;
 
             var allproducts = [];
-            if (!this.props.featureInfo.properties.message) {
-                var mya1 = ['ave', 'arbol', 'arbusto', 'hierba', 'herpetofauna', 'mamifero', 'juntos'];
+            if (!this.props.featureInfo.properties.message && this.props.featureInfo.name != 'municipio_puebla_4326') {
+
+                var mya1 = ['ave', 'arbol', 'arbusto', 'hierba', 'herpetofauna', 'mamifero', 'Dato acumulado'];
                 var mya2 = ['total_observaciones', 'distinct_species', 'dominancia', 'shannon'];
 
                 mya1.map(function (life) {
@@ -24565,7 +24568,7 @@ var FeatureInfoDisplay = function (_React$Component) {
                     oneproduct['name'] = life == 'herpetofauna' ? 'herpeto fauna' : life;
 
                     mya2.map(function (category, ind) {
-                        if (life == 'juntos') {
+                        if (life == 'Dato acumulado') {
                             var mysum = +_this2.props.featureInfo.properties[category + '_ave'] + +_this2.props.featureInfo.properties[category + '_hierba'] + +_this2.props.featureInfo.properties[category + '_arbusto'] + +_this2.props.featureInfo.properties[category + '_arbol'] + +_this2.props.featureInfo.properties[category + '_herpetofauna'] + +_this2.props.featureInfo.properties[category + '_mamifero'];
                             if (ind > 1) mysum = (mysum / 6).toPrecision(4);
                             oneproduct[category] = mysum;
@@ -24596,7 +24599,6 @@ var FeatureInfoDisplay = function (_React$Component) {
                 dataField: 'shannon',
                 text: 'Shannon'
             }];
-            console.log(this.props.markerPosition);
             return _react2.default.createElement(
                 'div',
                 null,

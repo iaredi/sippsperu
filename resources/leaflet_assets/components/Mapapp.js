@@ -14,6 +14,7 @@ class Mapapp extends React.Component {
         this.handleOpacityChange = this.handleOpacityChange.bind(this);
         this.handleMaxChange = this.handleMaxChange.bind(this);
         this.handleFeatureClick = this.handleFeatureClick.bind(this);
+        this.setDefaultMax = this.setDefaultMax.bind(this);
         this.state={
             previous:0,
             udp:0,
@@ -25,42 +26,54 @@ class Mapapp extends React.Component {
             ] 
         }
   }
-  async handleMapClick(mylat,mylong) {
+  async handleMapClick(event) {
     this.setState((prevState) => ({
       markerPosition: {
-        lat:mylat,
-        lng:mylong
+        lat:event.latlng.lat,
+        lng:event.latlng.lng
       }
     }));
 
-    // const rawResponse = await fetch('http://localhost:3000/api/getudp', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Accept': 'application/json',
-    //     "Content-Type": "application/json;",
-    //   },
-    //   body: JSON.stringify({
-    //     "lat": mylat,
-    //     "lng":mylong
-    //   })
-    // });
-    //   let currentudp = await rawResponse.json()
-    //   this.setState((prevState) => ({
-    //     udp:currentudp
-    //   }));
     
   }
   handleSpeciesChange(value) {
-
+    let max=defaultmax[`${this.state.mapSettings.distinctOrTotal}_${value}`]
+    max= max<6 ? 6 :max
     this.setState((prevState) => ({
       mapSettings: {
         distinctOrTotal:prevState.mapSettings.distinctOrTotal,
         myObsType:value,
         fillOpacity:prevState.mapSettings.fillOpacity,
-        maxValue:prevState.mapSettings.maxValue
+        maxValue:max
       }
     }));
   }
+
+  handleTotalDistinctChange(value) {
+    let max =defaultmax[`${value}_${this.state.mapSettings.myObsType}`]
+    max= max<6 ? 6 :max
+    this.setState((prevState) => ({
+      mapSettings: {
+        distinctOrTotal:value,
+        myObsType:prevState.mapSettings.myObsType,
+        fillOpacity:prevState.mapSettings.fillOpacity,
+        maxValue:max
+      }
+    }));
+  }
+
+  setDefaultMax(max)  {
+    max= max<6 ? 6 :max
+    this.setState((prevState) => ({
+      mapSettings: {
+        distinctOrTotal:prevState.mapSettings.distinctOrTotal,
+        myObsType:prevState.mapSettings.myObsType,
+        fillOpacity:prevState.mapSettings.fillOpacity,
+        maxValue:max
+      }
+    }));
+  }
+
     handleFeatureClick(event) {
         let myColor='green'
         let myWeight=5
@@ -95,24 +108,15 @@ class Mapapp extends React.Component {
       
       
       
-      let name = event.target.feature.geometry.type=='MultiPolygon'?'Unidad de Paisaje':'Linea MTP'
-    this.setState((prevState) => ({
-        featureInfo: {
-            properties:event.target.feature.properties
-        }
+        this.setState((prevState) => ({
+            featureInfo: {
+                properties:event.target.feature.properties
+            }
         }));
-  }
+        
+    }
 
-  handleTotalDistinctChange(value) {
-    this.setState((prevState) => ({
-      mapSettings: {
-        distinctOrTotal:value,
-        myObsType:prevState.mapSettings.myObsType,
-        fillOpacity:prevState.mapSettings.fillOpacity,
-        maxValue:prevState.mapSettings.maxValue
-      }
-    }));
-  }
+  
 
   handleOpacityChange(value) {
     this.setState((prevState) => ({
@@ -153,6 +157,7 @@ class Mapapp extends React.Component {
                 <Map
                     handleMapClick={this.handleMapClick}
                     handleFeatureClick={this.handleFeatureClick}
+                    setDefaultMax={this.setDefaultMax}
                     mapSettings={this.state.mapSettings} 
                     table = {this.state.table}
                     />
