@@ -1,5 +1,6 @@
 <?php
-    
+    session_start();
+    session(['error' => [0]]);
 
    $root_directory = "testdir";
     if ($_SERVER['REQUEST_METHOD']=='POST') {
@@ -10,25 +11,24 @@
             $gethashpassword=DB::select('select hash_password from usuario where email = ?', [$_POST['email']]);
 
             if (password_verify($_POST['password'], $gethashpassword[0]->hash_password)) {
-            
                 echo("Logged in successfully");
-                session_start();
-                //update_login_date($pdo, $email);
+                
                 //check for admin
                 if (DB::select('select administrador from usuario where email = ?', [$_POST['email']])){
-                //if (askforkey($pdo,"usuario", "administrador", "email", $_POST['email'])){
              
                     session(['admin' => 1]);
                 }else{
                     session(['admin' => 0]);
                 }
                 session(['email' => $email]);
+                session(['error' => '']);
                 return redirect()->to('/ingresardatos')->send();
-
             } else {
+                session(['error' => ['contrasenia incorrecto']]);
             }
             
         } else {
+            session(['error' => ['email no existe']]);
         }
     } else {
         $email="";
@@ -39,16 +39,17 @@
 
     @include('inc/header')
         @include('inc/nav')
-        
-                    <?php 
-                        if (isset($_SESSION['error'])) {
-                            foreach ($session['error'] as $msg) {
-                                echo "<p class='bg-danger text-center'>{$msg}</p>";
-                            }
-                        }
-                    ?>
+       
+                    
     <div class="display: flex" style="text-align:center;">
         <div class=" d-inline-flex flex-column justify-content-center" style='width: 350px'>
+            <?php 
+                if (session('error')[0]) {
+                    foreach (session('error') as $msg) {
+                        echo "<p class='bg-danger text-center'>{$msg}</p>";
+                    }
+                }
+            ?>
             <form id="login-form"  method="post" role="form" style="display: block;">
                 {{ csrf_field() }}
                 <div class="form-group p-2">

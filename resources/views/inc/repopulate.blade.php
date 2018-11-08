@@ -1,8 +1,6 @@
 
 <?php
-     
         $sessionlist=['linea_mtp','medicion'];
-
         foreach($sessionlist as $sessiondropdown){
             if (session()->has('my_'.$sessiondropdown)){
 
@@ -18,11 +16,7 @@
         }
 
     if (sizeof(session('error'))>0) {
-        echo 'there is an error set';
-
         $dropdownlist=['selectlinea_mtp','selectestado','selectmunicipio','selectpredio','selectmedicion','selectobservaciones','selectTransecto','selectPunto'];
-        //$dropdownlist=['selectlinea_mtp','selectestado'];
-
         foreach($dropdownlist as $dropdown){
             if (isset($_POST[$dropdown])){
 
@@ -67,7 +61,6 @@
                 }
             }
         }
-
     }
 
 ?>

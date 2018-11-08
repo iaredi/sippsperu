@@ -11,22 +11,16 @@ function buildDropdowns(tableName, menu, jsTable="Form"){
     selectList.className='form-control';
     const newTR = document.createElement("tr");
     newTR.id="row"+tableName;
-    // const dataName = document.createElement("td");
-    // dataName.textContent=tableName;
-    // dataName.className="dropDownTitles";
 
-    ////
     const dataLabel = document.createElement("LABEL");
     dataLabel.setAttribute("for",menu+tableName+jsTable)
     const lowerCaseTitle=tableName.split("_").join(" ")
     dataLabel.textContent=lowerCaseTitle.charAt(0).toUpperCase() + lowerCaseTitle.slice(1);
     dataLabel.className="dropDownTitles";
-//////
 
     const dataSelect = document.createElement("td");
     dataSelect.appendChild(selectList);
     
-    //newTR.appendChild(dataName);
     newTR.appendChild(dataLabel)
     newTR.appendChild(dataSelect);
 
@@ -235,6 +229,8 @@ function createRows (tableName,menu,myCols, myNumRow, obs=false,customList=[]){
     myCols.sort(function(a, b){
         if(a=='notas') return 1;
         if(b=='notas') return -1;
+        if(a.indexOf('omienzo')!==-1) return -1;
+        if(b.indexOf('omienzo')!==-1)return 1;
         if(a.indexOf('long')!==-1) return -1;
         if(b.indexOf('long')!==-1)return 1;
         if(a.indexOf('lat')!==-1) return -1;

@@ -93,22 +93,16 @@ function buildDropdowns(tableName, menu) {
     selectList.className = 'form-control';
     var newTR = document.createElement("tr");
     newTR.id = "row" + tableName;
-    // const dataName = document.createElement("td");
-    // dataName.textContent=tableName;
-    // dataName.className="dropDownTitles";
 
-    ////
     var dataLabel = document.createElement("LABEL");
     dataLabel.setAttribute("for", menu + tableName + jsTable);
     var lowerCaseTitle = tableName.split("_").join(" ");
     dataLabel.textContent = lowerCaseTitle.charAt(0).toUpperCase() + lowerCaseTitle.slice(1);
     dataLabel.className = "dropDownTitles";
-    //////
 
     var dataSelect = document.createElement("td");
     dataSelect.appendChild(selectList);
 
-    //newTR.appendChild(dataName);
     newTR.appendChild(dataLabel);
     newTR.appendChild(dataSelect);
 
@@ -327,6 +321,8 @@ function createRows(tableName, menu, myCols, myNumRow) {
     myCols.sort(function (a, b) {
         if (a == 'notas') return 1;
         if (b == 'notas') return -1;
+        if (a.indexOf('omienzo') !== -1) return -1;
+        if (b.indexOf('omienzo') !== -1) return 1;
         if (a.indexOf('long') !== -1) return -1;
         if (b.indexOf('long') !== -1) return 1;
         if (a.indexOf('lat') !== -1) return -1;

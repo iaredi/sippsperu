@@ -156,8 +156,6 @@ var Map = function (_React$Component) {
     _createClass(Map, [{
         key: "getColor",
         value: function getColor(x) {
-            //let myMax = this.props.mapSettings.maxValue==-1? this.props.mapSettings.distinctOrTotal_: this.props.mapSettings.maxValue
-
             return x < this.props.mapSettings.maxValue * (1 / 6) ? '#edf8fb' : x < this.props.mapSettings.maxValue * (2 / 6) ? '#ccece6' : x < this.props.mapSettings.maxValue * (3 / 6) ? '#99d8c9' : x < this.props.mapSettings.maxValue * (4 / 6) ? '#66c2a4' : x < this.props.mapSettings.maxValue * (5 / 6) ? '#41ae76' : x < this.props.mapSettings.maxValue ? '#238b45' : '#005824';
         }
     }, {
