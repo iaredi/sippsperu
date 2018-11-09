@@ -73,9 +73,9 @@
 ?>
       
 
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-lg-offset-3">
+        <div class=" d-flex flex-column justify-content-around align-items-center" >
+                       
+                <div>
                     <?php 
                         if (isset($error)) {
                             foreach ($error as $msg) {
@@ -84,18 +84,15 @@
                         }
                         if (isset($resultofusuariosquery)) {
                             foreach ($resultofusuariosquery as $msg) {
-                                echo "<h4 class=bg-info text-center'>{$msg}</h4>";
+                                echo "<p class='text-dark text-center' style='background-color: lightsteelblue;'>{$msg}</p>";
+
                             }
                         }
                     ?>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6 col-md-offset-3">
-                    <div class="panel panel-login">
-                        <div class="panel-body">
-                            <div class="row">
-                                <div class="col-lg-12">
+            
+            
+                    <div style="width:60%;">
                                     <form id="register-form" method="post" role="form" >
                                             {{ csrf_field() }}
 
@@ -126,19 +123,13 @@
                                         <div class="form-group">
                                             <textarea name="notas" id="notas" tabindex="7" class="form-control"  placeholder="Notas"><?php echo $notas ?></textarea>
                                         </div>
-                                        <div class="form-group">
-                                            <div class="row">
-                                                <div class="col-sm-6 col-sm-offset-3">
-                                                    <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-custom" value="Registro">
+                                        
+                                                <div class="form-group self-align-center p-3"style="width:50%;margin: auto;">
+                                                    <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn  btn-success p-15" value="Registro">
                                                 </div>
-                                            </div>
-                                        </div>
+                                           
                                     </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                  
+         </div>
+         </div>
     @include('inc/footer')
