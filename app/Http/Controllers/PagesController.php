@@ -32,15 +32,10 @@ class PagesController extends Controller
         return view('pages/ingresarexcel');
     }
     public function mostrarmapas(){
-        
-
-
-
-
-
-
-
         return view('pages/mostrarmapas');
+    }
+    public function thanks(){
+        return view('pages/thanks');
     }
    
 }

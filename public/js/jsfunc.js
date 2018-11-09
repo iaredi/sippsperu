@@ -170,7 +170,10 @@ function selectOptionsCreate(tableName, menu) {
         "row" + numRows + tableName + "Form";
         var mySelection = document.getElementById(myId);
         if (tableName.split('_')[0] === "observacion") tableName = tableName.replace("observacion", "especie");
+
         var mycurrentlist = completetitlevallist[tableName];
+        mycurrentlist = tableName === "observaciones" ? ['ave', 'arbol', 'arbusto', 'mamifero', 'herpetofauna', 'hierba'] : mycurrentlist;
+
         var frag = document.createDocumentFragment(),
             elOption = void 0;
         elOption = frag.appendChild(document.createElement('option'));

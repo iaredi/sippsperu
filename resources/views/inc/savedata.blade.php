@@ -125,50 +125,56 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
 
             //Save New People and Brigada Data  
             $max_medicion = getserialmax( "medicion");
-            for($i=0; $i<countrows("personas"); $i++) {
-                $personascolumns=array(
-                        "nombre"=> $_POST["row{$i}*personas*nombre"],
-                        "apellido_materno"=> $_POST["row{$i}*personas*apellido_materno"],
-                        "apellido_paterno"=> $_POST["row{$i}*personas*apellido_paterno"],
-                            );
-                        $resultofquery[] = savenewentry("personas", $personascolumns);
-                        $brigada_array=array(
-                            "iden_medicion"=> $max_medicion,
-                            "iden_personas"=> getserialmax( "personas")
+            for($i=0; $i<rowmax("personas"); $i++) {
+                if(isset($_POST["row{$i}*personas*nombre"])){
+                    $personascolumns=array(
+                            "nombre"=> $_POST["row{$i}*personas*nombre"],
+                            "apellido_materno"=> $_POST["row{$i}*personas*apellido_materno"],
+                            "apellido_paterno"=> $_POST["row{$i}*personas*apellido_paterno"],
                                 );
-                        $resultofquery[] = savenewentry("brigada", $brigada_array);
+                            $resultofquery[] = savenewentry("personas", $personascolumns);
+                            $brigada_array=array(
+                                "iden_medicion"=> $max_medicion,
+                                "iden_personas"=> getserialmax( "personas")
+                                    );
+                            $resultofquery[] = savenewentry("brigada", $brigada_array);
                 }
+            }
             //Save GPS Data  
-            for($i=0; $i<countrows("gps"); $i++) {
-                $gpscolumns=array(
-                    "anio"=> $_POST["row{$i}*gps*anio"],
-                    "marca"=> $_POST["row{$i}*gps*marca"],
-                    "modelo"=> $_POST["row{$i}*gps*modelo"],
-                    "numero_de_serie"=> $_POST["row{$i}*gps*numero_de_serie"],
-                        );
-                    $resultofquery[] = savenewentry("gps", $gpscolumns);
-
-                    $gps_medicion_array=array(
-                        "iden_medicion"=> $max_medicion,
-                        "iden_gps"=> getserialmax( "gps")
+            for($i=0; $i<rowmax("gps"); $i++) {
+                if(isset($_POST["row{$i}*gps*anio"])){
+                    $gpscolumns=array(
+                        "anio"=> $_POST["row{$i}*gps*anio"],
+                        "marca"=> $_POST["row{$i}*gps*marca"],
+                        "modelo"=> $_POST["row{$i}*gps*modelo"],
+                        "numero_de_serie"=> $_POST["row{$i}*gps*numero_de_serie"],
                             );
-                    $resultofquery[] = savenewentry("gps_medicion", $gps_medicion_array);
+                        $resultofquery[] = savenewentry("gps", $gpscolumns);
+
+                        $gps_medicion_array=array(
+                            "iden_medicion"=> $max_medicion,
+                            "iden_gps"=> getserialmax( "gps")
+                                );
+                        $resultofquery[] = savenewentry("gps_medicion", $gps_medicion_array);
+                }
             }
             //Save Camara Data  
-            for($i=0; $i<countrows("camara"); $i++) {
-                $camaracolumns=array(
-                    "anio"=> $_POST["row{$i}*camara*anio"],
-                    "marca"=> $_POST["row{$i}*camara*marca"],
-                    "modelo"=> $_POST["row{$i}*camara*modelo"],
-                    "numero_de_serie"=> $_POST["row{$i}*camara*numero_de_serie"],
-                        );
-                    $resultofquery[] = savenewentry("camara", $camaracolumns);
-
-                    $camara_medicion_array=array(
-                        "iden_medicion"=> $max_medicion,
-                        "iden_camara"=> getserialmax( "camara")
+            for($i=0; $i<rowmax("camara"); $i++) {
+                if(isset($_POST["row{$i}*camara*anio"])){
+                    $camaracolumns=array(
+                        "anio"=> $_POST["row{$i}*camara*anio"],
+                        "marca"=> $_POST["row{$i}*camara*marca"],
+                        "modelo"=> $_POST["row{$i}*camara*modelo"],
+                        "numero_de_serie"=> $_POST["row{$i}*camara*numero_de_serie"],
                             );
-                    $resultofquery[] = savenewentry("camara_medicion", $camara_medicion_array);
+                        $resultofquery[] = savenewentry("camara", $camaracolumns);
+
+                        $camara_medicion_array=array(
+                            "iden_medicion"=> $max_medicion,
+                            "iden_camara"=> getserialmax( "camara")
+                                );
+                        $resultofquery[] = savenewentry("camara_medicion", $camara_medicion_array);
+                }
             }
 
             
@@ -390,12 +396,23 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
                     $resultofquery[] = savenewentry( $obstype, $obscolumns);
                 }
             }
-
         }
-
    }
 
-        echo '<script>console.log('.json_encode($resultofquery).');</script>';
+    echo '<script>console.log('.json_encode($resultofquery).');</script>';
+    session(['resultofquery' => $resultofquery]);
+    $saved=0;
+    $failed=0;
+    foreach($resultofquery as $result) {
+        if (strpos($result, 'exito') !== false){
+            $saved++;
+        }else{
+            $failed++;
+        }
+    }
+    if(!$failed && $saved>0){
+        return redirect()->to('/thanks')->send();
+    }
 
 
 }

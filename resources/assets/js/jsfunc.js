@@ -82,7 +82,10 @@ function selectOptionsCreate(tableName, menu, preApproved=true, jsTable="Form",a
         ("row"+numRows+tableName+"Form");
         const mySelection = document.getElementById(myId);
         if (tableName.split('_')[0]==="observacion") tableName = tableName.replace("observacion", "especie");
-        const mycurrentlist=completetitlevallist[tableName];
+        
+        let mycurrentlist=completetitlevallist[tableName];
+        mycurrentlist= tableName==="observaciones"? ['ave','arbol','arbusto','mamifero','herpetofauna','hierba']:mycurrentlist
+
         let frag = document.createDocumentFragment(),elOption;
         elOption = frag.appendChild(document.createElement('option'));
             elOption.value = "notselected";

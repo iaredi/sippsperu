@@ -21,9 +21,9 @@ Route::get('/descargar', 'PagesController@descargar');
 Route::get('/mostrarmapas', 'PagesController@mostrarmapas');
 Route::get('/admin', 'PagesController@admin');
 Route::get('/', 'PagesController@login');
+Route::get('/thanks', 'PagesController@thanks');
+
 Route::post('/', 'PagesController@login');
-
-
 Route::post('/admin', 'PagesController@admin');
 Route::post('/descargar', 'PagesController@descargar');
 Route::post('/login', 'PagesController@login');

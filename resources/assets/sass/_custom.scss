@@ -29,11 +29,15 @@ body {
 .bodycontainer{
     padding: 20px ;
 }
+tbody tr td:first-child {
+    
+    max-width: 120px;
+  }
 
 tbody#measurementTBodyForm {
     display: table;
     table-layout: fixed;
-    width: 1900px;
+    
 }
 .allinputs {
     width: 115px;
@@ -55,7 +59,7 @@ tbody#measurementTBodyForm {
 }
 
 .fechainputs {
-    width: 160px;
+    width: 170px;
 }
 /* td.formcolumnlabels {
     text-align: center;

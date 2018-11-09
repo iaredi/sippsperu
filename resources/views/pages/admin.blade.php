@@ -135,8 +135,7 @@ if (!session('admin')){
                     <select name='datatype' id='datatype' class='table_option form-control'>
                         <option value="not_selected"></option>
                         <option value="varchar">varchar</option>
-                        <option value="int">int</option>
-                        <option value="real">double</option>
+                        
                         </select>
             <input type="hidden" name="action" value="add_field">
             <input type="submit" id="campo" class="mySubmit">

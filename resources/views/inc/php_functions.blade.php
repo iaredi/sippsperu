@@ -98,6 +98,20 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
     return(sizeof($rownumlist));
     } 
 
+    function rowmax($tablename){
+        $myrowmax=0;
+        foreach($_POST as $key => $value) {
+            if (substr_count($key, '*')==2 && strpos($key, $tablename) !== false ){
+                $expoldekey=explode("*" , $key );
+                $num=explode("row" , $expoldekey[0] );
+                if ($num[1]>$myrowmax){
+                    $myrowmax-$num[1];
+                }
+            }
+        }
+    return($myrowmax);
+    } 
+
 
     function buildcolumnsarray($tablename, $rowandnum){
         try {
