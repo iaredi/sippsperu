@@ -8,7 +8,6 @@ if (!session('admin')){
 @include('inc/header')
 @include('inc/nav')
 
-
    <img src="{{ asset('img/malinche.jpg') }}"  alt="Italian Trulli" style="width:500px;height:200px;">
    <div>
         <div class="row">
@@ -36,9 +35,9 @@ if (!session('admin')){
             <tbody id="measurementTBodySelect">
             </tbody>
         </table>
-        <input type="radio" name="admin_option" value="add_admin"> Add Admin<br>
-        <input type="radio" name="admin_option" value="remove_admin"> Remove Admin<br>
-        <input type="radio" name="admin_option" value="delete_user"> Delete User
+        <input type="radio" name="admin_option" value="add_admin"> Dar Privilegio Admin<br>
+        <input type="radio" name="admin_option" value="remove_admin"> Borrar Privilegio Admin<br>
+        <input type="radio" name="admin_option" value="delete_user"> Borrar Ususario
         <br>
         <br>
         <input type="hidden" name="action" value="activo">
@@ -58,8 +57,8 @@ if (!session('admin')){
             </tbody>
         </table>
 
-        <input type="radio" name="admin_option" value="remove_email"> Remove Email <br>
-        <input type="radio" name="admin_option" value="add_email"> Add New Email
+        <input type="radio" name="admin_option" value="remove_email"> Borrar Email <br>
+        <input type="radio" name="admin_option" value="add_email"> Añadir Email Nuevo
         <input type="text"  name="email_input" placeholder="">
         
         <br>
