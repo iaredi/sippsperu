@@ -113,7 +113,7 @@ if (!session('admin')){
             <div class="row">
                 <div class="form-group col-6 border border-secondary p-1 mx-3">
                 
-                <input type="text"  name="field_input" placeholder="Nombre del Campo">
+                <input type="text"  name="field_input" placeholder="Nombre del Campo"><br>
                 <label for="table_option2">Eliger Tabla</label>
                 <select name='table_option2' id='table_option2' class='table_option2 form-control'>
                     <option value="not_selected"></option>
