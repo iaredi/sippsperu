@@ -1,5 +1,6 @@
 @include('inc/php_functions')
 <?php 
+
 if (!session('email')){
     return redirect()->to('/login')->send();
 }
@@ -11,7 +12,10 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
     $email = session('email');
     $name=  explode("@" , $email)[0];
     $myfile= "C:\\Users\\fores\\Desktop\\sql\\{$name}_{$_POST['dl_option']}.csv";
-
+    
+    if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
+        $myfile= "\\var\\www\\html\\lsapp3\\storage\\csv\\{$name}_{$_POST['dl_option']}.csv";
+    } 
     
 
     
