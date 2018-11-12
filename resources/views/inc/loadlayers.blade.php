@@ -1,5 +1,4 @@
 <?php
-$generateLayers=true;
 class layer
 {
     public $tableName;
@@ -46,7 +45,6 @@ $layer3->weight = 1;
 $layer3->fillOpacity = 0.5;
 $layer3->fromFile = false;
 
-
 $layersArray = array($layer1, $layer2, $layer3);
 
 foreach ($layersArray as $layer) {
@@ -55,7 +53,6 @@ foreach ($layersArray as $layer) {
     $tolist=[];
     $dsmax=[];
     $tomax=[];
-    if (!$layer->fromFile || $generateLayers){
 
         $obtype=explode('-', $layer->displayName)[0];
         
@@ -77,22 +74,19 @@ foreach ($layersArray as $layer) {
         }
 
         foreach($result AS $row) {
-            //unset($row->geom);
+            if (isset($row->geom)){
+                unset($row->geom);
+            }
             $geometry=$row->geojson=json_decode($row->geojson);
             unset($row->geojson);
-            if ($layer->tableName=='municipio_puebla_4326'){
-                unset($row->level_1);
-                unset($row->level_2);
-                unset($row->level_4);
-            } 
             $row->name=$layer->tableName;
             $row->displayName=$layer->displayName;
             $row->featureColumn=$layer->featureColumn;
             $row->fromFile=$layer->fromFile;
             if ($layer->tableName=='udp_puebla_4326'){
-                    foreach($dslist as $ds){
-                        if($defaultmax[$ds]<$row->$ds){
-                        $defaultmax[$ds]=$row->$ds;
+                foreach($dslist as $ds){
+                    if($defaultmax[$ds]<$row->$ds){
+                    $defaultmax[$ds]=$row->$ds;
                     }
                 }
                 foreach($tolist as $to){
@@ -106,31 +100,13 @@ foreach ($layersArray as $layer) {
 
             array_push($features, $feature);
             $featureCollection=["type"=>"FeatureCollection", "features"=>$features];
-            if($layer->fromFile){
-                $fp = fopen("{$layer->tableName}.json2", 'w');
-                fwrite($fp, json_encode($featureCollection));
-                fclose($fp);
-            }
+            
         }   
-
-
-        
-    
-
-}else{
-    $featureCollection =json_decode( file_get_contents("{$layer->tableName}.json"));
-}
-
-
-
-    echo '<script>console.log('.json_encode($featureCollection).');</script>';
-
     $layer->geom=$featureCollection;
     unset($features);
     unset($featureCollection);
     $defaultmaxjson[$layer->tableName]=json_encode($defaultmax);
 
-    
 }
 
 

@@ -17889,7 +17889,7 @@ var Mapapp = function (_React$Component) {
       udp: 0,
       markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
       mapSettings: { distinctOrTotal: "total_observaciones", myObsType: "ave", fillOpacity: 1, maxValue: 6 },
-      featureInfo: { properties: { message: 'click somewhere' } },
+      featureInfo: { properties: { message: 'click somewhere', displayName: 'none' } },
       table: [{ tableName: 'udp_puebla_4326', color: 'blue' }]
     };
     return _this;
@@ -18064,29 +18064,25 @@ var Mapapp = function (_React$Component) {
         null,
         _react2.default.createElement(
           'div',
-          { className: 'container p-0 m-0' },
+          { className: 'row border border-dark justify-content-around' },
           _react2.default.createElement(
             'div',
-            { className: 'row border border-dark justify-content-around' },
-            _react2.default.createElement(
-              'div',
-              { className: 'col-8 p-0' },
-              _react2.default.createElement(_Map2.default, {
-                handleMapClick: this.handleMapClick,
-                handleFeatureClick: this.handleFeatureClick,
-                setDefaultMax: this.setDefaultMax,
-                mapSettings: this.state.mapSettings,
-                table: this.state.table
-              })
-            ),
-            _react2.default.createElement(
-              'div',
-              { className: 'col-4 p-3' },
-              _react2.default.createElement(_FeatureInfoDisplay2.default, {
-                markerPosition: this.state.markerPosition,
-                featureInfo: this.state.featureInfo
-              })
-            )
+            { className: 'col-8 p-0' },
+            _react2.default.createElement(_Map2.default, {
+              handleMapClick: this.handleMapClick,
+              handleFeatureClick: this.handleFeatureClick,
+              setDefaultMax: this.setDefaultMax,
+              mapSettings: this.state.mapSettings,
+              table: this.state.table
+            })
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'col-4 p-3' },
+            _react2.default.createElement(_FeatureInfoDisplay2.default, {
+              markerPosition: this.state.markerPosition,
+              featureInfo: this.state.featureInfo
+            })
           )
         ),
         _react2.default.createElement(
@@ -24555,7 +24551,7 @@ var FeatureInfoDisplay = function (_React$Component) {
             var _this2 = this;
 
             var allproducts = [];
-            if (!this.props.featureInfo.properties.message && this.props.featureInfo.name != 'municipio_puebla_4326') {
+            if (this.props.featureInfo.properties.displayName == 'Linea MTP' || this.props.featureInfo.properties.displayName == 'Unidad de Paisaje') {
 
                 var mya1 = ['ave', 'arbol', 'arbusto', 'hierba', 'herpetofauna', 'mamifero', 'Dato acumulado'];
                 var mya2 = ['total_observaciones', 'distinct_species', 'dominancia', 'shannon'];
@@ -24596,6 +24592,10 @@ var FeatureInfoDisplay = function (_React$Component) {
                 dataField: 'shannon',
                 text: 'Shannon'
             }];
+
+            console.log(columns);
+            console.log(this.props.featureInfo);
+
             return _react2.default.createElement(
                 'div',
                 null,

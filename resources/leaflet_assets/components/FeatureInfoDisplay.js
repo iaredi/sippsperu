@@ -10,7 +10,7 @@ class FeatureInfoDisplay extends React.Component {
 
     render(){
         const allproducts=[];
-        if(!this.props.featureInfo.properties.message && this.props.featureInfo.name !='municipio_puebla_4326'){
+        if(this.props.featureInfo.properties.displayName=='Linea MTP' || this.props.featureInfo.properties.displayName=='Unidad de Paisaje'){
             
             let mya1= ['ave','arbol','arbusto','hierba', 'herpetofauna','mamifero','Dato acumulado']
             let mya2=['total_observaciones','distinct_species','dominancia','shannon']
@@ -51,6 +51,10 @@ class FeatureInfoDisplay extends React.Component {
             dataField: 'shannon',
             text: 'Shannon'
             }];
+
+            console.log(columns)
+            console.log(this.props.featureInfo)
+
         return(
             
         <div>
