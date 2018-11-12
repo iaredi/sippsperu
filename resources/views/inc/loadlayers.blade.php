@@ -1,5 +1,5 @@
 <?php
-$generateLayers=false;
+$generateLayers=true;
 class layer
 {
     public $tableName;
@@ -44,7 +44,7 @@ $layer3->fillColor = 'purple';
 $layer3->opacity = 0.5;
 $layer3->weight = 1;
 $layer3->fillOpacity = 0.5;
-$layer3->fromFile = true;
+$layer3->fromFile = false;
 
 
 $layersArray = array($layer1, $layer2, $layer3);
@@ -64,7 +64,7 @@ foreach ($layersArray as $layer) {
         }elseif ($layer->tableName=='linea_mtp'){
             $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6_linea",[]);
         }else{
-            $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM {$layer->tableName}",[]);
+            $result = DB::select("SELECT geometry_id,nomgeo, ST_AsGeoJSON(level_3, 5) AS geojson FROM muni_geometries_simplified",[]);
         }
 
         
@@ -77,9 +77,14 @@ foreach ($layersArray as $layer) {
         }
 
         foreach($result AS $row) {
-            unset($row->geom);
+            //unset($row->geom);
             $geometry=$row->geojson=json_decode($row->geojson);
             unset($row->geojson);
+            if ($layer->tableName=='municipio_puebla_4326'){
+                unset($row->level_1);
+                unset($row->level_2);
+                unset($row->level_4);
+            } 
             $row->name=$layer->tableName;
             $row->displayName=$layer->displayName;
             $row->featureColumn=$layer->featureColumn;
@@ -102,7 +107,7 @@ foreach ($layersArray as $layer) {
             array_push($features, $feature);
             $featureCollection=["type"=>"FeatureCollection", "features"=>$features];
             if($layer->fromFile){
-                $fp = fopen("{$layer->tableName}.json", 'w');
+                $fp = fopen("{$layer->tableName}.json2", 'w');
                 fwrite($fp, json_encode($featureCollection));
                 fclose($fp);
             }
@@ -118,7 +123,7 @@ foreach ($layersArray as $layer) {
 
 
 
-        echo '<script>console.log('.json_encode($featureCollection).');</script>';
+    echo '<script>console.log('.json_encode($featureCollection).');</script>';
 
     $layer->geom=$featureCollection;
     unset($features);
