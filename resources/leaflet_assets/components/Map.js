@@ -55,7 +55,6 @@ class Map extends React.Component {
 
         const targetProperty = `${this.props.mapSettings.distinctOrTotal}_${this.props.mapSettings.myObsType}`;
         if (item.tableName=='udp_puebla_4326'){
-            console.log(this.props.mapSettings)
             myStyle= (feature)=> {
                 return {
                     "fillColor": getColor(feature.properties[targetProperty]),
@@ -65,7 +64,6 @@ class Map extends React.Component {
                     "fillOpacity":this.props.mapSettings.fillOpacity
                     }
             } 
-            
         }else{
             myStyle={
                 weight: item.weight,
@@ -82,9 +80,9 @@ class Map extends React.Component {
             layer.on('click',handleFeatureClick)
         }
         let c2 = L.geoJson(item.geom, {
-        style: myStyle,
-        onEachFeature: onEachFeature
-      })
+            style: myStyle,
+            onEachFeature: onEachFeature
+        })
       if (item.tableName=='linea_mtp'||item.tableName=='udp_puebla_4326'){
         c2.addTo(mymap)
       }

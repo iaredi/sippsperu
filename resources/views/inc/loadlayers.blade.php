@@ -1,4 +1,5 @@
 <?php
+$generateLayers=false;
 class layer
 {
     public $tableName;
@@ -8,6 +9,7 @@ class layer
     public $opacity;
     public $weight;
     public $fillOpacity;
+    public $fromFile;
    
 }
 $layer1 = new layer();
@@ -19,6 +21,7 @@ $layer1->fillColor = 'blue';
 $layer1->opacity = 1;
 $layer1->weight = 0.3;
 $layer1->fillOpacity = 0.5;
+$layer1->fromFile = false;
 
 $layer2 = new layer();
 $layer2->tableName = 'linea_mtp';
@@ -29,6 +32,8 @@ $layer2->fillColor = 'black';
 $layer2->opacity = 1;
 $layer2->weight = 5;
 $layer2->fillOpacity = 1;
+$layer2->fromFile = false;
+
 
 $layer3 = new layer();
 $layer3->tableName = 'municipio_puebla_4326';
@@ -39,12 +44,13 @@ $layer3->fillColor = 'purple';
 $layer3->opacity = 0.5;
 $layer3->weight = 1;
 $layer3->fillOpacity = 0.5;
+$layer3->fromFile = true;
 
 
-
-$layersArray = array($layer1, $layer2 );
+$layersArray = array($layer1, $layer2, $layer3);
 
 foreach ($layersArray as $layer) {
+
     $obtype=explode('-', $layer->displayName)[0];
     $table=$layer->tableName;
     if ($layer->tableName=='udp_puebla_4326'){
@@ -54,58 +60,60 @@ foreach ($layersArray as $layer) {
     }else{
         $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM {$table}",[]);
     }
+
     $features=[];
-        
-        $dslist=[];
-        $tolist=[];
-        $dsmax=[];
-        $tomax=[];
-        $categorylist=['ave','arbol', 'arbusto', 'mamifero', 'herpetofauna', 'hierba'];
-        foreach($categorylist as $cat){
-            $dslist[]="distinct_species_{$cat}";
-            $tolist[]="total_observaciones_{$cat}";
-            $defaultmax["total_observaciones_{$cat}"]=0;
-            $defaultmax["distinct_species_{$cat}"]=0;
-        }
+    $dslist=[];
+    $tolist=[];
+    $dsmax=[];
+    $tomax=[];
+    $categorylist=['ave','arbol', 'arbusto', 'mamifero', 'herpetofauna', 'hierba'];
+    foreach($categorylist as $cat){
+        $dslist[]="distinct_species_{$cat}";
+        $tolist[]="total_observaciones_{$cat}";
+        $defaultmax["total_observaciones_{$cat}"]=0;
+        $defaultmax["distinct_species_{$cat}"]=0;
+    }
 
-       
-        foreach($result AS $row) {
-            unset($row->geom);
-            $geometry=$row->geojson=json_decode($row->geojson);
-            unset($row->geojson);
-            $row->name=$table;
-            $row->displayName=$layer->displayName;
-            $row->featureColumn=$layer->featureColumn;
-            if ($table=='udp_puebla_4326'){
-                 foreach($dslist as $ds){
-                     if($defaultmax[$ds]<$row->$ds){
-                         $defaultmax[$ds]=$row->$ds;
-                     }
-                 }
-                foreach($tolist as $to){
-                     if($defaultmax[$to]<$row->$to){
-
-                         $defaultmax[$to]=$row->$to;
-
-                     }
+    foreach($result AS $row) {
+        unset($row->geom);
+        $geometry=$row->geojson=json_decode($row->geojson);
+        unset($row->geojson);
+        $row->name=$table;
+        $row->displayName=$layer->displayName;
+        $row->featureColumn=$layer->featureColumn;
+        $row->fromFile=$layer->fromFile;
+        if ($table=='udp_puebla_4326'){
+                foreach($dslist as $ds){
+                    if($defaultmax[$ds]<$row->$ds){
+                    $defaultmax[$ds]=$row->$ds;
                 }
-                
-            
             }
-
-            $feature=["type"=>"Feature", "geometry"=>$geometry, "properties"=>$row];
-            array_push($features, $feature);
+            foreach($tolist as $to){
+                if($defaultmax[$to]<$row->$to){
+                    $defaultmax[$to]=$row->$to;
+                }
+            }
         }
-        
 
-   
+        $feature=["type"=>"Feature", "geometry"=>$geometry, "properties"=>$row];
+        array_push($features, $feature);
+        if($layer->fromFile){
+            $fp = fopen("{$table}.json", 'w');
+            fwrite($fp, json_encode($feature));
+            fclose($fp);
+        }
+    }   
         
     $featureCollection=["type"=>"FeatureCollection", "features"=>$features];
     $layer->geom=$featureCollection;
-    $features=[];
-    $featureCollection=[];
+    unset($features);
+    unset($featureCollection);
     $defaultmaxjson[$table]=json_encode($defaultmax);
+
+    
 }
+
+
 $geojson=json_encode($layersArray);
 ?>
 <script>
