@@ -50,65 +50,80 @@ $layer3->fromFile = true;
 $layersArray = array($layer1, $layer2, $layer3);
 
 foreach ($layersArray as $layer) {
-
-    $obtype=explode('-', $layer->displayName)[0];
-    $table=$layer->tableName;
-    if ($layer->tableName=='udp_puebla_4326'){
-        $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6",[]);
-    }elseif ($layer->tableName=='linea_mtp'){
-        $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6_linea",[]);
-    }else{
-        $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM {$table}",[]);
-    }
-
     $features=[];
     $dslist=[];
     $tolist=[];
     $dsmax=[];
     $tomax=[];
-    $categorylist=['ave','arbol', 'arbusto', 'mamifero', 'herpetofauna', 'hierba'];
-    foreach($categorylist as $cat){
-        $dslist[]="distinct_species_{$cat}";
-        $tolist[]="total_observaciones_{$cat}";
-        $defaultmax["total_observaciones_{$cat}"]=0;
-        $defaultmax["distinct_species_{$cat}"]=0;
-    }
+    if (!$layer->fromFile || $generateLayers){
 
-    foreach($result AS $row) {
-        unset($row->geom);
-        $geometry=$row->geojson=json_decode($row->geojson);
-        unset($row->geojson);
-        $row->name=$table;
-        $row->displayName=$layer->displayName;
-        $row->featureColumn=$layer->featureColumn;
-        $row->fromFile=$layer->fromFile;
-        if ($table=='udp_puebla_4326'){
-                foreach($dslist as $ds){
-                    if($defaultmax[$ds]<$row->$ds){
-                    $defaultmax[$ds]=$row->$ds;
-                }
-            }
-            foreach($tolist as $to){
-                if($defaultmax[$to]<$row->$to){
-                    $defaultmax[$to]=$row->$to;
-                }
-            }
-        }
-
-        $feature=["type"=>"Feature", "geometry"=>$geometry, "properties"=>$row];
-        array_push($features, $feature);
-        if($layer->fromFile){
-            $fp = fopen("{$table}.json", 'w');
-            fwrite($fp, json_encode($feature));
-            fclose($fp);
-        }
-    }   
+        $obtype=explode('-', $layer->displayName)[0];
         
-    $featureCollection=["type"=>"FeatureCollection", "features"=>$features];
+        if ($layer->tableName=='udp_puebla_4326'){
+            $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6",[]);
+        }elseif ($layer->tableName=='linea_mtp'){
+            $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6_linea",[]);
+        }else{
+            $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM {$layer->tableName}",[]);
+        }
+
+        
+        $categorylist=['ave','arbol', 'arbusto', 'mamifero', 'herpetofauna', 'hierba'];
+        foreach($categorylist as $cat){
+            $dslist[]="distinct_species_{$cat}";
+            $tolist[]="total_observaciones_{$cat}";
+            $defaultmax["total_observaciones_{$cat}"]=0;
+            $defaultmax["distinct_species_{$cat}"]=0;
+        }
+
+        foreach($result AS $row) {
+            unset($row->geom);
+            $geometry=$row->geojson=json_decode($row->geojson);
+            unset($row->geojson);
+            $row->name=$layer->tableName;
+            $row->displayName=$layer->displayName;
+            $row->featureColumn=$layer->featureColumn;
+            $row->fromFile=$layer->fromFile;
+            if ($layer->tableName=='udp_puebla_4326'){
+                    foreach($dslist as $ds){
+                        if($defaultmax[$ds]<$row->$ds){
+                        $defaultmax[$ds]=$row->$ds;
+                    }
+                }
+                foreach($tolist as $to){
+                    if($defaultmax[$to]<$row->$to){
+                        $defaultmax[$to]=$row->$to;
+                    }
+                }
+            }
+
+            $feature=["type"=>"Feature", "geometry"=>$geometry, "properties"=>$row];
+
+            array_push($features, $feature);
+            $featureCollection=["type"=>"FeatureCollection", "features"=>$features];
+            if($layer->fromFile){
+                $fp = fopen("{$layer->tableName}.json", 'w');
+                fwrite($fp, json_encode($featureCollection));
+                fclose($fp);
+            }
+        }   
+
+
+        
+    
+
+}else{
+    $featureCollection =json_decode( file_get_contents("{$layer->tableName}.json"));
+}
+
+
+
+        echo '<script>console.log('.json_encode($featureCollection).');</script>';
+
     $layer->geom=$featureCollection;
     unset($features);
     unset($featureCollection);
-    $defaultmaxjson[$table]=json_encode($defaultmax);
+    $defaultmaxjson[$layer->tableName]=json_encode($defaultmax);
 
     
 }
