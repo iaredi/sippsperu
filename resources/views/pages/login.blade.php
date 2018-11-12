@@ -1,6 +1,6 @@
 <?php
     session_start();
-    session(['error' => [0]]);
+    session(['error' => []]);
 
    $root_directory = "testdir";
     if ($_SERVER['REQUEST_METHOD']=='POST') {
@@ -12,14 +12,23 @@
 
             if (password_verify($_POST['password'], $gethashpassword[0]->hash_password)) {
                 echo("Logged in successfully");
-                
-                //check for admin
-                if (DB::select('select administrador from usuario where email = ?', [$_POST['email']])){
+                //Assign Visitante
              
+
+
+                if (DB::select('select visitante from usuario where email = ?', [$_POST['email']])[0]->visitante=='1'){
+                    session(['visitante' => 1]);
+                }else{
+                    session(['visitante' => 0]);
+                }
+                //check for admin
+
+                if (DB::select('select administrador from usuario where email = ?', [$_POST['email']])[0]->administrador=='true'){
                     session(['admin' => 1]);
                 }else{
                     session(['admin' => 0]);
                 }
+
                 session(['email' => $email]);
                 session(['error' => '']);
                 return redirect()->to('/ingresardatos')->send();
@@ -44,7 +53,7 @@
     <div class="display: flex" style="text-align:center;">
         <div class=" d-inline-flex flex-column justify-content-center" style='width: 350px'>
             <?php 
-                if (session('error')[0]) {
+                if (session('error')) {
                     foreach (session('error') as $msg) {
                         echo "<p class='bg-danger text-center'>{$msg}</p>";
                     }

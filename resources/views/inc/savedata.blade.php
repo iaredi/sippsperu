@@ -2,8 +2,7 @@
 <?php
 $resultofquery=[];
 
-
-if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0){
+if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!session('visitante'))  ){
     $mtpchoice =$_POST['selectlinea_mtp'];    
     if ($mtpchoice=="Nuevo") {
         //Save New Estado Data

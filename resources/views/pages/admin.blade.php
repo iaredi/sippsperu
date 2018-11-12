@@ -60,6 +60,7 @@ if (!session('admin')){
         <input type="radio" name="admin_option" value="remove_email"> Borrar Email <br>
         <input type="radio" name="admin_option" value="add_email"> Añadir Email Nuevo
         <input type="text"  name="email_input" placeholder="">
+        <input type="checkbox" name="visitante" value="1"> Visitante<br>
         
         <br>
         <br>

@@ -1,4 +1,6 @@
 <?php
+        echo '<script>console.log('.json_encode(session('visitante')).');</script>';
+
 if (!session('email')){
     return redirect()->to('/login')->send();
 }

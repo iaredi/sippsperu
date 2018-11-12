@@ -19,7 +19,7 @@ class Mapapp extends React.Component {
             previous:0,
             udp:0,
             markerPosition: { lat: 18.69349, lng: 360-98.16245 },
-            mapSettings:{distinctOrTotal:"total_observaciones", myObsType:"ave", fillOpacity:1, maxValue:6},
+            mapSettings:{distinctOrTotal:"total_observaciones", myObsType:"ave", fillOpacity:0.6, maxValue:99},
             featureInfo: { properties:{message:'click somewhere',displayName:'none' }},
             table: [
                 {tableName:'udp_puebla_4326',color: 'blue'},
@@ -152,7 +152,7 @@ class Mapapp extends React.Component {
     return (
       <div>
         
-            <div className='row border border-dark justify-content-around'>
+            <div className='row justify-content-around'>
             <div className='col-8 p-0'>
                 <Map
                     handleMapClick={this.handleMapClick}

@@ -29,9 +29,9 @@ handleTotalDistinctChange(event) {
     render(){
         return(
         <div>
-            <div className="row">
-                <div className="form-group col-3 border border-secondary p-1 mx-3">
-                    <label className="table_option">Eliger Clase</label>
+            <div className="form-group row  justify-content-start align-items-center p-1 mx-3">
+                <div className ="p-3">
+                    <label className="table_option"> Clase</label>
                     <select name='table_option' id='table_option' onChange={this.handleSpeciesChange} className='table_option form-control '>
                         <option value="ave">Ave</option>
                         <option value="hierba">Hierba</option>
@@ -41,38 +41,32 @@ handleTotalDistinctChange(event) {
                         <option value="mamifero">Mamifero</option>
                     </select>
                 </div>
-            </div>
-            <div className="row">
-                <div className="form-group col-3 border border-secondary p-1 mx-3">
-                    <label className="table_option">Eliger Total Observaciones o Especies Distintos </label>
+                <div className ="p-3">
+                    <label className="table_option">Especies</label>
                     <select name='table_option' id='table_option' onChange={this.handleTotalDistinctChange} className='table_option form-control '>
                         <option value="total_observaciones">Total</option>
-                        <option value="distinct_species">Distinct</option>
+                        <option value="distinct_species">Distincto</option>
                     </select>
                 </div>
-            </div>
-            <div className="row">
-                <div className="form-group col-3 border border-secondary p-1 mx-3">
-                    <label className="style_option">Eliger Max Numero por colores</label>
+                <div className ="p-3">
+                    <label className="style_option">Max Numero por colores</label>
                     <input name='maxNumber' type="number" min="6" value={this.props.mapSettings.maxValue} id='table_optionOpacity' onChange={this.handleMaxChange} className='table_option form-control '/> 
-                </div>
-            </div>
-            <div className="row">
-                <div className="form-group col-3 border border-secondary p-1 mx-3">
-                    <label className="style_option">Eliger Opacidad</label>
+                </div> 
+                <div className ="p-3">
+                    <label className="style_option">Opacidad</label>
                     <select name='table_option' id='table_optionOpacity' onChange={this.handleOpacityChange} className='table_option form-control '>
                         <option value="1.0">1.0</option>
                         <option value="0.8">0.8</option>
-                        <option value="0.6">0.6</option>
+                        <option defaultValue="0.6" value="0.6">0.6</option>
                         <option value="0.4">0.4</option>
                         <option value="0.2">0.2</option>
                     </select>
                 </div>
+            
             </div>
-            
-            
-            
-            
+        
+        
+        
         </div>
         )
     }

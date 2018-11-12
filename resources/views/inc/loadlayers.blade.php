@@ -60,7 +60,7 @@ foreach ($layersArray as $layer) {
             $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6",[]);
         }elseif ($layer->tableName=='linea_mtp'){
             $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6_linea",[]);
-        }else{
+        }elseif ($layer->tableName=='municipio_puebla_4326'){
             $result = DB::select("SELECT geometry_id,nomgeo, ST_AsGeoJSON(level_3, 5) AS geojson FROM muni_geometries_simplified",[]);
         }
 
