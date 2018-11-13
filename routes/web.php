@@ -22,6 +22,9 @@ Route::get('/mostrarmapas', 'PagesController@mostrarmapas');
 Route::get('/admin', 'PagesController@admin');
 Route::get('/', 'PagesController@login');
 Route::get('/thanks', 'PagesController@thanks');
+Route::get('/reset_1', 'PagesController@reset_1');
+Route::get('/reset_2', 'PagesController@reset_2');
+
 
 Route::post('/', 'PagesController@login');
 Route::post('/admin', 'PagesController@admin');
@@ -29,5 +32,5 @@ Route::post('/descargar', 'PagesController@descargar');
 Route::post('/login', 'PagesController@login');
 Route::post('/register', 'PagesController@register');
 Route::post('/ingresardatos', 'PagesController@ingresardatos');
-
-
+Route::post('/reset_1', 'PagesController@reset_1');
+Route::post('/reset_2', 'PagesController@reset_2');

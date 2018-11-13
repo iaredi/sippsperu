@@ -74,11 +74,11 @@
                             <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-success p-15" value="Log In">
                     </div>
                 </div>
-                {{-- <div class="form-group p-2">
-                    <div class="row justify-content-center" style='text-align:center;'>
-                            <a href="reset_1.php" tabindex="5" class="btn btn-success p-15">Reiniciar su contraseña</a>
+                <div class="form-group pt-2 pb-2 pl-5 pr-5 ">
+                    <div class="row">
+                            <a href="/reset_1" tabindex="5" class="form-control btn btn-success p-15">Reiniciar su contraseña</a>
                     </div>
-                </div> --}}
+                </div> 
             </form>
                                
         </div>

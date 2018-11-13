@@ -37,6 +37,12 @@ class PagesController extends Controller
     public function thanks(){
         return view('pages/thanks');
     }
+    public function reset_1(){
+        return view('pages/reset_1');
+    }
+    public function reset_2(){
+        return view('pages/reset_2');
+    }
    
 }
 
