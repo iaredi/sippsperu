@@ -26,10 +26,17 @@
         if ($_POST['password'] !=  $_POST['password_confirm']) {
             $error[] = "Las contrasenias no son iguales";
         }
-        $wow=DB::select('select email from usuario_permitido where email = ?', [$_POST['email']]);
-        
-        if (!DB::select('select email from usuario_permitido where email = ?', [$_POST['email']])) {
+
+
+
+        $email=DB::select('select email from usuario_permitido where email = ?', [$_POST['email']]);
+        $emailvisitante=DB::select('select email from usuario_permitido where email = ?', [$_POST['email'].'*']);
+
+        if (!$email && !$emailvisitante) {
             $error[] = "Email '{$_POST['email']}' no es aprovado. Contáctenos en forest.carter@gmail.com ";
+        }else{
+
+
         }
         
         if (DB::select('select email from usuario where email = ?', [$_POST['email']])) {
@@ -38,10 +45,16 @@
 
 echo '<script>console.log('.json_encode($error).');</script>';
         if (!($error)) {
-            $visitante = DB::select('select visitante from usuario_permitido where email = ?', [$_POST['email']]);
-            
+
+            $visitante='2';
+            if($emailvisitante){
+                $visitante='1';
+            }
+
+                    echo '<script>console.log('.json_encode($visitante).');</script>';
 
             $usuarioscolumns=array(
+                "visitante"=> intval($visitante),
                 "nombre"=> $_POST['nombre'],
                 "apellido_materno"=> $_POST['apellido_materno'],
                 "apellido_paterno"=> $_POST['apellido_paterno'],
@@ -51,7 +64,7 @@ echo '<script>console.log('.json_encode($error).');</script>';
                 "direccion"=> $_POST['direccion'],
                 "fecha_ultimo_login"=> "CURRENT_DATE",
                 "fecha_activacion"=> "CURRENT_DATE",
-                "visitante"=> intval($visitante),
+                
                 "notas"=> $_POST['notas']
                     );
             $resultofusuariosquery[]= savenewentry("usuario", $usuarioscolumns,false);

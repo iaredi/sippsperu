@@ -11,7 +11,7 @@ if (!session('admin')){
    <img src="{{ asset('img/malinche.jpg') }}"  alt="Italian Trulli" style="width:500px;height:200px;">
    <div>
         <div class="row">
-            <div class="col-lg-6 col-lg-offset-3">
+            <div class="warnings">
                 <?php
                     if (session('adminerror')) {
                         $msg=session('adminerror');
@@ -60,7 +60,7 @@ if (!session('admin')){
         <input type="radio" name="admin_option" value="remove_email"> Borrar Email <br>
         <input type="radio" name="admin_option" value="add_email"> Añadir Email Nuevo
         <input type="text"  name="email_input" placeholder="">
-        <input type="checkbox" name="visitante" value="1"> Visitante<br>
+        <input type="checkbox" name="visitante" value="1"> *Visitante<br>
         
         <br>
         <br>

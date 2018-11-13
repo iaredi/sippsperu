@@ -30,14 +30,15 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
         if ($_POST['action']=="permitido") {
             
             if($_POST['admin_option']=='add_email'){
-                $targetuser=$_POST['email_input'];
-                if ($_POST['visitante']){
-                    $visitante=1;
-                }else{
-                    $visitante=0;
-                }   
-                $sql = "insert into usuario_permitido (email,visitante) values(:targetuser,:visitante)";
-                $user_data = [':targetuser'=>$targetuser,':visitante'=>$visitante];
+                $visitante='';
+                if (isset($_POST['visitante'])){
+                    $visitante='*';
+                }
+               
+                $targetuser=$_POST['email_input'].$visitante;
+
+                $sql = "insert into usuario_permitido (email) values(:targetuser)";
+                $user_data = [':targetuser'=>$targetuser];
                 $results = DB::insert($sql, $user_data);
                 session(['adminerror'=> "{$targetuser} has sido agregado"]);
 
