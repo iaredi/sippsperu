@@ -16,6 +16,7 @@
             $body = "Code is : {$token}";
             $headers = "From: {$from_email}"."\r\n"."Reply-To: {$reply_email} "." \r\n "."X-Mailer: PHP/".phpversion();
             mail($to, $subject, $body, $headers);
+            session(['mail' => [$to, $subject, $body, $headers]]);
 
             session(['token' => $token]);
             session(['emailreset' => $email]);

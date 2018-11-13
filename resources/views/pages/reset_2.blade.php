@@ -4,6 +4,8 @@
 
 <?php
 echo '<script>console.log('.json_encode(session('token')).');</script>';
+echo '<script>console.log('.json_encode(session('mail')).');</script>';
+
     if ($_SERVER['REQUEST_METHOD']=="POST") {
 
         $error=[];
