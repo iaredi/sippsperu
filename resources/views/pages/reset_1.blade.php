@@ -9,14 +9,14 @@
             $length=10;
             $token = bin2hex(random_bytes($length));
 
-            $from_email = "admin@imgenv.com";
-            $reply_email = "admin@imgenv.com";
+            $from_email = "admin@pueblabiodiversidad.com";
+            $reply_email = "norespuesta@pueblabiodiversidad.com";
             $to=$email;
             $subject='forgot password';
             $body = "Code is : {$token}";
             $headers = "From: {$from_email}"."\r\n"."Reply-To: {$reply_email} "." \r\n "."X-Mailer: PHP/".phpversion();
             mail($to, $subject, $body, $headers);
-            session(['mail' => [$to, $subject, $body, $headers]]);
+            session(['mailmessage' => "Se hemos mandado un correo a {$to}. Buscalo en su archivo de spam!"]);
 
             session(['token' => $token]);
             session(['emailreset' => $email]);

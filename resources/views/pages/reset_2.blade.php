@@ -3,8 +3,8 @@
 @include('inc/nav')
 
 <?php
-echo '<script>console.log('.json_encode(session('token')).');</script>';
-echo '<script>console.log('.json_encode(session('mail')).');</script>';
+$resultofusuariosquery =session('mailmessage');
+
 
     if ($_SERVER['REQUEST_METHOD']=="POST") {
 
