@@ -3,13 +3,13 @@
 @include('inc/nav')
 
 <?php
-$resultofusuariosquery =session('mailmessage');
+$resultofusuariosquery =[];
 
 
     if ($_SERVER['REQUEST_METHOD']=="POST") {
 
         $error=[];
-        $resultofusuariosquery=[];
+        
        
         $pword = $_POST['password'];
         $pword_conf = $_POST['password'];
@@ -46,7 +46,7 @@ $resultofusuariosquery =session('mailmessage');
         $email="";
         $pword="";
         $pword_conf="";
-    
+        $resultofusuariosquery[] =session('mailmessage');
     }
 ?>
       
