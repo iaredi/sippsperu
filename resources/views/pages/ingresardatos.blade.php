@@ -23,7 +23,7 @@ if (!session('email')){
                 echo "<p class='text-dark text-center'style='background-color: lightsteelblue;'>{$hint2}</p>";
                 echo "<p class='text-dark text-center'style='background-color: lightsteelblue;'>{$hint3}</p>";
                         foreach (session('error') as $msg) {
-                            echo "<p class='bg-danger text-center'>{$msg}</p>";
+                            echo "<p class='bg-danger2 text-center'>{$msg}</p>";
                         }
                 ?>
         </div>

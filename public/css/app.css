@@ -10485,6 +10485,10 @@ body {
   border-color: #f8e8d2;
 }
 
+.bg-danger2 {
+  background-color: #ff6a6a;
+}
+
 .warnings {
   margin: 1rem 0 1rem 0;
   display: block;

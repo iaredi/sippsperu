@@ -55,7 +55,7 @@
             <?php 
                 if (session('error')) {
                     foreach (session('error') as $msg) {
-                        echo "<p class='bg-danger text-center'>{$msg}</p>";
+                        echo "<p class='bg-danger2 text-center'>{$msg}</p>";
                     }
                 }
             ?>

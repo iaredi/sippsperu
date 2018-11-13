@@ -57,7 +57,7 @@ $resultofusuariosquery =[];
                     <?php 
                         if (isset($error)) {
                             foreach ($error as $msg) {
-                                echo "<h4 class='bg-danger text-center'>{$msg}</h4>";
+                                echo "<h4 class='bg-danger2 text-center'>{$msg}</h4>";
                             }
                         }
                         if (isset($resultofusuariosquery)) {
