@@ -24455,7 +24455,7 @@ var MapControl = function (_React$Component) {
                         ),
                         _react2.default.createElement(
                             "select",
-                            { name: "table_option", id: "table_optionOpacity", onChange: this.handleOpacityChange, className: "table_option form-control " },
+                            { name: "table_option", id: "table_optionOpacity", defaultValue: "0.6", onChange: this.handleOpacityChange, className: "table_option form-control " },
                             _react2.default.createElement(
                                 "option",
                                 { value: "1.0" },
@@ -24468,7 +24468,7 @@ var MapControl = function (_React$Component) {
                             ),
                             _react2.default.createElement(
                                 "option",
-                                { defaultValue: "0.6", value: "0.6" },
+                                { value: "0.6" },
                                 "0.6"
                             ),
                             _react2.default.createElement(

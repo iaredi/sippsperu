@@ -54,10 +54,10 @@ handleTotalDistinctChange(event) {
                 </div> 
                 <div className ="p-3">
                     <label className="style_option">Opacidad</label>
-                    <select name='table_option' id='table_optionOpacity' onChange={this.handleOpacityChange} className='table_option form-control '>
+                    <select name='table_option' id='table_optionOpacity' defaultValue="0.6" onChange={this.handleOpacityChange} className='table_option form-control '>
                         <option value="1.0">1.0</option>
                         <option value="0.8">0.8</option>
-                        <option defaultValue="0.6" value="0.6">0.6</option>
+                        <option value="0.6">0.6</option>
                         <option value="0.4">0.4</option>
                         <option value="0.2">0.2</option>
                     </select>
