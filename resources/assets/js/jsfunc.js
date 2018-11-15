@@ -75,8 +75,16 @@ function buildDropdowns(tableName, menu, jsTable="Form"){
 function selectOptionsCreate(tableName, menu, preApproved=true, jsTable="Form",approvedList=[], withRows=false, withNuevo=true) {
     let myId=(withRows? "row"+numRows+tableName+"Form" : menu+tableName+jsTable )
     if (tableName==="observaciones") myId="measurementobservacionesObservaciones";
-    if (tableName==="medicion") myId="measurementmedicionMedicion";
+    if (tableName==="medicion"){ myId="measurementmedicionMedicion"};
     if (tableName==="linea_mtp") myId="measurementlinea_mtpSelect";
+    if (tableName==="municipio") {
+        withNuevo=false
+        const newmuninames= muninames.map((muniname)=>{
+            return muniname['nomgeo']
+        })
+        completetitlevallist[tableName]=newmuninames
+        
+    };
 
     if (!!(document.getElementById(myId))){   
         ("row"+numRows+tableName+"Form");

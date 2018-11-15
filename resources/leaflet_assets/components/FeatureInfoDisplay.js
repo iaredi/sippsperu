@@ -52,9 +52,6 @@ class FeatureInfoDisplay extends React.Component {
             text: 'Shannon'
             }];
 
-            console.log(columns)
-            console.log(this.props.featureInfo)
-
         return(
             
         <div>

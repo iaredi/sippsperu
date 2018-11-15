@@ -7,6 +7,7 @@ $pcolumnname='column_name';
 $constraitdef= 'pg_get_constraintdef';
 $tablefrom= 'table_from';
 $titlessql='SELECT name_table, name_column FROM titulos;';
+$munisql='SELECT nomgeo FROM municipio_puebla_4326;';
 
 $keyssql='SELECT conrelid::regclass AS '.$tablefrom.'
 , conname
@@ -21,6 +22,7 @@ $tablenamesql='SELECT '.$ptablename.', '.$pcolumnname.' FROM information_schema.
 $mycollist = DB::select($tablenamesql);
 $mykeylist = DB::select( $keyssql);
 $alltitles = DB::select( $titlessql);
+$muninames = DB::select( $munisql);
 
 $listofcolumns= [];
 $tablenamesarray=[];
@@ -122,6 +124,10 @@ var completetitlevallist=<?php echo json_encode($completetitlevallist) ; "\n";?>
 
 
 var completePValList=<?php echo json_encode($completePValList) ; "\n";?>
+
+
+
+var muninames=<?php echo json_encode($muninames) ; "\n";?>
 
 
 

@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
             if ($municipiochoice=="Nuevo") {
                 $prediofkey=$_POST['row0*municipio*clave'];
             }else{
-                $prediofkey=askforkey("municipio", "clave", "nombre", $_POST['selectmunicipio']);
+                $prediofkey=askforkey("municipio_puebla_4326", "gid", "nomgeo", $_POST['selectmunicipio']);
             }
             $prediocolumns=array(
             "clave"=> $_POST['row0*predio*clave'],
@@ -60,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                 $linea_mtpfkey=askforkey("predio", "clave", "nombre", $_POST['selectpredio']);
                 $linea_mtppredioname=$_POST['selectpredio'];
             }
+
             
             for($i=0; $i<countrows("linea_mtp"); $i++) {
                 $comienzo_longitud = $_POST["row{$i}*linea_mtp*comienzo_longitud"];
@@ -75,6 +76,8 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                     "clave_predio"=> $linea_mtpfkey,
                     "iden_unidad_de_paisaje"=> "notset"
                         );
+                        echo '<script>console.log('.json_encode($linea_mtpcolumns).');</script>';
+
                     $resultofquery[]= savenewentry("linea_mtp", $linea_mtpcolumns);
                     $max_line = getserialmax( "linea_mtp");
 
@@ -411,6 +414,9 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
     }
     if(!$failed && $saved>0){
         return redirect()->to('/thanks')->send();
+    }else{
+        $myerror=['Sus datos no fueron guardados.'];
+        session(['error' => $myerror]);
     }
 
 

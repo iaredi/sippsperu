@@ -24581,9 +24581,6 @@ var FeatureInfoDisplay = function (_React$Component) {
                 text: 'Shannon'
             }];
 
-            console.log(columns);
-            console.log(this.props.featureInfo);
-
             return _react2.default.createElement(
                 'div',
                 null,

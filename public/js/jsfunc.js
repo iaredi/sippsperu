@@ -163,8 +163,17 @@ function selectOptionsCreate(tableName, menu) {
 
     var myId = withRows ? "row" + numRows + tableName + "Form" : menu + tableName + jsTable;
     if (tableName === "observaciones") myId = "measurementobservacionesObservaciones";
-    if (tableName === "medicion") myId = "measurementmedicionMedicion";
+    if (tableName === "medicion") {
+        myId = "measurementmedicionMedicion";
+    };
     if (tableName === "linea_mtp") myId = "measurementlinea_mtpSelect";
+    if (tableName === "municipio") {
+        withNuevo = false;
+        var newmuninames = muninames.map(function (muniname) {
+            return muniname['nomgeo'];
+        });
+        completetitlevallist[tableName] = newmuninames;
+    };
 
     if (!!document.getElementById(myId)) {
         "row" + numRows + tableName + "Form";
