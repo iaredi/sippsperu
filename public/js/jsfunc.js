@@ -1,1 +1,787 @@
-!function(e){var t={};function n(o){if(t[o])return t[o].exports;var a=t[o]={i:o,l:!1,exports:{}};return e[o].call(a.exports,a,a.exports,n),a.l=!0,a.exports}n.m=e,n.c=t,n.d=function(e,t,o){n.o(e,t)||Object.defineProperty(e,t,{configurable:!1,enumerable:!0,get:o})},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=102)}({102:function(e,t,n){e.exports=n(103)},103:function(e,t,n){"use strict";function o(e,t){var n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:"Form";t||(t="measurement");var o=document.getElementById(t+"TBody"+n),a=document.createElement("select");a.id=t+e+n,a.name="select"+e,a.className="form-control";var r=document.createElement("tr");r.id="row"+e;var i=document.createElement("LABEL");i.setAttribute("for",t+e+n);var l=e.split("_").join(" ");i.textContent=l.charAt(0).toUpperCase()+l.slice(1),i.className="dropDownTitles";var c=document.createElement("td");if(c.appendChild(a),r.appendChild(i),r.appendChild(c),"Form"===n){var m=d(e,t,tabletoColumns[e],0),s=document.createElement("td");s.innerHTML="&nbsp;";var u=document.createElement("td");u.innerHTML="&nbsp;";var p=document.createElement("td");p.innerHTML="&nbsp;";var v=document.createElement("td");v.innerHTML="&nbsp;",m[0].prepend(s),m[0].prepend(u),m[1].prepend(p),m[1].prepend(v);var f=document.createElement("tr");f.className="myspacer";for(var h=0;h<9;h++)f.appendChild(s.cloneNode(!0));var b=document.createElement("tr");b.appendChild(s.cloneNode(!0)),m[1].id=e+"inputrow",m[0].id=e+"columnsrow",m[1].className=m[1].className+" hiddenrows",m[0].className=m[0].className+" hiddenrows",o.prepend(b),o.prepend(f),o.prepend(m[1]),o.prepend(m[0]),o.prepend(r)}else{var E=document.createElement("tr");E.id="spacer"+e;var C=document.createElement("td");C.innerHTML="&nbsp;",E.appendChild(C),o.prepend(E),o.prepend(r)}}function a(e,t){var n=!(arguments.length>2&&void 0!==arguments[2])||arguments[2],o=arguments.length>3&&void 0!==arguments[3]?arguments[3]:"Form",a=arguments.length>4&&void 0!==arguments[4]?arguments[4]:[],r=arguments.length>5&&void 0!==arguments[5]&&arguments[5],d=!(arguments.length>6&&void 0!==arguments[6])||arguments[6],i=r?"row"+p+e+"Form":t+e+o;if("observaciones"===e&&(i="measurementobservacionesObservaciones"),"medicion"===e&&(i="measurementmedicionMedicion"),"linea_mtp"===e&&(i="measurementlinea_mtpSelect"),"municipio"===e){d=!1;var l=muninames.map(function(e){return e.nomgeo});completetitlevallist[e]=l}if(document.getElementById(i)){var c=document.getElementById(i);"observacion"===e.split("_")[0]&&(e=e.replace("observacion","especie"));var m=completetitlevallist[e];m="observaciones"===e?["ave","arbol","arbusto","mamifero","herpetofauna","hierba"]:m;var s=document.createDocumentFragment(),u=void 0;if((u=s.appendChild(document.createElement("option"))).value="notselected",u.innerHTML=" ",d&&((u=s.appendChild(document.createElement("option"))).value="Nuevo",u.innerHTML="Nuevo"),!1===n)for(var v=0;v<a[e].length;v++)(u=s.appendChild(document.createElement("option"))).value=m[a[e][v]],u.innerHTML=m[a[e][v]];else for(var f=0;f<m.length;f++)(u=s.appendChild(document.createElement("option"))).value=m[f],u.innerHTML=m[f];for(;c.hasChildNodes();)c.removeChild(c.lastChild);c.appendChild(s)}}function r(e,t){e||(e="measurement");var n=document.getElementById(e+"TBody"+t);if(n)for(;n.hasChildNodes();)n.removeChild(n.lastChild)}function d(e,t,n,o){var a=arguments.length>4&&void 0!==arguments[4]&&arguments[4],r=arguments.length>5&&void 0!==arguments[5]?arguments[5]:[],d=[],i=document.createElement("tr"),l=document.createElement("tr");if(l.class="dataRows",n.sort(function(e,t){return e<t?-1:e>t?1:0}),n.sort(function(e,t){return"notas"==e?1:"notas"==t?-1:-1!==e.indexOf("omienzo")?-1:-1!==t.indexOf("omienzo")?1:-1!==e.indexOf("long")?-1:-1!==t.indexOf("long")?1:-1!==e.indexOf("lat")?-1:-1!==t.indexOf("lat")?1:-1!==e.indexOf("hora")?-1:-1!==t.indexOf("hora")?1:-1!==e.indexOf("fecha")?-1:-1!==t.indexOf("fecha")?1:1==e.length?1:1==t.length?-1:2==e.length?1:2==t.length?-1:0}),r.length>=1&&(n=r),a){if("observacion_arbol"==e||"observacion_arbusto"==e){var c=document.createElement("td");c.textContent="Cuadrante",c.className="formcolumnlabels";var m=document.createElement("td"),s=document.createElement("INPUT");s.setAttribute("type","text"),s.name="row"+o+"*"+e+"*cuadrante",s.id="row"+o+"cuadrante",s.value=1,s.className="cuadranteinput",m.appendChild(s),m.className="cuadrante",i.appendChild(c),l.appendChild(m)}var u=e.replace("observacion","especie"),p=document.createElement("td");p.innerText=u,p.className="formcolumnlabels",i.appendChild(p);var v=document.createElement("SELECT");v.id="row"+o+e+"Form",v.setAttribute("class",u),v.classList.add("allinputs"),v.classList.add("form-control"),v.name="row"+o+"*"+e+"*species";var f=document.createElement("td");f.appendChild(v),l.appendChild(f);var h=document.createElement("td");h.textContent="Nuevo Nombre Comun",h.className="formcolumnlabels",i.appendChild(h);var b=document.createElement("td");b.textContent="Nuevo Nombre Cientifico",b.className="formcolumnlabels",i.appendChild(b);var E=document.createElement("INPUT");E.setAttribute("type","text"),E.classList.add("row"+o+"disableme"),E.classList.add("allinputs"),E.classList.add("form-control"),E.disabled=!0,E.name="row"+o+"*"+e+"*comun";var C=document.createElement("td");C.appendChild(E),l.appendChild(C);var g=document.createElement("INPUT");g.setAttribute("type","text"),g.classList.add("row"+o+"disableme"),g.classList.add("allinputs"),g.classList.add("form-control"),g.disabled=!0,g.name="row"+o+"*"+e+"*cientifico";var N=document.createElement("td");N.appendChild(g),l.appendChild(N)}if(n.forEach(function(t){var n=!1;if(void 0!==allPhp2[e].fKeyCol&&(n=!!allPhp2[e].fKeyCol.find(function(e){return e==t})),!t.includes("iden")&&!n){var r=document.createElement("td"),d=t.split("_").join(" ");r.innerText=d.charAt(0).toUpperCase()+d.slice(1),r.className="formcolumnlabels",i.appendChild(r),i.className=e+"columnrow";var c=document.createElement("INPUT");"fecha"==t.substring(0,5).toLowerCase()?(c.classList.add("fechainputs"),c.setAttribute("type","date")):"hora"===t.substring(0,4).toLowerCase()?(c.classList.add("horainputs"),c.setAttribute("type","time")):c.setAttribute("type","text"),c.id=e+t,c.classList.add(e+t),a&&c.classList.add("row"+o+"*"+e),c.classList.add("allinputs"),c.classList.add("form-control"),c.name=("row"+o+"*"+e+"*"+t).toLowerCase();var m=document.createElement("td");m.appendChild(c),l.className=e+"inputrow","Foto"!==t&&l.appendChild(m)}}),a){var y=document.createElement("INPUT");y.setAttribute("type","file"),y.name=("row"+o+"*"+e+"*foto").toLowerCase(),y.id=e+"foto";var B=document.createElement("td");return B.appendChild(y),l.appendChild(B),[i,l,d]}return[i,l,d]}function i(e,t,n){var o=arguments.length>3&&void 0!==arguments[3]&&arguments[3],r=arguments.length>4&&void 0!==arguments[4]&&arguments[4],i=arguments.length>5&&void 0!==arguments[5]?arguments[5]:[],c=!(arguments.length>6&&void 0!==arguments[6])||arguments[6];t||(t="measurement");var m=document.getElementById(t+"TBodyForm"),s=tabletoColumns[e],u=document.createElement("tr");u.className="formtitles",u.innerHTML="<br> ","none"!==n&&(u.innerHTML=n);var v=document.createElement("tr"),f=document.createElement("INPUT");f.setAttribute("type","submit"),f.id=t+e+"Submit",f.className="mySubmit",document.getElementsByClassName("mySubmit").length>0&&(f=document.getElementsByClassName("mySubmit")[0]);var h=d(e,t,s,0,r,i),b=document.createElement("BUTTON");b.setAttribute("type","button"),b.id="addElementRow"+e;var E=document.createElement("BUTTON");E.setAttribute("type","button"),E.id="subtractElementRow",b.innerText="+",E.innerText="-",b.onclick=function(){return function(e,t,n,o){var r=arguments.length>4&&void 0!==arguments[4]?arguments[4]:[],i="selection",c=document.getElementById(t+"bottomspacer"),m=d(t,i,n,++p,o,r);m[1].class="addedRow",m[1].id="addedRow",e.insertBefore(m[1],c),o&&(l(t,i,p),a(t,i,!0,"Form",[],!0))}(m,e,s,r,i)},E.onclick=function(){return function(e,t){e.childNodes.forEach(function(n,o){if(n.id==t+"bottomspacer"){var a=e.childNodes[o-1];"addedRow"==a.id&&(e.removeChild(a),p--)}})}(m,e)};var C=document.createElement("td");C.appendChild(b),C.appendChild(E),v.appendChild(C);var g=document.createElement("td");g.innerHTML="&nbsp;";var N=document.createElement("tr");N.className="myspacer";for(var y=0;y<h[0].childElementCount;y++)N.appendChild(g.cloneNode(!0));var B=document.createElement("tr");B.appendChild(g.cloneNode(!0));var w=document.createElement("tr");w.id=e+"bottomspacer",w.appendChild(g.cloneNode(!0)),"medicion"!=e&&c?o?(m.appendChild(f),m.insertBefore(N,f),m.insertBefore(B,f),m.insertBefore(u,f),m.insertBefore(v,f),m.insertBefore(h[0],f),m.insertBefore(h[1],f),m.insertBefore(w,f)):(m.appendChild(f),m.insertBefore(u,f),m.insertBefore(v,f),m.insertBefore(h[0],f),m.insertBefore(h[1],f),m.insertBefore(w,f)):(m.appendChild(f),m.insertBefore(h[0],f),m.insertBefore(h[1],f)),r&&(a(e,t,!0,"Form",[],!0),l(e,t,0))}function l(e,t,n){document.getElementById("row"+n+e+"Form").onchange=function(){!function(e,t){var n=document.getElementById("row"+t+e+"Form").value,o=document.getElementsByClassName("row"+t+"*"+e),a=document.getElementsByClassName("row"+t+"disableme");if("Nuevo"===n?(a[0].disabled=!1,a[1].disabled=!1):(a[0].disabled=!0,a[1].disabled=!0,a[0].value="",a[1].value=""),"0000"===n)for(var r=0;r<o.length;r++)o[r].name.includes("hora")?o[r].value="00:01":o[r].name.includes("fecha")?o[r].value="1000-01-01":o[r].value="0000";if("000"===n)for(var d=0;d<o.length;d++)o[d].value="000"}(e,n)}}var c,m,s,u,p=0;"admin"===window.location.href.substr(-5)?(o("usuario","measurement","Select"),a("usuario","measurement",!0,"Select",[],!1,!1),o("usuario_permitido","measurement","Medicion"),a("usuario_permitido","measurement",!0,"Medicion",[],!1,!1),(u=document.getElementById("table_option")).onchange=function(){!function(e,t){for(var n=u.value,o=document.getElementById("field_option"),a=tabletoColumns[n],r=document.createDocumentFragment(),d=void 0,i=0;i<a.length;i++)a[i].includes("iden")||((d=r.appendChild(document.createElement("option"))).value=a[i],d.innerHTML=a[i]);for(;o.hasChildNodes();)o.removeChild(o.lastChild);o.appendChild(r)}()}):(o("linea_mtp","measurement","Select"),a("linea_mtp","measurement",!0,"Select"),c="linea_mtp",m="measurement",s=function(e,t){var n=document.getElementById(t+e+"Select").value;r(t,"Form"),"Nuevo"==n?(r(t,"Medicion"),r(t,"Observaciones"),r(t,"Numero"),r(t,"Form"),i("linea_mtp",t,"Coordenadas de Linea"),["predio","municipio","estado"].forEach(function(e){o(e,t,"Form"),a(e,t),function(e,t){var n=document.getElementById(t+e+"Form");n.onchange=function(){!function(e,t){var o=n.value,a=document.getElementById(e+"inputrow"),r=document.getElementById(e+"columnsrow");"Nuevo"===o?(r.classList.remove("hiddenrows"),a.classList.remove("hiddenrows")):(r.classList.add("hiddenrows"),a.classList.add("hiddenrows"))}(e)}}(e,t)})):(r(t,"Observaciones"),r(t,"Medicion"),o("medicion",t,"Medicion"),a("medicion",t),function(e,t){var n=function(e,t){var n,d=document.getElementById(t+e+"Medicion").value;"Nuevo"===d?(r(t,"Observaciones"),r(t,"Numero"),r(t,"Form"),i("medicion",t),i("personas",t,"Brigada"),i("gps",t,"GPS",!0),i("camara",t,"Camara",!0)):(r(t,"Observaciones"),r(t,"Numero"),r(t,"Form"),o("observaciones",t,"Observaciones"),a("observaciones",t,!0,"Form",[],!1,!1),n=function(e,t){var n="observacion_"+document.getElementById("measurementobservacionesObservaciones").value;if(p=0,r(t,"Numero"),r(t,"Form"),"notselected"!==n){var a=4,d="Transecto";if("observacion_ave"!=n&&"observacion_mamifero"!=n||(d="Punto",a=5),"observacion_arbol"==n||"observacion_arbusto"==n){o("Punto",t,"Numero");var l=document.getElementById("measurementPuntoNumero"),c=document.createDocumentFragment(),m=void 0;(m=c.appendChild(document.createElement("option"))).value="notselected",m.innerHTML=" ";for(var s=1;s<=8;s++)(m=c.appendChild(document.createElement("option"))).value=s,m.innerHTML=s;l.appendChild(c)}o(d,t,"Numero");var u=document.getElementById("measurement"+d+"Numero"),v=document.createDocumentFragment(),f=void 0;(f=v.appendChild(document.createElement("option"))).value="notselected",f.innerHTML=" ";for(var h=1;h<=a;h++)(f=v.appendChild(document.createElement("option"))).value=h,f.innerHTML=h;for(;u.hasChildNodes();)u.removeChild(u.lastChild);u.appendChild(v),r(t,"Form"),function(e,t){var n="punto";if("observacion_hierba"!=e&&"observacion_herpetofauna"!=e||(n="transecto"),i(n+"_"+e.split("_")[1],t," ",!1,!1,[],!1),i(e,t," ",!0,!0,[]),"observacion_arbol"==e||"observacion_arbusto"==e){var o=document.getElementById("addElementRow"+e),a=document.getElementById("subtractElementRow"),r=document.getElementById("row0cuadrante");r.setAttribute("readonly",!0);for(var d=0;d<7;d++){o.onclick();var l=document.getElementById("row"+(d+1)+"cuadrante");l.value=Math.floor(d/2+1.5),l.setAttribute("readonly",!0)}p=0,o.disabled=!0,a.disabled=!0}}(n,t)}},document.getElementById("measurementobservacionesObservaciones").onchange=function(e,t){n(e,t)})};document.getElementById(t+e+"Medicion").onchange=function(){n(e,t)}}("medicion",t))},document.getElementById(m+c+"Select").onchange=function(){s(c,m)})}});
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 103);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ 103:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(104);
+
+
+/***/ }),
+
+/***/ 104:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+function buildDropdowns(tableName, menu) {
+    var jsTable = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "Form";
+
+    if (!menu) {
+        menu = 'measurement';
+    }
+    var myTBody = document.getElementById(menu + "TBody" + jsTable);
+
+    var selectList = document.createElement("select");
+    selectList.id = menu + tableName + jsTable;
+    selectList.name = "select" + tableName;
+    selectList.className = 'form-control';
+    var newTR = document.createElement("tr");
+    newTR.id = "row" + tableName;
+
+    var dataLabel = document.createElement("LABEL");
+    dataLabel.setAttribute("for", menu + tableName + jsTable);
+    var lowerCaseTitle = tableName.split("_").join(" ");
+    dataLabel.textContent = lowerCaseTitle.charAt(0).toUpperCase() + lowerCaseTitle.slice(1);
+    dataLabel.className = "dropDownTitles";
+
+    var dataSelect = document.createElement("td");
+    dataSelect.appendChild(selectList);
+
+    newTR.appendChild(dataLabel);
+    newTR.appendChild(dataSelect);
+
+    if (jsTable === "Form") {
+
+        var myCols = tabletoColumns[tableName];
+        var newColRows = createRows(tableName, menu, myCols, 0);
+        var spacer1 = document.createElement("td");
+        spacer1.innerHTML = "&nbsp;";
+        var spacer2 = document.createElement("td");
+        spacer2.innerHTML = "&nbsp;";
+        var spacer3 = document.createElement("td");
+        spacer3.innerHTML = "&nbsp;";
+        var spacer4 = document.createElement("td");
+        spacer4.innerHTML = "&nbsp;";
+        newColRows[0].prepend(spacer1);
+        newColRows[0].prepend(spacer2);
+        newColRows[1].prepend(spacer3);
+        newColRows[1].prepend(spacer4);
+
+        var spacerTR1 = document.createElement("tr");
+        spacerTR1.className = "myspacer";
+        for (var i = 0; i < 9; i++) {
+            spacerTR1.appendChild(spacer1.cloneNode(true));
+        }
+        var spacerTR2 = document.createElement("tr");
+        spacerTR2.appendChild(spacer1.cloneNode(true));
+
+        newColRows[1].id = tableName + "inputrow";
+        newColRows[0].id = tableName + "columnsrow";
+        newColRows[1].className = newColRows[1].className + " hiddenrows";
+        newColRows[0].className = newColRows[0].className + " hiddenrows";
+
+        myTBody.prepend(spacerTR2);
+        myTBody.prepend(spacerTR1);
+        myTBody.prepend(newColRows[1]);
+        myTBody.prepend(newColRows[0]);
+        myTBody.prepend(newTR);
+    } else {
+        var spacerTR = document.createElement("tr");
+        spacerTR.id = "spacer" + tableName;
+        var _spacer = document.createElement("td");
+        _spacer.innerHTML = "&nbsp;";
+        spacerTR.appendChild(_spacer);
+        myTBody.prepend(spacerTR);
+        myTBody.prepend(newTR);
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////                
+
+function selectOptionsCreate(tableName, menu) {
+    var preApproved = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+    var jsTable = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "Form";
+    var approvedList = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
+    var withRows = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
+    var withNuevo = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : true;
+
+    var myId = withRows ? "row" + numRows + tableName + "Form" : menu + tableName + jsTable;
+    if (tableName === "observaciones") myId = "measurementobservacionesObservaciones";
+    if (tableName === "medicion") {
+        myId = "measurementmedicionMedicion";
+    };
+    if (tableName === "linea_mtp") myId = "measurementlinea_mtpSelect";
+    if (tableName === "municipio") {
+        withNuevo = false;
+        var newmuninames = muninames.map(function (muniname) {
+            return muniname['nomgeo'];
+        });
+        completetitlevallist[tableName] = newmuninames;
+    };
+
+    if (!!document.getElementById(myId)) {
+        "row" + numRows + tableName + "Form";
+        var mySelection = document.getElementById(myId);
+        if (tableName.split('_')[0] === "observacion") tableName = tableName.replace("observacion", "especie");
+
+        var mycurrentlist = completetitlevallist[tableName];
+        mycurrentlist = tableName === "observaciones" ? ['ave', 'arbol', 'arbusto', 'mamifero', 'herpetofauna', 'hierba'] : mycurrentlist;
+
+        var frag = document.createDocumentFragment(),
+            elOption = void 0;
+        elOption = frag.appendChild(document.createElement('option'));
+        elOption.value = "notselected";
+        elOption.innerHTML = " ";
+        if (withNuevo) {
+            elOption = frag.appendChild(document.createElement('option'));
+            elOption.value = "Nuevo";
+            elOption.innerHTML = "Nuevo";
+        }
+
+        if (preApproved === false) {
+            for (var i = 0; i < approvedList[tableName].length; i++) {
+                elOption = frag.appendChild(document.createElement('option'));
+                elOption.value = mycurrentlist[approvedList[tableName][i]];
+                elOption.innerHTML = mycurrentlist[approvedList[tableName][i]];
+            }
+        } else {
+            for (var _i = 0; _i < mycurrentlist.length; _i++) {
+                elOption = frag.appendChild(document.createElement('option'));
+                elOption.value = mycurrentlist[_i];
+                elOption.innerHTML = mycurrentlist[_i];
+            }
+        }
+        while (mySelection.hasChildNodes()) {
+            mySelection.removeChild(mySelection.lastChild);
+        }
+        mySelection.appendChild(frag);
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////        
+
+function clearForm(menu, jsTable) {
+    if (!menu) {
+        menu = 'measurement';
+    }
+    var myTBody = document.getElementById(menu + "TBody" + jsTable);
+    if (!!myTBody) {
+        while (myTBody.hasChildNodes()) {
+            myTBody.removeChild(myTBody.lastChild);
+        }
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////      
+
+function addOnChangeMTP(tableName, menu) {
+    var currentFunction = function currentFunction(tableName, menu) {
+        var myChoice = document.getElementById(menu + tableName + "Select").value;
+        clearForm(menu, "Form");
+        if (myChoice == "Nuevo") {
+            clearForm(menu, "Medicion");
+            clearForm(menu, "Observaciones");
+            clearForm(menu, "Numero");
+            clearForm(menu, "Form");
+            buildForm("linea_mtp", menu, "Coordenadas de Linea");
+            var newMTPdropdowns = ["predio", "municipio", "estado"];
+            newMTPdropdowns.forEach(function (newTable) {
+                buildDropdowns(newTable, menu, "Form");
+                selectOptionsCreate(newTable, menu);
+                addOnChangeFKey(newTable, menu);
+            });
+        } else {
+            //This is when an old linea_mtp is selected
+            clearForm(menu, "Observaciones");
+            clearForm(menu, "Medicion");
+            buildDropdowns("medicion", menu, "Medicion");
+            selectOptionsCreate("medicion", menu);
+            addOnChangeMedicion('medicion', menu);
+        }
+    };
+    var currentOnChange = function currentOnChange() {
+        currentFunction(tableName, menu);
+    };
+
+    var getSelection = document.getElementById(menu + tableName + "Select");
+    getSelection.onchange = currentOnChange;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////          
+
+function addOnChangeFKey(tableName, menu) {
+    var getSelection = document.getElementById(menu + tableName + "Form");
+    var currentFunction3 = function currentFunction3(tableName, menu) {
+        var myChoice = getSelection.value;
+        var inputRow = document.getElementById(tableName + "inputrow");
+        var colRow = document.getElementById(tableName + "columnsrow");
+        if (myChoice === "Nuevo") {
+            colRow.classList.remove("hiddenrows");
+            inputRow.classList.remove("hiddenrows");
+        } else {
+            colRow.classList.add("hiddenrows");
+            inputRow.classList.add("hiddenrows");
+        }
+    };
+    var currentOnChange3 = function currentOnChange3() {
+        currentFunction3(tableName, menu);
+    };
+    getSelection.onchange = currentOnChange3;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////       
+function addOnChangeMedicion(tableName, menu) {
+    var getSelection = document.getElementById(menu + tableName + "Medicion");
+    var currentFunctionMedicion = function currentFunctionMedicion(tableName, menu) {
+        var myChoice = document.getElementById(menu + tableName + "Medicion").value;
+        if (myChoice === "Nuevo") {
+            clearForm(menu, "Observaciones");
+            clearForm(menu, "Numero");
+            clearForm(menu, "Form");
+            buildForm("medicion", menu);
+            buildForm("personas", menu, "Brigada");
+            buildForm("gps", menu, "GPS", true);
+            buildForm("camara", menu, "Camara", true);
+        } else {
+            clearForm(menu, "Observaciones");
+            clearForm(menu, "Numero");
+            clearForm(menu, "Form");
+            buildDropdowns("observaciones", menu, "Observaciones");
+            selectOptionsCreate("observaciones", menu, true, "Form", [], false, false);
+            addOnChangeObservaciones(menu);
+        }
+    };
+    var currentOnChangeMedicion = function currentOnChangeMedicion() {
+        currentFunctionMedicion(tableName, menu);
+    };
+    getSelection.onchange = currentOnChangeMedicion;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////         
+
+function createRows(tableName, menu, myCols, myNumRow) {
+    var obs = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+    var customList = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : [];
+
+
+    var speciesTable = [];
+    var columnRowOld = document.createElement("tr");
+    var firstDataRow = document.createElement("tr");
+    firstDataRow.class = "dataRows";
+
+    myCols.sort(function (a, b) {
+        if (a < b) return -1;
+        if (a > b) return 1;
+        return 0;
+    });
+    myCols.sort(function (a, b) {
+        if (a == 'notas') return 1;
+        if (b == 'notas') return -1;
+        if (a.indexOf('omienzo') !== -1) return -1;
+        if (b.indexOf('omienzo') !== -1) return 1;
+        if (a.indexOf('long') !== -1) return -1;
+        if (b.indexOf('long') !== -1) return 1;
+        if (a.indexOf('lat') !== -1) return -1;
+        if (b.indexOf('lat') !== -1) return 1;
+        if (a.indexOf('hora') !== -1) return -1;
+        if (b.indexOf('hora') !== -1) return 1;
+        if (a.indexOf('fecha') !== -1) return -1;
+        if (b.indexOf('fecha') !== -1) return 1;
+        if (a.length == 1) return 1;
+        if (b.length == 1) return -1;
+        if (a.length == 2) return 1;
+        if (b.length == 2) return -1;
+        return 0;
+    });
+
+    if (customList.length >= 1) myCols = customList;
+
+    if (obs) {
+        if (tableName == 'observacion_arbol' || tableName == 'observacion_arbusto') {
+            var cuadranteLabel = document.createElement("td");
+            cuadranteLabel.textContent = "Cuadrante";
+            cuadranteLabel.className = "formcolumnlabels";
+            var cuadranteBox = document.createElement("td");
+            var cuadranteInput = document.createElement("INPUT");
+            cuadranteInput.setAttribute("type", "text");
+            cuadranteInput.name = "row" + myNumRow + '*' + tableName + '*cuadrante';
+            cuadranteInput.id = "row" + myNumRow + "cuadrante";
+            cuadranteInput.value = 1;
+            cuadranteInput.className = "cuadranteinput";
+            cuadranteBox.appendChild(cuadranteInput);
+            cuadranteBox.className = "cuadrante";
+            columnRowOld.appendChild(cuadranteLabel);
+            firstDataRow.appendChild(cuadranteBox);
+        }
+        var _speciesTable = tableName.replace("observacion", "especie");
+        //Species drop Label
+        var speciesLabelDrop = document.createElement("td");
+        speciesLabelDrop.innerText = _speciesTable;
+        speciesLabelDrop.className = "formcolumnlabels";
+        columnRowOld.appendChild(speciesLabelDrop);
+        //Species drop 
+        var speciesInput = document.createElement("SELECT");
+        speciesInput.id = "row" + myNumRow + tableName + "Form"; //this needs to
+        speciesInput.setAttribute("class", _speciesTable);
+        speciesInput.classList.add('allinputs');
+        speciesInput.classList.add('form-control');
+
+        speciesInput.name = "row" + myNumRow + "*" + tableName + "*" + "species";
+        var inputBox = document.createElement("td");
+        inputBox.appendChild(speciesInput);
+        firstDataRow.appendChild(inputBox);
+        //Species comun Label
+        var speciesLabelComun = document.createElement("td");
+        speciesLabelComun.textContent = "Nuevo Nombre Comun";
+        speciesLabelComun.className = "formcolumnlabels";
+        columnRowOld.appendChild(speciesLabelComun);
+        //Species cien Label
+        var speciesLabelCien = document.createElement("td");
+        speciesLabelCien.textContent = "Nuevo Nombre Cientifico";
+        speciesLabelCien.className = "formcolumnlabels";
+        columnRowOld.appendChild(speciesLabelCien);
+        //Species comun inputbox
+        var speciesBoxComun = document.createElement("INPUT");
+        speciesBoxComun.setAttribute("type", "text");
+        speciesBoxComun.classList.add("row" + myNumRow + "disableme");
+        speciesBoxComun.classList.add('allinputs');
+        speciesBoxComun.classList.add('form-control');
+
+        speciesBoxComun.disabled = true;
+        speciesBoxComun.name = "row" + myNumRow + "*" + tableName + "*" + "comun";
+        var boxContainerComun = document.createElement("td");
+        boxContainerComun.appendChild(speciesBoxComun);
+        firstDataRow.appendChild(boxContainerComun);
+        //Species cien inputbox
+        var speciesBoxCien = document.createElement("INPUT");
+        speciesBoxCien.setAttribute("type", "text");
+
+        speciesBoxCien.classList.add("row" + myNumRow + "disableme");
+        speciesBoxCien.classList.add('allinputs');
+        speciesBoxCien.classList.add('form-control');
+
+        speciesBoxCien.disabled = true;
+        speciesBoxCien.name = "row" + myNumRow + "*" + tableName + "*" + "cientifico";
+        var boxContainerCien = document.createElement("td");
+        boxContainerCien.appendChild(speciesBoxCien);
+        firstDataRow.appendChild(boxContainerCien);
+    }
+    myCols.forEach(function (val) {
+        var found = false;
+        console.log(tableName);
+        if (typeof allPhp2[tableName]["fKeyCol"] !== "undefined") {
+            found = !!allPhp2[tableName]["fKeyCol"].find(function (element) {
+                return element == val;
+            });
+        }
+        if (!val.includes("iden") && !found) {
+            var nameBox = document.createElement("td");
+            var spacedval = val.split("_").join(" ");
+            nameBox.innerText = spacedval.charAt(0).toUpperCase() + spacedval.slice(1);
+            nameBox.className = "formcolumnlabels";
+
+            columnRowOld.appendChild(nameBox);
+            columnRowOld.className = tableName + "columnrow";
+            var textInput = document.createElement("INPUT");
+            if (val.substring(0, 5).toLowerCase() == "fecha") {
+                textInput.classList.add('fechainputs');
+
+                textInput.setAttribute("type", "date");
+            } else if (val.substring(0, 4).toLowerCase() === "hora") {
+                textInput.classList.add('horainputs');
+                textInput.setAttribute("type", "time");
+            } else {
+                textInput.setAttribute("type", "text");
+            }
+            textInput.id = tableName + val;
+            textInput.classList.add(tableName + val);
+            if (obs) {
+                textInput.classList.add("row" + myNumRow + "*" + tableName);
+            }
+            textInput.classList.add('allinputs');
+            textInput.classList.add('form-control');
+
+            textInput.name = ("row" + myNumRow + "*" + tableName + "*" + val).toLowerCase();
+            var _inputBox = document.createElement("td");
+            _inputBox.appendChild(textInput);
+            firstDataRow.className = tableName + "inputrow";
+            if (val !== 'Foto') {
+                firstDataRow.appendChild(_inputBox);
+            }
+        }
+    });
+    if (obs) {
+        var fotoInput = document.createElement("INPUT");
+        fotoInput.setAttribute("type", "file");
+        fotoInput.name = ("row" + myNumRow + "*" + tableName + "*" + 'foto').toLowerCase();
+        fotoInput.id = tableName + 'foto';
+        var fotoInputBox = document.createElement("td");
+        fotoInputBox.appendChild(fotoInput);
+
+        firstDataRow.appendChild(fotoInputBox);
+        return [columnRowOld, firstDataRow, speciesTable];
+    }
+
+    return [columnRowOld, firstDataRow, speciesTable];
+}
+
+//////////////////////////////////////////////////////////////////////////////////////          
+
+
+function buildForm(tableName, menu, myTitle) {
+    var spacers = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+    var obs = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+    var customList = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : [];
+    var buttons = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : true;
+
+    if (!menu) {
+        menu = 'measurement';
+    }
+    var myTBody = document.getElementById(menu + "TBodyForm");
+    var myCols = tabletoColumns[tableName];
+    var spaceRow = document.createElement("tr");
+    spaceRow.className = "formtitles";
+    spaceRow.innerHTML = "<br> ";
+    if (myTitle !== "none") spaceRow.innerHTML = myTitle;
+    var buttonRow = document.createElement("tr");
+    var mySubmit = document.createElement("INPUT");
+    mySubmit.setAttribute("type", "submit");
+    mySubmit.id = menu + tableName + "Submit";
+    mySubmit.className = "mySubmit";
+    if (document.getElementsByClassName("mySubmit").length > 0) mySubmit = document.getElementsByClassName("mySubmit")[0];
+    var newRows = createRows(tableName, menu, myCols, 0, obs, customList);
+
+    var addElementRow = document.createElement("BUTTON");
+    addElementRow.setAttribute("type", "button");
+    addElementRow.id = "addElementRow" + tableName;
+    //addElementRow.className = "addElementRow";
+    var subtractElementRow = document.createElement("BUTTON");
+    subtractElementRow.setAttribute("type", "button");
+
+    subtractElementRow.id = "subtractElementRow";
+    addElementRow.innerText = "+";
+    subtractElementRow.innerText = "-";
+
+    addElementRow.onclick = function () {
+        return addRow(myTBody, tableName, myCols, obs, customList);
+    };
+    subtractElementRow.onclick = function () {
+        return subtractRow(myTBody, tableName);
+    };
+    var buttonBox = document.createElement("td");
+    buttonBox.appendChild(addElementRow);
+    buttonBox.appendChild(subtractElementRow);
+    buttonRow.appendChild(buttonBox);
+
+    var spacer1 = document.createElement("td");
+    spacer1.innerHTML = "&nbsp;";
+
+    var spacerTR1 = document.createElement("tr");
+    spacerTR1.className = "myspacer";
+    for (var i = 0; i < newRows[0].childElementCount; i++) {
+        spacerTR1.appendChild(spacer1.cloneNode(true));
+    }
+    var spacerTR2 = document.createElement("tr");
+    spacerTR2.appendChild(spacer1.cloneNode(true));
+
+    var bottomSpacer = document.createElement("tr");
+    bottomSpacer.id = tableName + "bottomspacer";
+    bottomSpacer.appendChild(spacer1.cloneNode(true));
+
+    if (tableName == 'medicion' || !buttons) {
+        myTBody.appendChild(mySubmit);
+        myTBody.insertBefore(newRows[0], mySubmit);
+        myTBody.insertBefore(newRows[1], mySubmit);
+        //myTBody.insertBefore(bottomSpacer, mySubmit);
+    } else {
+
+        if (spacers) {
+
+            myTBody.appendChild(mySubmit);
+            myTBody.insertBefore(spacerTR1, mySubmit);
+            myTBody.insertBefore(spacerTR2, mySubmit);
+            myTBody.insertBefore(spaceRow, mySubmit);
+            myTBody.insertBefore(buttonRow, mySubmit);
+            myTBody.insertBefore(newRows[0], mySubmit);
+            myTBody.insertBefore(newRows[1], mySubmit);
+            myTBody.insertBefore(bottomSpacer, mySubmit);
+        } else {
+
+            myTBody.appendChild(mySubmit);
+            myTBody.insertBefore(spaceRow, mySubmit);
+            myTBody.insertBefore(buttonRow, mySubmit);
+            myTBody.insertBefore(newRows[0], mySubmit);
+            myTBody.insertBefore(newRows[1], mySubmit);
+            myTBody.insertBefore(bottomSpacer, mySubmit);
+        }
+    }
+
+    if (obs) {
+        selectOptionsCreate(tableName, menu, true, "Form", [], true);
+
+        selectSpeciesOnChange(tableName, menu, 0);
+
+        //selectOptionsCreate(tableName, menu, true, "Form",[], 0)
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////          
+
+function addRow(myTBody, tableName, myCols, obs) {
+    var customList = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
+
+    var menu = 'selection';
+    var bottomSpacer = document.getElementById(tableName + "bottomspacer");
+    numRows++;
+    var newRows = createRows(tableName, menu, myCols, numRows, obs, customList);
+    newRows[1].class = "addedRow";
+    newRows[1].id = "addedRow";
+    myTBody.insertBefore(newRows[1], bottomSpacer);
+    if (obs) {
+        selectSpeciesOnChange(tableName, menu, numRows);
+        selectOptionsCreate(tableName, menu, true, "Form", [], true);
+    }
+}
+//////////////////////////////////////////////////////////////////////////////////////          
+
+function subtractRow(myTBody, tableName) {
+    myTBody.childNodes.forEach(function (val, index) {
+        if (val.id == tableName + "bottomspacer") {
+            var targetNode = myTBody.childNodes[index - 1];
+            if (targetNode.id == "addedRow") {
+                myTBody.removeChild(targetNode);
+                numRows--;
+            }
+        }
+    });
+}
+
+//////////////////////////////////////////////////////////////////////////////////////          
+
+function addOnChangeObservaciones(menu) {
+    var getSelection = document.getElementById("measurementobservacionesObservaciones");
+    var currentFunction3 = function currentFunction3(tableName, menu) {
+        var myChoice = 'observacion_' + document.getElementById("measurementobservacionesObservaciones").value;
+        numRows = 0;
+        clearForm(menu, "Numero");
+        clearForm(menu, "Form");
+        if (myChoice !== 'notselected') {
+            var numberPoints = 4;
+            var transpunto = 'Transecto';
+            if (myChoice == "observacion_ave" || myChoice == "observacion_mamifero") {
+                transpunto = 'Punto';
+                numberPoints = 5;
+            }
+            if (myChoice == "observacion_arbol" || myChoice == "observacion_arbusto") {
+                buildDropdowns("Punto", menu, "Numero");
+                var mySelectionPunto = document.getElementById("measurementPuntoNumero");
+                //Add Number Options
+                var fragPunto = document.createDocumentFragment(),
+                    _elOption = void 0;
+                _elOption = fragPunto.appendChild(document.createElement('option'));
+                _elOption.value = "notselected";
+                _elOption.innerHTML = " ";
+                for (var i = 1; i <= 8; i++) {
+                    _elOption = fragPunto.appendChild(document.createElement('option'));
+                    _elOption.value = i;
+                    _elOption.innerHTML = i;
+                }
+                mySelectionPunto.appendChild(fragPunto);
+            }
+            buildDropdowns(transpunto, menu, "Numero");
+            var mySelection = document.getElementById('measurement' + transpunto + 'Numero');
+            //Add Number Options
+
+            var frag = document.createDocumentFragment(),
+                elOption = void 0;
+            elOption = frag.appendChild(document.createElement('option'));
+            elOption.value = "notselected";
+            elOption.innerHTML = " ";
+            for (var _i2 = 1; _i2 <= numberPoints; _i2++) {
+                elOption = frag.appendChild(document.createElement('option'));
+                elOption.value = _i2;
+                elOption.innerHTML = _i2;
+            }
+            while (mySelection.hasChildNodes()) {
+                mySelection.removeChild(mySelection.lastChild);
+            }
+            mySelection.appendChild(frag);
+            clearForm(menu, "Form");
+
+            buildCustomForm(myChoice, menu);
+        }
+    };
+    var currentOnChange3 = function currentOnChange3(tableName, menu) {
+        currentFunction3(tableName, menu);
+    };
+    getSelection.onchange = currentOnChange3;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////          
+
+function selectSpeciesOnChange(tableName, menu, numRows) {
+    var currentFunction2 = function currentFunction2(tableName, numRows) {
+        var myChoice = document.getElementById("row" + numRows + tableName + "Form").value;
+        var allMyRows = document.getElementsByClassName("row" + numRows + "*" + tableName);
+        var colRow = document.getElementsByClassName("row" + numRows + "disableme");
+        if (myChoice === "Nuevo") {
+            colRow[0].disabled = false;
+            colRow[1].disabled = false;
+        } else {
+            colRow[0].disabled = true;
+            colRow[1].disabled = true;
+            colRow[0].value = "";
+            colRow[1].value = "";
+        }
+        if (myChoice === "0000") {
+            for (var i = 0; i < allMyRows.length; i++) {
+                if (allMyRows[i].name.includes("hora")) {
+                    allMyRows[i].value = "00:01";
+                } else if (allMyRows[i].name.includes("fecha")) {
+                    allMyRows[i].value = "1000-01-01";
+                } else {
+                    allMyRows[i].value = "0000";
+                }
+            }
+        }
+        if (myChoice === "000") {
+            for (var _i3 = 0; _i3 < allMyRows.length; _i3++) {
+                allMyRows[_i3].value = "000";
+            }
+        }
+    };
+    var currentOnChange2 = function currentOnChange2() {
+        currentFunction2(tableName, numRows);
+    };
+    var getSelection = document.getElementById("row" + numRows + tableName + "Form");
+    getSelection.onchange = currentOnChange2;
+}
+
+function buildCustomForm(obName, menu) {
+    var transPunto = 'punto';
+    if (obName == 'observacion_hierba' || obName == 'observacion_herpetofauna') {
+        transPunto = 'transecto';
+    }
+    var obsNameContext = transPunto + "_" + obName.split('_')[1];
+
+    buildForm(obsNameContext, menu, ' ', false, false, [], false);
+
+    buildForm(obName, menu, ' ', true, true, []);
+
+    if (obName == 'observacion_arbol' || obName == 'observacion_arbusto') {
+        var getSelectionAdd = document.getElementById("addElementRow" + obName);
+        var getSelectionSubtract = document.getElementById('subtractElementRow');
+        var getCuadrante0 = document.getElementById("row" + 0 + "cuadrante");
+        getCuadrante0.setAttribute("readonly", true);
+        for (var i = 0; i < 7; i++) {
+            getSelectionAdd.onclick();
+            var getCuadrante = document.getElementById("row" + (i + 1) + "cuadrante");
+            getCuadrante.value = Math.floor(i / 2 + 1.5);
+            getCuadrante.setAttribute("readonly", true);
+        }
+        numRows = 0;
+        getSelectionAdd.disabled = true;
+        getSelectionSubtract.disabled = true;
+    }
+}
+
+function addOnChangeAdminTable() {
+    var getSelection = document.getElementById('table_option');
+    var currentFunction3 = function currentFunction3(tableName, menu) {
+
+        var myChoice = getSelection.value;
+        var mySelection = document.getElementById('field_option');
+        var mycurrentlist = tabletoColumns[myChoice];
+        var frag = document.createDocumentFragment(),
+            elOption = void 0;
+
+        for (var i = 0; i < mycurrentlist.length; i++) {
+            if (!mycurrentlist[i].includes("iden")) {
+                elOption = frag.appendChild(document.createElement('option'));
+                elOption.value = mycurrentlist[i];
+                elOption.innerHTML = mycurrentlist[i];
+            }
+        }
+        while (mySelection.hasChildNodes()) {
+            mySelection.removeChild(mySelection.lastChild);
+        }
+        mySelection.appendChild(frag);
+    };
+    var currentOnChange3 = function currentOnChange3() {
+        currentFunction3();
+    };
+    getSelection.onchange = currentOnChange3;
+}
+
+var numRows = 0;
+if (window.location.href.substr(-5) === 'admin') {
+    buildDropdowns("usuario", "measurement", "Select");
+    selectOptionsCreate("usuario", "measurement", true, "Select", [], false, false);
+    buildDropdowns("usuario_permitido", "measurement", "Medicion");
+    selectOptionsCreate("usuario_permitido", "measurement", true, "Medicion", [], false, false);
+    addOnChangeAdminTable();
+} else {
+    buildDropdowns("linea_mtp", "measurement", "Select");
+    selectOptionsCreate("linea_mtp", "measurement", true, "Select");
+    addOnChangeMTP("linea_mtp", "measurement");
+}
+
+/***/ })
+
+/******/ });

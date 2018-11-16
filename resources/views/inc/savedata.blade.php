@@ -34,34 +34,33 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                 }
 
         //Save New Predio Data
-        $prediochoice = $_POST['selectpredio'];
-        if ($prediochoice=="Nuevo") {
-            if ($municipiochoice=="Nuevo") {
-                $prediofkey=$_POST['row0*municipio*clave'];
-            }else{
-                $prediofkey=askforkey("municipio_puebla_4326", "gid", "nomgeo", $_POST['selectmunicipio']);
-            }
+        if ($_POST['selectpredio']=="Nuevo") {
+            
+            
+            $prediofkey=askforkey("municipio_puebla_4326", "gid", "nomgeo", $_POST['selectmunicipio']);
+            
             $prediocolumns=array(
-            "clave"=> $_POST['row0*predio*clave'],
             "nombre"=> $_POST['row0*predio*nombre'],
-            "direccion"=> $_POST['row0*predio*direccion'],
+            "nombre_de_duenio_o_technico"=> $_POST['row0*predio*nombre_de_duenio_o_technico'],
+            "referencia_de_accesso"=> $_POST['row0*predio*referencia_de_accesso'],
             "superficie"=> $_POST['row0*predio*superficie'],
-            "telefono"=> $_POST['row0*predio*telefono'],
+            "contacto"=> $_POST['row0*predio*contacto'],
+            "iden_muni_predio"=> $_POST['selectmunicipio'].'-'.$_POST['row0*predio*nombre'],
             "clave_municipio"=> $prediofkey
                 );
             $resultofquery[]= savenewentry("predio", $prediocolumns);
                 }
 
             //Save Lat/Long Rows
-            if ($prediochoice=="Nuevo") {
-                $linea_mtpfkey=$_POST['row0*predio*clave'];
+            if ($_POST['selectpredio']=="Nuevo") {      
+                $linea_mtpfkey=askforkey("predio", "iden", "iden_muni_predio", $_POST['selectmunicipio'].'-'.$_POST['row0*predio*nombre']);
+          
                 $linea_mtppredioname=$_POST['row0*predio*nombre'];
             }else{
-                $linea_mtpfkey=askforkey("predio", "clave", "nombre", $_POST['selectpredio']);
+                $linea_mtpfkey=askforkey("predio", "iden", "iden_muni_predio", $_POST['selectpredio']);
                 $linea_mtppredioname=$_POST['selectpredio'];
             }
-
-            
+            //Save New Linea_MTP Data
             for($i=0; $i<countrows("linea_mtp"); $i++) {
                 $comienzo_longitud = $_POST["row{$i}*linea_mtp*comienzo_longitud"];
                 $fin_longitud = $_POST["row{$i}*linea_mtp*fin_longitud"];
@@ -73,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                     "comienzo_latitud"=> $comienzo_latitud,
                     "fin_latitud"=> $fin_latitud,
                     "nombre_iden"=> "{$linea_mtppredioname} ({$comienzo_latitud},{$comienzo_longitud}) ({$fin_latitud},{$fin_longitud})",
-                    "clave_predio"=> $linea_mtpfkey,
+                    "iden_predio"=> $linea_mtpfkey,
                     "iden_unidad_de_paisaje"=> "notset"
                         );
                         echo '<script>console.log('.json_encode($linea_mtpcolumns).');</script>';

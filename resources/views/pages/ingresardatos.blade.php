@@ -29,7 +29,7 @@ if (!session('email')){
         </div>
 
     <div class="wrapper2" id="startMenuDiv">
-    <h3 id="measurement3">Eligir Linea_MTP</h3>
+        <h3 id="measurement3">Eligir Linea_MTP</h3>
         <form id="measurementform" method="post", enctype="multipart/form-data">
             {{ csrf_field() }}
 

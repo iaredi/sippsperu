@@ -334,6 +334,7 @@ function createRows (tableName,menu,myCols, myNumRow, obs=false,customList=[]){
     }
     myCols.forEach(function(val){
         let found = false;
+        console.log(tableName)
         if (typeof(allPhp2[tableName]["fKeyCol"])!=="undefined"){
             found = !!allPhp2[tableName]["fKeyCol"].find(function(element) {
                 return element==val;
