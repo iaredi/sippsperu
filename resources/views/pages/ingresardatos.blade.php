@@ -1,6 +1,4 @@
 <?php
-        echo '<script>console.log('.json_encode(session('visitante')).');</script>';
-
 if (!session('email')){
     return redirect()->to('/login')->send();
 }
@@ -12,7 +10,6 @@ if (!session('email')){
 @include('inc/header')
 @include('inc/nav')
 
-
     <img src="{{ asset('img/popo.jpg') }}"  alt="Italian Trulli" style="height:250px; width:380px;">
             <div class=" warnings">
                 <?php
@@ -22,9 +19,9 @@ if (!session('email')){
                 echo "<p class='text-dark text-center' style='background-color: lightsteelblue;'>{$hint1}</p>";
                 echo "<p class='text-dark text-center'style='background-color: lightsteelblue;'>{$hint2}</p>";
                 echo "<p class='text-dark text-center'style='background-color: lightsteelblue;'>{$hint3}</p>";
-                        foreach (session('error') as $msg) {
-                            echo "<p class='bg-danger2 text-center'>{$msg}</p>";
-                        }
+                    foreach (session('error') as $msg) {
+                        echo "<p class='bg-danger2 text-center'>{$msg}</p>";
+                    }
                 ?>
         </div>
 

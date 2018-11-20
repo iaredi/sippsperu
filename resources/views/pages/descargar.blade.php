@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
 
 
    
-   <img src="{{ asset('img/popo.jpg') }}"  alt="Italian Trulli" style="width:500px;height:200px;">
+   <img src="{{ asset('img/popo.jpg') }}"  alt="Italian Trulli" style="height:250px; width:380px;">
    <div>
         
 
