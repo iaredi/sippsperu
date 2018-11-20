@@ -1,5 +1,8 @@
 
 <?php
+
+
+
 $resultofquery=[];
 
 if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!session('visitante'))  ){
@@ -75,7 +78,6 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                     "iden_predio"=> $linea_mtpfkey,
                     "iden_unidad_de_paisaje"=> "notset"
                         );
-                        echo '<script>console.log('.json_encode($linea_mtpcolumns).');</script>';
 
                     $resultofquery[]= savenewentry("linea_mtp", $linea_mtpcolumns);
                     $max_line = getserialmax( "linea_mtp");
@@ -198,12 +200,14 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                 $mylat = $_POST["row0*{$unitlower}_{$speciestype}*latitud_gps"];
                 $sql="SELECT udp_puebla_4326.iden FROM udp_puebla_4326 WHERE ST_Intersects(udp_puebla_4326.geom, ST_GeomFromText('POINT({$mylong} {$mylat})',4326))";
                 $result= $stmnt = DB::select($sql, []);
-                $iden_udp= $result[0]->iden;
+                
 
                 $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
                 $unitcolumns["iden_sampling_unit"]= $unitnum;
                 $unitcolumns["iden_medicion"]= $medicionkey;
-                $unitcolumns["iden_udp"]= $iden_udp;
+                if (sizeof($result)>0){
+                    $unitcolumns["iden_udp"]= $result[0]->iden;
+                }
                 $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
                 //Handle ave Species
                 $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
@@ -240,13 +244,13 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                 $mylat = $_POST["row0*{$unitlower}_{$speciestype}*comienzo_latitud"];
                 $sql="SELECT udp_puebla_4326.iden FROM udp_puebla_4326 WHERE ST_Intersects(udp_puebla_4326.geom, ST_GeomFromText('POINT({$mylong} {$mylat})',4326))";
                 $result= $stmnt = DB::select($sql, []);
-                $iden_udp= $result[0]->iden;
 
                     $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
                     $unitcolumns["iden_sampling_unit"]= $unitnum;
                     $unitcolumns["iden_medicion"]= $medicionkey;
-                    $unitcolumns["iden_udp"]= $iden_udp;
-    
+                    if (sizeof($result)>0){
+                        $unitcolumns["iden_udp"]= $result[0]->iden;
+                    }    
                 $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
 
                 $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
@@ -281,13 +285,15 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                 $mylat = $_POST["row0*{$unitlower}_{$speciestype}*latitud_gps"];
                 $sql="SELECT udp_puebla_4326.iden FROM udp_puebla_4326 WHERE ST_Intersects(udp_puebla_4326.geom, ST_GeomFromText('POINT({$mylong} {$mylat})',4326))";
                 $result= $stmnt = DB::select($sql, []);
-                $iden_udp= $result[0]->iden;
+                
                 
                 $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
                 $unitcolumns["iden_sampling_unit"]= $unitnum;
                 $unitcolumns["iden_numero_punto62"]= $_POST["selectPunto"];
                 $unitcolumns["iden_medicion"]= $medicionkey;
-                $unitcolumns["iden_udp"]= $iden_udp;
+                if (sizeof($result)>0){
+                    $unitcolumns["iden_udp"]= $result[0]->iden;
+                }   
 
                 $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
 
@@ -307,6 +313,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                     $obscolumns=buildcolumnsarray($obstype, "row{$i}");
                     $obscolumns["iden_especie"]= $iden_especie;
                     $obscolumns["iden_foto"]= $iden_foto;
+                    $obscolumns["iden_cuadrante"]= $_POST["row{$i}*{$obstype}*cuadrante"];
                     $obscolumns["iden_{$unitlower}"]= $unitmax;
                     
 
@@ -326,12 +333,14 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                 $mylat = $_POST["row0*{$unitlower}_{$speciestype}*comienzo_latitud"];
                 $sql="SELECT udp_puebla_4326.iden FROM udp_puebla_4326 WHERE ST_Intersects(udp_puebla_4326.geom, ST_GeomFromText('POINT({$mylong} {$mylat})',4326))";
                 $result= $stmnt = DB::select($sql, []);
-                $iden_udp= $result[0]->iden;
 
                 $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
                 $unitcolumns["iden_sampling_unit"]= $unitnum;
                 $unitcolumns["iden_medicion"]= $medicionkey;
-                $unitcolumns["iden_udp"]= $iden_udp;
+                if (sizeof($result)>0){
+                    $unitcolumns["iden_udp"]= $result[0]->iden;
+                }
+                
 
                 $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
 
@@ -368,12 +377,18 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                     $mylat = $_POST["row0*{$unitlower}_{$speciestype}*latitud_gps"];
                     $sql="SELECT udp_puebla_4326.iden FROM udp_puebla_4326 WHERE ST_Intersects(udp_puebla_4326.geom, ST_GeomFromText('POINT({$mylong} {$mylat})',4326))";
                     $result= $stmnt = DB::select($sql, []);
-                    $iden_udp= $result[0]->iden;
+                    
 
-                    $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
-                    $unitcolumns["iden_sampling_unit"]= $unitnum;
-                    $unitcolumns["iden_medicion"]= $medicionkey;
-                     $unitcolumns["iden_udp"]= $iden_udp;
+                $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
+                $unitcolumns["iden_sampling_unit"]= $unitnum;
+                $unitcolumns["iden_medicion"]= $medicionkey;
+                
+                $interval=date_diff( date_create($_POST['row0*punto_mamifero*fecha_de_activacion']),  date_create($_POST['row0*punto_mamifero*fecha_de_apagado']));
+                
+                $unitcolumns["iden_numero_de_dias_operables"]=($interval->format('%d'));
+                if (sizeof($result)>0){
+                    $unitcolumns["iden_udp"]= $result[0]->iden;
+                }
 
                 $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
                 //Handle Species
@@ -400,7 +415,6 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
         }
    }
 
-    echo '<script>console.log('.json_encode($resultofquery).');</script>';
     session(['resultofquery' => $resultofquery]);
     $saved=0;
     $failed=0;
@@ -416,6 +430,8 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
     }else{
         $myerror=['Sus datos no fueron guardados.'];
         session(['error' => $myerror]);
+        echo '<script>console.log('.json_encode($resultofquery).');</script>';
+
     }
 
 

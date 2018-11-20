@@ -1,5 +1,5 @@
 
-function buildDropdowns(tableName, menu, jsTable="Form"){
+function buildDropdowns(tableName, menu, jsTable="Form",octothorp=false){
     if (!(menu)){
         menu='measurement'
     }
@@ -15,7 +15,11 @@ function buildDropdowns(tableName, menu, jsTable="Form"){
     const dataLabel = document.createElement("LABEL");
     dataLabel.setAttribute("for",menu+tableName+jsTable)
     const lowerCaseTitle=tableName.split("_").join(" ")
-    dataLabel.textContent=lowerCaseTitle.charAt(0).toUpperCase() + lowerCaseTitle.slice(1);
+    if (octothorp){
+        dataLabel.textContent='#';
+    }else{
+        dataLabel.textContent=lowerCaseTitle.charAt(0).toUpperCase() + lowerCaseTitle.slice(1);
+    }
     dataLabel.className="dropDownTitles";
 
     const dataSelect = document.createElement("td");
@@ -250,6 +254,25 @@ function createRows (tableName,menu,myCols, myNumRow, obs=false,customList=[]){
         if(b.indexOf('hora')!==-1)return 1;
         if(a.indexOf('fecha')!==-1) return -1;
         if(b.indexOf('fecha')!==-1)return 1;
+        if(a.indexOf('sexo')!==-1) return -1;
+        if(b.indexOf('sexo')!==-1)return 1;
+        if(a.indexOf('estadio')!==-1) return -1;
+        if(b.indexOf('estadio')!==-1)return 1;
+        if(a.indexOf('actividad')!==-1) return -1;
+        if(b.indexOf('actividad')!==-1)return 1;
+        if(a.indexOf('distancia')!==-1) return -1;
+        if(b.indexOf('distancia')!==-1)return 1;
+        if(a.indexOf('azimut')!==-1) return -1;
+        if(b.indexOf('azimut')!==-1)return 1;
+        if(a.indexOf('altura')!==-1) return -1;
+        if(b.indexOf('altura')!==-1)return 1;
+        if(a.indexOf('dn')!==-1) return -1;
+        if(b.indexOf('dn')!==-1)return 1;
+        if(a.indexOf('dc1')!==-1) return -1;
+        if(b.indexOf('dc1')!==-1)return 1;
+        if(a.indexOf('dc2')!==-1) return -1;
+        if(b.indexOf('dc2')!==-1)return 1;
+        
         if(a.length==1) return 1;
         if(b.length==1) return -1;
         if(a.length==2) return 1;
@@ -277,6 +300,21 @@ function createRows (tableName,menu,myCols, myNumRow, obs=false,customList=[]){
             cuadranteBox.className="cuadrante";
             columnRowOld.appendChild(cuadranteLabel);
             firstDataRow.appendChild(cuadranteBox);
+            //
+            const cuadnumLabel = document.createElement("td");
+            cuadnumLabel.textContent="#";
+            cuadnumLabel.className="formcolumnlabels octothorp"
+            const cuadnumBox = document.createElement("td");
+            const cuadnumInput = document.createElement("INPUT");
+            cuadnumInput.setAttribute("type", "text");
+            cuadnumInput.name = "row"+myNumRow+'*'+tableName+'*cuadnum';
+            cuadnumInput.id=`row${myNumRow}cuadnum`;
+            cuadnumInput.value=1;
+            cuadnumInput.className="cuadranteinput";
+            cuadnumBox.appendChild(cuadnumInput);
+            cuadnumBox.className="cuadrante";
+            columnRowOld.appendChild(cuadnumLabel);
+            firstDataRow.appendChild(cuadnumBox);
         }
         const speciesTable = tableName.replace("observacion", "especie");
         //Species drop Label
@@ -551,7 +589,8 @@ function addOnChangeObservaciones(menu){
                 }
                 mySelectionPunto.appendChild(fragPunto);
             }
-            buildDropdowns(transpunto,menu, "Numero");
+        let octothorp = myChoice=='observacion_hierba'? true: false
+            buildDropdowns(transpunto,menu, "Numero",octothorp);
             const mySelection = document.getElementById('measurement'+transpunto+'Numero');
             //Add Number Options
             
@@ -644,6 +683,9 @@ function buildCustomForm(obName,menu){
             let getCuadrante = document.getElementById(`row${i+1}cuadrante`)
             getCuadrante.value=Math.floor(i/2+1.5)
             getCuadrante.setAttribute("readonly", true);
+            let getCuadnum = document.getElementById(`row${i+1}cuadnum`)
+            getCuadnum.value=i+2
+            getCuadnum.setAttribute("readonly", true);
         }
         numRows=0
         getSelectionAdd.disabled=true;
