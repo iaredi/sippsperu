@@ -8,7 +8,7 @@ if (!session('admin')){
 @include('inc/header')
 @include('inc/nav')
 
-   <img src="{{ asset('img/malinche.jpg') }}"  alt="Italian Trulli" style="width:500px;height:200px;">
+   <img src="{{ asset('img/popo.jpg') }}"  alt="Italian Trulli" style="width:500px;height:200px;">
    <div>
         <div class="row">
             <div class="warnings">

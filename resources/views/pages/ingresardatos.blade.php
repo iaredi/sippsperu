@@ -13,7 +13,7 @@ if (!session('email')){
 @include('inc/nav')
 
 
-    <img src="{{ asset('img/malinche.jpg') }}"  alt="Italian Trulli" style="height:200px;">
+    <img src="{{ asset('img/popo.jpg') }}"  alt="Italian Trulli" style="height:250px; width:380px;">
             <div class=" warnings">
                 <?php
                 $hint1="Si no hizo la observacion, ingrese 0000.";
