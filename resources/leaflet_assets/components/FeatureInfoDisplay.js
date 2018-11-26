@@ -9,44 +9,49 @@ class FeatureInfoDisplay extends React.Component {
     
 
     render(){
-        const allproducts=[];
+        const allTableRows=[];
         if(this.props.featureInfo.properties.displayName=='Linea MTP' || this.props.featureInfo.properties.displayName=='Unidad de Paisaje'){
             
-            let mya1= ['ave','arbol','arbusto','hierba', 'herpetofauna','mamifero','Dato acumulado']
+            let lifeForms= ['ave','arbol','arbusto','hierba', 'herpetofauna','mamifero','Dato acumulado']
             let mya2=['total_observaciones','distinct_species','dominancia','shannon']
+            let myIcons={'ave':'🐦','arbol':'🌲','arbusto':'🌳','hierba':'🌱','herpetofauna':'🦎','mamifero':'🦌'}
             
-            mya1.map((life)=>{
-                let oneproduct={}
-                oneproduct['name']= life=='herpetofauna'?'herpeto fauna':life
+            lifeForms.map((life)=>{
+                let oneTableRow={}
+                oneTableRow['name']=(life=='herpetofauna')?'herpetofauna':life
+                oneTableRow['name']=(life=='Dato acumulado') ? oneTableRow['name']:myIcons[life] + oneTableRow['name']
+                
 
                 mya2.map((category,ind)=>{
                     if (life=='Dato acumulado'){
                         let mysum= +this.props.featureInfo.properties[`${category}_ave`] + +this.props.featureInfo.properties[`${category}_hierba`] + +this.props.featureInfo.properties[`${category}_arbusto`] + +this.props.featureInfo.properties[`${category}_arbol`] + +this.props.featureInfo.properties[`${category}_herpetofauna`] + +this.props.featureInfo.properties[`${category}_mamifero`]                                
                         if (ind>1) mysum=(mysum/6).toPrecision(4)
-                        oneproduct[category]=mysum
+                        oneTableRow[category]=mysum
                     }else{
                         let newCat=category.replace(`_${life}`,'')
                         let myValue=  ind>1 ? (+this.props.featureInfo.properties[`${category}_${life}`]).toPrecision(4):this.props.featureInfo.properties[`${category}_${life}`]
-                        oneproduct[newCat]=myValue
+                        oneTableRow[newCat]=myValue
                     }
                 })
-                allproducts.push(oneproduct)
+                allTableRows.push(oneTableRow)
             })
         }
         const columns = [{
             dataField: 'name',
-            text: 'Nombre'
+            text: 'Nombre',
+            headerStyle: {
+                width: '128px'
+              }
             },{
             dataField: 'total_observaciones',
-            text: 'Especies Total'
+            text: 'Individuos'
             }, {
             dataField: 'distinct_species',
             text: 'Especie Distinctos'
             }, {
             dataField: 'dominancia',
-            text: 'Domin ancia',
-            classes: 'testme'
-              
+            text: 'Dominancia',
+            classes: 'testme' 
             }, {
             dataField: 'shannon',
             text: 'Shannon'
@@ -57,7 +62,6 @@ class FeatureInfoDisplay extends React.Component {
         <div>
             <div className="container">
                 <div className='flex-column d-flex justify-content-around align-items-center p-3'>
-
                     <div>
                         Ultimo Click:
                     </div>
@@ -72,7 +76,7 @@ class FeatureInfoDisplay extends React.Component {
 
                 <BootstrapTable 
                     keyField='name' 
-                    data={ allproducts } 
+                    data={ allTableRows } 
                     columns={ columns } 
                     bordered={ true }
                     classes={ 'featureInfoTable' }

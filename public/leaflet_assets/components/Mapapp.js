@@ -24538,44 +24538,48 @@ var FeatureInfoDisplay = function (_React$Component) {
         value: function render() {
             var _this2 = this;
 
-            var allproducts = [];
+            var allTableRows = [];
             if (this.props.featureInfo.properties.displayName == 'Linea MTP' || this.props.featureInfo.properties.displayName == 'Unidad de Paisaje') {
 
-                var mya1 = ['ave', 'arbol', 'arbusto', 'hierba', 'herpetofauna', 'mamifero', 'Dato acumulado'];
+                var lifeForms = ['ave', 'arbol', 'arbusto', 'hierba', 'herpetofauna', 'mamifero', 'Dato acumulado'];
                 var mya2 = ['total_observaciones', 'distinct_species', 'dominancia', 'shannon'];
+                var myIcons = { 'ave': '🐦', 'arbol': '🌲', 'arbusto': '🌳', 'hierba': '🌱', 'herpetofauna': '🦎', 'mamifero': '🦌' };
 
-                mya1.map(function (life) {
-                    var oneproduct = {};
-                    oneproduct['name'] = life == 'herpetofauna' ? 'herpeto fauna' : life;
+                lifeForms.map(function (life) {
+                    var oneTableRow = {};
+                    oneTableRow['name'] = life == 'herpetofauna' ? 'herpetofauna' : life;
+                    oneTableRow['name'] = life == 'Dato acumulado' ? oneTableRow['name'] : myIcons[life] + oneTableRow['name'];
 
                     mya2.map(function (category, ind) {
                         if (life == 'Dato acumulado') {
                             var mysum = +_this2.props.featureInfo.properties[category + '_ave'] + +_this2.props.featureInfo.properties[category + '_hierba'] + +_this2.props.featureInfo.properties[category + '_arbusto'] + +_this2.props.featureInfo.properties[category + '_arbol'] + +_this2.props.featureInfo.properties[category + '_herpetofauna'] + +_this2.props.featureInfo.properties[category + '_mamifero'];
                             if (ind > 1) mysum = (mysum / 6).toPrecision(4);
-                            oneproduct[category] = mysum;
+                            oneTableRow[category] = mysum;
                         } else {
                             var newCat = category.replace('_' + life, '');
                             var myValue = ind > 1 ? (+_this2.props.featureInfo.properties[category + '_' + life]).toPrecision(4) : _this2.props.featureInfo.properties[category + '_' + life];
-                            oneproduct[newCat] = myValue;
+                            oneTableRow[newCat] = myValue;
                         }
                     });
-                    allproducts.push(oneproduct);
+                    allTableRows.push(oneTableRow);
                 });
             }
             var columns = [{
                 dataField: 'name',
-                text: 'Nombre'
+                text: 'Nombre',
+                headerStyle: {
+                    width: '128px'
+                }
             }, {
                 dataField: 'total_observaciones',
-                text: 'Especies Total'
+                text: 'Individuos'
             }, {
                 dataField: 'distinct_species',
                 text: 'Especie Distinctos'
             }, {
                 dataField: 'dominancia',
-                text: 'Domin ancia',
+                text: 'Dominancia',
                 classes: 'testme'
-
             }, {
                 dataField: 'shannon',
                 text: 'Shannon'
@@ -24614,7 +24618,7 @@ var FeatureInfoDisplay = function (_React$Component) {
                 ),
                 _react2.default.createElement(_reactBootstrapTableNext2.default, {
                     keyField: 'name',
-                    data: allproducts,
+                    data: allTableRows,
                     columns: columns,
                     bordered: true,
                     classes: 'featureInfoTable',
