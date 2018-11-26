@@ -3,7 +3,7 @@
 @include('inc/nav')
 
         <div class="container">
-            <h1 class="text-center">Pagina de Mapas</h1>
+            <h1 class="text-center">Mostrar Mapas</h1>
             <p></p>
         </div> <!--Container-->
         

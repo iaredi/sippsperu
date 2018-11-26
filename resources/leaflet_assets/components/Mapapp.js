@@ -153,7 +153,7 @@ class Mapapp extends React.Component {
       <div>
         
             <div className='row justify-content-around'>
-            <div className='col-8 p-0'>
+            <div className='col-8 p-0 border border-secondary'>
                 <Map
                     handleMapClick={this.handleMapClick}
                     handleFeatureClick={this.handleFeatureClick}
@@ -163,7 +163,7 @@ class Mapapp extends React.Component {
                     />
             </div>
             
-            <div className='col-4 p-3'>
+            <div className='col-4 p-2'>
                 <FeatureInfoDisplay 
                     markerPosition={this.state.markerPosition} 
                     featureInfo={this.state.featureInfo}
