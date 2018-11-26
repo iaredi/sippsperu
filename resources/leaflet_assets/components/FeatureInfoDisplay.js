@@ -54,6 +54,9 @@ class FeatureInfoDisplay extends React.Component {
             classes: 'testme' 
             }, {
             dataField: 'shannon',
+            headerStyle: {
+                width: '62px'
+              },
             text: 'Shannon'
             }];
 
