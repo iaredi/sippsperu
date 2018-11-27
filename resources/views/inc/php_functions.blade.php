@@ -190,6 +190,7 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
                     echo $target_file;
                     echo (move_uploaded_file($_FILES[$fotoinputid]["tmp_name"], $target_file));
                     echo "Sorry, there was an error uploading your file.";
+                    echo phpinfo();
                 }
 
 
