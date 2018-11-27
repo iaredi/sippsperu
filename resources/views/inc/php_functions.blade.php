@@ -183,7 +183,7 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 
 
                 if (move_uploaded_file($_FILES[$fotoinputid]["tmp_name"], $target_file)) {
-                    //echo "The file ". basename( $_FILES[$fotoinputid]["name"]). " has been uploaded.";
+                    echo "The file  has been uploaded.";
                     return (basename( $_FILES[$fotoinputid]["name"]));
                 } else {
                     echo "Sorry, there was an error uploading your file.";

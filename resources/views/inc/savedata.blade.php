@@ -410,7 +410,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
         }
     }
     if(!$failed && $saved>0){
-        return redirect()->to('/thanks')->send();
+        //return redirect()->to('/thanks')->send();
     }else{
         $myerror=['Sus datos no fueron guardados.'];
         session(['error' => $myerror]);

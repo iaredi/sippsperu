@@ -1,3 +1,9 @@
+<?php
+if (!session('email')){
+    return redirect()->to('/login')->send();
+}
+?>
+
 @include('inc/loadlayers')
 @include('inc/header')
 @include('inc/nav')

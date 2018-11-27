@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
                 $targetuser=$_POST['email_input'].$visitante;
 
                 $sql = "insert into usuario_permitido (email) values(:targetuser)";
-                $user_data = [':targetuser'=>$targetuser];
+                $user_data = [':targetuser'=>trim($targetuser]);
                 $results = DB::insert($sql, $user_data);
                 session(['adminerror'=> "{$targetuser} has sido agregado"]);
 
