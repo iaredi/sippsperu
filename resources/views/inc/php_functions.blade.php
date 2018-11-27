@@ -165,7 +165,7 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
                 $uploadOk = 0;
             }
             // Check file size
-            if ($_FILES[$fotoinputid]["size"] > 500000) {
+            if ($_FILES[$fotoinputid]["size"] > 5000000000) {
                 echo "Sorry, your file is too large.";
                 $uploadOk = 0;
             }
