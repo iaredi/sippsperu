@@ -62,6 +62,31 @@ tbody#measurementTBodyForm {
 .horainputs {
     width: 110px;
 }
+.mymapcontainer{
+    width: 100%;
+    margin:0px;
+    padding:0px;
+    max-width: 2000px;
+}
+.mapstat {
+    display: flex;
+    min-width: 100%;
+    width: 0;
+    overflow-x: auto; 
+    flex-wrap: nowrap; 
+  }
+.mymapdiv{
+    min-width: 900px;
+}
+.mystatdiv{
+    min-width: 500px;
+    height: 100%;
+}
+.withcontrol{
+    
+    height: 100%;
+}
+
 
 .fechainputs {
     width: 170px;
@@ -76,6 +101,7 @@ td.cuadrante {
 .octothorp {
     text-align: center;
 }
+
 
 .myspacer {
     border-bottom: 1px solid #000;

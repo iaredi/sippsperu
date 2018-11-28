@@ -28,9 +28,12 @@
                 }else{
                     session(['admin' => 0]);
                 }
-
                 session(['email' => $email]);
                 session(['error' => '']);
+                DB::update('update usuario set fecha_ultimo_login = CURRENT_DATE where email = ?', [$_POST['email']]);
+                DB::update('update usuario set hora_ultimo_login = CURRENT_TIME where email = ?', [$_POST['email']]);
+
+
                 return redirect()->to('/ingresardatos')->send();
             } else {
                 session(['error' => ['contrasenia incorrecto']]);

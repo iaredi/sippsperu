@@ -206,10 +206,13 @@ function selectOptionsCreate(tableName, menu) {
                 elOption.innerHTML = mycurrentlist[approvedList[tableName][i]];
             }
         } else {
+            var getSelection = document.getElementById('measurementlinea_mtpSelect').value;
             for (var _i = 0; _i < mycurrentlist.length; _i++) {
-                elOption = frag.appendChild(document.createElement('option'));
-                elOption.value = mycurrentlist[_i];
-                elOption.innerHTML = mycurrentlist[_i];
+                if (tableName != 'medicion' || mycurrentlist[_i].split('*')[0] == getSelection.split(' (')[0]) {
+                    elOption = frag.appendChild(document.createElement('option'));
+                    elOption.value = mycurrentlist[_i];
+                    elOption.innerHTML = mycurrentlist[_i];
+                }
             }
         }
         while (mySelection.hasChildNodes()) {

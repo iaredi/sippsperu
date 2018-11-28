@@ -115,10 +115,13 @@ function selectOptionsCreate(tableName, menu, preApproved=true, jsTable="Form",a
                 elOption.innerHTML = mycurrentlist[approvedList[tableName][i]];
             }
         }else{
+            const getSelection = document.getElementById('measurementlinea_mtpSelect').value;
             for (let i = 0; i<mycurrentlist.length; i++){
-                elOption = frag.appendChild(document.createElement('option'));
-                elOption.value = mycurrentlist[i];
-                elOption.innerHTML =mycurrentlist[i];
+                if(tableName!='medicion'|| mycurrentlist[i].split('*')[0]==getSelection.split(' (')[0]){
+                    elOption = frag.appendChild(document.createElement('option'));
+                    elOption.value = mycurrentlist[i];
+                    elOption.innerHTML =mycurrentlist[i];
+                }
             }
         }
         while (mySelection.hasChildNodes()) {
@@ -154,12 +157,12 @@ function addOnChangeMTP(tableName, menu){
                             clearForm(menu, "Numero")
                             clearForm(menu, "Form")
                             buildForm("linea_mtp", menu, "Coordenadas de Linea")
-                                const newMTPdropdowns=[ "predio", "municipio","estado",]
-                                newMTPdropdowns.forEach(function(newTable){
-                                    buildDropdowns(newTable,menu,"Form");
-                                    selectOptionsCreate(newTable,menu);
-                                    addOnChangeFKey(newTable, menu) 
-                                })
+                            const newMTPdropdowns=[ "predio", "municipio","estado",]
+                            newMTPdropdowns.forEach(function(newTable){
+                                buildDropdowns(newTable,menu,"Form");
+                                selectOptionsCreate(newTable,menu);
+                                addOnChangeFKey(newTable, menu) 
+                            })
                         }else{
                         //This is when an old linea_mtp is selected
                             clearForm(menu,"Observaciones")
@@ -715,16 +718,11 @@ function addOnChangeAdminTable(){
     }
     mySelection.appendChild(frag);
 
-
-
     }  
     const currentOnChange3 =function() {currentFunction3()}   
              getSelection.onchange=currentOnChange3;
-            }
+}
             
-
-
-
 var numRows=0;
 if(window.location.href.substr(-5)==='admin'){
     buildDropdowns( "usuario", "measurement", "Select" );
@@ -733,7 +731,6 @@ if(window.location.href.substr(-5)==='admin'){
     selectOptionsCreate( "usuario_permitido",  "measurement",  true,  "Medicion", [],  false, false);
     addOnChangeAdminTable()
 
- 
 }else{
     buildDropdowns( "linea_mtp", "measurement", "Select" );
     selectOptionsCreate( "linea_mtp", "measurement", true,  "Select" );

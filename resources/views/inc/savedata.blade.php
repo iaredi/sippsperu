@@ -57,7 +57,6 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
             //Save Lat/Long Rows
             if ($_POST['selectpredio']=="Nuevo") {      
                 $linea_mtpfkey=askforkey("predio", "iden", "iden_muni_predio", $_POST['selectmunicipio'].'-'.$_POST['row0*predio*nombre']);
-          
                 $linea_mtppredioname=$_POST['row0*predio*nombre'];
             }else{
                 $linea_mtpfkey=askforkey("predio", "iden", "iden_muni_predio", $_POST['selectpredio']);
@@ -65,10 +64,10 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
             }
             //Save New Linea_MTP Data
             for($i=0; $i<countrows("linea_mtp"); $i++) {
-                $comienzo_longitud = $_POST["row{$i}*linea_mtp*comienzo_longitud"];
-                $fin_longitud = $_POST["row{$i}*linea_mtp*fin_longitud"];
-                $comienzo_latitud = $_POST["row{$i}*linea_mtp*comienzo_latitud"];
-                $fin_latitud = $_POST["row{$i}*linea_mtp*fin_latitud"];
+                $comienzo_longitud = round(floatval($_POST["row{$i}*linea_mtp*comienzo_longitud"]),6);
+                $fin_longitud = round(floatval($_POST["row{$i}*linea_mtp*fin_longitud"]),6);
+                $comienzo_latitud = round(floatval($_POST["row{$i}*linea_mtp*comienzo_latitud"]),6);
+                $fin_latitud = round(floatval($_POST["row{$i}*linea_mtp*fin_latitud"]),6);
                 $linea_mtpcolumns=array(
                     "comienzo_longitud"=> $comienzo_longitud,
                     "fin_longitud"=> $fin_longitud,
@@ -417,7 +416,5 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
         echo '<script>console.log('.json_encode($resultofquery).');</script>';
 
     }
-
-
 }
 ?>

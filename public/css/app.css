@@ -10531,6 +10531,37 @@ tbody#measurementTBodyForm {
   width: 110px;
 }
 
+.mymapcontainer {
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  max-width: 2000px;
+}
+
+.mapstat {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  min-width: 100%;
+  width: 0;
+  overflow-x: auto;
+  -ms-flex-wrap: nowrap;
+      flex-wrap: nowrap;
+}
+
+.mymapdiv {
+  min-width: 900px;
+}
+
+.mystatdiv {
+  min-width: 500px;
+  height: 100%;
+}
+
+.withcontrol {
+  height: 100%;
+}
+
 .fechainputs {
   width: 170px;
 }

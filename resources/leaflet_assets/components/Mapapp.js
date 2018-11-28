@@ -151,9 +151,9 @@ class Mapapp extends React.Component {
   render() {
     return (
       <div>
-        
-            <div className='row justify-content-around'>
-            <div className='col-8 p-0 border border-secondary'>
+        <div className="container mymapcontainer">
+          <div className='row justify-content-around align-items-center mapstat'>
+            <div className='mymapdiv border border-dark'>
                 <Map
                     handleMapClick={this.handleMapClick}
                     handleFeatureClick={this.handleFeatureClick}
@@ -162,23 +162,33 @@ class Mapapp extends React.Component {
                     table = {this.state.table}
                     />
             </div>
-            
-            <div className='col-4 p-2'>
-                <FeatureInfoDisplay 
-                    markerPosition={this.state.markerPosition} 
-                    featureInfo={this.state.featureInfo}
-                />
+
+            <div className='mystatdiv p-1'>
+              <div className='withcontrol flex-column d-flex justify-content-between align-items-start'>
+                  <FeatureInfoDisplay 
+                      markerPosition={this.state.markerPosition} 
+                      featureInfo={this.state.featureInfo}
+                  />
+                  <MapControl
+                  handleSpeciesChange={this.handleSpeciesChange}
+                  handleTotalDistinctChange={this.handleTotalDistinctChange}
+                  handleOpacityChange={this.handleOpacityChange}
+                  handleMaxChange={this.handleMaxChange}
+                  mapSettings={this.state.mapSettings} 
+                  />
+
+
+
+              </div>
             </div>
-            </div>
+
+
+          </div>
+        </div>
+
         
         <div>
-          <MapControl
-          handleSpeciesChange={this.handleSpeciesChange}
-          handleTotalDistinctChange={this.handleTotalDistinctChange}
-          handleOpacityChange={this.handleOpacityChange}
-          handleMaxChange={this.handleMaxChange}
-          mapSettings={this.state.mapSettings} 
-          />
+        
         </div>
           
         

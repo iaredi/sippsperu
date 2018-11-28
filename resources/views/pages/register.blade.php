@@ -43,16 +43,13 @@
             $error[] = "Email '{$_POST['email']}' ya esta registrado. Por favor, login o reiniciar su contrasenia ";
         }
 
-echo '<script>console.log('.json_encode($error).');</script>';
+        echo '<script>console.log('.json_encode($error).');</script>';
         if (!($error)) {
-
             $visitante='2';
             if($emailvisitante){
                 $visitante='1';
             }
-
-                    echo '<script>console.log('.json_encode($visitante).');</script>';
-
+            echo '<script>console.log('.json_encode($visitante).');</script>';
             $usuarioscolumns=array(
                 "visitante"=> intval($visitante),
                 "nombre"=> $_POST['nombre'],
@@ -64,7 +61,6 @@ echo '<script>console.log('.json_encode($error).');</script>';
                 "direccion"=> $_POST['direccion'],
                 "fecha_ultimo_login"=> "CURRENT_DATE",
                 "fecha_activacion"=> "CURRENT_DATE",
-                
                 "notas"=> $_POST['notas']
                     );
             $resultofusuariosquery[]= savenewentry("usuario", $usuarioscolumns,false);

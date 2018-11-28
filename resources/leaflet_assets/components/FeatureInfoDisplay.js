@@ -12,7 +12,7 @@ class FeatureInfoDisplay extends React.Component {
         const allTableRows=[];
         if(this.props.featureInfo.properties.displayName=='Linea MTP' || this.props.featureInfo.properties.displayName=='Unidad de Paisaje'){
             
-            let lifeForms= ['ave','arbol','arbusto','hierba', 'herpetofauna','mamifero','Dato acumulado']
+            let lifeForms= ['arbol','arbusto','hierba', 'ave', 'herpetofauna','mamifero','Dato acumulado']
             let mya2=['total_observaciones','distinct_species','dominancia','shannon']
             let myIcons={'ave':'🐦','arbol':'🌲','arbusto':'🌳','hierba':'🌱','herpetofauna':'🦎','mamifero':'🦌'}
             

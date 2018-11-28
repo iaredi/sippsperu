@@ -18064,38 +18064,43 @@ var Mapapp = function (_React$Component) {
         null,
         _react2.default.createElement(
           'div',
-          { className: 'row justify-content-around' },
+          { className: 'container mymapcontainer' },
           _react2.default.createElement(
             'div',
-            { className: 'col-8 p-0 border border-secondary' },
-            _react2.default.createElement(_Map2.default, {
-              handleMapClick: this.handleMapClick,
-              handleFeatureClick: this.handleFeatureClick,
-              setDefaultMax: this.setDefaultMax,
-              mapSettings: this.state.mapSettings,
-              table: this.state.table
-            })
-          ),
-          _react2.default.createElement(
-            'div',
-            { className: 'col-4 p-2' },
-            _react2.default.createElement(_FeatureInfoDisplay2.default, {
-              markerPosition: this.state.markerPosition,
-              featureInfo: this.state.featureInfo
-            })
+            { className: 'row justify-content-around align-items-center mapstat' },
+            _react2.default.createElement(
+              'div',
+              { className: 'mymapdiv border border-dark' },
+              _react2.default.createElement(_Map2.default, {
+                handleMapClick: this.handleMapClick,
+                handleFeatureClick: this.handleFeatureClick,
+                setDefaultMax: this.setDefaultMax,
+                mapSettings: this.state.mapSettings,
+                table: this.state.table
+              })
+            ),
+            _react2.default.createElement(
+              'div',
+              { className: 'mystatdiv p-1' },
+              _react2.default.createElement(
+                'div',
+                { className: 'withcontrol flex-column d-flex justify-content-between align-items-start' },
+                _react2.default.createElement(_FeatureInfoDisplay2.default, {
+                  markerPosition: this.state.markerPosition,
+                  featureInfo: this.state.featureInfo
+                }),
+                _react2.default.createElement(_MapControl2.default, {
+                  handleSpeciesChange: this.handleSpeciesChange,
+                  handleTotalDistinctChange: this.handleTotalDistinctChange,
+                  handleOpacityChange: this.handleOpacityChange,
+                  handleMaxChange: this.handleMaxChange,
+                  mapSettings: this.state.mapSettings
+                })
+              )
+            )
           )
         ),
-        _react2.default.createElement(
-          'div',
-          null,
-          _react2.default.createElement(_MapControl2.default, {
-            handleSpeciesChange: this.handleSpeciesChange,
-            handleTotalDistinctChange: this.handleTotalDistinctChange,
-            handleOpacityChange: this.handleOpacityChange,
-            handleMaxChange: this.handleMaxChange,
-            mapSettings: this.state.mapSettings
-          })
-        )
+        _react2.default.createElement('div', null)
       );
     }
   }]);
@@ -24541,7 +24546,7 @@ var FeatureInfoDisplay = function (_React$Component) {
             var allTableRows = [];
             if (this.props.featureInfo.properties.displayName == 'Linea MTP' || this.props.featureInfo.properties.displayName == 'Unidad de Paisaje') {
 
-                var lifeForms = ['ave', 'arbol', 'arbusto', 'hierba', 'herpetofauna', 'mamifero', 'Dato acumulado'];
+                var lifeForms = ['arbol', 'arbusto', 'hierba', 'ave', 'herpetofauna', 'mamifero', 'Dato acumulado'];
                 var mya2 = ['total_observaciones', 'distinct_species', 'dominancia', 'shannon'];
                 var myIcons = { 'ave': '🐦', 'arbol': '🌲', 'arbusto': '🌳', 'hierba': '🌱', 'herpetofauna': '🦎', 'mamifero': '🦌' };
 
