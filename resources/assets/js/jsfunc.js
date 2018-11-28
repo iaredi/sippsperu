@@ -115,9 +115,10 @@ function selectOptionsCreate(tableName, menu, preApproved=true, jsTable="Form",a
                 elOption.innerHTML = mycurrentlist[approvedList[tableName][i]];
             }
         }else{
-            const getSelection = document.getElementById('measurementlinea_mtpSelect').value;
+
+            
             for (let i = 0; i<mycurrentlist.length; i++){
-                if(tableName!='medicion'|| mycurrentlist[i].split('*')[0]==getSelection.split(' (')[0]){
+                if(tableName!='medicion'|| mycurrentlist[i].split('*')[0]==document.getElementById('measurementlinea_mtpSelect').value.split(' (')[0]){
                     elOption = frag.appendChild(document.createElement('option'));
                     elOption.value = mycurrentlist[i];
                     elOption.innerHTML =mycurrentlist[i];
