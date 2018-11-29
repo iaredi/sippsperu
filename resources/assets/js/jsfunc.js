@@ -221,6 +221,8 @@ function addOnChangeMedicion(tableName, menu){
                 clearForm(menu,"Observaciones")
                 clearForm(menu,"Numero")
                 clearForm(menu,"Form")
+                buildDropdowns("Datos",menu, "Observaciones");
+                selectOptionsCreate("observaciones", menu, true, "Form",[], false, false);
                 buildDropdowns("observaciones",menu, "Observaciones");
                 selectOptionsCreate("observaciones", menu, true, "Form",[], false, false);
                 addOnChangeObservaciones(menu)
