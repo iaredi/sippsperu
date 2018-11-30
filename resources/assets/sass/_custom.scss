@@ -86,7 +86,10 @@ tbody#measurementTBodyForm {
     
     height: 100%;
 }
-
+input#mode {
+    background-color: lightsteelblue;
+    pointer-events: none;
+}
 
 .fechainputs {
     width: 170px;

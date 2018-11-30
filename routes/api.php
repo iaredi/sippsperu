@@ -51,10 +51,60 @@ Route::post('tester8', function(Request $request) {
 
 
 Route::post('getudp', function(Request $request) {
-    $mylat = $request->lat;
-    $mylng = $request->lng;
-    $sql = "SELECT udp_puebla_4326.iden FROM udp_puebla_4326 WHERE ST_Intersects(udp_puebla_4326.geom,  ST_GeomFromText('POINT({$mylng} {$mylat})',4326))";
-    $result = DB::select($sql, []);
+    $lineamtp = $request->lineamtp;
+    $medicion = $request->medicion;
+    $observacion = $request->observacion;
+    $punto = $request->punto;
+    $transecto = $request->transecto;
+    $useremail = $request->useremail;
+    $lifeform=explode('_',$observacion)[1];
+
+    //get linea ID
+    $sql = "SELECT iden FROM linea_mtp WHERE nombre_iden=:lineamtp";
+    $result = DB::select($sql, [':lineamtp'=>$lineamtp]);
+    $lineanumber=$result[0]->iden;
+    //get medicion ID
+    $sql = "SELECT iden FROM medicion WHERE iden_linea_mtp=:lineanumber and iden_nombre=:medicion";
+    $result = DB::select($sql, [':lineanumber'=>$lineanumber,':medicion'=>$medicion]);
+    $medicionnumber=$result[0]->iden;
+    //get medicion ID
+    $sql = "SELECT iden FROM medicion WHERE iden_linea_mtp=:lineanumber and iden_nombre=:medicion";
+    $result = DB::select($sql, [':lineanumber'=>$lineanumber,':medicion'=>$medicion]);
+    $medicionnumber=$result[0]->iden;
+    $locationinfo='non'; 
+    $obresult=[];
+    
+    if ($lifeform=='ave' || $lifeform=='mamifero'){
+        $sql = "SELECT * FROM punto_{$lifeform} WHERE iden_medicion=:medicionnumber and iden_sampling_unit=:punto and iden_email=:useremail";
+        $result = DB::select($sql, [':medicionnumber'=>$medicionnumber,':punto'=>$punto,':useremail'=>$useremail]);
+        if ($result){  
+            $sql = "SELECT * FROM observacion_{$lifeform} JOIN especie_{$lifeform} ON observacion_{$lifeform}.iden_especie = especie_{$lifeform}.iden WHERE observacion_{$lifeform}.iden_punto=:punto and observacion_{$lifeform}.iden_email=:useremail";
+            $obresult = DB::select($sql, [':punto'=>$result[0]->iden,':useremail'=>$useremail]);
+        }
+    }
+    if ($lifeform=='hierba' || $lifeform=='herpetofauna'){
+        $sql = "SELECT * FROM transecto_{$lifeform} WHERE iden_medicion=:medicionnumber and iden_sampling_unit=:transecto and iden_email=:useremail";
+        $result = DB::select($sql, [':medicionnumber'=>$medicionnumber,':transecto'=>$transecto,':useremail'=>$useremail]);
+        if ($result){ 
+            $sql = "SELECT * FROM observacion_{$lifeform} JOIN especie_{$lifeform} ON observacion_{$lifeform}.iden_especie = especie_{$lifeform}.iden WHERE observacion_{$lifeform}.iden_transecto=:transecto and observacion_{$lifeform}.iden_email=:useremail";
+            $obresult = DB::select($sql, [':transecto'=>$result[0]->iden,':useremail'=>$useremail]);
+        }
+    }
+    if ($lifeform=='arbol' || $lifeform=='arbusto'){
+        $sql = "SELECT * FROM punto_{$lifeform} WHERE iden_medicion=:medicionnumber and iden_sampling_unit=:transecto and iden_numero_punto62=:punto and iden_email=:useremail";
+        $result = DB::select($sql, [':medicionnumber'=>$medicionnumber,':transecto'=>$transecto,':punto'=>$punto,':useremail'=>$useremail]);
+        if ($result){ 
+            $sql = "SELECT * FROM observacion_{$lifeform} JOIN especie_{$lifeform} ON observacion_{$lifeform}.iden_especie = especie_{$lifeform}.iden WHERE observacion_{$lifeform}.iden_punto=:punto and observacion_{$lifeform}.iden_email=:useremail";
+            $obresult = DB::select($sql, [':punto'=>$result[0]->iden,':useremail'=>$useremail]);
+        }
+    }
+
+    //$sql = "SELECT udp_puebla_4326.iden FROM udp_puebla_4326 WHERE ST_Intersects(udp_puebla_4326.geom,  ST_GeomFromText('POINT({$mylng} {$mylat})',4326))";
+    //$result = DB::select($sql, []);
+    //$result=[$lineamtp,$medicion,$observacion,$punto,$transecto];
     //return json_encode($request->lng);
-    return json_encode($result[0]->iden);
+    //return json_encode($result[0]->iden);
+     
+    $finalresults=[$result,$obresult];
+    return json_encode($finalresults);
 });

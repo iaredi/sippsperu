@@ -172,6 +172,37 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
             $speciestype=  explode("_" , $obstype)[1];
             $speciestable="especie_".$speciestype;
             
+
+
+            //Delete old data------------------------------------------------------------------------------------------------------------------------
+            if($_POST['mode']=='Datos Existantes'){
+
+                $hiddenlocation=$_POST['hiddenlocation'];
+
+                $transpunto = 'punto';
+                if ($obstype=="observacion_hierba" || $obstype=="observacion_herpetofauna" ){
+                    $transpunto = 'transecto';
+                }
+                
+
+               
+
+                
+
+
+                $sql = "DELETE FROM observacion_{$speciestype} WHERE iden_{$transpunto}={$hiddenlocation} and iden_email=:iden_email";
+                $numrows =DB::delete($sql, ['iden_email'=>str_replace('"', '', $useremail)]);
+                echo '<script>console.log('.json_encode($numrows).');</script>';
+                echo '<script>console.log('.json_encode($sql).');</script>';
+                echo '<script>console.log('.json_encode($hiddenlocation).');</script>';
+                $sql = "delete FROM {$transpunto}_{$speciestype} WHERE iden={$hiddenlocation}  and iden_email=:iden_email";
+                $numrows =DB::delete($sql, ['iden_email'=>str_replace('"', '', $useremail)]);
+                echo '<script>console.log('.json_encode($numrows).');</script>';
+                echo '<script>console.log('.json_encode($sql).');</script>';
+                echo '<script>console.log('.json_encode($hiddenlocation).');</script>';
+
+            }
+
             //AVE------------------------------------------------------------------------------------------------------------------------
             if ($obstype=='observacion_ave'){
                 //Handle Punto 
@@ -409,7 +440,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
         }
     }
     if(!$failed && $saved>0){
-        return redirect()->to('/thanks')->send();
+        //return redirect()->to('/thanks')->send();
     }else{
         $myerror=['Sus datos no fueron guardados.'];
         session(['error' => $myerror]);

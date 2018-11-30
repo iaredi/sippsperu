@@ -70,7 +70,11 @@ function buildDropdowns(tableName, menu, jsTable="Form",octothorp=false){
         spacer1.innerHTML="&nbsp;";
         spacerTR.appendChild(spacer1);
         myTBody.prepend(spacerTR);
-        myTBody.prepend(newTR);
+        if (tableName=='datos'){
+            myTBody.append(newTR);
+        }else{
+            myTBody.prepend(newTR);
+        }
     }
 }
 
@@ -221,11 +225,12 @@ function addOnChangeMedicion(tableName, menu){
                 clearForm(menu,"Observaciones")
                 clearForm(menu,"Numero")
                 clearForm(menu,"Form")
-                buildDropdowns("Datos",menu, "Observaciones");
-                selectOptionsCreate("observaciones", menu, true, "Form",[], false, false);
                 buildDropdowns("observaciones",menu, "Observaciones");
                 selectOptionsCreate("observaciones", menu, true, "Form",[], false, false);
                 addOnChangeObservaciones(menu)
+               
+                
+                
                                            
             }
     }  
@@ -378,7 +383,6 @@ function createRows (tableName,menu,myCols, myNumRow, obs=false,customList=[]){
     }
     myCols.forEach(function(val){
         let found = false;
-        console.log(tableName)
         if (typeof(allPhp2[tableName]["fKeyCol"])!=="undefined"){
             found = !!allPhp2[tableName]["fKeyCol"].find(function(element) {
                 return element==val;
@@ -454,7 +458,8 @@ function buildForm(tableName, menu, myTitle, spacers=false, obs=false, customLis
     let mySubmit =  document.createElement("INPUT");
     mySubmit.setAttribute("type", "submit");
     mySubmit.id= menu+tableName+"Submit";
-    mySubmit.className= "mySubmit";
+    mySubmit.className= "mySubmit p-2 m-2";
+    mySubmit.textContent='Enviar'
     if(document.getElementsByClassName("mySubmit").length>0) mySubmit= document.getElementsByClassName("mySubmit")[0];
     var newRows = createRows(tableName,menu,myCols,0,obs,customList)
 
@@ -583,6 +588,9 @@ function addOnChangeObservaciones(menu){
             if (myChoice=="observacion_arbol" || myChoice=="observacion_arbusto" ){
                 buildDropdowns("Punto",menu, "Numero");
                 const mySelectionPunto = document.getElementById(`measurementPuntoNumero`);
+                mySelectionPunto.addEventListener('change',()=>{
+                    clearForm('',"Form")
+                })
                 //Add Number Options
                 let fragPunto = document.createDocumentFragment(),elOption;
                 elOption = fragPunto.appendChild(document.createElement('option'));
@@ -598,6 +606,9 @@ function addOnChangeObservaciones(menu){
         let octothorp = myChoice=='observacion_hierba'? true: false
             buildDropdowns(transpunto,menu, "Numero",octothorp);
             const mySelection = document.getElementById('measurement'+transpunto+'Numero');
+            mySelection.addEventListener('change',()=>{
+                clearForm('',"Form")
+            })
             //Add Number Options
             
             let frag = document.createDocumentFragment(),elOption;
@@ -613,9 +624,18 @@ function addOnChangeObservaciones(menu){
                 mySelection.removeChild(mySelection.lastChild);
             }
             mySelection.appendChild(frag);
-            clearForm(menu,"Form")
+
+
             
-            buildCustomForm(myChoice,menu)
+            const readybutton = document.createElement("button");
+            readybutton.textContent='Cargar Formulario'
+            readybutton.className='p-2 m-2'
+            readybutton.type="button"
+            readybutton.id="readybutton"
+            readybutton.addEventListener('click', clickReadyButton)
+            const myTBody = document.getElementById("measurementTBodyNumero")
+            myTBody.append(readybutton);
+            
     }
     }
     const currentOnChange3 =function(tableName,menu) {currentFunction3(tableName,menu)}   
@@ -623,7 +643,118 @@ function addOnChangeObservaciones(menu){
 }
 
 //////////////////////////////////////////////////////////////////////////////////////          
+          
 
+function clickReadyButton(){
+    document.getElementById("readybutton").disabled='true'
+    let menu="measurement"
+    const myChoice = 'observacion_'+document.getElementById("measurementobservacionesObservaciones").value;
+    const newExist = document.getElementById("measurementdatosNumero");
+    const selectedPunto = document.getElementById("measurementPuntoNumero");
+    const selectedTransecto = document.getElementById("measurementTransectoNumero");
+    const selectedlinea_mtp = document.getElementById("measurementlinea_mtpSelect");
+    const selectedmedicion = document.getElementById("measurementmedicionMedicion");
+    if(selectedlinea_mtp && selectedlinea_mtp.value=='notselected'){
+        alert('Elige Linea MTP')
+        return
+    }
+    if(selectedPunto && selectedPunto.value=='notselected'){
+        alert('Elige Punto')
+        return
+    }
+    if(selectedmedicion && selectedmedicion.value=='notselected'){
+        alert('Elige Medicion')
+        return
+    }
+    if(selectedTransecto && selectedTransecto.value=='notselected'){
+        alert('Elige Transecto')
+        return
+    }
+    
+    
+    async function getData(){
+        const rawResponse = await fetch('http://localhost:3000/api/getudp', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                "Content-Type": "application/json;",
+            },
+            body: JSON.stringify({
+                "lineamtp": document.getElementById("measurementlinea_mtpSelect").value,
+                "medicion":document.getElementById("measurementmedicionMedicion").value,
+                "observacion":myChoice,
+                "punto":selectedPunto? selectedPunto.value:"0",
+                "transecto":selectedTransecto? selectedTransecto.value:"0",
+                "useremail":useremail
+            })
+        });
+        let dataResult = await rawResponse.json()
+        return dataResult
+    }
+    getData().then(dataResult =>{
+        clearForm(menu,"Form")
+        
+        if (dataResult[0].length>0){
+            console.log(dataResult)
+            const myTBody = document.getElementById(menu+"TBody"+'Form')
+            const hiddenLocation = document.createElement('input')
+            hiddenLocation.setAttribute("type", "hidden");
+            hiddenLocation.name = 'hiddenlocation';
+            hiddenLocation.value = dataResult[0][0]['iden'];
+            hiddenLocation.id='hiddenlocation';
+            myTBody.append(hiddenLocation);
+ 
+            buildCustomForm(myChoice,menu,'Datos Existantes')
+            //alert('You are editing existing data!')
+            let formtranspunto='punto'
+            if (myChoice.includes('hierba') || myChoice.includes('herpetofauna')){
+                formtranspunto='transecto'
+            }
+            let lifeForm=document.getElementById("measurementobservacionesObservaciones").value
+            const puntoEntries=Object.entries(dataResult[0][0])
+            for (const [cat, val] of puntoEntries){
+                let myElem=document.getElementById(`${formtranspunto}_${lifeForm}${cat}`)
+                if (myElem){
+                    myElem.value=val
+                }
+            }
+            dataResult[1].forEach((row,ind) => {
+                if (ind>0){
+                    //make new row
+                    const getSelectionAdd = document.getElementById(`addElementRow${myChoice}`)
+                    getSelectionAdd.onclick()
+                }
+                const obsEntries=Object.entries(row)
+                for (const [cat, val] of obsEntries){
+                    if (cat=='comun_cientifico'){
+                        let myElemSpecies=document.getElementsByName("row"+ind+"*"+myChoice +"*species")
+                        myElemSpecies[0].value=val;
+                    }
+                    let myElem=document.getElementsByName("row"+ind+"*"+myChoice +"*"+cat)
+                    if (myElem[0]){
+                        myElem[0].value=val
+                    }
+                   
+
+                }
+            })
+        }else{
+            buildCustomForm(myChoice,menu,'Datos Nuevos')
+        }
+        
+
+        console.log(dataResult)
+    });
+    
+    
+    
+    
+}
+
+//////////////////////////////////////////////////////////////////////////////////////          
+
+ 
+ 
 function selectSpeciesOnChange(tableName, menu, numRows){
     const currentFunction2= function(tableName,numRows){
         const myChoice = document.getElementById("row"+numRows+tableName+"Form").value;
@@ -668,7 +799,7 @@ function selectSpeciesOnChange(tableName, menu, numRows){
 
 
 
-function buildCustomForm(obName,menu){
+function buildCustomForm(obName,menu, mode){
     let transPunto='punto';
     if(obName=='observacion_hierba'||obName=='observacion_herpetofauna'){
         transPunto='transecto';
@@ -697,6 +828,15 @@ function buildCustomForm(obName,menu){
         getSelectionAdd.disabled=true;
         getSelectionSubtract.disabled=true;
     }
+    const myTBody = document.getElementById(menu+"TBody"+'Form')
+    const datosField = document.createElement('input')
+    datosField.setAttribute("type", "text");
+    datosField.name = 'mode';
+    datosField.value = mode;
+    datosField.id='mode';
+    datosField.className ='btn modeButton text-dark text-center';
+    datosField.setAttribute("readonly", true);
+    myTBody.prepend(datosField);
 
 }
 

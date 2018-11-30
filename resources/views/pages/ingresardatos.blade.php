@@ -1,8 +1,13 @@
 <?php
-if (!session('email')){
-    return redirect()->to('/login')->send();
-}
+    if (!session('email')){
+        return redirect()->to('/login')->send();
+    }
+    $useremail=json_encode(session('email'));
 ?>
+
+<script>
+    var useremail = {!! $useremail !!};
+</script>
 @include('inc/php_functions')
 @include('inc/setuppage')
 @include('inc/checkdata')
