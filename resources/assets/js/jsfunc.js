@@ -675,8 +675,8 @@ function clickReadyButton(e){
     
     
     async function getData(){
-        let myapi ='http://localhost:3000/api/getudp'
-        //let myapi ='https://biodiversidadpuebla.online/api/getudp'
+        //let myapi ='http://localhost:3000/api/getudp'
+        let myapi ='https://biodiversidadpuebla.online/api/getudp'
 
         const rawResponse = await fetch(myapi, {
             method: 'POST',
