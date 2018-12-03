@@ -79,7 +79,7 @@ module.exports = __webpack_require__(104);
 "use strict";
 
 
-var _regenerator = __webpack_require__(30);
+var _regenerator = __webpack_require__(16);
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
@@ -559,7 +559,7 @@ function buildForm(tableName, menu, myTitle) {
     mySubmit.setAttribute("type", "submit");
     mySubmit.id = menu + tableName + "Submit";
     mySubmit.className = "mySubmit p-2 m-2";
-    mySubmit.textContent = 'Enviar';
+    mySubmit.value = 'Enviar';
     if (document.getElementsByClassName("mySubmit").length > 0) mySubmit = document.getElementsByClassName("mySubmit")[0];
     var newRows = createRows(tableName, menu, myCols, 0, obs, customList);
 
@@ -728,10 +728,12 @@ function addOnChangeObservaciones(menu) {
 
             var readybutton = document.createElement("button");
             readybutton.textContent = 'Cargar Formulario';
-            readybutton.className = 'p-2 m-2';
+            readybutton.className = 'p-2 m-2 cargarformulario';
             readybutton.type = "button";
             readybutton.id = "readybutton";
             readybutton.addEventListener('click', clickReadyButton);
+            //readybutton.onclick=function(){return clickReadyButton() }; 
+
             var myTBody = document.getElementById("measurementTBodyNumero");
             myTBody.append(readybutton);
         }
@@ -745,7 +747,7 @@ function addOnChangeObservaciones(menu) {
 //////////////////////////////////////////////////////////////////////////////////////          
 
 
-function clickReadyButton() {
+function clickReadyButton(e) {
     var getData = function () {
         var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
             var rawResponse, dataResult;
@@ -792,7 +794,7 @@ function clickReadyButton() {
         };
     }();
 
-    document.getElementById("readybutton").disabled = 'true';
+    //document.getElementById("readybutton").disabled='true'
     var menu = "measurement";
     var myChoice = 'observacion_' + document.getElementById("measurementobservacionesObservaciones").value;
     var newExist = document.getElementById("measurementdatosNumero");
@@ -817,110 +819,123 @@ function clickReadyButton() {
         return;
     }
 
-    getData().then(function (dataResult) {
-        clearForm(menu, "Form");
+    if (e.offsetX > 0) {
+        getData().then(function (dataResult) {
+            clearForm(menu, "Form");
+            if (dataResult[0].length > 0) {
+                var myTBody = document.getElementById(menu + "TBody" + 'Form');
+                var hiddenLocation = document.createElement('input');
+                hiddenLocation.setAttribute("type", "hidden");
+                hiddenLocation.name = 'hiddenlocation';
+                hiddenLocation.value = dataResult[0][0]['iden'];
+                hiddenLocation.id = 'hiddenlocation';
+                myTBody.append(hiddenLocation);
 
-        if (dataResult[0].length > 0) {
-            console.log(dataResult);
+                buildCustomForm(myChoice, menu, 'Datos Existentes');
+                var formtranspunto = 'punto';
+                if (myChoice.includes('hierba') || myChoice.includes('herpetofauna')) {
+                    formtranspunto = 'transecto';
+                }
+                var lifeForm = document.getElementById("measurementobservacionesObservaciones").value;
+                var puntoEntries = Object.entries(dataResult[0][0]);
+                var _iteratorNormalCompletion = true;
+                var _didIteratorError = false;
+                var _iteratorError = undefined;
+
+                try {
+                    for (var _iterator = puntoEntries[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                        var _ref2 = _step.value;
+
+                        var _ref3 = _slicedToArray(_ref2, 2);
+
+                        var cat = _ref3[0];
+                        var val = _ref3[1];
+
+                        var myElem = document.getElementById(formtranspunto + "_" + lifeForm + cat);
+                        if (myElem) {
+                            myElem.value = val;
+                        }
+                    }
+                } catch (err) {
+                    _didIteratorError = true;
+                    _iteratorError = err;
+                } finally {
+                    try {
+                        if (!_iteratorNormalCompletion && _iterator.return) {
+                            _iterator.return();
+                        }
+                    } finally {
+                        if (_didIteratorError) {
+                            throw _iteratorError;
+                        }
+                    }
+                }
+
+                dataResult[1].forEach(function (row, ind) {
+                    if (ind > 0) {
+                        //make new row
+                        var getSelectionAdd = document.getElementById("addElementRow" + myChoice);
+                        if (!myChoice.includes('arbol') && !myChoice.includes('arbusto')) {
+                            getSelectionAdd.onclick();
+                        }
+                    }
+                    var obsEntries = Object.entries(row);
+                    var _iteratorNormalCompletion2 = true;
+                    var _didIteratorError2 = false;
+                    var _iteratorError2 = undefined;
+
+                    try {
+                        for (var _iterator2 = obsEntries[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                            var _ref4 = _step2.value;
+
+                            var _ref5 = _slicedToArray(_ref4, 2);
+
+                            var _cat = _ref5[0];
+                            var _val = _ref5[1];
+
+                            if (_cat == 'comun_cientifico') {
+                                var myElemSpecies = document.getElementsByName("row" + ind + "*" + myChoice + "*species");
+                                myElemSpecies[0].value = _val;
+                            }
+                            var myElem = document.getElementsByName("row" + ind + "*" + myChoice + "*" + _cat);
+                            if (myElem[0]) {
+                                myElem[0].value = _val;
+                            }
+                        }
+                    } catch (err) {
+                        _didIteratorError2 = true;
+                        _iteratorError2 = err;
+                    } finally {
+                        try {
+                            if (!_iteratorNormalCompletion2 && _iterator2.return) {
+                                _iterator2.return();
+                            }
+                        } finally {
+                            if (_didIteratorError2) {
+                                throw _iteratorError2;
+                            }
+                        }
+                    }
+                });
+            } else {
+                buildCustomForm(myChoice, menu, 'Datos Nuevos');
+            }
+        });
+    } else {
+        if (newold == 'Datos Nuevos') {
+            buildCustomForm(myChoice, menu, 'Datos Nuevos');
+        } else {
+            buildCustomForm(myChoice, menu, 'Datos Existentes');
+
             var myTBody = document.getElementById(menu + "TBody" + 'Form');
             var hiddenLocation = document.createElement('input');
             hiddenLocation.setAttribute("type", "hidden");
             hiddenLocation.name = 'hiddenlocation';
-            hiddenLocation.value = dataResult[0][0]['iden'];
+            hiddenLocation.value = hiddenlocationvalue;
             hiddenLocation.id = 'hiddenlocation';
             myTBody.append(hiddenLocation);
-
-            buildCustomForm(myChoice, menu, 'Datos Existantes');
-            //alert('You are editing existing data!')
-            var formtranspunto = 'punto';
-            if (myChoice.includes('hierba') || myChoice.includes('herpetofauna')) {
-                formtranspunto = 'transecto';
-            }
-            var lifeForm = document.getElementById("measurementobservacionesObservaciones").value;
-            var puntoEntries = Object.entries(dataResult[0][0]);
-            var _iteratorNormalCompletion = true;
-            var _didIteratorError = false;
-            var _iteratorError = undefined;
-
-            try {
-                for (var _iterator = puntoEntries[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                    var _ref2 = _step.value;
-
-                    var _ref3 = _slicedToArray(_ref2, 2);
-
-                    var cat = _ref3[0];
-                    var val = _ref3[1];
-
-                    var myElem = document.getElementById(formtranspunto + "_" + lifeForm + cat);
-                    if (myElem) {
-                        myElem.value = val;
-                    }
-                }
-            } catch (err) {
-                _didIteratorError = true;
-                _iteratorError = err;
-            } finally {
-                try {
-                    if (!_iteratorNormalCompletion && _iterator.return) {
-                        _iterator.return();
-                    }
-                } finally {
-                    if (_didIteratorError) {
-                        throw _iteratorError;
-                    }
-                }
-            }
-
-            dataResult[1].forEach(function (row, ind) {
-                if (ind > 0) {
-                    //make new row
-                    var getSelectionAdd = document.getElementById("addElementRow" + myChoice);
-                    getSelectionAdd.onclick();
-                }
-                var obsEntries = Object.entries(row);
-                var _iteratorNormalCompletion2 = true;
-                var _didIteratorError2 = false;
-                var _iteratorError2 = undefined;
-
-                try {
-                    for (var _iterator2 = obsEntries[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                        var _ref4 = _step2.value;
-
-                        var _ref5 = _slicedToArray(_ref4, 2);
-
-                        var _cat = _ref5[0];
-                        var _val = _ref5[1];
-
-                        if (_cat == 'comun_cientifico') {
-                            var myElemSpecies = document.getElementsByName("row" + ind + "*" + myChoice + "*species");
-                            myElemSpecies[0].value = _val;
-                        }
-                        var myElem = document.getElementsByName("row" + ind + "*" + myChoice + "*" + _cat);
-                        if (myElem[0]) {
-                            myElem[0].value = _val;
-                        }
-                    }
-                } catch (err) {
-                    _didIteratorError2 = true;
-                    _iteratorError2 = err;
-                } finally {
-                    try {
-                        if (!_iteratorNormalCompletion2 && _iterator2.return) {
-                            _iterator2.return();
-                        }
-                    } finally {
-                        if (_didIteratorError2) {
-                            throw _iteratorError2;
-                        }
-                    }
-                }
-            });
-        } else {
-            buildCustomForm(myChoice, menu, 'Datos Nuevos');
         }
-
-        console.log(dataResult);
-    });
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////          
@@ -1031,7 +1046,6 @@ function addOnChangeAdminTable() {
     };
     getSelection.onchange = currentOnChange3;
 }
-
 var numRows = 0;
 if (window.location.href.substr(-5) === 'admin') {
     buildDropdowns("usuario", "measurement", "Select");
@@ -1047,15 +1061,15 @@ if (window.location.href.substr(-5) === 'admin') {
 
 /***/ }),
 
-/***/ 30:
+/***/ 16:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(31);
+module.exports = __webpack_require__(17);
 
 
 /***/ }),
 
-/***/ 31:
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1080,7 +1094,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(32);
+module.exports = __webpack_require__(18);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -1097,7 +1111,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 32:
+/***/ 18:
 /***/ (function(module, exports) {
 
 /**

@@ -459,7 +459,7 @@ function buildForm(tableName, menu, myTitle, spacers=false, obs=false, customLis
     mySubmit.setAttribute("type", "submit");
     mySubmit.id= menu+tableName+"Submit";
     mySubmit.className= "mySubmit p-2 m-2";
-    mySubmit.textContent='Enviar'
+    mySubmit.value='Enviar'
     if(document.getElementsByClassName("mySubmit").length>0) mySubmit= document.getElementsByClassName("mySubmit")[0];
     var newRows = createRows(tableName,menu,myCols,0,obs,customList)
 
@@ -629,10 +629,12 @@ function addOnChangeObservaciones(menu){
             
             const readybutton = document.createElement("button");
             readybutton.textContent='Cargar Formulario'
-            readybutton.className='p-2 m-2'
+            readybutton.className='p-2 m-2 cargarformulario'
             readybutton.type="button"
             readybutton.id="readybutton"
             readybutton.addEventListener('click', clickReadyButton)
+            //readybutton.onclick=function(){return clickReadyButton() }; 
+
             const myTBody = document.getElementById("measurementTBodyNumero")
             myTBody.append(readybutton);
             
@@ -645,8 +647,8 @@ function addOnChangeObservaciones(menu){
 //////////////////////////////////////////////////////////////////////////////////////          
           
 
-function clickReadyButton(){
-    document.getElementById("readybutton").disabled='true'
+function clickReadyButton(e){
+    //document.getElementById("readybutton").disabled='true'
     let menu="measurement"
     const myChoice = 'observacion_'+document.getElementById("measurementobservacionesObservaciones").value;
     const newExist = document.getElementById("measurementdatosNumero");
@@ -691,63 +693,75 @@ function clickReadyButton(){
         let dataResult = await rawResponse.json()
         return dataResult
     }
-    getData().then(dataResult =>{
-        clearForm(menu,"Form")
-        
-        if (dataResult[0].length>0){
-            console.log(dataResult)
+
+
+
+
+    
+    if (e.offsetX>0){
+        getData().then(dataResult =>{
+            clearForm(menu,"Form")
+            if (dataResult[0].length>0){
+                const myTBody = document.getElementById(menu+"TBody"+'Form')
+                const hiddenLocation = document.createElement('input')
+                hiddenLocation.setAttribute("type", "hidden");
+                hiddenLocation.name = 'hiddenlocation';
+                hiddenLocation.value = dataResult[0][0]['iden'];
+                hiddenLocation.id='hiddenlocation';
+                myTBody.append(hiddenLocation);
+    
+                buildCustomForm(myChoice,menu,'Datos Existentes')
+                let formtranspunto='punto'
+                if (myChoice.includes('hierba') || myChoice.includes('herpetofauna')){
+                    formtranspunto='transecto'
+                }
+                let lifeForm=document.getElementById("measurementobservacionesObservaciones").value
+                const puntoEntries=Object.entries(dataResult[0][0])
+                for (const [cat, val] of puntoEntries){
+                    let myElem=document.getElementById(`${formtranspunto}_${lifeForm}${cat}`)
+                    if (myElem){
+                        myElem.value=val
+                    }
+                }
+                dataResult[1].forEach((row,ind) => {
+                    if (ind>0){
+                        //make new row
+                        const getSelectionAdd = document.getElementById(`addElementRow${myChoice}`)
+                        if (!myChoice.includes('arbol') && !myChoice.includes('arbusto')){
+                            getSelectionAdd.onclick()
+                        }
+                    }
+                    const obsEntries=Object.entries(row)
+                    for (const [cat, val] of obsEntries){
+                        if (cat=='comun_cientifico'){
+                            let myElemSpecies=document.getElementsByName("row"+ind+"*"+myChoice +"*species")
+                            myElemSpecies[0].value=val;
+                        }
+                        let myElem=document.getElementsByName("row"+ind+"*"+myChoice +"*"+cat)
+                        if (myElem[0]){
+                            myElem[0].value=val
+                        }
+                    }
+                })
+            }else{
+                buildCustomForm(myChoice,menu,'Datos Nuevos')
+            }
+        });
+    }else{
+        if (newold=='Datos Nuevos'){
+            buildCustomForm(myChoice,menu,'Datos Nuevos')
+        }else{
+            buildCustomForm(myChoice,menu,'Datos Existentes')
+
             const myTBody = document.getElementById(menu+"TBody"+'Form')
             const hiddenLocation = document.createElement('input')
             hiddenLocation.setAttribute("type", "hidden");
             hiddenLocation.name = 'hiddenlocation';
-            hiddenLocation.value = dataResult[0][0]['iden'];
+            hiddenLocation.value = hiddenlocationvalue;
             hiddenLocation.id='hiddenlocation';
             myTBody.append(hiddenLocation);
- 
-            buildCustomForm(myChoice,menu,'Datos Existantes')
-            //alert('You are editing existing data!')
-            let formtranspunto='punto'
-            if (myChoice.includes('hierba') || myChoice.includes('herpetofauna')){
-                formtranspunto='transecto'
-            }
-            let lifeForm=document.getElementById("measurementobservacionesObservaciones").value
-            const puntoEntries=Object.entries(dataResult[0][0])
-            for (const [cat, val] of puntoEntries){
-                let myElem=document.getElementById(`${formtranspunto}_${lifeForm}${cat}`)
-                if (myElem){
-                    myElem.value=val
-                }
-            }
-            dataResult[1].forEach((row,ind) => {
-                if (ind>0){
-                    //make new row
-                    const getSelectionAdd = document.getElementById(`addElementRow${myChoice}`)
-                    getSelectionAdd.onclick()
-                }
-                const obsEntries=Object.entries(row)
-                for (const [cat, val] of obsEntries){
-                    if (cat=='comun_cientifico'){
-                        let myElemSpecies=document.getElementsByName("row"+ind+"*"+myChoice +"*species")
-                        myElemSpecies[0].value=val;
-                    }
-                    let myElem=document.getElementsByName("row"+ind+"*"+myChoice +"*"+cat)
-                    if (myElem[0]){
-                        myElem[0].value=val
-                    }
-                   
-
-                }
-            })
-        }else{
-            buildCustomForm(myChoice,menu,'Datos Nuevos')
         }
-        
-
-        console.log(dataResult)
-    });
-    
-    
-    
+    }        
     
 }
 
@@ -865,7 +879,6 @@ function addOnChangeAdminTable(){
     const currentOnChange3 =function() {currentFunction3()}   
              getSelection.onchange=currentOnChange3;
 }
-            
 var numRows=0;
 if(window.location.href.substr(-5)==='admin'){
     buildDropdowns( "usuario", "measurement", "Select" );
