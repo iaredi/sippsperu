@@ -675,11 +675,12 @@ function clickReadyButton(e){
     
     
     async function getData(){
-        const rawResponse = await fetch('http://localhost:3000/api/getudp', {
+        const rawResponse = await fetch('https://biodiversidadpuebla.online/api/getudp', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 "Content-Type": "application/json;",
+                mode: 'cors',
             },
             body: JSON.stringify({
                 "lineamtp": document.getElementById("measurementlinea_mtpSelect").value,
