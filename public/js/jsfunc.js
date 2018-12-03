@@ -750,13 +750,16 @@ function addOnChangeObservaciones(menu) {
 function clickReadyButton(e) {
     var getData = function () {
         var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-            var rawResponse, dataResult;
+            var myapi, rawResponse, dataResult;
             return _regenerator2.default.wrap(function _callee$(_context) {
                 while (1) {
                     switch (_context.prev = _context.next) {
                         case 0:
-                            _context.next = 2;
-                            return fetch('http://localhost:3000/api/getudp', {
+                            myapi = 'http://localhost:3000/api/getudp';
+                            //let myapi ='https://biodiversidadpuebla.online/api/getudp'
+
+                            _context.next = 3;
+                            return fetch(myapi, {
                                 method: 'POST',
                                 headers: {
                                     'Accept': 'application/json',
@@ -772,16 +775,16 @@ function clickReadyButton(e) {
                                 })
                             });
 
-                        case 2:
+                        case 3:
                             rawResponse = _context.sent;
-                            _context.next = 5;
+                            _context.next = 6;
                             return rawResponse.json();
 
-                        case 5:
+                        case 6:
                             dataResult = _context.sent;
                             return _context.abrupt("return", dataResult);
 
-                        case 7:
+                        case 8:
                         case "end":
                             return _context.stop();
                     }
