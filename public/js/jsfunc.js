@@ -755,9 +755,8 @@ function clickReadyButton(e) {
                 while (1) {
                     switch (_context.prev = _context.next) {
                         case 0:
-                            myapi = 'http://localhost:3000/api/getudp';
-                            //let myapi ='https://biodiversidadpuebla.online/api/getudp'
-
+                            //let myapi ='http://localhost:3000/api/getudp'
+                            myapi = 'https://biodiversidadpuebla.online/api/getudp';
                             _context.next = 3;
                             return fetch(myapi, {
                                 method: 'POST',
