@@ -558,7 +558,7 @@ function buildForm(tableName, menu, myTitle) {
     var mySubmit = document.createElement("INPUT");
     mySubmit.setAttribute("type", "submit");
     mySubmit.id = menu + tableName + "Submit";
-    mySubmit.className = "mySubmit p-2 m-2";
+    mySubmit.className = "border border-secondary btn btn-success mySubmit p-2 m-2";
     mySubmit.value = 'Enviar';
     if (document.getElementsByClassName("mySubmit").length > 0) mySubmit = document.getElementsByClassName("mySubmit")[0];
     var newRows = createRows(tableName, menu, myCols, 0, obs, customList);
@@ -728,7 +728,7 @@ function addOnChangeObservaciones(menu) {
 
             var readybutton = document.createElement("button");
             readybutton.textContent = 'Cargar Formulario';
-            readybutton.className = 'p-2 m-2 cargarformulario';
+            readybutton.className = ' btn btn-primary border border-secondary p-2 m-2 cargarformulario';
             readybutton.type = "button";
             readybutton.id = "readybutton";
             readybutton.addEventListener('click', clickReadyButton);
@@ -755,9 +755,14 @@ function clickReadyButton(e) {
                 while (1) {
                     switch (_context.prev = _context.next) {
                         case 0:
+
                             //let myapi ='http://localhost:3000/api/getudp'
                             myapi = 'https://biodiversidadpuebla.online/api/getudp';
-                            _context.next = 3;
+
+
+                            if (myenv == 'localhost:3000') myapi = 'http://localhost:3000/api/getudp';
+
+                            _context.next = 4;
                             return fetch(myapi, {
                                 method: 'POST',
                                 headers: {
@@ -775,16 +780,16 @@ function clickReadyButton(e) {
                                 })
                             });
 
-                        case 3:
+                        case 4:
                             rawResponse = _context.sent;
-                            _context.next = 6;
+                            _context.next = 7;
                             return rawResponse.json();
 
-                        case 6:
+                        case 7:
                             dataResult = _context.sent;
                             return _context.abrupt("return", dataResult);
 
-                        case 8:
+                        case 9:
                         case "end":
                             return _context.stop();
                     }
@@ -1017,7 +1022,7 @@ function buildCustomForm(obName, menu, mode) {
     datosField.name = 'mode';
     datosField.value = mode;
     datosField.id = 'mode';
-    datosField.className = 'btn modeButton text-dark text-center';
+    datosField.className = ' modeButton text-dark text-center';
     datosField.setAttribute("readonly", true);
     myTBody.prepend(datosField);
 }

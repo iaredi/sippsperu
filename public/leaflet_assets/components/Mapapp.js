@@ -18640,6 +18640,10 @@ var _FeatureInfoDisplay = __webpack_require__(66);
 
 var _FeatureInfoDisplay2 = _interopRequireDefault(_FeatureInfoDisplay);
 
+var _SpeciesDisplay = __webpack_require__(124);
+
+var _SpeciesDisplay2 = _interopRequireDefault(_SpeciesDisplay);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
@@ -18879,6 +18883,14 @@ var Mapapp = function (_React$Component) {
                 })
               )
             )
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'speciesdisplay' },
+            _react2.default.createElement(_SpeciesDisplay2.default, {
+              markerPosition: this.state.markerPosition,
+              featureInfo: this.state.featureInfo
+            })
           )
         ),
         _react2.default.createElement('div', null)
@@ -24732,6 +24744,125 @@ exports.push([module.i, ".react-bootstrap-table table{table-layout:fixed}.react-
 
 module.exports = __webpack_require__(32);
 
+
+/***/ }),
+/* 107 */,
+/* 108 */,
+/* 109 */,
+/* 110 */,
+/* 111 */,
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrapTableNext = __webpack_require__(22);
+
+var _reactBootstrapTableNext2 = _interopRequireDefault(_reactBootstrapTableNext);
+
+__webpack_require__(67);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SpeciesDisplay = function (_React$Component) {
+    _inherits(SpeciesDisplay, _React$Component);
+
+    function SpeciesDisplay(props) {
+        _classCallCheck(this, SpeciesDisplay);
+
+        return _possibleConstructorReturn(this, (SpeciesDisplay.__proto__ || Object.getPrototypeOf(SpeciesDisplay)).call(this, props));
+    }
+
+    _createClass(SpeciesDisplay, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var allTableRows = [];
+            if (this.props.featureInfo.properties.displayName == 'Linea MTP' || this.props.featureInfo.properties.displayName == 'Unidad de Paisaje') {
+
+                var lifeForms = ['arbol', 'arbusto', 'hierba', 'ave', 'herpetofauna', 'mamifero', 'Dato acumulado'];
+                var mya2 = ['total_observaciones', 'distinct_species', 'dominancia', 'shannon'];
+                var myIcons = { 'ave': '🐦', 'arbol': '🌲', 'arbusto': '🌳', 'hierba': '🌱', 'herpetofauna': '🦎', 'mamifero': '🦌' };
+
+                lifeForms.map(function (life) {
+                    var oneTableRow = {};
+                    oneTableRow['name'] = life == 'herpetofauna' ? 'herpetofauna' : life;
+                    oneTableRow['name'] = life == 'Dato acumulado' ? oneTableRow['name'] : myIcons[life] + oneTableRow['name'];
+
+                    mya2.map(function (category, ind) {
+                        if (life == 'Dato acumulado') {
+                            var mysum = +_this2.props.featureInfo.properties[category + '_ave'] + +_this2.props.featureInfo.properties[category + '_hierba'] + +_this2.props.featureInfo.properties[category + '_arbusto'] + +_this2.props.featureInfo.properties[category + '_arbol'] + +_this2.props.featureInfo.properties[category + '_herpetofauna'] + +_this2.props.featureInfo.properties[category + '_mamifero'];
+                            if (ind > 1) mysum = (mysum / 6).toPrecision(4);
+                            oneTableRow[category] = mysum;
+                        } else {
+                            var newCat = category.replace('_' + life, '');
+                            var myValue = ind > 1 ? (+_this2.props.featureInfo.properties[category + '_' + life]).toPrecision(4) : _this2.props.featureInfo.properties[category + '_' + life];
+                            oneTableRow[newCat] = myValue;
+                        }
+                    });
+                    allTableRows.push(oneTableRow);
+                });
+            }
+            var columns = [{
+                dataField: 'especie',
+                text: 'Especie',
+                headerStyle: {
+                    width: '128px'
+                }
+            }, {
+                dataField: 'cantidad',
+                text: 'Cantidad'
+            }, {
+                dataField: 'riesgo',
+                text: 'Riesgo'
+            }];
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'container' },
+                    _react2.default.createElement('div', { className: 'flex-column d-flex justify-content-around align-items-center p-3' })
+                )
+            );
+        }
+    }]);
+
+    return SpeciesDisplay;
+}(_react2.default.Component);
+
+exports.default = SpeciesDisplay;
 
 /***/ })
 /******/ ]);

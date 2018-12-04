@@ -4,6 +4,8 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import Map from './Map';
 import MapControl from './MapControl';
 import FeatureInfoDisplay from './FeatureInfoDisplay';
+import SpeciesDisplay from './SpeciesDisplay';
+
 
 class Mapapp extends React.Component {
   constructor(props){
@@ -176,13 +178,14 @@ class Mapapp extends React.Component {
                   handleMaxChange={this.handleMaxChange}
                   mapSettings={this.state.mapSettings} 
                   />
-
-
-
               </div>
             </div>
-
-
+          </div>
+          <div className="speciesdisplay">
+            <SpeciesDisplay 
+              markerPosition={this.state.markerPosition} 
+              featureInfo={this.state.featureInfo}
+            />
           </div>
         </div>
 
