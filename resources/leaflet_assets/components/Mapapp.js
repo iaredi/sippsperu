@@ -176,13 +176,14 @@ class Mapapp extends React.Component {
                   handleMaxChange={this.handleMaxChange}
                   mapSettings={this.state.mapSettings} 
                   />
-
-
-
               </div>
             </div>
-
-
+          </div>
+          <div className="speciesdisplay">
+            <SpeciesDisplay 
+              markerPosition={this.state.markerPosition} 
+              featureInfo={this.state.featureInfo}
+            />
           </div>
         </div>
 
