@@ -679,7 +679,7 @@ function clickReadyButton(e){
         //let myapi ='http://localhost:3000/api/getudp'
         let myapi ='https://biodiversidadpuebla.online/api/getudp'
 
-        if (myenv=='localhost:3000') myapi ='http://localhost:3000/api/getudp'
+        if (window.location.host=='localhost:3000') myapi ='http://localhost:3000/api/getudp'
 
         const rawResponse = await fetch(myapi, {
             method: 'POST',

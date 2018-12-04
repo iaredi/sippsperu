@@ -18,6 +18,7 @@ class Mapapp extends React.Component {
         this.handleFeatureClick = this.handleFeatureClick.bind(this);
         this.setDefaultMax = this.setDefaultMax.bind(this);
         this.state={
+            speciesResult:[],
             previous:0,
             udp:0,
             markerPosition: { lat: 18.69349, lng: 360-98.16245 },
@@ -76,25 +77,59 @@ class Mapapp extends React.Component {
     }));
   }
 
-    handleFeatureClick(event) {
-        let myColor='green'
-        let myWeight=5
-        let myOpacity=5
-      
-        if (this.state.previous){
-            something.forEach((thing)=>{
-                if (thing.tableName==this.state.previous.feature.properties.name){
-                    myColor=thing.color
-                    myWeight=thing.weight
-                    myOpacity=thing.opacity
-            }
+  handleFeatureClick(event) {
+    // $lifeform=explode('_',$observacion)[1];
+    // $idtype = $request->idtype;
+    // $idnumber= $request->idnumber;
+    const lifeform = this.state.mapSettings.myObsType
+    const idtype =event.target.feature.properties.name=='udp_puebla_4326'?'udp':'linea_mtp'
+    const idnumber = event.target.feature.properties.iden
+
+    async function getSpecies(lifeform,idtype,idnumber){
+      let myapi ='https://biodiversidadpuebla.online/api/getspecies'
+      if (window.location.host=='localhost:3000') myapi ='http://localhost:3000/api/getspecies'
+      const rawResponse = await fetch(myapi, {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+              "Content-Type": "application/json;",
+              mode: 'cors',
+          },
+          body: JSON.stringify({
+              "lifeform": lifeform,
+              "idtype":idtype,
+              "idnumber":idnumber
           })
-            this.state.previous.setStyle({
-                'color': myColor,
-                'weight': myWeight,
-                'opacity': myOpacity
-            });
-        }
+      });
+      let dataResult = await rawResponse.json()
+      return dataResult
+  }
+  getSpecies(lifeform,idtype,idnumber).then(myspeciesResult =>{
+    this.setState((prevState) => ({
+      speciesResult: myspeciesResult
+    }));
+
+  })
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
+      let myColor='green'
+      let myWeight=5
+      let myOpacity=5
+    
+      if (this.state.previous){
+        something.forEach((thing)=>{
+          if (thing.tableName==this.state.previous.feature.properties.name){
+            myColor=thing.color
+            myWeight=thing.weight
+            myOpacity=thing.opacity
+          }
+        })
+        this.state.previous.setStyle({
+          'color': myColor,
+          'weight': myWeight,
+          'opacity': myOpacity
+        });
+      }
 
     this.setState((prevState) => ({
         previous: event.target
@@ -105,18 +140,17 @@ class Mapapp extends React.Component {
         'weight': 3,
         'opacity': 1
     };
-      event.target.setStyle(highlight);
+    event.target.setStyle(highlight);
 
-      
-      
-      
-        this.setState((prevState) => ({
-            featureInfo: {
-                properties:event.target.feature.properties
-            }
-        }));
+
+
+    this.setState((prevState) => ({
+        featureInfo: {
+            properties:event.target.feature.properties
+        }
+    }));
         
-    }
+  }
 
   
 
@@ -183,8 +217,7 @@ class Mapapp extends React.Component {
           </div>
           <div className="speciesdisplay">
             <SpeciesDisplay 
-              markerPosition={this.state.markerPosition} 
-              featureInfo={this.state.featureInfo}
+              speciesResult={this.state.speciesResult} 
             />
           </div>
         </div>

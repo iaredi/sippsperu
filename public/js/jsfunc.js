@@ -760,7 +760,7 @@ function clickReadyButton(e) {
                             myapi = 'https://biodiversidadpuebla.online/api/getudp';
 
 
-                            if (myenv == 'localhost:3000') myapi = 'http://localhost:3000/api/getudp';
+                            if (window.location.host == 'localhost:3000') myapi = 'http://localhost:3000/api/getudp';
 
                             _context.next = 4;
                             return fetch(myapi, {

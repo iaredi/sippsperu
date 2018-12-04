@@ -136,7 +136,6 @@ var muninames=<?php echo json_encode($muninames) ; "\n";?>
 
 
 
-var myenv=<?php echo json_encode(getenv('HTTP_HOST')) ; "\n";?>
 
 
 

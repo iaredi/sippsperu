@@ -108,3 +108,48 @@ Route::post('getudp', function(Request $request) {
     $finalresults=[$result,$obresult];
     return json_encode($finalresults);
 });
+
+
+
+Route::post('getspecies', function(Request $request) {
+    $lifeform = $request->lifeform;
+    $idtype = $request->idtype;
+    $idnumber= $request->idnumber;
+
+    $transpunto='punto';
+    if ($lifeform=='hierba'||$lifeform=='herpetofauna'){
+        $transpunto='transecto';
+    }
+
+    $sql= "SELECT
+    especie_{$lifeform}.comun,
+    especie_{$lifeform}.cientifico,
+    count(especie_{$lifeform}.cientifico) AS total_cientifico
+    FROM especie_{$lifeform}
+        JOIN
+    observacion_{$lifeform} ON especie_{$lifeform}.iden = observacion_{$lifeform}.iden_especie
+        JOIN
+        {$transpunto}_{$lifeform} ON observacion_{$lifeform}.iden_{$transpunto} = {$transpunto}_{$lifeform}.iden
+    where iden_{$idtype}={$idnumber}
+    GROUP BY especie_{$lifeform}.comun,especie_{$lifeform}.cientifico";
+
+    if ($idtype=="linea_mtp"){
+        $sql="SELECT
+        especie_{$lifeform}.comun,
+        especie_{$lifeform}.cientifico,
+        count(especie_{$lifeform}.cientifico) AS total_cientifico
+        FROM especie_{$lifeform}
+            JOIN
+        observacion_{$lifeform} ON especie_{$lifeform}.iden = observacion_{$lifeform}.iden_especie
+            JOIN
+            {$transpunto}_{$lifeform} ON observacion_{$lifeform}.iden_{$transpunto} = {$transpunto}_{$lifeform}.iden
+            JOIN
+        medicion ON {$transpunto}_{$lifeform}.iden_medicion = medicion.iden
+            where iden_linea_mtp={$idnumber}
+            GROUP BY especie_{$lifeform}.comun,especie_{$lifeform}.cientifico";
+    }   
+
+    $obresult = DB::select($sql, []);
+    return json_encode($obresult);
+    
+});

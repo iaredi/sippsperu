@@ -18670,6 +18670,7 @@ var Mapapp = function (_React$Component) {
     _this.handleFeatureClick = _this.handleFeatureClick.bind(_this);
     _this.setDefaultMax = _this.setDefaultMax.bind(_this);
     _this.state = {
+      speciesResult: [],
       previous: 0,
       udp: 0,
       markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
@@ -18763,6 +18764,69 @@ var Mapapp = function (_React$Component) {
     value: function handleFeatureClick(event) {
       var _this2 = this;
 
+      var getSpecies = function () {
+        var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee2(lifeform, idtype, idnumber) {
+          var myapi, rawResponse, dataResult;
+          return _regenerator2.default.wrap(function _callee2$(_context2) {
+            while (1) {
+              switch (_context2.prev = _context2.next) {
+                case 0:
+                  myapi = 'https://biodiversidadpuebla.online/api/getspecies';
+
+                  if (window.location.host == 'localhost:3000') myapi = 'http://localhost:3000/api/getspecies';
+                  _context2.next = 4;
+                  return fetch(myapi, {
+                    method: 'POST',
+                    headers: {
+                      'Accept': 'application/json',
+                      "Content-Type": "application/json;",
+                      mode: 'cors'
+                    },
+                    body: JSON.stringify({
+                      "lifeform": lifeform,
+                      "idtype": idtype,
+                      "idnumber": idnumber
+                    })
+                  });
+
+                case 4:
+                  rawResponse = _context2.sent;
+                  _context2.next = 7;
+                  return rawResponse.json();
+
+                case 7:
+                  dataResult = _context2.sent;
+                  return _context2.abrupt('return', dataResult);
+
+                case 9:
+                case 'end':
+                  return _context2.stop();
+              }
+            }
+          }, _callee2, this);
+        }));
+
+        return function getSpecies(_x2, _x3, _x4) {
+          return _ref2.apply(this, arguments);
+        };
+      }();
+
+      // $lifeform=explode('_',$observacion)[1];
+      // $idtype = $request->idtype;
+      // $idnumber= $request->idnumber;
+      var lifeform = this.state.mapSettings.myObsType;
+      var idtype = event.target.feature.properties.name == 'udp_puebla_4326' ? 'udp' : 'linea_mtp';
+      var idnumber = event.target.feature.properties.iden;
+
+      getSpecies(lifeform, idtype, idnumber).then(function (myspeciesResult) {
+        _this2.setState(function (prevState) {
+          return {
+            speciesResult: myspeciesResult
+          };
+        });
+      });
+
+      /////////////////////////////////////////////////////////////////////////////////////////////
       var myColor = 'green';
       var myWeight = 5;
       var myOpacity = 5;
@@ -18888,8 +18952,7 @@ var Mapapp = function (_React$Component) {
             'div',
             { className: 'speciesdisplay' },
             _react2.default.createElement(_SpeciesDisplay2.default, {
-              markerPosition: this.state.markerPosition,
-              featureInfo: this.state.featureInfo
+              speciesResult: this.state.speciesResult
             })
           )
         ),
@@ -24560,7 +24623,7 @@ var FeatureInfoDisplay = function (_React$Component) {
 
                 var lifeForms = ['arbol', 'arbusto', 'hierba', 'ave', 'herpetofauna', 'mamifero', 'Dato acumulado'];
                 var mya2 = ['total_observaciones', 'distinct_species', 'dominancia', 'shannon'];
-                var myIcons = { 'ave': '🐦', 'arbol': '🌲', 'arbusto': '🌳', 'hierba': '🌱', 'herpetofauna': '🦎', 'mamifero': '🦌' };
+                var myIcons = { 'ave': '🦅', 'arbol': '🌲', 'arbusto': '🌳', 'hierba': '🌱', 'herpetofauna': '🐍', 'mamifero': '🦌' };
 
                 lifeForms.map(function (life) {
                     var oneTableRow = {};
@@ -24581,6 +24644,7 @@ var FeatureInfoDisplay = function (_React$Component) {
                     allTableRows.push(oneTableRow);
                 });
             }
+            console.log(allTableRows);
             var columns = [{
                 dataField: 'name',
                 text: 'Nombre',
@@ -24805,46 +24869,50 @@ var SpeciesDisplay = function (_React$Component) {
     _createClass(SpeciesDisplay, [{
         key: 'render',
         value: function render() {
-            var _this2 = this;
-
             var allTableRows = [];
-            if (this.props.featureInfo.properties.displayName == 'Linea MTP' || this.props.featureInfo.properties.displayName == 'Unidad de Paisaje') {
+            var speciesResult = this.props.speciesResult;
+            if (speciesResult.length > 0) {}
+            //     speciesResult.map((life)=>{
 
-                var lifeForms = ['arbol', 'arbusto', 'hierba', 'ave', 'herpetofauna', 'mamifero', 'Dato acumulado'];
-                var mya2 = ['total_observaciones', 'distinct_species', 'dominancia', 'shannon'];
-                var myIcons = { 'ave': '🐦', 'arbol': '🌲', 'arbusto': '🌳', 'hierba': '🌱', 'herpetofauna': '🦎', 'mamifero': '🦌' };
+            //add risk here
+            // })
 
-                lifeForms.map(function (life) {
-                    var oneTableRow = {};
-                    oneTableRow['name'] = life == 'herpetofauna' ? 'herpetofauna' : life;
-                    oneTableRow['name'] = life == 'Dato acumulado' ? oneTableRow['name'] : myIcons[life] + oneTableRow['name'];
 
-                    mya2.map(function (category, ind) {
-                        if (life == 'Dato acumulado') {
-                            var mysum = +_this2.props.featureInfo.properties[category + '_ave'] + +_this2.props.featureInfo.properties[category + '_hierba'] + +_this2.props.featureInfo.properties[category + '_arbusto'] + +_this2.props.featureInfo.properties[category + '_arbol'] + +_this2.props.featureInfo.properties[category + '_herpetofauna'] + +_this2.props.featureInfo.properties[category + '_mamifero'];
-                            if (ind > 1) mysum = (mysum / 6).toPrecision(4);
-                            oneTableRow[category] = mysum;
-                        } else {
-                            var newCat = category.replace('_' + life, '');
-                            var myValue = ind > 1 ? (+_this2.props.featureInfo.properties[category + '_' + life]).toPrecision(4) : _this2.props.featureInfo.properties[category + '_' + life];
-                            oneTableRow[newCat] = myValue;
-                        }
-                    });
-                    allTableRows.push(oneTableRow);
-                });
-            }
+            // if(this.props.featureInfo.properties.displayName=='Linea MTP' || this.props.featureInfo.properties.displayName=='Unidad de Paisaje'){
+
+            //     let lifeForms= ['arbol','arbusto','hierba', 'ave', 'herpetofauna','mamifero','Dato acumulado']
+            //     let mya2=['total_observaciones','distinct_species','dominancia','shannon']
+            //     let myIcons={'ave':'🐦','arbol':'🌲','arbusto':'🌳','hierba':'🌱','herpetofauna':'🦎','mamifero':'🦌'}
+
+            //     lifeForms.map((life)=>{
+            //         let oneTableRow={}
+            //         oneTableRow['name']=(life=='herpetofauna')?'herpetofauna':life
+            //         oneTableRow['name']=(life=='Dato acumulado') ? oneTableRow['name']:myIcons[life] + oneTableRow['name']
+
+
+            //         mya2.map((category,ind)=>{
+            //             if (life=='Dato acumulado'){
+            //                 let mysum= +this.props.featureInfo.properties[`${category}_ave`] + +this.props.featureInfo.properties[`${category}_hierba`] + +this.props.featureInfo.properties[`${category}_arbusto`] + +this.props.featureInfo.properties[`${category}_arbol`] + +this.props.featureInfo.properties[`${category}_herpetofauna`] + +this.props.featureInfo.properties[`${category}_mamifero`]                                
+            //                 if (ind>1) mysum=(mysum/6).toPrecision(4)
+            //                 oneTableRow[category]=mysum
+            //             }else{
+            //                 let newCat=category.replace(`_${life}`,'')
+            //                 let myValue=  ind>1 ? (+this.props.featureInfo.properties[`${category}_${life}`]).toPrecision(4):this.props.featureInfo.properties[`${category}_${life}`]
+            //                 oneTableRow[newCat]=myValue
+            //             }
+            //         })
+            //         allTableRows.push(oneTableRow)
+            //     })
+            // }
             var columns = [{
-                dataField: 'especie',
-                text: 'Especie',
-                headerStyle: {
-                    width: '128px'
-                }
+                dataField: 'comun',
+                text: 'Comun'
             }, {
-                dataField: 'cantidad',
+                dataField: 'cientifico',
+                text: 'Cientifico'
+            }, {
+                dataField: 'total_cientifico',
                 text: 'Cantidad'
-            }, {
-                dataField: 'riesgo',
-                text: 'Riesgo'
             }];
 
             return _react2.default.createElement(
@@ -24853,7 +24921,21 @@ var SpeciesDisplay = function (_React$Component) {
                 _react2.default.createElement(
                     'div',
                     { className: 'container' },
-                    _react2.default.createElement('div', { className: 'flex-column d-flex justify-content-around align-items-center p-3' })
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'flex-column d-flex justify-content-around align-items-center p-3' },
+                        _react2.default.createElement(_reactBootstrapTableNext2.default, {
+                            keyField: 'comun',
+                            data: speciesResult,
+                            columns: columns,
+                            bordered: true,
+                            classes: 'speciesTable',
+                            striped: true,
+                            hover: true,
+                            condensed: true,
+                            noDataIndication: 'Click for data'
+                        })
+                    )
                 )
             );
         }

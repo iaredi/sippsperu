@@ -14,7 +14,7 @@ class FeatureInfoDisplay extends React.Component {
             
             let lifeForms= ['arbol','arbusto','hierba', 'ave', 'herpetofauna','mamifero','Dato acumulado']
             let mya2=['total_observaciones','distinct_species','dominancia','shannon']
-            let myIcons={'ave':'🐦','arbol':'🌲','arbusto':'🌳','hierba':'🌱','herpetofauna':'🦎','mamifero':'🦌'}
+            let myIcons={'ave':'🦅','arbol':'🌲','arbusto':'🌳','hierba':'🌱','herpetofauna':'🐍','mamifero':'🦌'}
             
             lifeForms.map((life)=>{
                 let oneTableRow={}
@@ -36,6 +36,7 @@ class FeatureInfoDisplay extends React.Component {
                 allTableRows.push(oneTableRow)
             })
         }
+        console.log(allTableRows)
         const columns = [{
             dataField: 'name',
             text: 'Nombre',
