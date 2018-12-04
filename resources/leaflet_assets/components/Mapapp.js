@@ -4,6 +4,8 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import Map from './Map';
 import MapControl from './MapControl';
 import FeatureInfoDisplay from './FeatureInfoDisplay';
+import SpeciesDisplay from './SpeciesDisplay';
+
 
 class Mapapp extends React.Component {
   constructor(props){
