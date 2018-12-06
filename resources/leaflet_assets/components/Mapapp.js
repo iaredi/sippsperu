@@ -106,10 +106,8 @@ class Mapapp extends React.Component {
   }
   getSpecies(lifeform,idtype,idnumber).then(myspeciesResult =>{
     this.setState((prevState) => ({
-      speciesResult: myspeciesResult
-      
+      speciesResult: myspeciesResult      
     }));
-    console.log(myspeciesResult)
   })
 
     /////////////////////////////////////////////////////////////////////////////////////////////
