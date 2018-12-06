@@ -120,23 +120,37 @@ Route::post('getspecies', function(Request $request) {
     if ($lifeform=='hierba'||$lifeform=='herpetofauna'){
         $transpunto='transecto';
     }
+    $lifeform_riesgo=$lifeform;
+    if ($lifeform=='hierba'||$lifeform=='arbol' ||$lifeform=='arbusto'){
+        $lifeform_riesgo='planta';
+    }
 
     $sql= "SELECT
     especie_{$lifeform}.comun,
     especie_{$lifeform}.cientifico,
+    riesgo_{$lifeform_riesgo}.categoria,
+    riesgo_{$lifeform_riesgo}.distribution,
+    riesgo_{$lifeform_riesgo}.subespecie,
+
     count(especie_{$lifeform}.cientifico) AS total_cientifico
     FROM especie_{$lifeform}
         JOIN
     observacion_{$lifeform} ON especie_{$lifeform}.iden = observacion_{$lifeform}.iden_especie
         JOIN
         {$transpunto}_{$lifeform} ON observacion_{$lifeform}.iden_{$transpunto} = {$transpunto}_{$lifeform}.iden
+        left JOIN
+    riesgo_{$lifeform_riesgo} ON lower(especie_{$lifeform}.cientifico) = lower(CONCAT (riesgo_{$lifeform_riesgo}.genero,' ',riesgo_{$lifeform_riesgo}.especie))
     where iden_{$idtype}={$idnumber}
-    GROUP BY especie_{$lifeform}.comun,especie_{$lifeform}.cientifico";
+    GROUP BY especie_{$lifeform}.comun,especie_{$lifeform}.cientifico,riesgo_{$lifeform_riesgo}.categoria, riesgo_{$lifeform_riesgo}.distribution, riesgo_{$lifeform_riesgo}.subespecie";
 
     if ($idtype=="linea_mtp"){
         $sql="SELECT
         especie_{$lifeform}.comun,
         especie_{$lifeform}.cientifico,
+        riesgo_{$lifeform_riesgo}.categoria,
+        riesgo_{$lifeform_riesgo}.distribution,
+        riesgo_{$lifeform_riesgo}.subespecie,
+
         count(especie_{$lifeform}.cientifico) AS total_cientifico
         FROM especie_{$lifeform}
             JOIN
@@ -145,8 +159,10 @@ Route::post('getspecies', function(Request $request) {
             {$transpunto}_{$lifeform} ON observacion_{$lifeform}.iden_{$transpunto} = {$transpunto}_{$lifeform}.iden
             JOIN
         medicion ON {$transpunto}_{$lifeform}.iden_medicion = medicion.iden
+        left JOIN
+        riesgo_{$lifeform_riesgo} ON lower(especie_{$lifeform}.cientifico) = lower(CONCAT (riesgo_{$lifeform_riesgo}.genero,' ',riesgo_{$lifeform_riesgo}.especie))
             where iden_linea_mtp={$idnumber}
-            GROUP BY especie_{$lifeform}.comun,especie_{$lifeform}.cientifico";
+            GROUP BY especie_{$lifeform}.comun,especie_{$lifeform}.cientifico,riesgo_{$lifeform_riesgo}.categoria, riesgo_{$lifeform_riesgo}.distribution,riesgo_{$lifeform_riesgo}.subespecie";
     }   
 
     $obresult = DB::select($sql, []);

@@ -57,6 +57,15 @@ class SpeciesDisplay extends React.Component {
             }, {
             dataField: 'total_cientifico',
             text: 'Cantidad'
+            }, {
+            dataField: 'categoria',
+            text: 'Categoria '
+            }, {
+            dataField: 'distribution',
+            text: 'Distribution '
+            }, {
+            dataField: 'subespecie',
+            text: 'Subespecie Enlistada'
             },];
 
         return(

@@ -10558,6 +10558,22 @@ tbody#measurementTBodyForm {
   height: 100%;
 }
 
+.featureInfoTable tbody tr td {
+  text-align: center;
+}
+
+.featureInfoTable thead {
+  text-align: center;
+}
+
+.speciesTable tbody tr td {
+  text-align: center;
+}
+
+.speciesTable thead {
+  text-align: center;
+}
+
 .withcontrol {
   height: 100%;
 }
