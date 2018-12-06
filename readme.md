@@ -1,87 +1,35 @@
-# Project Title
+# Biodiversity in Puebla
 
-One Paragraph of project description goes here
+This project aims to provide a web platform to capture, analyze, and display biodiversity data in the state of Puebla, Mexico. This web platform provides an intuitive user interface for partners throughout the state to enter data collected via the MTP biodiversity monitoring technique. The site is live at
+* [https//:biodiversidadpuebla.online](https//:biodiversidadpuebla.online)
 
-## Getting Started
+## User Interface
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+The user interface was custom built to be intuitieve and user friendly. Existing data is autmoatically retieved to be editable. Extensive data verification is done automatically.
+This section is under the 'Ingresar Datos' heading.
 
-### Prerequisites
 
-What things you need to install the software and how to install them
+### Mapping
+Spatial data mapping was done using Leaflet. This page also uses React to provide a responsive user experience. Javascript Fetch API is used to generate dynamic SQL queries. This section is under the 'Mostrar Mapas' heading.
 
-```
-Give examples
-```
+### Database
 
-### Installing
+All data is stored in a relationa database using postgreSQL. Spatial data is handled using the POSTGIS extension.  
 
-A step by step series of examples that tell you how to get a development env running
+### Development and Framework
 
-Say what the step will be
+Laravel was used to scaffold the views using Blade and PHP. 
 
-```
-Give the example
-```
 
-And repeat
+### Server
 
-```
-until finished
-```
+The website runs on a Debian 9 (Stretch) droplet from Digial Ocean. Encryption is done using LetsEncrypt and Certbot. Apache serves the site to the web. 
 
-End with an example of getting some data out of the system or using it for a little demo
 
-## Running the tests
 
-Explain how to run the automated tests for this system
 
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+ 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* **Forest Carter** - *Developer* - [Forest Carter](https://github.com/forestcarter)
