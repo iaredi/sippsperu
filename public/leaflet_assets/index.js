@@ -18971,7 +18971,7 @@ var Mapapp = function (_React$Component) {
                 }),
                 _react2.default.createElement(
                   'a',
-                  { href: '/cargarshapes' },
+                  { 'class': 'btn btn-primary', href: '#', role: 'button' },
                   'Cargar Shapefile'
                 ),
                 _react2.default.createElement(_MapControl2.default, {

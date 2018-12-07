@@ -45,7 +45,18 @@ $layer3->weight = 1;
 $layer3->fillOpacity = 0.5;
 $layer3->fromFile = false;
 
-$layersArray = array($layer1, $layer2, $layer3);
+$layer4 = new layer();
+$layer4->tableName = 'usershapes';
+$layer4->displayName = 'Predios';
+$layer4->featureColumn = 'nombre';
+$layer4->color = 'black';
+$layer4->fillColor = 'orange';
+$layer4->opacity = 0.5;
+$layer4->weight = 1;
+$layer4->fillOpacity = 0.5;
+$layer4->fromFile = false;
+
+$layersArray = array($layer1, $layer2, $layer3, $layer4);
 
 foreach ($layersArray as $layer) {
     $features=[];
@@ -62,6 +73,8 @@ foreach ($layersArray as $layer) {
             $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6_linea",[]);
         }elseif ($layer->tableName=='municipio_puebla_4326'){
             $result = DB::select("SELECT geometry_id,nomgeo, ST_AsGeoJSON(level_3, 5) AS geojson FROM muni_geometries_simplified",[]);
+        }elseif ($layer->tableName=='usershapes'){
+            $result = DB::select("SELECT nombre, ST_AsGeoJSON(geom, 5) AS geojson FROM usershapes",[]);
         }
 
         

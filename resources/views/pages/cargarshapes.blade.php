@@ -7,8 +7,11 @@
         uploadshape('shx');
         uploadshape('dbf');
         uploadshape('prj');
-
-        
+        $shp=$_POST['shp'];
+        $srid=4326;
+        $shapenombre=$_POST['shapenombre'];
+        $loadshp="shp2pgsql -I -s {$srid}:4326 C:\wamp64\www\lsapp3\public\shp\{$shpfile} {$shapenombre} | PGPASSWORD='pcsemarnat!' psql -U postgres -d biodiversity3";
+        echo $loadshp;
 
     }
 
@@ -37,6 +40,14 @@
     <div>
         <label for="prj" class="shapelabel">.prj</label>
         <input type="file" name="prj" id="prj">
+    </div>
+    <div>
+        <label for="srid" class="shapelabel">srid</label>
+        <input type="text" name="srid" id="srid">
+    </div>
+    <div>
+        <label for="shapenombre" class="shapenombre">nombre</label>
+        <input type="text" name="nombre" id="shapenombre">
     </div>
     <div class="row">
         <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-success p-15" value="Enviar">
