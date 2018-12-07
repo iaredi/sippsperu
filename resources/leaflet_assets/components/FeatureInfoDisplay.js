@@ -36,7 +36,6 @@ class FeatureInfoDisplay extends React.Component {
                 allTableRows.push(oneTableRow)
             })
         }
-        console.log(allTableRows)
         const columns = [{
             dataField: 'name',
             text: 'Nombre',

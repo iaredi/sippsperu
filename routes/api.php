@@ -139,7 +139,7 @@ Route::post('getspecies', function(Request $request) {
         JOIN
         {$transpunto}_{$lifeform} ON observacion_{$lifeform}.iden_{$transpunto} = {$transpunto}_{$lifeform}.iden
         left JOIN
-    riesgo_{$lifeform_riesgo} ON lower(especie_{$lifeform}.cientifico) = lower(CONCAT (riesgo_{$lifeform_riesgo}.genero,' ',riesgo_{$lifeform_riesgo}.especie))
+    riesgo_{$lifeform_riesgo} ON trim(lower(especie_{$lifeform}.cientifico)) = lower(CONCAT(trim(riesgo_{$lifeform_riesgo}.genero),' ',trim(riesgo_{$lifeform_riesgo}.especie)))
     where iden_{$idtype}={$idnumber}
     GROUP BY especie_{$lifeform}.comun,especie_{$lifeform}.cientifico,riesgo_{$lifeform_riesgo}.categoria, riesgo_{$lifeform_riesgo}.distribution, riesgo_{$lifeform_riesgo}.subespecie";
 

@@ -9,8 +9,40 @@ class SpeciesDisplay extends React.Component {
     
 
     render(){
-        const allTableRows=[];
-        const speciesResult=this.props.speciesResult
+        //const allTableRows=[];
+        const oldspeciesResult=this.props.speciesResult
+        const newA={}
+
+        const speciesResult = oldspeciesResult.map((spec) => {
+            let newObject = {...spec}
+            if(newA[spec.cientifico]){
+                 if (newA[spec.cientifico]==2){
+                    //spec.cientifico= spec.cientifico + '(2)'
+                    newObject = {...spec, cientifico: spec.cientifico + '(2)'}
+                }else{
+                    
+                    //spec.cientifico= `${spec.cientifico.slice(0,-3)}(${String(newA[spec.cientifico])})`
+                    newObject = {...spec, cientifico: `${spec.cientifico.slice(0,-3)}(${String(newA[spec.cientifico])})`}
+                }
+                newA[spec.cientifico]++;
+            }else{  
+                 newA[spec.cientifico]=2;
+               
+            }
+            return newObject
+        })
+
+        
+            
+            
+         
+         console.log(newA)
+         console.log(speciesResult)
+         console.log(oldspeciesResult)
+        
+
+
+
         if (speciesResult.length>0){
         //     speciesResult.map((life)=>{
 
@@ -75,9 +107,10 @@ class SpeciesDisplay extends React.Component {
                 <div className='flex-column d-flex justify-content-around align-items-center p-3'>
 
                     <BootstrapTable 
-                    keyField='comun' 
+                    keyField='cientifico' 
                     data={ speciesResult } 
                     columns={ columns } 
+                    bootstrap4={ true }
                     bordered={ true }
                     classes={ 'speciesTable' }
                     striped

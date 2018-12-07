@@ -3,7 +3,7 @@
 This project aims to provide a web platform to capture, analyze, and display biodiversity data in the state of Puebla, Mexico. This web platform provides an intuitive user interface for partners throughout the state to enter data collected via the MTP biodiversity monitoring technique. The site is live at
 * [https//:biodiversidadpuebla.online](https//:biodiversidadpuebla.online)
 
-## User Interface
+### User Interface
 
 The user interface was custom built to be intuitieve and user friendly. Existing data is autmoatically retieved to be editable. Extensive data verification is done automatically.
 This section is under the 'Ingresar Datos' heading.
