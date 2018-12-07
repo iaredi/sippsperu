@@ -43,6 +43,9 @@ class PagesController extends Controller
     public function reset_2(){
         return view('pages/reset_2');
     }
+    public function cargarshapes(){
+        return view('pages/cargarshapes');
+    }
    
 }
 

@@ -142,7 +142,6 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
     
     function uploadfoto($myRow, $obstype){
         $fotoinputid="{$myRow}*{$obstype}*foto";
-        
         if (strlen($_FILES[$fotoinputid]["name"])){
             $target_dir = "img/";
             $target_file = $target_dir . $obstype . basename($_FILES[$fotoinputid]["name"]);
@@ -185,6 +184,60 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
                 if (move_uploaded_file($_FILES[$fotoinputid]["tmp_name"], $target_file)) {
                     echo "The file  has been uploaded.";
                     return (basename( $_FILES[$fotoinputid]["name"]));
+                } else {
+                    
+                    echo "Sorry, there was an error uploading your file.";
+                    
+                }
+
+
+                
+            }
+            return ('Failed');
+        }
+    
+        return ('No Presentado');
+    }
+
+    function uploadshape($shpname){
+        if (strlen($_FILES[$shpname]["name"])){
+            $target_dir = "shp/";
+            $target_file = $target_dir . basename($_FILES[$shpname]["name"]);
+            $uploadOk = 1;
+            $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+            // Check if image file is a actual image or fake image
+            if(isset($_POST["submit"])) {
+                $check = getimagesize($_FILES[$shpname]["tmp_name"]);
+                if($check !== false) {
+                    echo "File is an image - " . $check["mime"] . ".";
+                    $uploadOk = 1;
+                } else {
+                    echo "File is not an image.";
+                    //$uploadOk = 0;
+                }
+            }
+            // Check if file already exists
+            if (file_exists($target_file)) {
+                echo "Sorry, file already exists.";
+                $uploadOk = 0;
+            }
+            // Check file size
+            if ($_FILES[$shpname]["size"] > 5000000000) {
+                echo "Sorry, your file is too large.";
+                $uploadOk = 0;
+            }
+            // Allow certain file formats
+            
+            // Check if $uploadOk is set to 0 by an error
+            if ($uploadOk == 0) {
+                echo "Sorry, your file was not uploaded.";
+            // if everything is ok, try to upload file
+            } else {
+
+           
+                if (move_uploaded_file($_FILES[$shpname]["tmp_name"], $target_file)) {
+                    echo "The file  has been uploaded.";
+                    return (basename( $_FILES[$shpname]["name"]));
                 } else {
                     
                     echo "Sorry, there was an error uploading your file.";

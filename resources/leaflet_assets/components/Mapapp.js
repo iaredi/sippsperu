@@ -204,6 +204,7 @@ class Mapapp extends React.Component {
                       markerPosition={this.state.markerPosition} 
                       featureInfo={this.state.featureInfo}
                   />
+                  <a href='/cargarshapes'>Cargar Shapefile</a>
                   <MapControl
                   handleSpeciesChange={this.handleSpeciesChange}
                   handleTotalDistinctChange={this.handleTotalDistinctChange}
