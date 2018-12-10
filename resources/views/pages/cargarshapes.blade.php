@@ -15,7 +15,7 @@
         // if (env("APP_URL", "somedefaultvalue")=='http://localhost'){
         // }else{
             $db = env("DB_PASSWORD", "somedefaultvalue");
-            $loadshp="shp2pgsql -I -s {$srid}:4326 var/www/html/lsapp3/public/shp/{$shpfile} {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d biodiversity3";
+            $loadshp="shp2pgsql -I -s {$srid}:4326 /var/www/html/lsapp3/public/shp/{$shpfile} {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d biodiversity3";
             $output= shell_exec($loadshp);
             echo $output;
             echo 'linux';
