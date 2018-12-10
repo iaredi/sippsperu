@@ -24,20 +24,19 @@
 
         //$output= shell_exec('"C:\\Program Files\\PostgreSQL\\10\\bin\\shp2pgsql" -I -s '.$srid.':4326 C:\\wamp64\\www\\lsapp3\\public\\shp\\'.$shpfile.' '.$shapenombre.' | psql -U postgres -d biodiversity3');
 
-       echo shell_exec("ls");
 
         //echo $loadshp;
 
         
         //insert into geom usertable
-        // $copyshp="insert into usershapes (nombre, iden_email, geom) values (:nombre, :email, :geom)";
-        // $geom= DB::select("select geom from {$shapenombre}", []);
-        // $arraytopass=array(
-        //     ":nombre"=> $shapenombre,
-        //     ":email"=> session('email'),
-        //     ":geom"=> $geom[0]->geom,
-        // );
-        // $results = DB::insert($copyshp, $arraytopass);
+        $copyshp="insert into usershapes (nombre, iden_email, geom) values (:nombre, :email, :geom)";
+        $geom= DB::select("select geom from {$shapenombre}", []);
+        $arraytopass=array(
+            ":nombre"=> $shapenombre,
+            ":email"=> session('email'),
+            ":geom"=> $geom[0]->geom,
+        );
+        $results = DB::insert($copyshp, $arraytopass);
         //delete temp table 
         
     }
