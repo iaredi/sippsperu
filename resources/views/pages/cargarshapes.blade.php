@@ -9,17 +9,15 @@
         uploadshape('prj');
         $shpfile=$_FILES['shp']["name"];
         $srid=$_POST['srid'];
-        if(!$srid){
-            echo `pwd`;
-            //$pathtoshp="/var/www/html/"
-            //$sridshell= shell_exec("ogr2ogr -t_srs EPSG:4326 {$shpfile} {$shpfile}");
-        }
+       
+        $sridshell= shell_exec("ogr2ogr -t_srs EPSG:4326 shp/{$shpfile} shp/{$shpfile}");
+        echo $sridshell;
 
         $shapenombre=$_POST['shapenombre'];
         if (env("APP_ENV", "somedefaultvalue")=='production'){
             //load to temp table 
             $db = env("DB_PASSWORD", "somedefaultvalue");
-            $loadshp="shp2pgsql -I -s {$srid}:4326 /var/www/html/lsapp3/public/shp/{$shpfile} {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d biodiversity3";
+            $loadshp="shp2pgsql -I /var/www/html/lsapp3/public/shp/{$shpfile} {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d biodiversity3";
             $output= shell_exec($loadshp);
             //insert into geom usertable
             $copyshp="insert into usershapes (nombre, iden_email, geom) values (:nombre, :email, :geom)";
@@ -33,9 +31,7 @@
             //delete temp table 
             if (strpos($output, 'ROLLBACK') == false) {
                 DB::statement("drop table {$shapenombre}");
-                echo 'DROPPED';
             }else{
-                echo 'NOT';
             }
         }
     }
@@ -65,10 +61,7 @@
         <label for="prj" class="shapelabel">.prj</label>
         <input type="file" name="prj" id="prj">
     </div>
-    <div>
-        <label for="srid" class="shapelabel">srid</label>
-        <input type="text" name="srid" id="srid">
-    </div>
+    
     <div>
         <label for="shapenombre" class="shapenombre">nombre</label>
         <input type="text" name="shapenombre" id="shapenombre">
