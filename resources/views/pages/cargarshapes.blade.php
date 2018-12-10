@@ -14,7 +14,7 @@
         //load to temp table 
         // if (env("APP_URL", "somedefaultvalue")=='http://localhost'){
         // }else{
-            echo DB::select("select * from {$shapenombre}", []);
+            //echo DB::select("select * from {$shapenombre}", []);
             $db = env("DB_PASSWORD", "somedefaultvalue");
             $loadshp="shp2pgsql -I -s {$srid}:4326 /var/www/html/lsapp3/public/shp/{$shpfile} {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d biodiversity3";
             $output= shell_exec($loadshp);
@@ -32,7 +32,7 @@
         );
         $results = DB::insert($copyshp, $arraytopass);
         echo $output;
-        DB::statement("drop table {$shapenombre}");
+        //DB::statement("drop table {$shapenombre}");
         //delete temp table 
         
     }
