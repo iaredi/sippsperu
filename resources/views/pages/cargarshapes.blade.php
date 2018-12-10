@@ -48,7 +48,7 @@
             //insert into geom usertable
             $copyshp="insert into usershapes (nombre, iden_email, geom) values (:nombre, :email, :geom)";
             $geom= DB::select("select geom from {$shapenombre}", []);
-            if sizeof($geom>0){
+            if (sizeof($geom>0)){
                 $arraytopass=array(
                     ":nombre"=> $shapenombre,
                     ":email"=> session('email'),
