@@ -8,12 +8,12 @@
         uploadshape('dbf');
         uploadshape('prj');
         $shpfile=$_FILES['shp']["name"];
-       
-        $sridshell= shell_exec("ogr2ogr -t_srs EPSG:4326 shp/{$shpfile} shp/{$shpfile}");
-        echo $sridshell;
+        echo `ogrinfo -al -so ./shp/{$shpfile}`;
+            $sridshell= shell_exec("ogr2ogr -t_srs EPSG:4326 ./shp/{$shpfile} ./shp/{$shpfile}");
+        echo `ogrinfo -al -so ./shp/{$shpfile}`;
 
         $shapenombre=$_POST['shapenombre'];
-        if (env("APP_ENV", "somedefaultvalue")=='production'){
+        if (env("APP_ENV", "somedefaultvalue")=='production!!!!!!!!!!!!!!!!!!!!!'){
             //load to temp table 
             $db = env("DB_PASSWORD", "somedefaultvalue");
             $loadshp="shp2pgsql -I /var/www/html/lsapp3/public/shp/{$shpfile} {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d biodiversity3";
