@@ -14,9 +14,11 @@
         //load to temp table 
         // if (env("APP_URL", "somedefaultvalue")=='http://localhost'){
         // }else{
+            echo DB::select("select * from {$shapenombre}", []);
             $db = env("DB_PASSWORD", "somedefaultvalue");
             $loadshp="shp2pgsql -I -s {$srid}:4326 /var/www/html/lsapp3/public/shp/{$shpfile} {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d biodiversity3";
             $output= shell_exec($loadshp);
+            
             
     
         
@@ -29,7 +31,7 @@
             ":geom"=> $geom[0]->geom,
         );
         $results = DB::insert($copyshp, $arraytopass);
-        echo $results;
+        echo $output;
         DB::statement("drop table {$shapenombre}");
         //delete temp table 
         
