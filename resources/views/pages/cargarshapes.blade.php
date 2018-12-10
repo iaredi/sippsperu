@@ -7,42 +7,38 @@
         uploadshape('shx');
         uploadshape('dbf');
         uploadshape('prj');
-        //$shp=$_POST['shp'];
         $shpfile=$_FILES['shp']["name"];
-        $srid=4326;
+        $srid=$_POST['srid'];
+        if(!$srid){
+            echo `pwd`;
+            //$pathtoshp="/var/www/html/"
+            //$sridshell= shell_exec("ogr2ogr -t_srs EPSG:4326 {$shpfile} {$shpfile}");
+        }
+
         $shapenombre=$_POST['shapenombre'];
-        //load to temp table 
-        // if (env("APP_URL", "somedefaultvalue")=='http://localhost'){
-        // }else{
+        if (env("APP_ENV", "somedefaultvalue")=='production'){
+            //load to temp table 
             $db = env("DB_PASSWORD", "somedefaultvalue");
             $loadshp="shp2pgsql -I -s {$srid}:4326 /var/www/html/lsapp3/public/shp/{$shpfile} {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d biodiversity3";
             $output= shell_exec($loadshp);
-            
-            
-    
-        
-        //insert into geom usertable
-        $copyshp="insert into usershapes (nombre, iden_email, geom) values (:nombre, :email, :geom)";
-        $geom= DB::select("select geom from {$shapenombre}", []);
-        $arraytopass=array(
-            ":nombre"=> $shapenombre,
-            ":email"=> session('email'),
-            ":geom"=> $geom[0]->geom,
-        );
-        $results = DB::insert($copyshp, $arraytopass);
-
-        if (strpos($output, 'ROLLBACK') == false) {
-            DB::statement("drop table {$shapenombre}");
-            echo 'DROPPED';
-        }else{
-            echo 'NOT';
+            //insert into geom usertable
+            $copyshp="insert into usershapes (nombre, iden_email, geom) values (:nombre, :email, :geom)";
+            $geom= DB::select("select geom from {$shapenombre}", []);
+            $arraytopass=array(
+                ":nombre"=> $shapenombre,
+                ":email"=> session('email'),
+                ":geom"=> $geom[0]->geom,
+            );
+            $results = DB::insert($copyshp, $arraytopass);
+            //delete temp table 
+            if (strpos($output, 'ROLLBACK') == false) {
+                DB::statement("drop table {$shapenombre}");
+                echo 'DROPPED';
+            }else{
+                echo 'NOT';
+            }
         }
-        echo $output;
-
-        //delete temp table 
-        
     }
-
 ?>
 
 @include('inc/header')
