@@ -42,8 +42,9 @@
             //load to temp table 
             $db = env("DB_PASSWORD", "somedefaultvalue");
             $loadshp="shp2pgsql -I -s 4326:4326 /var/www/html/lsapp3/public/shp/{$shpfile} {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d biodiversity3";
-            echo $loadshp;
+            
             $output= shell_exec($loadshp);
+            echo $output;
             //insert into geom usertable
             $copyshp="insert into usershapes (nombre, iden_email, geom) values (:nombre, :email, :geom)";
             $geom= DB::select("select geom from {$shapenombre}", []);
