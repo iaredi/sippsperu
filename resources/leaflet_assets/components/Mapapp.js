@@ -1,5 +1,5 @@
 import React from 'react';
-import BootstrapTable from 'react-bootstrap-table-next';
+//import BootstrapTable from 'react-bootstrap-table-next';
 
 import Map from './Map';
 import MapControl from './MapControl';
@@ -204,7 +204,7 @@ class Mapapp extends React.Component {
                       markerPosition={this.state.markerPosition} 
                       featureInfo={this.state.featureInfo}
                   />
-                  <a class="btn btn-primary" href="#" role="button">Cargar Shapefile</a>
+                  <a className="btn btn-primary" href="/cargarshapes" role="button">Cargar Shapefile</a>
                   <MapControl
                   handleSpeciesChange={this.handleSpeciesChange}
                   handleTotalDistinctChange={this.handleTotalDistinctChange}

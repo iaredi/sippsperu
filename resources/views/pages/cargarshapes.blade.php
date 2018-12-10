@@ -7,12 +7,37 @@
         uploadshape('shx');
         uploadshape('dbf');
         uploadshape('prj');
-        $shp=$_POST['shp'];
+        //$shp=$_POST['shp'];
+        $shpfile=$_FILES['shp']["name"];
         $srid=4326;
         $shapenombre=$_POST['shapenombre'];
-        $loadshp="shp2pgsql -I -s {$srid}:4326 C:\wamp64\www\lsapp3\public\shp\{$shpfile} {$shapenombre} | PGPASSWORD='pcsemarnat!' psql -U postgres -d biodiversity3";
-        echo $loadshp;
+        //load to temp table 
+        if (env("APP_URL", "somedefaultvalue")=='http://localhost'){
+        }else{
+            $db = env("DB_PASSWORD", "somedefaultvalue");
+            $loadshp="shp2pgsql -I -s {$srid}:4326 /mnt/c/wamp64/www/lsapp3/public/shp/{$shpfile} {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d biodiversity3";
+            $output= shell_exec($loadshp);
+        }
+        //echo '"C:\\Program Files\\PostgreSQL\\10\\bin\\shp2pgsql" -I -s '.$srid.':4326 C:\\wamp64\\www\\lsapp3\\public\\shp\\'.$shpfile.' '.$shapenombre.' | psql -U postgres -d biodiversity3';
 
+        //$output= shell_exec('"C:\\Program Files\\PostgreSQL\\10\\bin\\shp2pgsql" -I -s '.$srid.':4326 C:\\wamp64\\www\\lsapp3\\public\\shp\\'.$shpfile.' '.$shapenombre.' | psql -U postgres -d biodiversity3');
+
+        //echo $output;
+
+        //echo $loadshp;
+
+        
+        //insert into geom usertable
+        $copyshp="insert into usershapes (nombre, iden_email, geom) values (:nombre, :email, :geom)";
+        $geom= DB::select("select geom from {$shapenombre}", []);
+        $arraytopass=array(
+            ":nombre"=> $shapenombre,
+            ":email"=> session('email'),
+            ":geom"=> $geom[0]->geom,
+        );
+        $results = DB::insert($copyshp, $arraytopass);
+        //delete temp table 
+        
     }
 
 ?>
@@ -47,7 +72,7 @@
     </div>
     <div>
         <label for="shapenombre" class="shapenombre">nombre</label>
-        <input type="text" name="nombre" id="shapenombre">
+        <input type="text" name="shapenombre" id="shapenombre">
     </div>
     <div class="row">
         <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-success p-15" value="Enviar">

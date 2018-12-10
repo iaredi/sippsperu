@@ -73,7 +73,7 @@
 if (false) {
   module.exports = require('./cjs/react.production.min.js');
 } else {
-  module.exports = __webpack_require__(21);
+  module.exports = __webpack_require__(20);
 }
 
 
@@ -103,7 +103,7 @@ if (true) {
   // By explicitly using `prop-types` you are opting into new development behavior.
   // http://fb.me/prop-types-in-prod
   var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(35)(isValidElement, throwOnDirectAccess);
+  module.exports = __webpack_require__(37)(isValidElement, throwOnDirectAccess);
 } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
@@ -122,7 +122,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _underscore = __webpack_require__(40);
+var _underscore = __webpack_require__(42);
 
 var _underscore2 = _interopRequireDefault(_underscore);
 
@@ -589,29 +589,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _bootstrapTable = __webpack_require__(34);
-
-var _bootstrapTable2 = _interopRequireDefault(_bootstrapTable);
-
-var _contexts = __webpack_require__(62);
-
-var _contexts2 = _interopRequireDefault(_contexts);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = (0, _contexts2.default)(_bootstrapTable2.default);
-
-/***/ }),
-/* 13 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -628,7 +605,7 @@ var _const = __webpack_require__(3);
 
 var _const2 = _interopRequireDefault(_const);
 
-var _operators = __webpack_require__(14);
+var _operators = __webpack_require__(13);
 
 var _operators2 = _interopRequireDefault(_operators);
 
@@ -799,7 +776,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 14 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -819,15 +796,15 @@ var _selection = __webpack_require__(23);
 
 var selection = _interopRequireWildcard(_selection);
 
-var _expand = __webpack_require__(44);
+var _expand = __webpack_require__(46);
 
 var expand = _interopRequireWildcard(_expand);
 
-var _mutate = __webpack_require__(45);
+var _mutate = __webpack_require__(47);
 
 var mutate = _interopRequireWildcard(_mutate);
 
-var _sort = __webpack_require__(46);
+var _sort = __webpack_require__(48);
 
 var sort = _interopRequireWildcard(_sort);
 
@@ -836,7 +813,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 exports.default = _extends({}, rows, selection, expand, mutate, sort);
 
 /***/ }),
-/* 15 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -858,7 +835,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _operators = __webpack_require__(14);
+var _operators = __webpack_require__(13);
 
 var _operators2 = _interopRequireDefault(_operators);
 
@@ -996,7 +973,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 16 */
+/* 15 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -1024,14 +1001,14 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 17 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(18);
+module.exports = __webpack_require__(17);
 
 
 /***/ }),
-/* 18 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1056,7 +1033,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(19);
+module.exports = __webpack_require__(18);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -1072,7 +1049,7 @@ if (hadRuntime) {
 
 
 /***/ }),
-/* 19 */
+/* 18 */
 /***/ (function(module, exports) {
 
 /**
@@ -1805,7 +1782,7 @@ if (hadRuntime) {
 
 
 /***/ }),
-/* 20 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1821,7 +1798,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _leaflet = __webpack_require__(22);
+var _leaflet = __webpack_require__(21);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
@@ -2006,7 +1983,7 @@ var Map = function (_React$Component) {
 exports.default = Map;
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -3753,7 +3730,7 @@ module.exports = react;
 
 
 /***/ }),
-/* 22 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* @preserve
@@ -17629,6 +17606,29 @@ window.L = exports;
 
 
 /***/ }),
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _bootstrapTable = __webpack_require__(36);
+
+var _bootstrapTable2 = _interopRequireDefault(_bootstrapTable);
+
+var _contexts = __webpack_require__(64);
+
+var _contexts2 = _interopRequireDefault(_contexts);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = (0, _contexts2.default)(_bootstrapTable2.default);
+
+/***/ }),
 /* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -17735,7 +17735,7 @@ var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _cell = __webpack_require__(51);
+var _cell = __webpack_require__(53);
 
 var _cell2 = _interopRequireDefault(_cell);
 
@@ -18645,7 +18645,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _regenerator = __webpack_require__(17);
+var _regenerator = __webpack_require__(16);
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
@@ -18655,19 +18655,15 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactBootstrapTableNext = __webpack_require__(12);
-
-var _reactBootstrapTableNext2 = _interopRequireDefault(_reactBootstrapTableNext);
-
-var _Map = __webpack_require__(20);
+var _Map = __webpack_require__(19);
 
 var _Map2 = _interopRequireDefault(_Map);
 
-var _MapControl = __webpack_require__(66);
+var _MapControl = __webpack_require__(34);
 
 var _MapControl2 = _interopRequireDefault(_MapControl);
 
-var _FeatureInfoDisplay = __webpack_require__(67);
+var _FeatureInfoDisplay = __webpack_require__(35);
 
 var _FeatureInfoDisplay2 = _interopRequireDefault(_FeatureInfoDisplay);
 
@@ -18684,6 +18680,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+//import BootstrapTable from 'react-bootstrap-table-next';
 
 var Mapapp = function (_React$Component) {
   _inherits(Mapapp, _React$Component);
@@ -18971,7 +18968,7 @@ var Mapapp = function (_React$Component) {
                 }),
                 _react2.default.createElement(
                   'a',
-                  { 'class': 'btn btn-primary', href: '#', role: 'button' },
+                  { className: 'btn btn-primary', href: '/cargarshapes', role: 'button' },
                   'Cargar Shapefile'
                 ),
                 _react2.default.createElement(_MapControl2.default, {
@@ -19010,6 +19007,351 @@ exports.default = Mapapp;
 
 
 Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MapControl = function (_React$Component) {
+    _inherits(MapControl, _React$Component);
+
+    function MapControl(props) {
+        _classCallCheck(this, MapControl);
+
+        var _this = _possibleConstructorReturn(this, (MapControl.__proto__ || Object.getPrototypeOf(MapControl)).call(this, props));
+
+        _this.handleSpeciesChange = _this.handleSpeciesChange.bind(_this);
+        _this.handleTotalDistinctChange = _this.handleTotalDistinctChange.bind(_this);
+        _this.handleOpacityChange = _this.handleOpacityChange.bind(_this);
+        _this.handleMaxChange = _this.handleMaxChange.bind(_this);
+
+        return _this;
+    }
+
+    _createClass(MapControl, [{
+        key: "handleSpeciesChange",
+        value: function handleSpeciesChange(event) {
+            var error = this.props.handleSpeciesChange(event.target.value);
+        }
+    }, {
+        key: "handleTotalDistinctChange",
+        value: function handleTotalDistinctChange(event) {
+            this.props.handleTotalDistinctChange(event.target.value);
+        }
+    }, {
+        key: "handleOpacityChange",
+        value: function handleOpacityChange(event) {
+            this.props.handleOpacityChange(event.target.value);
+        }
+    }, {
+        key: "handleOpacityChange",
+        value: function handleOpacityChange(event) {
+            this.props.handleOpacityChange(event.target.value);
+        }
+    }, {
+        key: "handleMaxChange",
+        value: function handleMaxChange(event) {
+            this.props.handleMaxChange(event.target.value);
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                null,
+                _react2.default.createElement(
+                    "div",
+                    { className: "form-group row  justify-content-start align-items-center p-1 mx-3" },
+                    _react2.default.createElement(
+                        "div",
+                        { className: "p-3" },
+                        _react2.default.createElement(
+                            "label",
+                            { className: "table_option" },
+                            " Clase"
+                        ),
+                        _react2.default.createElement(
+                            "select",
+                            { name: "table_option", id: "table_option", onChange: this.handleSpeciesChange, className: "table_option form-control " },
+                            _react2.default.createElement(
+                                "option",
+                                { value: "ave" },
+                                "Ave"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "hierba" },
+                                "Hierba"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "herpetofauna" },
+                                "Herpetofauna"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "arbol" },
+                                "Arbol"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "arbusto" },
+                                "Arbusto"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "mamifero" },
+                                "Mamifero"
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        { className: "p-3" },
+                        _react2.default.createElement(
+                            "label",
+                            { className: "table_option" },
+                            "Especies"
+                        ),
+                        _react2.default.createElement(
+                            "select",
+                            { name: "table_option", id: "table_option", onChange: this.handleTotalDistinctChange, className: "table_option form-control " },
+                            _react2.default.createElement(
+                                "option",
+                                { value: "total_observaciones" },
+                                "Total"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "distinct_species" },
+                                "Distincto"
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        { className: "p-3" },
+                        _react2.default.createElement(
+                            "label",
+                            { className: "style_option" },
+                            "Max Numero por colores"
+                        ),
+                        _react2.default.createElement("input", { name: "maxNumber", type: "number", min: "6", value: this.props.mapSettings.maxValue, id: "table_optionOpacity", onChange: this.handleMaxChange, className: "table_option form-control " })
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        { className: "p-3" },
+                        _react2.default.createElement(
+                            "label",
+                            { className: "style_option" },
+                            "Opacidad"
+                        ),
+                        _react2.default.createElement(
+                            "select",
+                            { name: "table_option", id: "table_optionOpacity", defaultValue: "0.6", onChange: this.handleOpacityChange, className: "table_option form-control " },
+                            _react2.default.createElement(
+                                "option",
+                                { value: "1.0" },
+                                "1.0"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "0.8" },
+                                "0.8"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "0.6" },
+                                "0.6"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "0.4" },
+                                "0.4"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "0.2" },
+                                "0.2"
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return MapControl;
+}(_react2.default.Component);
+
+exports.default = MapControl;
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrapTableNext = __webpack_require__(22);
+
+var _reactBootstrapTableNext2 = _interopRequireDefault(_reactBootstrapTableNext);
+
+__webpack_require__(27);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FeatureInfoDisplay = function (_React$Component) {
+    _inherits(FeatureInfoDisplay, _React$Component);
+
+    function FeatureInfoDisplay(props) {
+        _classCallCheck(this, FeatureInfoDisplay);
+
+        return _possibleConstructorReturn(this, (FeatureInfoDisplay.__proto__ || Object.getPrototypeOf(FeatureInfoDisplay)).call(this, props));
+    }
+
+    _createClass(FeatureInfoDisplay, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var allTableRows = [];
+            if (this.props.featureInfo.properties.displayName == 'Linea MTP' || this.props.featureInfo.properties.displayName == 'Unidad de Paisaje') {
+
+                var lifeForms = ['arbol', 'arbusto', 'hierba', 'ave', 'herpetofauna', 'mamifero', 'Dato acumulado'];
+                var mya2 = ['total_observaciones', 'distinct_species', 'dominancia', 'shannon'];
+                var myIcons = { 'ave': '🦅', 'arbol': '🌲', 'arbusto': '🌳', 'hierba': '🌱', 'herpetofauna': '🐍', 'mamifero': '🦌' };
+
+                lifeForms.map(function (life) {
+                    var oneTableRow = {};
+                    oneTableRow['name'] = life == 'herpetofauna' ? 'herpetofauna' : life;
+                    oneTableRow['name'] = life == 'Dato acumulado' ? oneTableRow['name'] : myIcons[life] + oneTableRow['name'];
+
+                    mya2.map(function (category, ind) {
+                        if (life == 'Dato acumulado') {
+                            var mysum = +_this2.props.featureInfo.properties[category + '_ave'] + +_this2.props.featureInfo.properties[category + '_hierba'] + +_this2.props.featureInfo.properties[category + '_arbusto'] + +_this2.props.featureInfo.properties[category + '_arbol'] + +_this2.props.featureInfo.properties[category + '_herpetofauna'] + +_this2.props.featureInfo.properties[category + '_mamifero'];
+                            if (ind > 1) mysum = (mysum / 6).toPrecision(4);
+                            oneTableRow[category] = mysum;
+                        } else {
+                            var newCat = category.replace('_' + life, '');
+                            var myValue = ind > 1 ? (+_this2.props.featureInfo.properties[category + '_' + life]).toPrecision(4) : _this2.props.featureInfo.properties[category + '_' + life];
+                            oneTableRow[newCat] = myValue;
+                        }
+                    });
+                    allTableRows.push(oneTableRow);
+                });
+            }
+            var columns = [{
+                dataField: 'name',
+                text: 'Nombre',
+                headerStyle: {
+                    width: '128px'
+                }
+            }, {
+                dataField: 'total_observaciones',
+                text: 'Individuos'
+            }, {
+                dataField: 'distinct_species',
+                text: 'Especie Distinctos'
+            }, {
+                dataField: 'dominancia',
+                text: 'Dominancia',
+                classes: 'testme'
+            }, {
+                dataField: 'shannon',
+                headerStyle: {
+                    width: '62px'
+                },
+                text: 'Shannon'
+            }];
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'container' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'flex-column d-flex justify-content-around align-items-center p-3' },
+                        _react2.default.createElement(
+                            'div',
+                            null,
+                            'Ultimo Click:'
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            null,
+                            'lat: ',
+                            this.props.markerPosition.lat.toPrecision(7),
+                            ', lng: ',
+                            this.props.markerPosition.lng.toPrecision(7)
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            null,
+                            this.props.featureInfo.properties.displayName,
+                            ' = ',
+                            this.props.featureInfo.properties[this.props.featureInfo.properties.featureColumn]
+                        )
+                    )
+                ),
+                _react2.default.createElement(_reactBootstrapTableNext2.default, {
+                    keyField: 'name',
+                    data: allTableRows,
+                    columns: columns,
+                    bordered: true,
+                    classes: 'featureInfoTable',
+                    striped: true,
+                    hover: true,
+                    condensed: true,
+                    noDataIndication: 'Click for data'
+                })
+            );
+        }
+    }]);
+
+    return FeatureInfoDisplay;
+}(_react2.default.Component);
+
+exports.default = FeatureInfoDisplay;
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
@@ -19027,19 +19369,19 @@ var _classnames = __webpack_require__(6);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _header = __webpack_require__(36);
+var _header = __webpack_require__(38);
 
 var _header2 = _interopRequireDefault(_header);
 
-var _caption = __webpack_require__(48);
+var _caption = __webpack_require__(50);
 
 var _caption2 = _interopRequireDefault(_caption);
 
-var _body = __webpack_require__(49);
+var _body = __webpack_require__(51);
 
 var _body2 = _interopRequireDefault(_body);
 
-var _propsResolver = __webpack_require__(60);
+var _propsResolver = __webpack_require__(62);
 
 var _propsResolver2 = _interopRequireDefault(_propsResolver);
 
@@ -19274,7 +19616,7 @@ BootstrapTable.defaultProps = {
 exports.default = BootstrapTable;
 
 /***/ }),
-/* 35 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19836,7 +20178,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 
 
 /***/ }),
-/* 36 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19854,23 +20196,23 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _headerCell = __webpack_require__(37);
+var _headerCell = __webpack_require__(39);
 
 var _headerCell2 = _interopRequireDefault(_headerCell);
 
-var _selectionHeaderCell = __webpack_require__(41);
+var _selectionHeaderCell = __webpack_require__(43);
 
 var _selectionHeaderCell2 = _interopRequireDefault(_selectionHeaderCell);
 
-var _expandHeaderCell = __webpack_require__(42);
+var _expandHeaderCell = __webpack_require__(44);
 
 var _expandHeaderCell2 = _interopRequireDefault(_expandHeaderCell);
 
-var _selectionHeaderCellConsumer = __webpack_require__(43);
+var _selectionHeaderCellConsumer = __webpack_require__(45);
 
 var _selectionHeaderCellConsumer2 = _interopRequireDefault(_selectionHeaderCellConsumer);
 
-var _expandHeaderCellConsumer = __webpack_require__(47);
+var _expandHeaderCellConsumer = __webpack_require__(49);
 
 var _expandHeaderCellConsumer2 = _interopRequireDefault(_expandHeaderCellConsumer);
 
@@ -19953,7 +20295,7 @@ Header.propTypes = {
 exports.default = Header;
 
 /***/ }),
-/* 37 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19982,11 +20324,11 @@ var _const = __webpack_require__(3);
 
 var _const2 = _interopRequireDefault(_const);
 
-var _symbol = __webpack_require__(38);
+var _symbol = __webpack_require__(40);
 
 var _symbol2 = _interopRequireDefault(_symbol);
 
-var _caret = __webpack_require__(39);
+var _caret = __webpack_require__(41);
 
 var _caret2 = _interopRequireDefault(_caret);
 
@@ -20129,7 +20471,7 @@ HeaderCell.propTypes = {
 exports.default = HeaderCell;
 
 /***/ }),
-/* 38 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20174,7 +20516,7 @@ var SortSymbol = function SortSymbol() {
 exports.default = SortSymbol;
 
 /***/ }),
-/* 39 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20232,7 +20574,7 @@ SortCaret.propTypes = {
 exports.default = SortCaret;
 
 /***/ }),
-/* 40 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.9.1
@@ -21929,10 +22271,10 @@ exports.default = SortCaret;
   }
 }());
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(16)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(15)(module)))
 
 /***/ }),
-/* 41 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22104,7 +22446,7 @@ SelectionHeaderCell.propTypes = {
 exports.default = SelectionHeaderCell;
 
 /***/ }),
-/* 42 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22188,7 +22530,7 @@ ExpansionHeaderCell.propTypes = {
 exports.default = ExpansionHeaderCell;
 
 /***/ }),
-/* 43 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22202,7 +22544,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _selectionContext = __webpack_require__(13);
+var _selectionContext = __webpack_require__(12);
 
 var _selectionContext2 = _interopRequireDefault(_selectionContext);
 
@@ -22221,7 +22563,7 @@ exports.default = function (Component) {
 };
 
 /***/ }),
-/* 44 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22286,7 +22628,7 @@ var getExpandedRows = exports.getExpandedRows = function getExpandedRows(data, k
 };
 
 /***/ }),
-/* 45 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22311,7 +22653,7 @@ var editCell = exports.editCell = function editCell(data, keyField, rowId, dataF
 };
 
 /***/ }),
-/* 46 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22383,7 +22725,7 @@ var nextOrder = exports.nextOrder = function nextOrder(currentSortColumn, _ref2)
 };
 
 /***/ }),
-/* 47 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22397,7 +22739,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _rowExpandContext = __webpack_require__(15);
+var _rowExpandContext = __webpack_require__(14);
 
 var _rowExpandContext2 = _interopRequireDefault(_rowExpandContext);
 
@@ -22416,7 +22758,7 @@ exports.default = function (Component) {
 };
 
 /***/ }),
-/* 48 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22453,7 +22795,7 @@ Caption.propTypes = {
 exports.default = Caption;
 
 /***/ }),
-/* 49 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22479,15 +22821,15 @@ var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _simpleRow = __webpack_require__(50);
+var _simpleRow = __webpack_require__(52);
 
 var _simpleRow2 = _interopRequireDefault(_simpleRow);
 
-var _aggregateRow = __webpack_require__(53);
+var _aggregateRow = __webpack_require__(55);
 
 var _aggregateRow2 = _interopRequireDefault(_aggregateRow);
 
-var _rowSection = __webpack_require__(56);
+var _rowSection = __webpack_require__(58);
 
 var _rowSection2 = _interopRequireDefault(_rowSection);
 
@@ -22495,11 +22837,11 @@ var _const = __webpack_require__(3);
 
 var _const2 = _interopRequireDefault(_const);
 
-var _rowConsumer = __webpack_require__(57);
+var _rowConsumer = __webpack_require__(59);
 
 var _rowConsumer2 = _interopRequireDefault(_rowConsumer);
 
-var _rowConsumer3 = __webpack_require__(58);
+var _rowConsumer3 = __webpack_require__(60);
 
 var _rowConsumer4 = _interopRequireDefault(_rowConsumer3);
 
@@ -22620,7 +22962,7 @@ Body.propTypes = {
 exports.default = Body;
 
 /***/ }),
-/* 50 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22734,7 +23076,7 @@ SimpleRow.defaultProps = {
 exports.default = SimpleRow;
 
 /***/ }),
-/* 51 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22756,7 +23098,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _cellEventDelegater = __webpack_require__(52);
+var _cellEventDelegater = __webpack_require__(54);
 
 var _cellEventDelegater2 = _interopRequireDefault(_cellEventDelegater);
 
@@ -22879,7 +23221,7 @@ Cell.propTypes = {
 exports.default = Cell;
 
 /***/ }),
-/* 52 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22949,7 +23291,7 @@ exports.default = function (ExtendBase) {
 };
 
 /***/ }),
-/* 53 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22975,11 +23317,11 @@ var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _expandCell = __webpack_require__(54);
+var _expandCell = __webpack_require__(56);
 
 var _expandCell2 = _interopRequireDefault(_expandCell);
 
-var _selectionCell = __webpack_require__(55);
+var _selectionCell = __webpack_require__(57);
 
 var _selectionCell2 = _interopRequireDefault(_selectionCell);
 
@@ -23110,7 +23452,7 @@ RowAggregator.defaultProps = {
 exports.default = RowAggregator;
 
 /***/ }),
-/* 54 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23211,7 +23553,7 @@ ExpandCell.propTypes = {
 exports.default = ExpandCell;
 
 /***/ }),
-/* 55 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23348,7 +23690,7 @@ SelectionCell.propTypes = {
 exports.default = SelectionCell;
 
 /***/ }),
-/* 56 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23399,7 +23741,7 @@ RowSection.defaultProps = {
 exports.default = RowSection;
 
 /***/ }),
-/* 57 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23424,7 +23766,7 @@ var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _selectionContext = __webpack_require__(13);
+var _selectionContext = __webpack_require__(12);
 
 var _selectionContext2 = _interopRequireDefault(_selectionContext);
 
@@ -23478,7 +23820,7 @@ exports.default = function (Component) {
 };
 
 /***/ }),
-/* 58 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23495,11 +23837,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _expandRow = __webpack_require__(59);
+var _expandRow = __webpack_require__(61);
 
 var _expandRow2 = _interopRequireDefault(_expandRow);
 
-var _rowExpandContext = __webpack_require__(15);
+var _rowExpandContext = __webpack_require__(14);
 
 var _rowExpandContext2 = _interopRequireDefault(_rowExpandContext);
 
@@ -23538,7 +23880,7 @@ exports.default = function (Component, visibleColumnSize) {
 };
 
 /***/ }),
-/* 59 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23586,7 +23928,7 @@ ExpandRow.defaultProps = {
 exports.default = ExpandRow;
 
 /***/ }),
-/* 60 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23598,7 +23940,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _columnResolver = __webpack_require__(61);
+var _columnResolver = __webpack_require__(63);
 
 var _columnResolver2 = _interopRequireDefault(_columnResolver);
 
@@ -23644,7 +23986,7 @@ exports.default = function (ExtendBase) {
 };
 
 /***/ }),
-/* 61 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23696,7 +24038,7 @@ exports.default = function (ExtendBase) {
 };
 
 /***/ }),
-/* 62 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23718,29 +24060,29 @@ var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _dataContext = __webpack_require__(63);
+var _dataContext = __webpack_require__(65);
 
 var _dataContext2 = _interopRequireDefault(_dataContext);
 
-var _sortContext = __webpack_require__(64);
+var _sortContext = __webpack_require__(66);
 
 var _sortContext2 = _interopRequireDefault(_sortContext);
 
-var _selectionContext = __webpack_require__(13);
+var _selectionContext = __webpack_require__(12);
 
 var _selectionContext2 = _interopRequireDefault(_selectionContext);
 
-var _rowExpandContext = __webpack_require__(15);
+var _rowExpandContext = __webpack_require__(14);
 
 var _rowExpandContext2 = _interopRequireDefault(_rowExpandContext);
 
-var _remoteResolver2 = __webpack_require__(65);
+var _remoteResolver2 = __webpack_require__(67);
 
 var _remoteResolver3 = _interopRequireDefault(_remoteResolver2);
 
 var _bootstrap = __webpack_require__(5);
 
-var _operators = __webpack_require__(14);
+var _operators = __webpack_require__(13);
 
 var _operators2 = _interopRequireDefault(_operators);
 
@@ -24049,7 +24391,7 @@ var withContext = function withContext(Base) {
 exports.default = withContext;
 
 /***/ }),
-/* 63 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24138,7 +24480,7 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 64 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24290,7 +24632,7 @@ exports.default = function (dataOperator, isRemoteSort, handleSortChange) {
 };
 
 /***/ }),
-/* 65 */
+/* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24411,351 +24753,6 @@ exports.default = function (ExtendBase) {
 };
 
 /***/ }),
-/* 66 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var MapControl = function (_React$Component) {
-    _inherits(MapControl, _React$Component);
-
-    function MapControl(props) {
-        _classCallCheck(this, MapControl);
-
-        var _this = _possibleConstructorReturn(this, (MapControl.__proto__ || Object.getPrototypeOf(MapControl)).call(this, props));
-
-        _this.handleSpeciesChange = _this.handleSpeciesChange.bind(_this);
-        _this.handleTotalDistinctChange = _this.handleTotalDistinctChange.bind(_this);
-        _this.handleOpacityChange = _this.handleOpacityChange.bind(_this);
-        _this.handleMaxChange = _this.handleMaxChange.bind(_this);
-
-        return _this;
-    }
-
-    _createClass(MapControl, [{
-        key: "handleSpeciesChange",
-        value: function handleSpeciesChange(event) {
-            var error = this.props.handleSpeciesChange(event.target.value);
-        }
-    }, {
-        key: "handleTotalDistinctChange",
-        value: function handleTotalDistinctChange(event) {
-            this.props.handleTotalDistinctChange(event.target.value);
-        }
-    }, {
-        key: "handleOpacityChange",
-        value: function handleOpacityChange(event) {
-            this.props.handleOpacityChange(event.target.value);
-        }
-    }, {
-        key: "handleOpacityChange",
-        value: function handleOpacityChange(event) {
-            this.props.handleOpacityChange(event.target.value);
-        }
-    }, {
-        key: "handleMaxChange",
-        value: function handleMaxChange(event) {
-            this.props.handleMaxChange(event.target.value);
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            return _react2.default.createElement(
-                "div",
-                null,
-                _react2.default.createElement(
-                    "div",
-                    { className: "form-group row  justify-content-start align-items-center p-1 mx-3" },
-                    _react2.default.createElement(
-                        "div",
-                        { className: "p-3" },
-                        _react2.default.createElement(
-                            "label",
-                            { className: "table_option" },
-                            " Clase"
-                        ),
-                        _react2.default.createElement(
-                            "select",
-                            { name: "table_option", id: "table_option", onChange: this.handleSpeciesChange, className: "table_option form-control " },
-                            _react2.default.createElement(
-                                "option",
-                                { value: "ave" },
-                                "Ave"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "hierba" },
-                                "Hierba"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "herpetofauna" },
-                                "Herpetofauna"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "arbol" },
-                                "Arbol"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "arbusto" },
-                                "Arbusto"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "mamifero" },
-                                "Mamifero"
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        "div",
-                        { className: "p-3" },
-                        _react2.default.createElement(
-                            "label",
-                            { className: "table_option" },
-                            "Especies"
-                        ),
-                        _react2.default.createElement(
-                            "select",
-                            { name: "table_option", id: "table_option", onChange: this.handleTotalDistinctChange, className: "table_option form-control " },
-                            _react2.default.createElement(
-                                "option",
-                                { value: "total_observaciones" },
-                                "Total"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "distinct_species" },
-                                "Distincto"
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        "div",
-                        { className: "p-3" },
-                        _react2.default.createElement(
-                            "label",
-                            { className: "style_option" },
-                            "Max Numero por colores"
-                        ),
-                        _react2.default.createElement("input", { name: "maxNumber", type: "number", min: "6", value: this.props.mapSettings.maxValue, id: "table_optionOpacity", onChange: this.handleMaxChange, className: "table_option form-control " })
-                    ),
-                    _react2.default.createElement(
-                        "div",
-                        { className: "p-3" },
-                        _react2.default.createElement(
-                            "label",
-                            { className: "style_option" },
-                            "Opacidad"
-                        ),
-                        _react2.default.createElement(
-                            "select",
-                            { name: "table_option", id: "table_optionOpacity", defaultValue: "0.6", onChange: this.handleOpacityChange, className: "table_option form-control " },
-                            _react2.default.createElement(
-                                "option",
-                                { value: "1.0" },
-                                "1.0"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "0.8" },
-                                "0.8"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "0.6" },
-                                "0.6"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "0.4" },
-                                "0.4"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "0.2" },
-                                "0.2"
-                            )
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-
-    return MapControl;
-}(_react2.default.Component);
-
-exports.default = MapControl;
-
-/***/ }),
-/* 67 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactBootstrapTableNext = __webpack_require__(12);
-
-var _reactBootstrapTableNext2 = _interopRequireDefault(_reactBootstrapTableNext);
-
-__webpack_require__(27);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var FeatureInfoDisplay = function (_React$Component) {
-    _inherits(FeatureInfoDisplay, _React$Component);
-
-    function FeatureInfoDisplay(props) {
-        _classCallCheck(this, FeatureInfoDisplay);
-
-        return _possibleConstructorReturn(this, (FeatureInfoDisplay.__proto__ || Object.getPrototypeOf(FeatureInfoDisplay)).call(this, props));
-    }
-
-    _createClass(FeatureInfoDisplay, [{
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
-
-            var allTableRows = [];
-            if (this.props.featureInfo.properties.displayName == 'Linea MTP' || this.props.featureInfo.properties.displayName == 'Unidad de Paisaje') {
-
-                var lifeForms = ['arbol', 'arbusto', 'hierba', 'ave', 'herpetofauna', 'mamifero', 'Dato acumulado'];
-                var mya2 = ['total_observaciones', 'distinct_species', 'dominancia', 'shannon'];
-                var myIcons = { 'ave': '🦅', 'arbol': '🌲', 'arbusto': '🌳', 'hierba': '🌱', 'herpetofauna': '🐍', 'mamifero': '🦌' };
-
-                lifeForms.map(function (life) {
-                    var oneTableRow = {};
-                    oneTableRow['name'] = life == 'herpetofauna' ? 'herpetofauna' : life;
-                    oneTableRow['name'] = life == 'Dato acumulado' ? oneTableRow['name'] : myIcons[life] + oneTableRow['name'];
-
-                    mya2.map(function (category, ind) {
-                        if (life == 'Dato acumulado') {
-                            var mysum = +_this2.props.featureInfo.properties[category + '_ave'] + +_this2.props.featureInfo.properties[category + '_hierba'] + +_this2.props.featureInfo.properties[category + '_arbusto'] + +_this2.props.featureInfo.properties[category + '_arbol'] + +_this2.props.featureInfo.properties[category + '_herpetofauna'] + +_this2.props.featureInfo.properties[category + '_mamifero'];
-                            if (ind > 1) mysum = (mysum / 6).toPrecision(4);
-                            oneTableRow[category] = mysum;
-                        } else {
-                            var newCat = category.replace('_' + life, '');
-                            var myValue = ind > 1 ? (+_this2.props.featureInfo.properties[category + '_' + life]).toPrecision(4) : _this2.props.featureInfo.properties[category + '_' + life];
-                            oneTableRow[newCat] = myValue;
-                        }
-                    });
-                    allTableRows.push(oneTableRow);
-                });
-            }
-            var columns = [{
-                dataField: 'name',
-                text: 'Nombre',
-                headerStyle: {
-                    width: '128px'
-                }
-            }, {
-                dataField: 'total_observaciones',
-                text: 'Individuos'
-            }, {
-                dataField: 'distinct_species',
-                text: 'Especie Distinctos'
-            }, {
-                dataField: 'dominancia',
-                text: 'Dominancia',
-                classes: 'testme'
-            }, {
-                dataField: 'shannon',
-                headerStyle: {
-                    width: '62px'
-                },
-                text: 'Shannon'
-            }];
-
-            return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'div',
-                    { className: 'container' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'flex-column d-flex justify-content-around align-items-center p-3' },
-                        _react2.default.createElement(
-                            'div',
-                            null,
-                            'Ultimo Click:'
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            null,
-                            'lat: ',
-                            this.props.markerPosition.lat.toPrecision(7),
-                            ', lng: ',
-                            this.props.markerPosition.lng.toPrecision(7)
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            null,
-                            this.props.featureInfo.properties.displayName,
-                            ' = ',
-                            this.props.featureInfo.properties[this.props.featureInfo.properties.featureColumn]
-                        )
-                    )
-                ),
-                _react2.default.createElement(_reactBootstrapTableNext2.default, {
-                    keyField: 'name',
-                    data: allTableRows,
-                    columns: columns,
-                    bordered: true,
-                    classes: 'featureInfoTable',
-                    striped: true,
-                    hover: true,
-                    condensed: true,
-                    noDataIndication: 'Click for data'
-                })
-            );
-        }
-    }]);
-
-    return FeatureInfoDisplay;
-}(_react2.default.Component);
-
-exports.default = FeatureInfoDisplay;
-
-/***/ }),
 /* 68 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -24788,7 +24785,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactBootstrapTableNext = __webpack_require__(12);
+var _reactBootstrapTableNext = __webpack_require__(22);
 
 var _reactBootstrapTableNext2 = _interopRequireDefault(_reactBootstrapTableNext);
 
