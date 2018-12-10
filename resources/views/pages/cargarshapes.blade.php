@@ -31,13 +31,14 @@
         );
         $results = DB::insert($copyshp, $arraytopass);
 
-        if (strpos($a, 'ROLLBACK') == false) {
+        if (strpos($output, 'ROLLBACK') == false) {
             DB::statement("drop table {$shapenombre}");
             echo 'DROPPED';
         }else{
             echo 'NOT';
         }
-        
+        echo $output;
+
         //delete temp table 
         
     }
