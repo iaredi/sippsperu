@@ -33,9 +33,9 @@
 
         if (strpos($a, 'ROLLBACK') == false) {
             DB::statement("drop table {$shapenombre}");
-            echo ('DROPPED')
+            echo 'DROPPED';
         }else{
-            echo 'NOT'
+            echo 'NOT';
         }
         
         //delete temp table 
