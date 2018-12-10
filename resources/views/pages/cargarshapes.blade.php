@@ -51,7 +51,7 @@
             $arraytopass=array(
                 ":nombre"=> $shapenombre,
                 ":email"=> session('email'),
-                ":geom"=> $geom->geom,
+                ":geom"=> $geom[0]->geom,
             );
             $results = DB::insert($copyshp, $arraytopass);
             echo 'worked';
