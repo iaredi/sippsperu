@@ -12,14 +12,14 @@
         $srid=4326;
         $shapenombre=$_POST['shapenombre'];
         //load to temp table 
-        if (env("APP_URL", "somedefaultvalue")=='http://localhost'){
-        }else{
+        // if (env("APP_URL", "somedefaultvalue")=='http://localhost'){
+        // }else{
             $db = env("DB_PASSWORD", "somedefaultvalue");
             $loadshp="shp2pgsql -I -s {$srid}:4326 var/www/html/lsapp3/public/shp/{$shpfile} {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d biodiversity3";
             $output= shell_exec($loadshp);
             echo $output;
             echo 'linux';
-        }
+        
         //echo '"C:\\Program Files\\PostgreSQL\\10\\bin\\shp2pgsql" -I -s '.$srid.':4326 C:\\wamp64\\www\\lsapp3\\public\\shp\\'.$shpfile.' '.$shapenombre.' | psql -U postgres -d biodiversity3';
 
         //$output= shell_exec('"C:\\Program Files\\PostgreSQL\\10\\bin\\shp2pgsql" -I -s '.$srid.':4326 C:\\wamp64\\www\\lsapp3\\public\\shp\\'.$shpfile.' '.$shapenombre.' | psql -U postgres -d biodiversity3');
