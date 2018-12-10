@@ -8,7 +8,6 @@
         uploadshape('dbf');
         uploadshape('prj');
         $shpfile=$_FILES['shp']["name"];
-        $srid=$_POST['srid'];
        
         $sridshell= shell_exec("ogr2ogr -t_srs EPSG:4326 shp/{$shpfile} shp/{$shpfile}");
         echo $sridshell;
