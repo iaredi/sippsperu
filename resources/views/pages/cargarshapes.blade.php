@@ -13,7 +13,7 @@
         echo `ogrinfo -al -so ./shp/{$shpfile}`;
 
         $shapenombre=$_POST['shapenombre'];
-        if (env("APP_ENV", "somedefaultvalue")=='production!!!!!!!!!!!!!!!!!!!!!'){
+        if (env("APP_ENV", "somedefaultvalue")=='production'){
             //load to temp table 
             $db = env("DB_PASSWORD", "somedefaultvalue");
             $loadshp="shp2pgsql -I /var/www/html/lsapp3/public/shp/{$shpfile} {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d biodiversity3";
@@ -27,6 +27,7 @@
                 ":geom"=> $geom[0]->geom,
             );
             $results = DB::insert($copyshp, $arraytopass);
+            echo 'worked';
             //delete temp table 
             if (strpos($output, 'ROLLBACK') == false) {
                 DB::statement("drop table {$shapenombre}");
