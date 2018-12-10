@@ -48,20 +48,24 @@
             //insert into geom usertable
             $copyshp="insert into usershapes (nombre, iden_email, geom) values (:nombre, :email, :geom)";
             $geom= DB::select("select geom from {$shapenombre}", []);
-            echo var_dump($geom);
-            // $arraytopass=array(
-            //     ":nombre"=> $shapenombre,
-            //     ":email"=> session('email'),
-            //     ":geom"=> $geom[0]->geom,
-            // );
-            // $results = DB::insert($copyshp, $arraytopass);
-            echo 'worked';
-            //delete temp table 
-            if (strpos($output, 'ROLLBACK') == false) {
-                DB::statement("drop table {$shapenombre}");
+            if sizeof($geom>0){
+                $arraytopass=array(
+                    ":nombre"=> $shapenombre,
+                    ":email"=> session('email'),
+                    ":geom"=> $geom[0]->geom,
+                );
+                $results = DB::insert($copyshp, $arraytopass);
+                echo 'worked';
+                //delete temp table 
+                if (strpos($output, 'ROLLBACK') == false) {
+                    DB::statement("drop table {$shapenombre}");
+                }
+                return redirect()->to('/thanks')->send();
             }else{
+                $errorlist[]= "Su shape no tiene polygono";
             }
         }
+
     }
     
 ?>
