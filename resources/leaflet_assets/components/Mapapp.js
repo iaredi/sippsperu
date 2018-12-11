@@ -203,18 +203,19 @@ class Mapapp extends React.Component {
             <div className='mystatdiv p-1'>
               <div className='withcontrol flex-column d-flex justify-content-between align-items-start'>
                   <FeatureInfoDisplay 
-                      markerPosition={this.state.markerPosition} 
-                      featureInfo={this.state.featureInfo}
+                    markerPosition={this.state.markerPosition} 
+                    featureInfo={this.state.featureInfo}
                   />
                   <MapControl
-                  handleSpeciesChange={this.handleSpeciesChange}
-                  handleTotalDistinctChange={this.handleTotalDistinctChange}
-                  handleOpacityChange={this.handleOpacityChange}
-                  handleMaxChange={this.handleMaxChange}
-                  mapSettings={this.state.mapSettings} 
+                    handleSpeciesChange={this.handleSpeciesChange}
+                    handleTotalDistinctChange={this.handleTotalDistinctChange}
+                    handleOpacityChange={this.handleOpacityChange}
+                    handleMaxChange={this.handleMaxChange}
+                    mapSettings={this.state.mapSettings} 
                   />
-                  <a className="btn btn-primary" href="/cargarshapes" role="button">Cargar Shapefile</a>
-
+                  <div>
+                    <a className="btn btn-primary" href="/cargarshapes" role="button">Cargar Shapefile</a>
+                  </div>
               </div>
             </div>
           </div>

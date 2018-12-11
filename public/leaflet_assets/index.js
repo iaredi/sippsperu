@@ -18976,9 +18976,13 @@ var Mapapp = function (_React$Component) {
                   mapSettings: this.state.mapSettings
                 }),
                 _react2.default.createElement(
-                  'a',
-                  { className: 'btn btn-primary', href: '/cargarshapes', role: 'button' },
-                  'Cargar Shapefile'
+                  'div',
+                  null,
+                  _react2.default.createElement(
+                    'a',
+                    { className: 'btn btn-primary', href: '/cargarshapes', role: 'button' },
+                    'Cargar Shapefile'
+                  )
                 )
               )
             )

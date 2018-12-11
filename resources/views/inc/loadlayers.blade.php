@@ -74,7 +74,12 @@ foreach ($layersArray as $layer) {
         }elseif ($layer->tableName=='municipio_puebla_4326'){
             $result = DB::select("SELECT geometry_id,nomgeo, ST_AsGeoJSON(level_3, 5) AS geojson FROM muni_geometries_simplified",[]);
         }elseif ($layer->tableName=='usershapes'){
-            $result = DB::select("SELECT nombre, ST_AsGeoJSON(geom, 5) AS geojson FROM usershapes",[]);
+            if (session('admin')){
+                $result = DB::select("SELECT nombre, ST_AsGeoJSON(geom, 5) AS geojson FROM usershapes",[]);
+            }else{
+                $email=session('email');
+                $result = DB::select("SELECT nombre, ST_AsGeoJSON(geom, 5) AS geojson FROM usershapes where iden_email='{$email}'",[]);
+            }
         }
 
         
@@ -85,41 +90,41 @@ foreach ($layersArray as $layer) {
             $defaultmax["total_observaciones_{$cat}"]=0;
             $defaultmax["distinct_species_{$cat}"]=0;
         }
-
-        foreach($result AS $row) {
-            if (isset($row->geom)){
-                unset($row->geom);
-            }
-            $geometry=$row->geojson=json_decode($row->geojson);
-            unset($row->geojson);
-            $row->name=$layer->tableName;
-            $row->displayName=$layer->displayName;
-            $row->featureColumn=$layer->featureColumn;
-            $row->fromFile=$layer->fromFile;
-            if ($layer->tableName=='udp_puebla_4326'){
-                foreach($dslist as $ds){
-                    if($defaultmax[$ds]<$row->$ds){
-                    $defaultmax[$ds]=$row->$ds;
+        if (isset($result[0])){
+            foreach($result AS $row) {
+                if (isset($row->geom)){
+                    unset($row->geom);
+                }
+                $geometry=$row->geojson=json_decode($row->geojson);
+                unset($row->geojson);
+                $row->name=$layer->tableName;
+                $row->displayName=$layer->displayName;
+                $row->featureColumn=$layer->featureColumn;
+                $row->fromFile=$layer->fromFile;
+                if ($layer->tableName=='udp_puebla_4326'){
+                    foreach($dslist as $ds){
+                        if($defaultmax[$ds]<$row->$ds){
+                        $defaultmax[$ds]=$row->$ds;
+                        }
+                    }
+                    foreach($tolist as $to){
+                        if($defaultmax[$to]<$row->$to){
+                            $defaultmax[$to]=$row->$to;
+                        }
                     }
                 }
-                foreach($tolist as $to){
-                    if($defaultmax[$to]<$row->$to){
-                        $defaultmax[$to]=$row->$to;
-                    }
-                }
-            }
 
-            $feature=["type"=>"Feature", "geometry"=>$geometry, "properties"=>$row];
+                $feature=["type"=>"Feature", "geometry"=>$geometry, "properties"=>$row];
 
-            array_push($features, $feature);
-            $featureCollection=["type"=>"FeatureCollection", "features"=>$features];
-            
-        }   
-    $layer->geom=$featureCollection;
-    unset($features);
-    unset($featureCollection);
-    $defaultmaxjson[$layer->tableName]=json_encode($defaultmax);
-
+                array_push($features, $feature);
+                $featureCollection=["type"=>"FeatureCollection", "features"=>$features];
+                
+            }   
+        $layer->geom=$featureCollection;
+        unset($features);
+        unset($featureCollection);
+        $defaultmaxjson[$layer->tableName]=json_encode($defaultmax);
+        }
 }
 
 
