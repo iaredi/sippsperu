@@ -26,57 +26,46 @@
         }
     }
 
-
-    
     if ($_SERVER['REQUEST_METHOD']=="POST" && sizeof($errorlist)==0 && (!session('visitante'))  ){
         uploadshape('shp');
         uploadshape('shx');
         uploadshape('dbf');
         uploadshape('prj');
         $shpfile=$_FILES['shp']["name"];
-        echo "@ogrinfobefore";
-        echo `ogrinfo -so -al ./shp/{$shpfile}`;
         $sridshell= shell_exec("ogr2ogr -t_srs EPSG:4326 ./shp/{$shpfile}2 ./shp/{$shpfile}");
-        echo "@sridshell";
-        echo $sridshell;
-        echo "@ogrinfoafter";
-        echo `ogrinfo -so -al ./shp/{$shpfile}2`;
         $shapenombre=$_POST['shapenombre'];
-        //if (env("APP_ENV", "somedefaultvalue")=='production'){
         if (env("APP_ENV", "somedefaultvalue")=='production'){
         
             //load to temp table 
             $db = env("DB_PASSWORD", "somedefaultvalue");
-            $loadshp="shp2pgsql -I -s 4326:4326 /var/www/html/lsapp3/public/shp/{$shpfile}2 {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d biodiversity3";
+            $dbname = env("DB_DATABASE", "somedefaultvalue");
+            $loadshp="shp2pgsql -I -s 4326:4326 ./shp/{$shpfile}2 {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d {$dbname}";
             
             $output= shell_exec($loadshp);
-            echo $output;
-            
-                //delete temp table 
                 if (strpos($output, 'ROLLBACK') == false) {
                     //insert into geom usertable
                     $copyshp="insert into usershapes (nombre, iden_email, geom) values (:nombre, :email, :geom)";
                     $geom= DB::select("select geom from {$shapenombre}", []);
                     if (isset($geom[0])){
-                        $arraytopass=array(
-                            ":nombre"=> $shapenombre,
-                            ":email"=> session('email'),
-                            ":geom"=> $geom[0]->geom,
-                        );
-                    $results = DB::insert($copyshp, $arraytopass);
-                    echo 'worked';
+                        foreach($geom as $ge){
+                            $arraytopass=array(
+                                ":nombre"=> $shapenombre,
+                                ":email"=> session('email'),
+                                ":geom"=> $ge->geom,
+                            );
+                            $results = DB::insert($copyshp, $arraytopass);
+                        }
+                    
                     DB::statement("drop table {$shapenombre}");
+                    return redirect()->to('/thanks')->send();
                 }else{
-                    $errorlist[]= "Por favor, cambie el nombre de su shape ";
+                    $errorlist[]= "Su shape no tiene polygono";
                 }
-                //return redirect()->to('/thanks')->send();
             }else{
-                $errorlist[]= "Su shape no tiene polygono";
+                $errorlist[]= "Por favor, cambie el nombre de su shape ";
             }
         }
-
     }
-    
 ?>
 
 @include('inc/header')
@@ -136,7 +125,6 @@
 @include('inc/footer')
 
 <?php
-    echo '<script>console.log('.json_encode(session('resultofquery')).')</script>';
     session(['resultofquery' => '']);
 
     ?>

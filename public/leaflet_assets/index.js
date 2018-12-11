@@ -18968,18 +18968,18 @@ var Mapapp = function (_React$Component) {
                   markerPosition: this.state.markerPosition,
                   featureInfo: this.state.featureInfo
                 }),
-                _react2.default.createElement(
-                  'a',
-                  { className: 'btn btn-primary', href: '/cargarshapes', role: 'button' },
-                  'Cargar Shapefile'
-                ),
                 _react2.default.createElement(_MapControl2.default, {
                   handleSpeciesChange: this.handleSpeciesChange,
                   handleTotalDistinctChange: this.handleTotalDistinctChange,
                   handleOpacityChange: this.handleOpacityChange,
                   handleMaxChange: this.handleMaxChange,
                   mapSettings: this.state.mapSettings
-                })
+                }),
+                _react2.default.createElement(
+                  'a',
+                  { className: 'btn btn-primary', href: '/cargarshapes', role: 'button' },
+                  'Cargar Shapefile'
+                )
               )
             )
           ),
@@ -24834,10 +24834,6 @@ var SpeciesDisplay = function (_React$Component) {
                 }
                 return newObject;
             });
-
-            console.log(newA);
-            console.log(speciesResult);
-            console.log(oldspeciesResult);
 
             if (speciesResult.length > 0) {}
             //     speciesResult.map((life)=>{

@@ -206,7 +206,6 @@ class Mapapp extends React.Component {
                       markerPosition={this.state.markerPosition} 
                       featureInfo={this.state.featureInfo}
                   />
-                  <a className="btn btn-primary" href="/cargarshapes" role="button">Cargar Shapefile</a>
                   <MapControl
                   handleSpeciesChange={this.handleSpeciesChange}
                   handleTotalDistinctChange={this.handleTotalDistinctChange}
@@ -214,6 +213,8 @@ class Mapapp extends React.Component {
                   handleMaxChange={this.handleMaxChange}
                   mapSettings={this.state.mapSettings} 
                   />
+                  <a className="btn btn-primary" href="/cargarshapes" role="button">Cargar Shapefile</a>
+
               </div>
             </div>
           </div>
