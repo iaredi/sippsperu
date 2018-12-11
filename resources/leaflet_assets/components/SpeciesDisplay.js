@@ -33,12 +33,6 @@ class SpeciesDisplay extends React.Component {
         })
 
         
-            
-            
-         
-         console.log(newA)
-         console.log(speciesResult)
-         console.log(oldspeciesResult)
         
 
 
