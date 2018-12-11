@@ -51,19 +51,20 @@
             
             $output= shell_exec($loadshp);
             echo $output;
-            //insert into geom usertable
-            $copyshp="insert into usershapes (nombre, iden_email, geom) values (:nombre, :email, :geom)";
-            $geom= DB::select("select geom from {$shapenombre}", []);
-            if (isset($geom[0])){
-                $arraytopass=array(
-                    ":nombre"=> $shapenombre,
-                    ":email"=> session('email'),
-                    ":geom"=> $geom[0]->geom,
-                );
-                $results = DB::insert($copyshp, $arraytopass);
-                echo 'worked';
+            
                 //delete temp table 
                 if (strpos($output, 'ROLLBACK') == false) {
+                    //insert into geom usertable
+                    $copyshp="insert into usershapes (nombre, iden_email, geom) values (:nombre, :email, :geom)";
+                    $geom= DB::select("select geom from {$shapenombre}", []);
+                    if (isset($geom[0])){
+                        $arraytopass=array(
+                            ":nombre"=> $shapenombre,
+                            ":email"=> session('email'),
+                            ":geom"=> $geom[0]->geom,
+                        );
+                    $results = DB::insert($copyshp, $arraytopass);
+                    echo 'worked';
                     DB::statement("drop table {$shapenombre}");
                 }else{
                     $errorlist[]= "Por favor, cambie el nombre de su shape ";
