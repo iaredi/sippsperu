@@ -135,12 +135,7 @@ class Map extends React.Component {
   }
 
     componentDidUpdate({ mapSettings }) {
-        
-
-
-
-
-        
+           
         if (this.props.mapSettings !== mapSettings) {
             this.map.removeControl(this.legend); 
             var legend = L.control({position: 'bottomright'});

@@ -66,7 +66,7 @@
                 if (strpos($output, 'ROLLBACK') == false) {
                     DB::statement("drop table {$shapenombre}");
                 }
-                return redirect()->to('/thanks')->send();
+                //return redirect()->to('/thanks')->send();
             }else{
                 $errorlist[]= "Su shape no tiene polygono";
             }
