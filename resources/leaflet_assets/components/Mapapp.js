@@ -103,12 +103,14 @@ class Mapapp extends React.Component {
       });
       let dataResult = await rawResponse.json()
       return dataResult
-  }
-  getSpecies(lifeform,idtype,idnumber).then(myspeciesResult =>{
-    this.setState((prevState) => ({
-      speciesResult: myspeciesResult      
-    }));
-  })
+    }
+    if (event.target.feature.properties.name=='udp_puebla_4326'||event.target.feature.properties.name=='linea_mtp'){
+      getSpecies(lifeform,idtype,idnumber).then(myspeciesResult =>{
+        this.setState((prevState) => ({
+          speciesResult: myspeciesResult      
+        }));
+      })
+    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
       let myColor='green'

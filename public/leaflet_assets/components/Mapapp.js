@@ -18846,13 +18846,15 @@ var Mapapp = function (_React$Component) {
       var idtype = event.target.feature.properties.name == 'udp_puebla_4326' ? 'udp' : 'linea_mtp';
       var idnumber = event.target.feature.properties.iden;
 
-      getSpecies(lifeform, idtype, idnumber).then(function (myspeciesResult) {
-        _this2.setState(function (prevState) {
-          return {
-            speciesResult: myspeciesResult
-          };
+      if (event.target.feature.properties.name == 'udp_puebla_4326' || event.target.feature.properties.name == 'linea_mtp') {
+        getSpecies(lifeform, idtype, idnumber).then(function (myspeciesResult) {
+          _this2.setState(function (prevState) {
+            return {
+              speciesResult: myspeciesResult
+            };
+          });
         });
-      });
+      }
 
       /////////////////////////////////////////////////////////////////////////////////////////////
       var myColor = 'green';

@@ -110,7 +110,7 @@ class Map extends React.Component {
     ///////////LEGEND////////////
     var legend = L.control({position: 'bottomright'});
 
-    this.makeDiv=  (map)=> {
+    this.makeDiv=(map)=> {
     grades=[];
     for (var i = 0; i <= 6; i++) {
         grades.push(this.props.mapSettings.maxValue*(i/6)),

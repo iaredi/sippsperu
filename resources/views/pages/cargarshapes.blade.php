@@ -65,6 +65,8 @@
                 //delete temp table 
                 if (strpos($output, 'ROLLBACK') == false) {
                     DB::statement("drop table {$shapenombre}");
+                }else{
+                    $errorlist[]= "Por favor, cambie el nombre de su shape ";
                 }
                 //return redirect()->to('/thanks')->send();
             }else{
