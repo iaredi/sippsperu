@@ -98,7 +98,9 @@ class Mapapp extends React.Component {
           body: JSON.stringify({
               "lifeform": lifeform,
               "idtype":idtype,
-              "idnumber":idnumber
+              "idnumber":idnumber,
+              "useremail" : document.getElementById('useremail').textContent
+              
           })
       });
       let dataResult = await rawResponse.json()
@@ -213,7 +215,7 @@ class Mapapp extends React.Component {
                     handleMaxChange={this.handleMaxChange}
                     mapSettings={this.state.mapSettings} 
                   />
-                  <div>
+                  <div className='p-2 align-self-center'>
                     <a className="btn btn-primary" href="/cargarshapes" role="button">Cargar Shapefile</a>
                   </div>
               </div>

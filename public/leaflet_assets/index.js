@@ -18813,7 +18813,9 @@ var Mapapp = function (_React$Component) {
                     body: JSON.stringify({
                       "lifeform": lifeform,
                       "idtype": idtype,
-                      "idnumber": idnumber
+                      "idnumber": idnumber,
+                      "useremail": document.getElementById('useremail').textContent
+
                     })
                   });
 
@@ -18977,7 +18979,7 @@ var Mapapp = function (_React$Component) {
                 }),
                 _react2.default.createElement(
                   'div',
-                  null,
+                  { className: 'p-2 align-self-center' },
                   _react2.default.createElement(
                     'a',
                     { className: 'btn btn-primary', href: '/cargarshapes', role: 'button' },
@@ -24818,9 +24820,9 @@ var SpeciesDisplay = function (_React$Component) {
         key: 'render',
         value: function render() {
             //const allTableRows=[];
+
             var oldspeciesResult = this.props.speciesResult;
             var newA = {};
-
             var speciesResult = oldspeciesResult.map(function (spec) {
                 var newObject = _extends({}, spec);
                 if (newA[spec.cientifico]) {

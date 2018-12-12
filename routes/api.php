@@ -115,7 +115,16 @@ Route::post('getspecies', function(Request $request) {
     $lifeform = $request->lifeform;
     $idtype = $request->idtype;
     $idnumber= $request->idnumber;
-
+    $useremail = $request->useremail;
+    
+    $adminsql = "SELECT administrador FROM usuario WHERE email=:useremail";
+    $adminresult = DB::select($adminsql, [':useremail'=>$useremail]);
+    $admin=$adminresult[0]->administrador;
+    $useremailval=$useremail;
+    if ($admin=="true"){
+        $useremailval='%';
+    }
+    
     $transpunto='punto';
     if ($lifeform=='hierba'||$lifeform=='herpetofauna'){
         $transpunto='transecto';
@@ -140,7 +149,7 @@ Route::post('getspecies', function(Request $request) {
         {$transpunto}_{$lifeform} ON observacion_{$lifeform}.iden_{$transpunto} = {$transpunto}_{$lifeform}.iden
         left JOIN
     riesgo_{$lifeform_riesgo} ON trim(lower(especie_{$lifeform}.cientifico)) = lower(CONCAT(trim(riesgo_{$lifeform_riesgo}.genero),' ',trim(riesgo_{$lifeform_riesgo}.especie)))
-    where iden_{$idtype}={$idnumber}
+    where iden_{$idtype}={$idnumber} and observacion_{$lifeform}.iden_email like '{$useremailval}'
     GROUP BY especie_{$lifeform}.comun,especie_{$lifeform}.cientifico,riesgo_{$lifeform_riesgo}.categoria, riesgo_{$lifeform_riesgo}.distribution, riesgo_{$lifeform_riesgo}.subespecie";
 
     if ($idtype=="linea_mtp"){
@@ -161,7 +170,7 @@ Route::post('getspecies', function(Request $request) {
         medicion ON {$transpunto}_{$lifeform}.iden_medicion = medicion.iden
         left JOIN
         riesgo_{$lifeform_riesgo} ON lower(especie_{$lifeform}.cientifico) = lower(CONCAT (riesgo_{$lifeform_riesgo}.genero,' ',riesgo_{$lifeform_riesgo}.especie))
-            where iden_linea_mtp={$idnumber}
+            where iden_linea_mtp={$idnumber} and observacion_{$lifeform}.iden_email like '{$useremailval}'
             GROUP BY especie_{$lifeform}.comun,especie_{$lifeform}.cientifico,riesgo_{$lifeform_riesgo}.categoria, riesgo_{$lifeform_riesgo}.distribution,riesgo_{$lifeform_riesgo}.subespecie";
     }   
 

@@ -10,9 +10,9 @@ class SpeciesDisplay extends React.Component {
 
     render(){
         //const allTableRows=[];
+        
         const oldspeciesResult=this.props.speciesResult
         const newA={}
-
         const speciesResult = oldspeciesResult.map((spec) => {
             let newObject = {...spec}
             if(newA[spec.cientifico]){
