@@ -1,5 +1,5 @@
 import React from 'react';
-import BootstrapTable from 'react-bootstrap-table-next';
+//import BootstrapTable from 'react-bootstrap-table-next';
 
 import Map from './Map';
 import MapControl from './MapControl';
@@ -18,27 +18,41 @@ class Mapapp extends React.Component {
         this.handleFeatureClick = this.handleFeatureClick.bind(this);
         this.setDefaultMax = this.setDefaultMax.bind(this);
         this.state={
-            speciesResult:[],
-            previous:0,
-            udp:0,
-            markerPosition: { lat: 18.69349, lng: 360-98.16245 },
-            mapSettings:{distinctOrTotal:"total_observaciones", myObsType:"ave", fillOpacity:0.6, maxValue:99},
-            featureInfo: { properties:{message:'click somewhere',displayName:'none' }},
-            table: [
-                {tableName:'udp_puebla_4326',color: 'blue'},
-            ] 
+          speciesResult:[],
+          previous:0,
+          udp:0,
+          markerPosition: { lat: 18.69349, lng: 360-98.16245 },
+          mapSettings:{distinctOrTotal:"total_observaciones", myObsType:"ave", fillOpacity:0.6, maxValue:99},
+          featureInfo: { properties:{message:'click somewhere',displayName:'none' }},
+          table: [
+            {tableName:'udp_puebla_4326',color: 'blue'},
+          ] 
         }
   }
+
+  getOutline(properties, cat) {
+    let email = document.getElementById('useremail').textContent     
+    let emailArray = [properties.ave_email,properties.arbol_email,properties.arbusto_email,properties.hierba_email,properties.herpetofauna_email,properties.mamifero_email] 
+    if (cat=='color'){
+        return emailArray.includes(email)   ?    'black':
+        emailArray.some(el =>  el !== null)    ?   'red':
+                                                        'black' ;
+    }else{
+        return emailArray.includes(email)   ?    3:
+        emailArray.some(el =>  el !== null)    ?   3:
+                                                       0.3 ;
+    }
+  };
   async handleMapClick(event) {
     this.setState((prevState) => ({
       markerPosition: {
         lat:event.latlng.lat,
         lng:event.latlng.lng
       }
-    }));
-
-    
+    }));    
   }
+
+
   handleSpeciesChange(value) {
     let max=defaultmax[`${this.state.mapSettings.distinctOrTotal}_${value}`]
     max= max<6 ? 6 :max
@@ -98,17 +112,21 @@ class Mapapp extends React.Component {
           body: JSON.stringify({
               "lifeform": lifeform,
               "idtype":idtype,
-              "idnumber":idnumber
+              "idnumber":idnumber,
+              "useremail" : document.getElementById('useremail').textContent
+              
           })
       });
       let dataResult = await rawResponse.json()
       return dataResult
-  }
-  getSpecies(lifeform,idtype,idnumber).then(myspeciesResult =>{
-    this.setState((prevState) => ({
-      speciesResult: myspeciesResult      
-    }));
-  })
+    }
+    if (event.target.feature.properties.name=='udp_puebla_4326'||event.target.feature.properties.name=='linea_mtp'){
+      getSpecies(lifeform,idtype,idnumber).then(myspeciesResult =>{
+        this.setState((prevState) => ({
+          speciesResult: myspeciesResult      
+        }));
+      })
+    }
 
     /////////////////////////////////////////////////////////////////////////////////////////////
       let myColor='green'
@@ -116,6 +134,8 @@ class Mapapp extends React.Component {
       let myOpacity=5
     
       if (this.state.previous){
+        console.log(something)
+        console.log(this.state.previous.feature)
         something.forEach((thing)=>{
           if (thing.tableName==this.state.previous.feature.properties.name){
             myColor=thing.color
@@ -123,19 +143,28 @@ class Mapapp extends React.Component {
             myOpacity=thing.opacity
           }
         })
-        this.state.previous.setStyle({
-          'color': myColor,
-          'weight': myWeight,
-          'opacity': myOpacity
-        });
-      }
 
+        if (this.state.previous.feature.properties.name=="udp_puebla_4326"){
+          this.state.previous.setStyle({
+            "weight": this.getOutline(this.state.previous.feature.properties,'weight'),
+            "color":  this.getOutline(this.state.previous.feature.properties,'color'),
+            'opacity': myOpacity
+          });
+
+        }else{
+          this.state.previous.setStyle({
+            'color': myColor,
+            'weight': myWeight,
+            'opacity': myOpacity
+          });
+        }
+      }
     this.setState((prevState) => ({
         previous: event.target
         }));
         
     var highlight = {
-        'color': 'blue',
+        'color': 'yellow',
         'weight': 3,
         'opacity': 1
     };
@@ -184,12 +213,14 @@ class Mapapp extends React.Component {
   }
   
   render() {
+    console.log('hi')
     return (
       <div>
         <div className="container mymapcontainer">
           <div className='row justify-content-around align-items-center mapstat'>
             <div className='mymapdiv border border-dark'>
                 <Map
+                    getOutline={this.getOutline}
                     handleMapClick={this.handleMapClick}
                     handleFeatureClick={this.handleFeatureClick}
                     setDefaultMax={this.setDefaultMax}
@@ -201,16 +232,19 @@ class Mapapp extends React.Component {
             <div className='mystatdiv p-1'>
               <div className='withcontrol flex-column d-flex justify-content-between align-items-start'>
                   <FeatureInfoDisplay 
-                      markerPosition={this.state.markerPosition} 
-                      featureInfo={this.state.featureInfo}
+                    markerPosition={this.state.markerPosition} 
+                    featureInfo={this.state.featureInfo}
                   />
                   <MapControl
-                  handleSpeciesChange={this.handleSpeciesChange}
-                  handleTotalDistinctChange={this.handleTotalDistinctChange}
-                  handleOpacityChange={this.handleOpacityChange}
-                  handleMaxChange={this.handleMaxChange}
-                  mapSettings={this.state.mapSettings} 
+                    handleSpeciesChange={this.handleSpeciesChange}
+                    handleTotalDistinctChange={this.handleTotalDistinctChange}
+                    handleOpacityChange={this.handleOpacityChange}
+                    handleMaxChange={this.handleMaxChange}
+                    mapSettings={this.state.mapSettings} 
                   />
+                  <div className='p-2 align-self-center'>
+                    <a className="btn btn-primary" href="/cargarshapes" role="button">Cargar Shapefile</a>
+                  </div>
               </div>
             </div>
           </div>

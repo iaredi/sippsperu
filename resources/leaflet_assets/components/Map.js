@@ -20,7 +20,8 @@ class Map extends React.Component {
             x < this.props.mapSettings.maxValue         ?   '#238b45':
                                                          '#005824' ;
     };
-
+   
+    
   componentDidMount() {
 
 
@@ -50,29 +51,15 @@ class Map extends React.Component {
       "Streets": streets
     };
 
-    const get_shp =(item,mymap,getColor)=>{
-        let myStyle={};
-
-        const targetProperty = `${this.props.mapSettings.distinctOrTotal}_${this.props.mapSettings.myObsType}`;
-        if (item.tableName=='udp_puebla_4326'){
-            myStyle= (feature)=> {
-                return {
-                    "fillColor": getColor(feature.properties[targetProperty]),
-                    "opacity": item.opacity,
-                    "weight": item.weight,
-                    "color": item.color,
-                    "fillOpacity":this.props.mapSettings.fillOpacity
-                    }
-            } 
-        }else{
-            myStyle={
-                weight: item.weight,
-                color: item.color,
-                opacity: item.opacity,
-                fillColor: item.fillColor,
-                fillOpacity: item.fillOpacity
-            } 
-        }
+    const get_shp =(item,mymap)=>{
+        let myStyle={
+            weight: item.weight,
+            color: item.color,
+            opacity: item.opacity,
+            fillColor: item.fillColor,
+            fillOpacity: item.fillOpacity
+        } 
+        
         const onEachFeature =(feature, layer)=> {
             const handleFeatureClick=(event)=> {
                 this.props.handleFeatureClick(event);
@@ -83,34 +70,56 @@ class Map extends React.Component {
             style: myStyle,
             onEachFeature: onEachFeature
         })
-      if (item.tableName=='linea_mtp'||item.tableName=='udp_puebla_4326'){
-        c2.addTo(mymap)
-      }
-
-
-      return c2;
+        if (item.tableName=='linea_mtp'||item.tableName=='udp_puebla_4326'){
+            c2.addTo(mymap)
+        }
+        return c2;
     }
-    const processArray=(array, mymap, mybaseMaps,getColor)=>{
+
+    const processArray=(array, mymap, mybaseMaps,getColor,getOutline)=>{
       var dynamicLayer='notset'
       const overlayMaps=this.overlayMaps || {};
       array.forEach(function(item){
-        let myLayer = get_shp(item,mymap,getColor);
+        let myLayer = get_shp(item,mymap,getColor,getOutline);
         if (item.tableName =='udp_puebla_4326'){
-          dynamicLayer=myLayer
-          mymap.fitBounds(myLayer.getBounds())
+            dynamicLayer=myLayer
+            mymap.fitBounds(myLayer.getBounds())
         }
         overlayMaps[item.displayName]=myLayer;
       });
       L.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
       return dynamicLayer
     }
-    this.dynamicLayer=processArray(something, this.map, this.baseMaps, this.getColor,)
+    this.dynamicLayer=processArray(something, this.map, this.baseMaps, this.getColor,this.getOutline)
     this.map.on("click", this.props.handleMapClick);
     this.map.scrollWheelZoom.disable()
-    ///////////LEGEND////////////
+    ///////////LEGENDNEW////////////
+
+    var legend = L.control({position: 'bottomleft'});
+
+    this.makeDiv=(map)=> {
+        grades=[];
+        labels = [];
+        var div = L.DomUtil.create('div', 'info legend'),grades,labels = [];
+        L.DomUtil.addClass(div, "colorLegend")
+        // loop through our density intervals and generate a label with a colored square for each interval
+        div.innerHTML +='<i class="m-1" style="outline: 5px solid black; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' +'Datos suyos<br><br>'
+        div.innerHTML +='<i class="m-1" style="outline: 5px solid red; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' +'Datos de los de mas<br>'
+        return div;
+    };
+    legend.onAdd=this.makeDiv;
+    legend.addTo(this.map);
+    this.legend=legend;
+
+
+
+
+
+        ///////////LEGENDOLD////////////
+
     var legend = L.control({position: 'bottomright'});
 
-    this.makeDiv=  (map)=> {
+    this.makeDiv=(map)=> {
     grades=[];
     for (var i = 0; i <= 6; i++) {
         grades.push(this.props.mapSettings.maxValue*(i/6)),
@@ -135,12 +144,7 @@ class Map extends React.Component {
   }
 
     componentDidUpdate({ mapSettings }) {
-        
-
-
-
-
-        
+           
         if (this.props.mapSettings !== mapSettings) {
             this.map.removeControl(this.legend); 
             var legend = L.control({position: 'bottomright'});
@@ -148,14 +152,16 @@ class Map extends React.Component {
             legend.addTo(this.map);
             this.legend=legend;
             const getColor=this.getColor;
+            const getOutline=this.props.getOutline;
+
             const targetProperty = `${this.props.mapSettings.distinctOrTotal}_${this.props.mapSettings.myObsType}`;
 
         const myStyle= (feature, maxValue)=> {
             return {
             "fillColor": getColor(feature.properties[targetProperty]),
             "opacity": 1,
-            "weight": .3,
-            "color": "black",
+            "weight": getOutline(feature.properties,'weight'),
+            "color":  getOutline(feature.properties,'color'),
             "fillOpacity": this.props.mapSettings.fillOpacity
             }
           } 

@@ -10,18 +10,17 @@ class SpeciesDisplay extends React.Component {
 
     render(){
         //const allTableRows=[];
+       
         const oldspeciesResult=this.props.speciesResult
+        console.log(oldspeciesResult)
+        //ADD (2) to prevent duplicate keys 
         const newA={}
-
         const speciesResult = oldspeciesResult.map((spec) => {
             let newObject = {...spec}
             if(newA[spec.cientifico]){
                  if (newA[spec.cientifico]==2){
-                    //spec.cientifico= spec.cientifico + '(2)'
                     newObject = {...spec, cientifico: spec.cientifico + '(2)'}
                 }else{
-                    
-                    //spec.cientifico= `${spec.cientifico.slice(0,-3)}(${String(newA[spec.cientifico])})`
                     newObject = {...spec, cientifico: `${spec.cientifico.slice(0,-3)}(${String(newA[spec.cientifico])})`}
                 }
                 newA[spec.cientifico]++;
@@ -33,12 +32,6 @@ class SpeciesDisplay extends React.Component {
         })
 
         
-            
-            
-         
-         console.log(newA)
-         console.log(speciesResult)
-         console.log(oldspeciesResult)
         
 
 
@@ -90,15 +83,29 @@ class SpeciesDisplay extends React.Component {
             dataField: 'total_cientifico',
             text: 'Cantidad'
             }, {
+            dataField: 'subespecie',
+            text: 'Subespecie Enlistada'
+            }, {
             dataField: 'categoria',
             text: 'Categoria '
             }, {
             dataField: 'distribution',
             text: 'Distribution '
             }, {
-            dataField: 'subespecie',
-            text: 'Subespecie Enlistada'
-            },];
+            dataField: 'ivi100',
+            text: 'Valor de Importancia'
+            }, {
+            dataField: 'densidad',
+            text: 'Densidad '
+            }, {
+            dataField: 'dominancia',
+            text: 'Dominancia '
+            }, {
+            dataField: 'frequencia',
+            text: 'Frequencia '
+            },
+        
+        ];
 
         return(
             
