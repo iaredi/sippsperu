@@ -47,7 +47,7 @@ class FeatureInfoDisplay extends React.Component {
             text: 'Individuos'
             }, {
             dataField: 'distinct_species',
-            text: 'Especie Distinctos'
+            text: 'Especies Distintas'
             }, {
             dataField: 'dominancia',
             text: 'Dominancia',

@@ -34,7 +34,7 @@ class Mapapp extends React.Component {
     let email = document.getElementById('useremail').textContent     
     let emailArray = [properties.ave_email,properties.arbol_email,properties.arbusto_email,properties.hierba_email,properties.herpetofauna_email,properties.mamifero_email] 
     if (cat=='color'){
-        return emailArray.includes(email)   ?    'black':
+        return emailArray.includes(email)   ?    'purple':
         emailArray.some(el =>  el !== null)    ?   'red':
                                                         'black' ;
     }else{

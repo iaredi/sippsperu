@@ -133,75 +133,86 @@ Route::post('getspecies', function(Request $request) {
     if ($lifeform=='hierba'||$lifeform=='arbol' ||$lifeform=='arbusto'){
         $lifeform_riesgo='planta';
     }
-    
-    $sql= "SELECT
-    especie_{$lifeform}.comun,
-    especie_{$lifeform}.cientifico,
-    riesgo_{$lifeform_riesgo}.categoria,
-    riesgo_{$lifeform_riesgo}.distribution,
-    riesgo_{$lifeform_riesgo}.subespecie,
-
-    count(especie_{$lifeform}.cientifico) AS total_cientifico
-    FROM especie_{$lifeform}
-        JOIN
-    observacion_{$lifeform} ON especie_{$lifeform}.iden = observacion_{$lifeform}.iden_especie
-        JOIN
-        {$transpunto}_{$lifeform} ON observacion_{$lifeform}.iden_{$transpunto} = {$transpunto}_{$lifeform}.iden
-        left JOIN
-    riesgo_{$lifeform_riesgo} ON trim(lower(especie_{$lifeform}.cientifico)) = lower(CONCAT(trim(riesgo_{$lifeform_riesgo}.genero),' ',trim(riesgo_{$lifeform_riesgo}.especie)))
-    where iden_{$idtype}={$idnumber} and observacion_{$lifeform}.iden_email like '{$useremailval}'
-    GROUP BY especie_{$lifeform}.comun,especie_{$lifeform}.cientifico,riesgo_{$lifeform_riesgo}.categoria, riesgo_{$lifeform_riesgo}.distribution, riesgo_{$lifeform_riesgo}.subespecie";
-
+    $lineaextra='';
     if ($idtype=="linea_mtp"){
-        $sql="SELECT
+        $lineaextra="JOIN medicion ON {$transpunto}_{$lifeform}.iden_medicion = medicion.iden";
+    }
+    $arbolarbustoextra='';
+    if ($lifeform=="arbusto" || $lifeform=="arbol" ){
+        $arbolarbustoextra="AVG((observacion_{$lifeform}.dn)::real)*count(especie_{$lifeform}.cientifico) as dominancia,
+        sum((observacion_{$lifeform}.distancia)::real) as distancia,
+        count (DISTINCT(observacion_{$lifeform}.iden_punto)) as sitios,";
+    }
+    $sql= "SELECT
         especie_{$lifeform}.comun,
         especie_{$lifeform}.cientifico,
         riesgo_{$lifeform_riesgo}.categoria,
         riesgo_{$lifeform_riesgo}.distribution,
         riesgo_{$lifeform_riesgo}.subespecie,
+        ${arbolarbustoextra}
         count(especie_{$lifeform}.cientifico) AS total_cientifico
-
         FROM especie_{$lifeform}
             JOIN
         observacion_{$lifeform} ON especie_{$lifeform}.iden = observacion_{$lifeform}.iden_especie
             JOIN
             {$transpunto}_{$lifeform} ON observacion_{$lifeform}.iden_{$transpunto} = {$transpunto}_{$lifeform}.iden
-            JOIN
-        medicion ON {$transpunto}_{$lifeform}.iden_medicion = medicion.iden
-        left JOIN
-        riesgo_{$lifeform_riesgo} ON lower(especie_{$lifeform}.cientifico) = lower(CONCAT (riesgo_{$lifeform_riesgo}.genero,' ',riesgo_{$lifeform_riesgo}.especie))
-            where iden_linea_mtp={$idnumber} and observacion_{$lifeform}.iden_email like '{$useremailval}'
-            GROUP BY especie_{$lifeform}.comun,especie_{$lifeform}.cientifico,riesgo_{$lifeform_riesgo}.categoria, riesgo_{$lifeform_riesgo}.distribution,riesgo_{$lifeform_riesgo}.subespecie";
-    }   
-
-    if ($lifeform=="arbusto"){
-        $sql ="SELECT
-        especie_arbusto.comun,
-        especie_arbusto.cientifico,
-        riesgo_planta.categoria,
-        riesgo_planta.distribution,
-        riesgo_planta.subespecie,
-        AVG((observacion_arbusto.dn)::real)*count(especie_arbusto.cientifico) as dominancia,
-        sum((observacion_arbusto.distancia)::real) as distancia,
-        count (DISTINCT(observacion_arbusto.iden_punto)) as sitios,
-        count(especie_arbusto.cientifico) AS total_cientifico
-        FROM especie_arbusto
-            JOIN
-        observacion_arbusto ON especie_arbusto.iden = observacion_arbusto.iden_especie
-            JOIN
-            punto_arbusto ON observacion_arbusto.iden_punto = punto_arbusto.iden
+            {$lineaextra}
             left JOIN
-        riesgo_planta ON trim(lower(especie_arbusto.cientifico)) = lower(CONCAT(trim(riesgo_planta.genero),' ',trim(riesgo_planta.especie)))
-        where iden_udp=913 and observacion_arbusto.iden_email like '%' and especie_arbusto.cientifico!='0000' and especie_arbusto.cientifico!='000' and especie_arbusto.cientifico!='00'
-        GROUP BY especie_arbusto.comun,especie_arbusto.cientifico,riesgo_planta.categoria, riesgo_planta.distribution, riesgo_planta.subespecie,punto_arbusto.iden
-        ";
-    }
+        riesgo_{$lifeform_riesgo} ON trim(lower(especie_{$lifeform}.cientifico)) = lower(CONCAT(trim(riesgo_{$lifeform_riesgo}.genero),' ',trim(riesgo_{$lifeform_riesgo}.especie)))
+        where iden_{$idtype}={$idnumber} and observacion_{$lifeform}.iden_email like '{$useremailval}' and especie_{$lifeform}.cientifico!='0000' and especie_{$lifeform}.cientifico!='000' and especie_{$lifeform}.cientifico!='00'
+        GROUP BY especie_{$lifeform}.comun,especie_{$lifeform}.cientifico,riesgo_{$lifeform_riesgo}.categoria, riesgo_{$lifeform_riesgo}.distribution, riesgo_{$lifeform_riesgo}.subespecie";
 
+  
+
+    // if ($lifeform=="arbusto" || $lifeform=="arbol" ){
+    //     $sql ="SELECT
+    //     especie_{$lifeform}.comun,
+    //     especie_{$lifeform}.cientifico,
+    //     riesgo_planta.categoria,
+    //     riesgo_planta.distribution,
+    //     riesgo_planta.subespecie,
+    //     AVG((observacion_{$lifeform}.dn)::real)*count(especie_{$lifeform}.cientifico) as dominancia,
+    //     sum((observacion_{$lifeform}.distancia)::real) as distancia,
+    //     count (DISTINCT(observacion_{$lifeform}.iden_punto)) as sitios,
+    //     count(especie_{$lifeform}.cientifico) AS total_cientifico
+    //     FROM especie_{$lifeform}
+    //         JOIN
+    //     observacion_{$lifeform} ON especie_{$lifeform}.iden = observacion_{$lifeform}.iden_especie
+    //         JOIN
+    //         punto_{$lifeform} ON observacion_{$lifeform}.iden_punto = punto_{$lifeform}.iden
+    //         left JOIN
+    //     riesgo_planta ON trim(lower(especie_{$lifeform}.cientifico)) = lower(CONCAT(trim(riesgo_planta.genero),' ',trim(riesgo_planta.especie)))
+    //     where iden_udp=913 and observacion_{$lifeform}.iden_email like '%' and especie_{$lifeform}.cientifico!='0000' and especie_{$lifeform}.cientifico!='000' and especie_{$lifeform}.cientifico!='00'
+    //     GROUP BY especie_{$lifeform}.comun,especie_{$lifeform}.cientifico,riesgo_planta.categoria, riesgo_planta.distribution, riesgo_planta.subespecie,punto_{$lifeform}.iden
+    //     ";
+    // }
+
+
+      // if ($idtype=="linea_mtp"){
+    //     $sql="SELECT
+    //     especie_{$lifeform}.comun,
+    //     especie_{$lifeform}.cientifico,
+    //     riesgo_{$lifeform_riesgo}.categoria,
+    //     riesgo_{$lifeform_riesgo}.distribution,
+    //     riesgo_{$lifeform_riesgo}.subespecie,
+    //     count(especie_{$lifeform}.cientifico) AS total_cientifico
+    //     FROM especie_{$lifeform}
+    //         JOIN
+    //     observacion_{$lifeform} ON especie_{$lifeform}.iden = observacion_{$lifeform}.iden_especie
+    //         JOIN
+    //         {$transpunto}_{$lifeform} ON observacion_{$lifeform}.iden_{$transpunto} = {$transpunto}_{$lifeform}.iden
+    //         JOIN
+    //     medicion ON {$transpunto}_{$lifeform}.iden_medicion = medicion.iden
+    //     left JOIN
+    //     riesgo_{$lifeform_riesgo} ON lower(especie_{$lifeform}.cientifico) = lower(CONCAT (riesgo_{$lifeform_riesgo}.genero,' ',riesgo_{$lifeform_riesgo}.especie))
+    //         where iden_linea_mtp={$idnumber} and observacion_{$lifeform}.iden_email like '{$useremailval}'
+    //         GROUP BY especie_{$lifeform}.comun,especie_{$lifeform}.cientifico,riesgo_{$lifeform_riesgo}.categoria, riesgo_{$lifeform_riesgo}.distribution,riesgo_{$lifeform_riesgo}.subespecie";
+    // }   
     $obresult = DB::select($sql, []);
 
 
 
-    if ($lifeform=="arbusto"){
+    if ($lifeform=="arbusto" || $lifeform=="arbol" ){
         $distsum=0;
         $numeroindiviudos=0;
         foreach ($obresult as $row){
@@ -211,27 +222,24 @@ Route::post('getspecies', function(Request $request) {
         if ($numeroindiviudos>0){
             $distanciamedia=$distsum/$numeroindiviudos;
             $pointresult = DB::select("SELECT
-            observacion_arbusto.iden_punto
-            FROM observacion_arbusto
+            observacion_{$lifeform}.iden_punto
+            FROM observacion_{$lifeform}
                 JOIN
-                punto_arbusto ON observacion_arbusto.iden_punto = punto_arbusto.iden
-            where iden_udp=913 and observacion_arbusto.iden_email like '%' and observacion_arbusto.iden_especie!=9 
-            GROUP BY observacion_arbusto.iden_punto
+                punto_{$lifeform} ON observacion_{$lifeform}.iden_punto = punto_{$lifeform}.iden
+            where iden_udp=913 and observacion_{$lifeform}.iden_email like '%' and observacion_{$lifeform}.iden_especie!=9 
+            GROUP BY observacion_{$lifeform}.iden_punto
             ", []);
             $pointtotal = sizeof($pointresult);
-
             $sumdensidad=0;
             $sumfrequencia=0;
             $sumdominancia=0;
             foreach ($obresult as $row2){
                 $row2->densidad= ($row2->total_cientifico)/($distanciamedia*$distanciamedia);
                 $row2->frequencia= ($row2->sitios)/$pointtotal;
-
                 $sumdensidad += ($row2->total_cientifico)/($distanciamedia*$distanciamedia);
                 $sumfrequencia += ($row2->sitios)/$pointtotal;
                 $sumdominancia += $row2->dominancia;
             } 
-            
             $sumivi=0;
             foreach ($obresult as $row3){
                 $row3->ivi= ($row3->densidad*100)/$sumdensidad+($row3->frequencia*100)/$sumfrequencia+($row3->dominancia*100)/$sumdominancia;

@@ -101,10 +101,11 @@ class Map extends React.Component {
         grades=[];
         labels = [];
         var div = L.DomUtil.create('div', 'info legend'),grades,labels = [];
-        L.DomUtil.addClass(div, "colorLegend")
-        // loop through our density intervals and generate a label with a colored square for each interval
-        div.innerHTML +='<i class="m-1" style="outline: 5px solid black; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' +'Datos suyos<br><br>'
-        div.innerHTML +='<i class="m-1" style="outline: 5px solid red; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' +'Datos de los de mas<br>'
+        L.DomUtil.addClass(div, "colorLegend border border-secondary p-2")
+        
+        div.innerHTML +='<i class="m-1" style="outline: 5px solid purple; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' +'Datos suyos<br><br>'
+        div.innerHTML +='<i class="m-1" style="outline: 5px solid red; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' +'Datos de los de mas<br><br>'
+        div.innerHTML +='<i class="m-1" style="outline: 5px solid yellow; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' +'Selección<br>'
         return div;
     };
     legend.onAdd=this.makeDiv;
@@ -127,7 +128,7 @@ class Map extends React.Component {
         }
     const getColor=this.getColor;
         var div = L.DomUtil.create('div', 'info legend'),grades,labels = [];
-        L.DomUtil.addClass(div, "colorLegend")
+        L.DomUtil.addClass(div, "colorLegend border border-secondary")
         // loop through our density intervals and generate a label with a colored square for each interval
         for (var i = 0; i < grades.length; i++) {
             div.innerHTML +=
