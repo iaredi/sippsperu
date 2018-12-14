@@ -26,13 +26,12 @@ $layer2 = new layer();
 $layer2->tableName = 'linea_mtp';
 $layer2->displayName = 'Linea MTP';
 $layer2->featureColumn = 'iden';
-$layer2->color = 'red';
+$layer2->color = 'blue';
 $layer2->fillColor = 'black';
 $layer2->opacity = 1;
 $layer2->weight = 5;
 $layer2->fillOpacity = 1;
 $layer2->fromFile = false;
-
 
 $layer3 = new layer();
 $layer3->tableName = 'municipio_puebla_4326';
@@ -68,7 +67,7 @@ foreach ($layersArray as $layer) {
         $obtype=explode('-', $layer->displayName)[0];
         
         if ($layer->tableName=='udp_puebla_4326'){
-            $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6",[]);
+            $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6_email",[]);
         }elseif ($layer->tableName=='linea_mtp'){
             $result = DB::select("SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6_linea",[]);
         }elseif ($layer->tableName=='municipio_puebla_4326'){

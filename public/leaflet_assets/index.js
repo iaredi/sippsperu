@@ -1860,29 +1860,15 @@ var Map = function (_React$Component) {
                 "Streets": streets
             };
 
-            var get_shp = function get_shp(item, mymap, getColor) {
-                var myStyle = {};
+            var get_shp = function get_shp(item, mymap) {
+                var myStyle = {
+                    weight: item.weight,
+                    color: item.color,
+                    opacity: item.opacity,
+                    fillColor: item.fillColor,
+                    fillOpacity: item.fillOpacity
+                };
 
-                var targetProperty = _this2.props.mapSettings.distinctOrTotal + "_" + _this2.props.mapSettings.myObsType;
-                if (item.tableName == 'udp_puebla_4326') {
-                    myStyle = function myStyle(feature) {
-                        return {
-                            "fillColor": getColor(feature.properties[targetProperty]),
-                            "opacity": item.opacity,
-                            "weight": item.weight,
-                            "color": item.color,
-                            "fillOpacity": _this2.props.mapSettings.fillOpacity
-                        };
-                    };
-                } else {
-                    myStyle = {
-                        weight: item.weight,
-                        color: item.color,
-                        opacity: item.opacity,
-                        fillColor: item.fillColor,
-                        fillOpacity: item.fillOpacity
-                    };
-                }
                 var onEachFeature = function onEachFeature(feature, layer) {
                     var handleFeatureClick = function handleFeatureClick(event) {
                         _this2.props.handleFeatureClick(event);
@@ -1896,14 +1882,14 @@ var Map = function (_React$Component) {
                 if (item.tableName == 'linea_mtp' || item.tableName == 'udp_puebla_4326') {
                     c2.addTo(mymap);
                 }
-
                 return c2;
             };
-            var processArray = function processArray(array, mymap, mybaseMaps, getColor) {
+
+            var processArray = function processArray(array, mymap, mybaseMaps, getColor, getOutline) {
                 var dynamicLayer = 'notset';
                 var overlayMaps = _this2.overlayMaps || {};
                 array.forEach(function (item) {
-                    var myLayer = get_shp(item, mymap, getColor);
+                    var myLayer = get_shp(item, mymap, getColor, getOutline);
                     if (item.tableName == 'udp_puebla_4326') {
                         dynamicLayer = myLayer;
                         mymap.fitBounds(myLayer.getBounds());
@@ -1913,10 +1899,31 @@ var Map = function (_React$Component) {
                 _leaflet2.default.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
                 return dynamicLayer;
             };
-            this.dynamicLayer = processArray(something, this.map, this.baseMaps, this.getColor);
+            this.dynamicLayer = processArray(something, this.map, this.baseMaps, this.getColor, this.getOutline);
             this.map.on("click", this.props.handleMapClick);
             this.map.scrollWheelZoom.disable();
-            ///////////LEGEND////////////
+            ///////////LEGENDNEW////////////
+
+            var legend = _leaflet2.default.control({ position: 'bottomleft' });
+
+            this.makeDiv = function (map) {
+                grades = [];
+                labels = [];
+                var div = _leaflet2.default.DomUtil.create('div', 'info legend'),
+                    grades,
+                    labels = [];
+                _leaflet2.default.DomUtil.addClass(div, "colorLegend");
+                // loop through our density intervals and generate a label with a colored square for each interval
+                div.innerHTML += '<i class="m-1" style="outline: 5px solid black; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + 'Datos suyos<br><br>';
+                div.innerHTML += '<i class="m-1" style="outline: 5px solid red; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + 'Datos de los de mas<br>';
+                return div;
+            };
+            legend.onAdd = this.makeDiv;
+            legend.addTo(this.map);
+            this.legend = legend;
+
+            ///////////LEGENDOLD////////////
+
             var legend = _leaflet2.default.control({ position: 'bottomright' });
 
             this.makeDiv = function (map) {
@@ -1955,14 +1962,16 @@ var Map = function (_React$Component) {
                 legend.addTo(this.map);
                 this.legend = legend;
                 var getColor = this.getColor;
+                var getOutline = this.props.getOutline;
+
                 var targetProperty = this.props.mapSettings.distinctOrTotal + "_" + this.props.mapSettings.myObsType;
 
                 var myStyle = function myStyle(feature, maxValue) {
                     return {
                         "fillColor": getColor(feature.properties[targetProperty]),
                         "opacity": 1,
-                        "weight": .3,
-                        "color": "black",
+                        "weight": getOutline(feature.properties, 'weight'),
+                        "color": getOutline(feature.properties, 'color'),
                         "fillOpacity": _this3.props.mapSettings.fillOpacity
                     };
                 };
@@ -18710,6 +18719,21 @@ var Mapapp = function (_React$Component) {
   }
 
   _createClass(Mapapp, [{
+    key: 'getOutline',
+    value: function getOutline(properties, cat) {
+      var email = document.getElementById('useremail').textContent;
+      var emailArray = [properties.ave_email, properties.arbol_email, properties.arbusto_email, properties.hierba_email, properties.herpetofauna_email, properties.mamifero_email];
+      if (cat == 'color') {
+        return emailArray.includes(email) ? 'black' : emailArray.some(function (el) {
+          return el !== null;
+        }) ? 'red' : 'black';
+      } else {
+        return emailArray.includes(email) ? 3 : emailArray.some(function (el) {
+          return el !== null;
+        }) ? 3 : 0.3;
+      }
+    }
+  }, {
     key: 'handleMapClick',
     value: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(event) {
@@ -18864,6 +18888,8 @@ var Mapapp = function (_React$Component) {
       var myOpacity = 5;
 
       if (this.state.previous) {
+        console.log(something);
+        console.log(this.state.previous.feature);
         something.forEach(function (thing) {
           if (thing.tableName == _this2.state.previous.feature.properties.name) {
             myColor = thing.color;
@@ -18871,13 +18897,21 @@ var Mapapp = function (_React$Component) {
             myOpacity = thing.opacity;
           }
         });
-        this.state.previous.setStyle({
-          'color': myColor,
-          'weight': myWeight,
-          'opacity': myOpacity
-        });
-      }
 
+        if (this.state.previous.feature.properties.name == "udp_puebla_4326") {
+          this.state.previous.setStyle({
+            "weight": this.getOutline(this.state.previous.feature.properties, 'weight'),
+            "color": this.getOutline(this.state.previous.feature.properties, 'color'),
+            'opacity': myOpacity
+          });
+        } else {
+          this.state.previous.setStyle({
+            'color': myColor,
+            'weight': myWeight,
+            'opacity': myOpacity
+          });
+        }
+      }
       this.setState(function (prevState) {
         return {
           previous: event.target
@@ -18885,7 +18919,7 @@ var Mapapp = function (_React$Component) {
       });
 
       var highlight = {
-        'color': 'blue',
+        'color': 'yellow',
         'weight': 3,
         'opacity': 1
       };
@@ -18940,6 +18974,7 @@ var Mapapp = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      console.log('hi');
       return _react2.default.createElement(
         'div',
         null,
@@ -18953,6 +18988,7 @@ var Mapapp = function (_React$Component) {
               'div',
               { className: 'mymapdiv border border-dark' },
               _react2.default.createElement(_Map2.default, {
+                getOutline: this.getOutline,
                 handleMapClick: this.handleMapClick,
                 handleFeatureClick: this.handleFeatureClick,
                 setDefaultMax: this.setDefaultMax,
@@ -19044,7 +19080,6 @@ var MapControl = function (_React$Component) {
         _this.handleTotalDistinctChange = _this.handleTotalDistinctChange.bind(_this);
         _this.handleOpacityChange = _this.handleOpacityChange.bind(_this);
         _this.handleMaxChange = _this.handleMaxChange.bind(_this);
-
         return _this;
     }
 
@@ -24822,16 +24857,15 @@ var SpeciesDisplay = function (_React$Component) {
             //const allTableRows=[];
 
             var oldspeciesResult = this.props.speciesResult;
+            console.log(oldspeciesResult);
+            //ADD (2) to prevent duplicate keys 
             var newA = {};
             var speciesResult = oldspeciesResult.map(function (spec) {
                 var newObject = _extends({}, spec);
                 if (newA[spec.cientifico]) {
                     if (newA[spec.cientifico] == 2) {
-                        //spec.cientifico= spec.cientifico + '(2)'
                         newObject = _extends({}, spec, { cientifico: spec.cientifico + '(2)' });
                     } else {
-
-                        //spec.cientifico= `${spec.cientifico.slice(0,-3)}(${String(newA[spec.cientifico])})`
                         newObject = _extends({}, spec, { cientifico: spec.cientifico.slice(0, -3) + '(' + String(newA[spec.cientifico]) + ')' });
                     }
                     newA[spec.cientifico]++;
@@ -24884,14 +24918,26 @@ var SpeciesDisplay = function (_React$Component) {
                 dataField: 'total_cientifico',
                 text: 'Cantidad'
             }, {
+                dataField: 'subespecie',
+                text: 'Subespecie Enlistada'
+            }, {
                 dataField: 'categoria',
                 text: 'Categoria '
             }, {
                 dataField: 'distribution',
                 text: 'Distribution '
             }, {
-                dataField: 'subespecie',
-                text: 'Subespecie Enlistada'
+                dataField: 'ivi100',
+                text: 'Valor de Importancia'
+            }, {
+                dataField: 'densidad',
+                text: 'Densidad '
+            }, {
+                dataField: 'dominancia',
+                text: 'Dominancia '
+            }, {
+                dataField: 'frequencia',
+                text: 'Frequencia '
             }];
 
             return _react2.default.createElement(

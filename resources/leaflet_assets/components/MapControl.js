@@ -1,30 +1,29 @@
 import React from "react";
 
 class MapControl extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleSpeciesChange = this.handleSpeciesChange.bind(this);
-    this.handleTotalDistinctChange = this.handleTotalDistinctChange.bind(this);
-    this.handleOpacityChange = this.handleOpacityChange.bind(this);
-    this.handleMaxChange = this.handleMaxChange.bind(this);
+    constructor(props) {
+        super(props);
+        this.handleSpeciesChange = this.handleSpeciesChange.bind(this);
+        this.handleTotalDistinctChange = this.handleTotalDistinctChange.bind(this);
+        this.handleOpacityChange = this.handleOpacityChange.bind(this);
+        this.handleMaxChange = this.handleMaxChange.bind(this);
+    }
 
-}
-
-handleSpeciesChange(event) {
-    const error = this.props.handleSpeciesChange(event.target.value);
-}
-handleTotalDistinctChange(event) {
-    this.props.handleTotalDistinctChange(event.target.value);
-  }
-  handleOpacityChange(event) {
-    this.props.handleOpacityChange(event.target.value);
-  }
-  handleOpacityChange(event) {
-    this.props.handleOpacityChange(event.target.value);
-  }
-  handleMaxChange(event) {
-    this.props.handleMaxChange(event.target.value);
-  }
+    handleSpeciesChange(event) {
+        const error = this.props.handleSpeciesChange(event.target.value);
+    }
+    handleTotalDistinctChange(event) {
+        this.props.handleTotalDistinctChange(event.target.value);
+    }
+    handleOpacityChange(event) {
+        this.props.handleOpacityChange(event.target.value);
+    }
+    handleOpacityChange(event) {
+        this.props.handleOpacityChange(event.target.value);
+    }
+    handleMaxChange(event) {
+        this.props.handleMaxChange(event.target.value);
+    }
     
     render(){
         return(

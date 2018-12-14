@@ -186,29 +186,15 @@ var Map = function (_React$Component) {
                 "Streets": streets
             };
 
-            var get_shp = function get_shp(item, mymap, getColor) {
-                var myStyle = {};
+            var get_shp = function get_shp(item, mymap) {
+                var myStyle = {
+                    weight: item.weight,
+                    color: item.color,
+                    opacity: item.opacity,
+                    fillColor: item.fillColor,
+                    fillOpacity: item.fillOpacity
+                };
 
-                var targetProperty = _this2.props.mapSettings.distinctOrTotal + "_" + _this2.props.mapSettings.myObsType;
-                if (item.tableName == 'udp_puebla_4326') {
-                    myStyle = function myStyle(feature) {
-                        return {
-                            "fillColor": getColor(feature.properties[targetProperty]),
-                            "opacity": item.opacity,
-                            "weight": item.weight,
-                            "color": item.color,
-                            "fillOpacity": _this2.props.mapSettings.fillOpacity
-                        };
-                    };
-                } else {
-                    myStyle = {
-                        weight: item.weight,
-                        color: item.color,
-                        opacity: item.opacity,
-                        fillColor: item.fillColor,
-                        fillOpacity: item.fillOpacity
-                    };
-                }
                 var onEachFeature = function onEachFeature(feature, layer) {
                     var handleFeatureClick = function handleFeatureClick(event) {
                         _this2.props.handleFeatureClick(event);
@@ -222,14 +208,14 @@ var Map = function (_React$Component) {
                 if (item.tableName == 'linea_mtp' || item.tableName == 'udp_puebla_4326') {
                     c2.addTo(mymap);
                 }
-
                 return c2;
             };
-            var processArray = function processArray(array, mymap, mybaseMaps, getColor) {
+
+            var processArray = function processArray(array, mymap, mybaseMaps, getColor, getOutline) {
                 var dynamicLayer = 'notset';
                 var overlayMaps = _this2.overlayMaps || {};
                 array.forEach(function (item) {
-                    var myLayer = get_shp(item, mymap, getColor);
+                    var myLayer = get_shp(item, mymap, getColor, getOutline);
                     if (item.tableName == 'udp_puebla_4326') {
                         dynamicLayer = myLayer;
                         mymap.fitBounds(myLayer.getBounds());
@@ -239,10 +225,31 @@ var Map = function (_React$Component) {
                 _leaflet2.default.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
                 return dynamicLayer;
             };
-            this.dynamicLayer = processArray(something, this.map, this.baseMaps, this.getColor);
+            this.dynamicLayer = processArray(something, this.map, this.baseMaps, this.getColor, this.getOutline);
             this.map.on("click", this.props.handleMapClick);
             this.map.scrollWheelZoom.disable();
-            ///////////LEGEND////////////
+            ///////////LEGENDNEW////////////
+
+            var legend = _leaflet2.default.control({ position: 'bottomleft' });
+
+            this.makeDiv = function (map) {
+                grades = [];
+                labels = [];
+                var div = _leaflet2.default.DomUtil.create('div', 'info legend'),
+                    grades,
+                    labels = [];
+                _leaflet2.default.DomUtil.addClass(div, "colorLegend");
+                // loop through our density intervals and generate a label with a colored square for each interval
+                div.innerHTML += '<i class="m-1" style="outline: 5px solid black; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + 'Datos suyos<br><br>';
+                div.innerHTML += '<i class="m-1" style="outline: 5px solid red; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + 'Datos de los de mas<br>';
+                return div;
+            };
+            legend.onAdd = this.makeDiv;
+            legend.addTo(this.map);
+            this.legend = legend;
+
+            ///////////LEGENDOLD////////////
+
             var legend = _leaflet2.default.control({ position: 'bottomright' });
 
             this.makeDiv = function (map) {
@@ -281,14 +288,16 @@ var Map = function (_React$Component) {
                 legend.addTo(this.map);
                 this.legend = legend;
                 var getColor = this.getColor;
+                var getOutline = this.props.getOutline;
+
                 var targetProperty = this.props.mapSettings.distinctOrTotal + "_" + this.props.mapSettings.myObsType;
 
                 var myStyle = function myStyle(feature, maxValue) {
                     return {
                         "fillColor": getColor(feature.properties[targetProperty]),
                         "opacity": 1,
-                        "weight": .3,
-                        "color": "black",
+                        "weight": getOutline(feature.properties, 'weight'),
+                        "color": getOutline(feature.properties, 'color'),
                         "fillOpacity": _this3.props.mapSettings.fillOpacity
                     };
                 };

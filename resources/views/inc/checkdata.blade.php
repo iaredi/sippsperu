@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
                 if (strpos($columnname, 'latitud') !== false && (!($postval>14) || !($postval<34))) {
                     $errorlist[]= "El campo '{$columnname}' de {$tablename} tiene que ser entre 14 y 34 grados";
                 }
-                if ($postval=='notselected') {
+                if ($postval=='notselected' && $columnname !='notas') {
                     $errorlist[]= "{$tablename} esta vacio";
                 }
             }
