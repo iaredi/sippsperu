@@ -122,6 +122,7 @@ class Mapapp extends React.Component {
     }
     if (event.target.feature.properties.name=='udp_puebla_4326'||event.target.feature.properties.name=='linea_mtp'){
       getSpecies(lifeform,idtype,idnumber).then(myspeciesResult =>{
+
         this.setState((prevState) => ({
           speciesResult: myspeciesResult      
         }));
@@ -134,8 +135,7 @@ class Mapapp extends React.Component {
       let myOpacity=5
     
       if (this.state.previous){
-        console.log(something)
-        console.log(this.state.previous.feature)
+       
         something.forEach((thing)=>{
           if (thing.tableName==this.state.previous.feature.properties.name){
             myColor=thing.color
@@ -213,7 +213,6 @@ class Mapapp extends React.Component {
   }
   
   render() {
-    console.log('hi')
     return (
       <div>
         <div className="container mymapcontainer">

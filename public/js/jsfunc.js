@@ -442,16 +442,36 @@ function createRows(tableName, menu, myCols, myNumRow) {
         var inputBox = document.createElement("td");
         inputBox.appendChild(speciesInput);
         firstDataRow.appendChild(inputBox);
+        //Invador Label
+        var invadorLavel = document.createElement("td");
+        invadorLavel.textContent = "Invador";
+        invadorLavel.className = "formcolumnlabels";
+        columnRowOld.appendChild(invadorLavel);
         //Species comun Label
         var speciesLabelComun = document.createElement("td");
         speciesLabelComun.textContent = "Nuevo Nombre Comun";
         speciesLabelComun.className = "formcolumnlabels";
         columnRowOld.appendChild(speciesLabelComun);
+
         //Species cien Label
         var speciesLabelCien = document.createElement("td");
         speciesLabelCien.textContent = "Nuevo Nombre Cientifico";
         speciesLabelCien.className = "formcolumnlabels";
         columnRowOld.appendChild(speciesLabelCien);
+
+        //Invador Checkbox
+        var invadorCheck = document.createElement("INPUT");
+        invadorCheck.setAttribute("type", "checkbox");
+        invadorCheck.classList.add("row" + myNumRow + "disableme");
+        invadorCheck.classList.add('invadorCheck');
+        invadorCheck.disabled = true;
+        invadorCheck.value = 'true';
+        invadorCheck.name = "row" + myNumRow + "*" + tableName + "*" + "invador";
+        var boxContainerInvador = document.createElement("td");
+        boxContainerInvador.className = "centerInTd";
+        boxContainerInvador.appendChild(invadorCheck);
+        firstDataRow.appendChild(boxContainerInvador);
+
         //Species comun inputbox
         var speciesBoxComun = document.createElement("INPUT");
         speciesBoxComun.setAttribute("type", "text");
@@ -464,6 +484,7 @@ function createRows(tableName, menu, myCols, myNumRow) {
         var boxContainerComun = document.createElement("td");
         boxContainerComun.appendChild(speciesBoxComun);
         firstDataRow.appendChild(boxContainerComun);
+
         //Species cien inputbox
         var speciesBoxCien = document.createElement("INPUT");
         speciesBoxCien.setAttribute("type", "text");
@@ -802,7 +823,6 @@ function clickReadyButton(e) {
         };
     }();
 
-    //document.getElementById("readybutton").disabled='true'
     var menu = "measurement";
     var myChoice = 'observacion_' + document.getElementById("measurementobservacionesObservaciones").value;
     var newExist = document.getElementById("measurementdatosNumero");
@@ -957,11 +977,13 @@ function selectSpeciesOnChange(tableName, menu, numRows) {
         if (myChoice === "Nuevo") {
             colRow[0].disabled = false;
             colRow[1].disabled = false;
+            colRow[2].disabled = false;
         } else {
             colRow[0].disabled = true;
             colRow[1].disabled = true;
-            colRow[0].value = "";
+            colRow[2].disabled = true;
             colRow[1].value = "";
+            colRow[2].value = "";
         }
         if (myChoice === "0000") {
             for (var i = 0; i < allMyRows.length; i++) {

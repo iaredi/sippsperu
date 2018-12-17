@@ -86,7 +86,7 @@ class FeatureInfoDisplay extends React.Component {
                     striped
                     hover
                     condensed
-                    noDataIndication={ 'Click for data' }
+                    noDataIndication={ 'No hay datos' }
                 />
         </div>
         )

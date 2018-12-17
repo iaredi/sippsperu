@@ -64,17 +64,22 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
     }
 
 
-    function savenewspecies($table,$comun,$cientifico ){
+    function savenewspecies($table,$comun,$cientifico, $invador ){
+        echo $comun.'!!!';
+        echo $invador.'???';
         $newspecies=array(
+            
             "comun"=> $comun,
             "cientifico"=> $cientifico,
-            "comun_cientifico"=> $comun."*".$cientifico
+            "comun_cientifico"=> $comun."*".$cientifico,
+            "invador"=> $invador
                 );
         $namesmatching = DB::select("SELECT cientifico FROM {$table} WHERE cientifico=:value", [':value'=>$cientifico]);
         if (sizeof($namesmatching)==1){
             return askforkey($table, 'iden', "cientifico",  $cientifico);
         }else{
             $resultofquery = savenewentry($table, $newspecies);
+            echo $resultofquery;
             return getserialmax( $table);
         }
     }

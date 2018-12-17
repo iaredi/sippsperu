@@ -646,12 +646,13 @@ var SelectionProvider = function (_React$Component) {
 
       var currSelected = [].concat(_toConsumableArray(_this.state.selected));
 
+      var result = true;
+      if (onSelect) {
+        var row = _operators2.default.getRowByRowId(data, keyField, rowKey);
+        result = onSelect(row, checked, rowIndex, e);
+      }
+
       _this.setState(function () {
-        var result = true;
-        if (onSelect) {
-          var row = _operators2.default.getRowByRowId(data, keyField, rowKey);
-          result = onSelect(row, checked, rowIndex, e);
-        }
         if (result === true || result === undefined) {
           if (mode === ROW_SELECT_SINGLE) {
             // when select mode is radio
@@ -691,14 +692,14 @@ var SelectionProvider = function (_React$Component) {
         });
       }
 
-      _this.setState(function () {
-        var result = void 0;
-        if (onSelectAll) {
-          result = onSelectAll(!isUnSelect, _operators2.default.getSelectedRows(data, keyField, isUnSelect ? _this.state.selected : currSelected), e);
-          if (Array.isArray(result)) {
-            currSelected = result;
-          }
+      var result = void 0;
+      if (onSelectAll) {
+        result = onSelectAll(!isUnSelect, _operators2.default.getSelectedRows(data, keyField, isUnSelect ? _this.state.selected : currSelected), e);
+        if (Array.isArray(result)) {
+          currSelected = result;
         }
+      }
+      _this.setState(function () {
         return { selected: currSelected };
       });
     };
@@ -18875,6 +18876,7 @@ var Mapapp = function (_React$Component) {
 
       if (event.target.feature.properties.name == 'udp_puebla_4326' || event.target.feature.properties.name == 'linea_mtp') {
         getSpecies(lifeform, idtype, idnumber).then(function (myspeciesResult) {
+
           _this2.setState(function (prevState) {
             return {
               speciesResult: myspeciesResult
@@ -18889,8 +18891,7 @@ var Mapapp = function (_React$Component) {
       var myOpacity = 5;
 
       if (this.state.previous) {
-        console.log(something);
-        console.log(this.state.previous.feature);
+
         something.forEach(function (thing) {
           if (thing.tableName == _this2.state.previous.feature.properties.name) {
             myColor = thing.color;
@@ -18975,7 +18976,6 @@ var Mapapp = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      console.log('hi');
       return _react2.default.createElement(
         'div',
         null,
@@ -19377,7 +19377,7 @@ var FeatureInfoDisplay = function (_React$Component) {
                     striped: true,
                     hover: true,
                     condensed: true,
-                    noDataIndication: 'Click for data'
+                    noDataIndication: 'No hay datos'
                 })
             );
         }
@@ -19435,6 +19435,8 @@ var _const2 = _interopRequireDefault(_const);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -19491,6 +19493,7 @@ var BootstrapTable = function (_PropsBaseResolver) {
           tabIndexCell = _props2.tabIndexCell,
           id = _props2.id,
           classes = _props2.classes,
+          bootstrap4 = _props2.bootstrap4,
           striped = _props2.striped,
           hover = _props2.hover,
           bordered = _props2.bordered,
@@ -19508,12 +19511,11 @@ var BootstrapTable = function (_PropsBaseResolver) {
 
       var tableWrapperClass = (0, _classnames2.default)('react-bootstrap-table', wrapperClasses);
 
-      var tableClass = (0, _classnames2.default)('table', {
+      var tableClass = (0, _classnames2.default)('table', _defineProperty({
         'table-striped': striped,
         'table-hover': hover,
-        'table-bordered': bordered,
-        'table-condensed': condensed
-      }, classes);
+        'table-bordered': bordered
+      }, bootstrap4 ? 'table-sm' : 'table-condensed', condensed), classes);
 
       var tableCaption = caption && _react2.default.createElement(
         _caption2.default,
@@ -20271,8 +20273,7 @@ var Header = function Header(props) {
       sortOrder = props.sortOrder,
       selectRow = props.selectRow,
       onExternalFilter = props.onExternalFilter,
-      expandRow = props.expandRow,
-      bootstrap4 = props.bootstrap4;
+      expandRow = props.expandRow;
 
 
   var SelectionHeaderCellComp = function SelectionHeaderCellComp() {
@@ -20305,7 +20306,6 @@ var Header = function Header(props) {
 
           return _react2.default.createElement(_headerCell2.default, {
             index: i,
-            bootstrap4: bootstrap4,
             key: column.dataField,
             column: column,
             onSort: onSort,
@@ -20332,8 +20332,7 @@ Header.propTypes = {
   selectRow: _propTypes2.default.object,
   onExternalFilter: _propTypes2.default.func,
   className: _propTypes2.default.string,
-  expandRow: _propTypes2.default.object,
-  bootstrap4: _propTypes2.default.bool
+  expandRow: _propTypes2.default.object
 };
 
 exports.default = Header;
@@ -23559,7 +23558,7 @@ var ExpandCell = function (_Component) {
           onRowExpand = _props.onRowExpand,
           rowIndex = _props.rowIndex;
 
-
+      e.stopPropagation();
       onRowExpand(rowKey, !expanded, rowIndex, e);
     }
   }, {
@@ -24856,9 +24855,7 @@ var SpeciesDisplay = function (_React$Component) {
         key: 'render',
         value: function render() {
             //const allTableRows=[];
-
             var oldspeciesResult = this.props.speciesResult;
-            console.log(oldspeciesResult);
             //ADD (2) to prevent duplicate keys 
             var newA = {};
             var speciesResult = oldspeciesResult.map(function (spec) {
@@ -24874,6 +24871,14 @@ var SpeciesDisplay = function (_React$Component) {
                     newA[spec.cientifico] = 2;
                 }
                 return newObject;
+            });
+
+            var speciesResultInvador = speciesResult.filter(function (item) {
+                return item.invador == 'true';
+            });
+
+            var speciesResultNoInvador = speciesResult.filter(function (item) {
+                return item.invador == 'false';
             });
 
             if (speciesResult.length > 0) {}
@@ -24952,7 +24957,7 @@ var SpeciesDisplay = function (_React$Component) {
                         { className: 'flex-column d-flex justify-content-around align-items-center p-3' },
                         _react2.default.createElement(_reactBootstrapTableNext2.default, {
                             keyField: 'cientifico',
-                            data: speciesResult,
+                            data: speciesResultNoInvador,
                             columns: columns,
                             bootstrap4: true,
                             bordered: true,
@@ -24960,7 +24965,24 @@ var SpeciesDisplay = function (_React$Component) {
                             striped: true,
                             hover: true,
                             condensed: true,
-                            noDataIndication: 'Click for data'
+                            noDataIndication: 'No hay datos'
+                        }),
+                        _react2.default.createElement(
+                            'h3',
+                            null,
+                            'Invadores'
+                        ),
+                        _react2.default.createElement(_reactBootstrapTableNext2.default, {
+                            keyField: 'cientifico',
+                            data: speciesResultInvador,
+                            columns: columns,
+                            bootstrap4: true,
+                            bordered: true,
+                            classes: 'speciesTable',
+                            striped: true,
+                            hover: true,
+                            condensed: true,
+                            noDataIndication: 'No hay datos'
                         })
                     )
                 )

@@ -10,9 +10,7 @@ class SpeciesDisplay extends React.Component {
 
     render(){
         //const allTableRows=[];
-       
         const oldspeciesResult=this.props.speciesResult
-        console.log(oldspeciesResult)
         //ADD (2) to prevent duplicate keys 
         const newA={}
         const speciesResult = oldspeciesResult.map((spec) => {
@@ -30,6 +28,16 @@ class SpeciesDisplay extends React.Component {
             }
             return newObject
         })
+
+        const speciesResultInvador =  speciesResult.filter((item) => {
+            return item.invador=='true'
+        })
+
+        const speciesResultNoInvador =  speciesResult.filter((item) => {
+            return item.invador=='false'
+        })
+        
+        
 
         
         
@@ -115,7 +123,7 @@ class SpeciesDisplay extends React.Component {
 
                     <BootstrapTable 
                     keyField='cientifico' 
-                    data={ speciesResult } 
+                    data={ speciesResultNoInvador } 
                     columns={ columns } 
                     bootstrap4={ true }
                     bordered={ true }
@@ -123,8 +131,21 @@ class SpeciesDisplay extends React.Component {
                     striped
                     hover
                     condensed
-                    noDataIndication={ 'Click for data' }
-                />
+                    noDataIndication={ 'No hay datos' }
+                    />
+                    <h3>Invadores</h3>
+                    <BootstrapTable 
+                    keyField='cientifico' 
+                    data={ speciesResultInvador } 
+                    columns={ columns } 
+                    bootstrap4={ true }
+                    bordered={ true }
+                    classes={ 'speciesTable' }
+                    striped
+                    hover
+                    condensed
+                    noDataIndication={ 'No hay datos' }
+                    />
 
                 </div>
             </div>                

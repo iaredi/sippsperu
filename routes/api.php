@@ -146,6 +146,7 @@ Route::post('getspecies', function(Request $request) {
     $sql= "SELECT
         especie_{$lifeform}.comun,
         especie_{$lifeform}.cientifico,
+        especie_{$lifeform}.invador,
         riesgo_{$lifeform_riesgo}.categoria,
         riesgo_{$lifeform_riesgo}.distribution,
         riesgo_{$lifeform_riesgo}.subespecie,
@@ -160,7 +161,7 @@ Route::post('getspecies', function(Request $request) {
             left JOIN
         riesgo_{$lifeform_riesgo} ON trim(lower(especie_{$lifeform}.cientifico)) = lower(CONCAT(trim(riesgo_{$lifeform_riesgo}.genero),' ',trim(riesgo_{$lifeform_riesgo}.especie)))
         where iden_{$idtype}={$idnumber} and observacion_{$lifeform}.iden_email like '{$useremailval}' and especie_{$lifeform}.cientifico!='0000' and especie_{$lifeform}.cientifico!='000' and especie_{$lifeform}.cientifico!='00'
-        GROUP BY especie_{$lifeform}.comun,especie_{$lifeform}.cientifico,riesgo_{$lifeform_riesgo}.categoria, riesgo_{$lifeform_riesgo}.distribution, riesgo_{$lifeform_riesgo}.subespecie";
+        GROUP BY especie_{$lifeform}.comun,especie_{$lifeform}.cientifico,riesgo_{$lifeform_riesgo}.categoria, riesgo_{$lifeform_riesgo}.distribution,especie_{$lifeform}.invador, riesgo_{$lifeform_riesgo}.subespecie";
 
   
 
@@ -216,19 +217,26 @@ Route::post('getspecies', function(Request $request) {
         $distsum=0;
         $numeroindiviudos=0;
         foreach ($obresult as $row){
-            $numeroindiviudos+=$numeroindiviudos+$row->total_cientifico;
+            $numeroindiviudos+=$row->total_cientifico;
             $distsum+=$row->total_cientifico*$row->distancia;
         } 
         if ($numeroindiviudos>0){
             $distanciamedia=$distsum/$numeroindiviudos;
+            $linea_extra2="";
+            if ($idtype=='linea_mtp'){
+                $linea_extra2="JOIN medicion ON {$transpunto}_{$lifeform}.iden_medicion = medicion.iden";
+            }
+
             $pointresult = DB::select("SELECT
             observacion_{$lifeform}.iden_punto
             FROM observacion_{$lifeform}
                 JOIN
                 punto_{$lifeform} ON observacion_{$lifeform}.iden_punto = punto_{$lifeform}.iden
-            where iden_udp=913 and observacion_{$lifeform}.iden_email like '%' and observacion_{$lifeform}.iden_especie!=9 
+                {$linea_extra2}
+            where iden_{$idtype}={$idnumber} and observacion_{$lifeform}.iden_email like '%' and observacion_{$lifeform}.iden_especie!=1 
             GROUP BY observacion_{$lifeform}.iden_punto
             ", []);
+
             $pointtotal = sizeof($pointresult);
             $sumdensidad=0;
             $sumfrequencia=0;

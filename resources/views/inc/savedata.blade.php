@@ -385,12 +385,11 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                 $unitcolumns["iden_medicion"]= $medicionkey;
                 
                 $interval=date_diff( date_create($_POST['row0*punto_mamifero*fecha_de_activacion']),  date_create($_POST['row0*punto_mamifero*fecha_de_apagado']));
-                
+
                 $unitcolumns["iden_numero_de_dias_operables"]=($interval->format('%d'));
                 if (sizeof($result)>0){
                     $unitcolumns["iden_udp"]= $result[0]->iden;
                 }
-
                 $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
                 //Handle Species
                 $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
@@ -399,23 +398,25 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                     $iden_foto=uploadfoto("row{$i}", $obstype);
                     //Handle Species
                     $especiechoice= $_POST["row{$i}*{$obstype}*species"];
+
                     if ($especiechoice=="Nuevo") {
-                        $iden_especie=savenewspecies( $speciestable,$_POST["row{$i}*{$obstype}*comun"],$_POST["row{$i}*{$obstype}*cientifico"] );
+                        $invador='false';
+                        if (isset($_POST["row{$i}*{$obstype}*invador"])){
+                            $invador='true';
+                        }   
+                        $iden_especie=savenewspecies( $speciestable,$_POST["row{$i}*{$obstype}*comun"],$_POST["row{$i}*{$obstype}*cientifico"],$invador );
                     }else{
                         $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
                     }
-                    
                     $obscolumns=buildcolumnsarray($obstype, "row{$i}");
                     $obscolumns["iden_especie"]= $iden_especie;
                     $obscolumns["iden_foto"]= $iden_foto;
                     $obscolumns["iden_{$unitlower}"]= $unitmax;
-
                     $resultofquery[] = savenewentry( $obstype, $obscolumns);
                 }
             }
         }
    }
-
     session(['resultofquery' => $resultofquery]);
     $saved=0;
     $failed=0;
@@ -431,7 +432,6 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
     }else{
         $myerror=['Sus datos no fueron guardados.'];
         session(['error' => $myerror]);
-
     }
 }
 ?>
