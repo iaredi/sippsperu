@@ -103,8 +103,8 @@ class Map extends React.Component {
         var div = L.DomUtil.create('div', 'info legend'),grades,labels = [];
         L.DomUtil.addClass(div, "colorLegend border border-secondary p-2")
         
-        div.innerHTML +='<i class="m-1" style="outline: 5px solid purple; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' +'Datos suyos<br><br>'
-        div.innerHTML +='<i class="m-1" style="outline: 5px solid red; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' +'Datos de los de mas<br><br>'
+        div.innerHTML +='<i class="m-1" style="outline: 5px solid purple; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' +'Sus datos <br><br>'
+        div.innerHTML +='<i class="m-1" style="outline: 5px solid red; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' +'Datos de otros monitores<br><br>'
         div.innerHTML +='<i class="m-1" style="outline: 5px solid yellow; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' +'Selección<br>'
         return div;
     };

@@ -133,7 +133,7 @@ class SpeciesDisplay extends React.Component {
                     condensed
                     noDataIndication={ 'No hay datos' }
                     />
-                    <h3>Invadores</h3>
+                    <h3>Invasores</h3>
                     <BootstrapTable 
                     keyField='cientifico' 
                     data={ speciesResultInvador } 
