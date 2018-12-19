@@ -32,14 +32,14 @@
         uploadshape('dbf');
         uploadshape('prj');
         $shpfile=$_FILES['shp']["name"];
-        $sridshell= shell_exec("ogr2ogr -t_srs EPSG:4326 ..storage/shp/{$shpfile}2 ..storage/shp/{$shpfile}");
+        $sridshell= shell_exec("ogr2ogr -t_srs EPSG:4326 ../storage/shp/{$shpfile}2 ../storage/shp/{$shpfile}");
         $shapenombre=$_POST['shapenombre'];
         if (env("APP_ENV", "somedefaultvalue")=='production'){
         
             //load to temp table 
             $db = env("DB_PASSWORD", "somedefaultvalue");
             $dbname = env("DB_DATABASE", "somedefaultvalue");
-            $loadshp="shp2pgsql -I -s 4326:4326 ..storage/shp/{$shpfile}2 {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d {$dbname}";
+            $loadshp="shp2pgsql -I -s 4326:4326 ../storage/shp/{$shpfile}2 {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d {$dbname}";
             
             $output= shell_exec($loadshp);
                 if (strpos($output, 'ROLLBACK') == false) {
