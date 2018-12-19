@@ -152,7 +152,7 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
     function uploadfoto($myRow, $obstype){
         $fotoinputid="{$myRow}*{$obstype}*foto";
         if (strlen($_FILES[$fotoinputid]["name"])){
-            $target_dir = "img/";
+            $target_dir = "../storage/img/";
             $target_file = $target_dir . $obstype . basename($_FILES[$fotoinputid]["name"]);
             $uploadOk = 1;
             $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -210,7 +210,7 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 
     function uploadshape($shpname){
         if (strlen($_FILES[$shpname]["name"])){
-            $target_dir = "shp/";
+            $target_dir = "../storage/shp/";
             $target_file = $target_dir . basename($_FILES[$shpname]["name"]);
             $uploadOk = 1;
             $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
