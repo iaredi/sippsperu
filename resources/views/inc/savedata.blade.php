@@ -300,7 +300,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
 
                 $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
                 for($i=0; $i<countrows($obstype); $i++) {
-                    /ls /Handle fotos
+                    //Handle fotos
                     $iden_foto=uploadfoto("row{$i}", $obstype);
                     //Handle Species
                     $especiechoice= $_POST["row{$i}*{$obstype}*species"];
@@ -409,10 +409,12 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                     $obscolumns["iden_especie"]= $iden_especie;
                     $obscolumns["iden_foto"]= $iden_foto;
                     $obscolumns["iden_{$unitlower}"]= $unitmax;
-                    if($iden_foto=='No Presentado'||explode("_" , $iden_foto)[0];=='observacion'){
+                    if($iden_foto=='No Presentado' || explode("_" , $iden_foto)[0]=='observacion'){
+                        echo 'hi!';
                         $resultofquery[] = savenewentry( $obstype, $obscolumns);
                     }else{ 
-                        $resultofquery[] = 'Hubo un problema cargarando su foto';
+                        echo $iden_foto;
+                        $resultofquery[] = $iden_foto;
                     }
                 }
             }
@@ -426,6 +428,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
             $saved++;
         }else{
             $failed++;
+            $errorarray[]=$result.'?!?!';
         }
     }
     if(!$failed && $saved>0){
@@ -434,7 +437,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
         
     }else{
         //$myerror=['Sus datos no fueron guardados.'];
-        session(['error' => $resultofquery]);
+        session(['error' => $errorarray]);
     }
 }
 ?>

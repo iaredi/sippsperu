@@ -150,6 +150,7 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 
     
     function uploadfoto($myRow, $obstype){
+        $fotoerror='';
         $fotoinputid="{$myRow}*{$obstype}*foto";
         if (strlen($_FILES[$fotoinputid]["name"])){
             $target_dir = "../storage/img/";
@@ -163,46 +164,41 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
                     echo "File is an image - " . $check["mime"] . ".";
                     $uploadOk = 1;
                 } else {
-                    echo "File is not an image.";
+                    return "El formato de su photo no es correcto.";
                     $uploadOk = 0;
                 }
             }
             // Check if file already exists
             if (file_exists($target_file)) {
-                echo "Sorry, file already exists.";
+                return "Un foto con esa nombre ya existe";
                 $uploadOk = 0;
             }
             // Check file size
             if ($_FILES[$fotoinputid]["size"] > 5000000000) {
-                echo "Sorry, your file is too large.";
+                return "El tamano de su foto es demasiado grande";
                 $uploadOk = 0;
             }
             // Allow certain file formats
             if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
             && $imageFileType != "gif" ) {
-                echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                return "Solo JPG, JPEG, PNG y GIF son permitidos";
                 $uploadOk = 0;
             }
             // Check if $uploadOk is set to 0 by an error
             if ($uploadOk == 0) {
-                echo "Sorry, your file was not uploaded.";
+                return "Hubo un problema con el cargo de su foto (1)";
             // if everything is ok, try to upload file
             } else {
 
            
                 if (move_uploaded_file($_FILES[$fotoinputid]["tmp_name"], $target_file)) {
                     echo "The file  has been uploaded.";
-                    return (basename( $_FILES[$fotoinputid]["name"]));
+                    return $obstype . basename($_FILES[$fotoinputid]["name"]);
                 } else {
-                    
-                    echo "Sorry, there was an error uploading your file.";
-                    
+                    return "Hubo un problema con el cargo de su foto (2)";
                 }
-
-
-                
             }
-            return ('Failed');
+            return "Hubo un problema con el cargo de su foto (3)";
         }
     
         return ('No Presentado');
