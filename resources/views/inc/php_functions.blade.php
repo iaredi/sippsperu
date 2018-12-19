@@ -32,9 +32,11 @@
             $sql2=substr_replace($columnarray ,"", -1);
             $sql4=substr_replace($placeholder ,"", -1);
             $completesql=$sql1.$sql2.$sql3.$sql4.$sql5;
+            Log::info('savenewentry_attempt:', ['email'=>$useremail,'completesql' => $completesql,'arraytopass'=>$arraytopass ]);
             $results = DB::insert($completesql, $arraytopass);
             return ("{$mytable} ha sido guardado con exito");
-        } catch(PDOException $e) {  
+        } catch(PDOException $e) {
+            Log::info('savenewentry_fail:', ['email'=>$useremail,'completesql' => $completesql,'arraytopass'=>$arraytopass ]);
             return ("{$mytable} failed to save with error ". $e->getMessage());
         }
     }
@@ -65,17 +67,19 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 
 
     function savenewspecies($table,$comun,$cientifico, $invador ){
-        echo $comun.'!!!';
-        echo $invador.'???';
+        $invador='false';
+        if ($invador){
+            $invador='true';
+        }   
         $newspecies=array(
-            
             "comun"=> $comun,
             "cientifico"=> $cientifico,
             "comun_cientifico"=> $comun."*".$cientifico,
-            "invador"=> $invador
+            "invasor"=> $invador
                 );
-        $namesmatching = DB::select("SELECT cientifico FROM {$table} WHERE cientifico=:value", [':value'=>$cientifico]);
-        if (sizeof($namesmatching)==1){
+                $namesmatching = DB::select("SELECT cientifico FROM {$table} WHERE cientifico=:value", [':value'=>$cientifico]);
+
+                if (sizeof($namesmatching)==1){
             return askforkey($table, 'iden', "cientifico",  $cientifico);
         }else{
             $resultofquery = savenewentry($table, $newspecies);

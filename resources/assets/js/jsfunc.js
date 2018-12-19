@@ -346,10 +346,10 @@ function createRows (tableName,menu,myCols, myNumRow, obs=false,customList=[]){
         inputBox.appendChild(speciesInput);
         firstDataRow.appendChild(inputBox);
         //Invador Label
-        const invadorLavel = document.createElement("td");
-        invadorLavel.textContent="Invador";
-        invadorLavel.className="formcolumnlabels"
-        columnRowOld.appendChild(invadorLavel);
+        const invadorLabel = document.createElement("td");
+        invadorLabel.textContent="Invasor";
+        invadorLabel.className="formcolumnlabels"
+        columnRowOld.appendChild(invadorLabel);
         //Species comun Label
         const speciesLabelComun = document.createElement("td");
         speciesLabelComun.textContent="Nuevo Nombre Comun";
@@ -369,7 +369,7 @@ function createRows (tableName,menu,myCols, myNumRow, obs=false,customList=[]){
         invadorCheck.classList.add('invadorCheck');
         invadorCheck.disabled=true;
         invadorCheck.value='true'
-        invadorCheck.name = "row"+myNumRow+"*"+tableName+ "*"+"invador";
+        invadorCheck.name = "row"+myNumRow+"*"+tableName+ "*"+"invasor";
         const boxContainerInvador = document.createElement("td");
         boxContainerInvador.className="centerInTd"
         boxContainerInvador.appendChild(invadorCheck)
@@ -726,7 +726,9 @@ function clickReadyButton(e){
 
     
     if (e.offsetX>0){
+        
         getData().then(dataResult =>{
+            console.log(dataResult)
             clearForm(menu,"Form")
             if (dataResult[0].length>0){
                 const myTBody = document.getElementById(menu+"TBody"+'Form')
@@ -767,6 +769,12 @@ function clickReadyButton(e){
                         let myElem=document.getElementsByName("row"+ind+"*"+myChoice +"*"+cat)
                         if (myElem[0]){
                             myElem[0].value=val
+                            
+                            if (cat=='invasor' && myElem[0].value=="true"){
+                                myElem[0].disabled = false
+                                myElem[0].checked=true 
+                                myElem[0].disabled = true
+                            }
                         }
                     }
                 })

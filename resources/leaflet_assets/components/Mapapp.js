@@ -92,9 +92,6 @@ class Mapapp extends React.Component {
   }
 
   handleFeatureClick(event) {
-    // $lifeform=explode('_',$observacion)[1];
-    // $idtype = $request->idtype;
-    // $idnumber= $request->idnumber;
     const lifeform = this.state.mapSettings.myObsType
     const idtype =event.target.feature.properties.name=='udp_puebla_4326'?'udp':'linea_mtp'
     const idnumber = event.target.feature.properties.iden
@@ -122,7 +119,6 @@ class Mapapp extends React.Component {
     }
     if (event.target.feature.properties.name=='udp_puebla_4326'||event.target.feature.properties.name=='linea_mtp'){
       getSpecies(lifeform,idtype,idnumber).then(myspeciesResult =>{
-
         this.setState((prevState) => ({
           speciesResult: myspeciesResult      
         }));

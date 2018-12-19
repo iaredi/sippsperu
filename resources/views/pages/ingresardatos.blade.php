@@ -1,4 +1,5 @@
 <?php
+
     if (!session('email')){
         return redirect()->to('/login')->send();
     }

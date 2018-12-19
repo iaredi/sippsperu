@@ -219,7 +219,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                     //Handle Species
                     $especiechoice= $_POST["row{$i}*{$obstype}*species"];
                     if ($especiechoice=="Nuevo") {
-                        $iden_especie=savenewspecies( $speciestable,$_POST["row{$i}*{$obstype}*comun"],$_POST["row{$i}*{$obstype}*cientifico"] );
+                        $iden_especie=savenewspecies( $speciestable,$_POST["row{$i}*{$obstype}*comun"],$_POST["row{$i}*{$obstype}*cientifico"],isset($_POST["row{$i}*{$obstype}*invasor"]) );
                     }else{
                         $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
                     }
@@ -261,7 +261,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                     //Handle Species
                     $especiechoice= $_POST["row{$i}*{$obstype}*species"];
                     if ($especiechoice=="Nuevo") {
-                        $iden_especie=savenewspecies( $speciestable,$_POST["row{$i}*{$obstype}*comun"],$_POST["row{$i}*{$obstype}*cientifico"] );
+                        $iden_especie=savenewspecies( $speciestable,$_POST["row{$i}*{$obstype}*comun"],$_POST["row{$i}*{$obstype}*cientifico"],isset($_POST["row{$i}*{$obstype}*invasor"]) );
                     }else{
                         $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
                     }
@@ -305,7 +305,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                     //Handle Species
                     $especiechoice= $_POST["row{$i}*{$obstype}*species"];
                     if ($especiechoice=="Nuevo") {
-                        $iden_especie=savenewspecies( $speciestable,$_POST["row{$i}*{$obstype}*comun"],$_POST["row{$i}*{$obstype}*cientifico"] );
+                        $iden_especie=savenewspecies( $speciestable,$_POST["row{$i}*{$obstype}*comun"],$_POST["row{$i}*{$obstype}*cientifico"],isset($_POST["row{$i}*{$obstype}*invasor"]) );
                     }else{
                         $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
                     }
@@ -352,7 +352,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                     //Handle Species
                     $especiechoice= $_POST["row{$i}*{$obstype}*species"];
                     if ($especiechoice=="Nuevo") {
-                        $iden_especie=savenewspecies( $speciestable,$_POST["row{$i}*{$obstype}*comun"],$_POST["row{$i}*{$obstype}*cientifico"] );
+                        $iden_especie=savenewspecies( $speciestable,$_POST["row{$i}*{$obstype}*comun"],$_POST["row{$i}*{$obstype}*cientifico"],isset($_POST["row{$i}*{$obstype}*invasor"]) );
                     }else{
                         $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
                     }
@@ -400,14 +400,11 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                     $especiechoice= $_POST["row{$i}*{$obstype}*species"];
 
                     if ($especiechoice=="Nuevo") {
-                        $invador='false';
-                        if (isset($_POST["row{$i}*{$obstype}*invador"])){
-                            $invador='true';
-                        }   
-                        $iden_especie=savenewspecies( $speciestable,$_POST["row{$i}*{$obstype}*comun"],$_POST["row{$i}*{$obstype}*cientifico"],$invador );
+                        $iden_especie=savenewspecies( $speciestable,$_POST["row{$i}*{$obstype}*comun"],$_POST["row{$i}*{$obstype}*cientifico"],isset($_POST["row{$i}*{$obstype}*invasor"]) );
                     }else{
                         $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
                     }
+                    
                     $obscolumns=buildcolumnsarray($obstype, "row{$i}");
                     $obscolumns["iden_especie"]= $iden_especie;
                     $obscolumns["iden_foto"]= $iden_foto;

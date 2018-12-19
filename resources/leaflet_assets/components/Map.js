@@ -23,11 +23,7 @@ class Map extends React.Component {
    
     
   componentDidMount() {
-
-
     this.props.setDefaultMax(defaultmax[`${this.props.mapSettings.distinctOrTotal}_${this.props.mapSettings.myObsType}`])
-
-
     // create map
     this.map = L.map("map", {
       center: [18.69349,360-98.16245],
@@ -96,7 +92,6 @@ class Map extends React.Component {
     ///////////LEGENDNEW////////////
 
     var legend = L.control({position: 'bottomleft'});
-
     this.makeDiv=(map)=> {
         grades=[];
         labels = [];
@@ -111,10 +106,6 @@ class Map extends React.Component {
     legend.onAdd=this.makeDiv;
     legend.addTo(this.map);
     this.legend=legend;
-
-
-
-
 
         ///////////LEGENDOLD////////////
 
@@ -145,7 +136,6 @@ class Map extends React.Component {
   }
 
     componentDidUpdate({ mapSettings }) {
-           
         if (this.props.mapSettings !== mapSettings) {
             this.map.removeControl(this.legend); 
             var legend = L.control({position: 'bottomright'});
@@ -154,7 +144,6 @@ class Map extends React.Component {
             this.legend=legend;
             const getColor=this.getColor;
             const getOutline=this.props.getOutline;
-
             const targetProperty = `${this.props.mapSettings.distinctOrTotal}_${this.props.mapSettings.myObsType}`;
 
         const myStyle= (feature, maxValue)=> {
@@ -169,11 +158,8 @@ class Map extends React.Component {
           this.dynamicLayer.setStyle(myStyle)
         }
     }
-
   render() {
-
     return <div id="map" style={style} />;
   }
 }
-
 export default Map;

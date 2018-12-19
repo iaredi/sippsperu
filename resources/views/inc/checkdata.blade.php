@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
                         }
                     }
                 }
-                if (!$hidden){
+                if (!$hidden && $columnname !='notas'){
                     $errorlist[]= "El campo '{$columnname}' de {$tablename} esta vacio";
                 }
                 //Handle non-empty fields
