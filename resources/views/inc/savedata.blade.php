@@ -410,10 +410,8 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                     $obscolumns["iden_foto"]= $iden_foto;
                     $obscolumns["iden_{$unitlower}"]= $unitmax;
                     if($iden_foto=='No Presentado' || explode("_" , $iden_foto)[0]=='observacion'){
-                        echo 'hi!';
                         $resultofquery[] = savenewentry( $obstype, $obscolumns);
                     }else{ 
-                        echo $iden_foto;
                         $resultofquery[] = $iden_foto;
                     }
                 }
@@ -428,12 +426,12 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
             $saved++;
         }else{
             $failed++;
-            $errorarray[]=$result.'?!?!';
+            $errorarray[]=$result;
         }
     }
     if(!$failed && $saved>0){
-        echo 'would redirect';
-        //return redirect()->to('/thanks')->send();
+        //echo 'would redirect';
+        return redirect()->to('/thanks')->send();
         
     }else{
         //$myerror=['Sus datos no fueron guardados.'];
