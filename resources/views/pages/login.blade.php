@@ -34,7 +34,7 @@
                 DB::update('update usuario set hora_ultimo_login = CURRENT_TIME where email = ?', [$_POST['email']]);
                 
 
-                return redirect()->to('/ingresardatos')->send();
+                return redirect()->to('/mostrarmapas')->send();
             } else {
                 session(['error' => ['contrasenia incorrecto']]);
             }
@@ -62,6 +62,7 @@
                     }
                 }
             ?>
+            
             <form id="login-form"  method="post" role="form" style="display: block;">
                 {{ csrf_field() }}
                 <div class="form-group p-2">
@@ -82,8 +83,10 @@
                             <a href="/reset_1" tabindex="5" class="form-control btn btn-success p-15">Reiniciar su contraseña</a>
                     </div>
                 </div> 
+               
+                
             </form>
-                               
+                     
         </div>
         </div>
         @include('inc/footer')
