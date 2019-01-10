@@ -12,7 +12,7 @@
             $from_email = "admin@pueblabiodiversidad.com";
             $reply_email = "norespuesta@pueblabiodiversidad.com";
             $to=$email;
-            $subject='forgot password';
+            $subject='Biodiversity Puebla - Reiniciar su contraseña';
             $body = "Code is : {$token}";
             $headers = "From: {$from_email}"."\r\n"."Reply-To: {$reply_email} "." \r\n "."X-Mailer: PHP/".phpversion();
             mail($to, $subject, $body, $headers);

@@ -34,7 +34,7 @@
                 DB::update('update usuario set hora_ultimo_login = CURRENT_TIME where email = ?', [$_POST['email']]);
                 
 
-                return redirect()->to('/mostrarmapas')->send();
+                return redirect()->to('/ingresardatos')->send();
             } else {
                 session(['error' => ['contrasenia incorrecto']]);
             }
