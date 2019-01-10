@@ -119,6 +119,7 @@ class Mapapp extends React.Component {
     }
     if (event.target.feature.properties.name=='udp_puebla_4326'||event.target.feature.properties.name=='linea_mtp'){
       getSpecies(lifeform,idtype,idnumber).then(myspeciesResult =>{
+        console.log(myspeciesResult)
         this.setState((prevState) => ({
           speciesResult: myspeciesResult      
         }));

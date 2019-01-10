@@ -146,7 +146,7 @@ Route::post('getspecies', function(Request $request) {
     $hierbaextra='';
     if ($lifeform=="hierba"){
         $hierbaextra="SUM((observacion_hierba.i)::real) as sumi,
-		SUM(1/(observacion_hierba.m)::real) as summ,";
+		SUM(1/(NULLIF(observacion_hierba.m::real,0))::real) as summ,";
     }
     $sql= "SELECT
         especie_{$lifeform}.comun,
@@ -236,11 +236,13 @@ Route::post('getspecies', function(Request $request) {
                 $sumdensidad += $row2->densidad;
                 $sumdominancia += $row2->dominancia;
                 $sumfrequencia += ($row2->frequencia);
+                
             } 
             $sumivi=0;
             foreach ($obresult as $row3){
                 $row3->ivi= ($row3->densidad*100)/$sumdensidad+($row3->frequencia*100)/$sumfrequencia+($row3->dominancia*100)/$sumdominancia;
                 $sumivi += $row3->ivi;
+                
             }
         }
     }
@@ -253,6 +255,7 @@ Route::post('getspecies', function(Request $request) {
         }else{
             $row4->ivi100='';
         } 
+        
     }
     
     return json_encode($obresult);
