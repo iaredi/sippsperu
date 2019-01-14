@@ -44,8 +44,20 @@ $layer3->weight = 1;
 $layer3->fillOpacity = 0.5;
 $layer3->sql = "SELECT nombre, ST_AsGeoJSON(geom, 5) AS geojson FROM usershapes where iden_email='{$email}'";
 
+$layer4 = new layer();
+$layer4->tableName = 'municipio_puebla_4326';
+$layer4->displayName = 'Municipios';
+$layer4->featureColumn = 'nomgeo';
+$layer4->color = 'black';
+$layer4->fillColor = 'purple';
+$layer4->opacity = 0.5;
+$layer4->weight = 1;
+$layer4->fillOpacity = 0.5;
+$layer4->sql = "SELECT geometry_id,nomgeo, ST_AsGeoJSON(level_3, 5) AS geojson FROM muni_geometries_simplified";
 
-$layersArray = array($layer1, $layer2, $layer3);
+
+
+$layersArray = array($layer1, $layer2, $layer3, layer4);
 $addlayers = DB::select("SELECT * FROM additional_layers",[]);
 
 foreach($addlayers as $singlerow) {
