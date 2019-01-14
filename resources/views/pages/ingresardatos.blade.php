@@ -1,5 +1,4 @@
 <?php
-    print (is_writable(config('session.files')));
     if (!session('email')){
         return redirect()->to('/login')->send();
     }
