@@ -28,6 +28,9 @@ class PagesController extends Controller
     public function descargar(){
         return view('pages/descargar');
     }
+    public function cargarshapesadmin(){
+        return view('pages/cargarshapesadmin');
+    }
     public function ingresarexcel(){
         return view('pages/ingresarexcel');
     }

@@ -23,6 +23,7 @@ if (!session('admin')){
                 ?>
             </div>
         </div>
+        <a id="cargarbutton" href="/cargarshapesadmin" role="button">Cargar Shapefile</a>
 
 <div class="wrapper2" id="startMenuDiv">
     

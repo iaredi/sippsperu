@@ -30,6 +30,16 @@ body {
   padding: 10px;
 }
 
+#cargarbutton {
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+    background: #449eff;
+    padding: 3px;
+    text-decoration: none;
+    color: initial;
+}
+
 .bg-danger2 {
     background-color: rgb(255, 106, 106);
     
