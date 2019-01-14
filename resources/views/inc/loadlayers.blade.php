@@ -57,7 +57,7 @@ $layer4->sql = "SELECT geometry_id,nomgeo, ST_AsGeoJSON(level_3, 5) AS geojson F
 
 
 
-$layersArray = array($layer1, $layer2, $layer3, layer4);
+$layersArray = array($layer1, $layer2, $layer3, $layer4);
 $addlayers = DB::select("SELECT * FROM additional_layers",[]);
 
 foreach($addlayers as $singlerow) {
