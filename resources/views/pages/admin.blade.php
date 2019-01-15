@@ -157,7 +157,8 @@ if (!session('admin')){
                 <tbody id="measurementTBodycargar">      
                 </tbody>
             </table>
-    
+            <input type="checkbox" name="deletetable" value="1"> Borrar completamente<br>
+
             <div>
                 <label for="displayname" class=" h6 displayname">Nombre para Mostrar</label>
                 <input type="text" placeholder="Nombre de Capa" name="displayname" id="displayname">
