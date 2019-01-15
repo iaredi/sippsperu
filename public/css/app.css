@@ -10507,6 +10507,7 @@ body {
   -moz-appearance: button;
   appearance: button;
   background: #449eff;
+  padding: 3px;
   text-decoration: none;
   color: initial;
 }

@@ -1,6 +1,6 @@
 <?php
 
-   function savenewentry($mytable, $myarray, $withemail=true){
+   function savenewentry($mytable, $myarray){
         try {
             $placeholder="";
             $columnarray="";
@@ -9,7 +9,6 @@
             $sql5=   ");";
             foreach($myarray as $mycolumn=>$myval){
                 $columnarray.=$mycolumn.',';
-                $valarray[]=$myval;
                 if ($myval=="CURRENT_DATE"){
                     $placeholder.='CURRENT_DATE,';
                 }else{
@@ -19,22 +18,17 @@
                 }
             }
             //Add user email function
-            if ($withemail){
-                $useremail=session('email');
-                $mycolumn='iden_email';
-                $myval= $useremail;
-                $columnarray.=$mycolumn.',';
-                $valarray[]=$myval;
-                $placeholdername=':value'.$mycolumn;
-                $placeholder.="{$placeholdername},";
-                $arraytopass[$placeholdername]=$myval;
-                Log::info('savenewentry_attempt:', ['email'=>$useremail,'completesql' => $completesql,'arraytopass'=>$arraytopass ]);
-            }else{
-                Log::info('savenewentry_attempt_noemail:', ['completesql' => $completesql,'arraytopass'=>$arraytopass ]);
-            }
+            
+            $useremail=session('email');
+            $columnarray.='iden_email,';
+            $placeholdername=':value'.'iden_email';
+            $placeholder.="{$placeholdername},";
+            $arraytopass[$placeholdername]=$useremail;
+        
             $sql2=substr_replace($columnarray ,"", -1);
             $sql4=substr_replace($placeholder ,"", -1);
             $completesql=$sql1.$sql2.$sql3.$sql4.$sql5;
+            Log::info('savenewentry_attempt:', ['email'=>$useremail,'completesql' => $completesql,'arraytopass'=>$arraytopass ]);
             $results = DB::insert($completesql, $arraytopass);
             return ("{$mytable} ha sido guardado con exito");
         } catch(PDOException $e) {
