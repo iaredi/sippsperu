@@ -23,7 +23,6 @@ if (!session('admin')){
                 ?>
             </div>
         </div>
-        <a id="cargarbutton" href="/cargarshapesadmin" role="button">Cargar Shapefile</a>
 
 <div class="wrapper2" id="startMenuDiv">
     
@@ -132,12 +131,11 @@ if (!session('admin')){
                     <option value="observacion_mamifero">observacion_mamifero</option>
                     <option value="observacion_ave">observacion_ave</option>
                 </select>
-                    <label for="datatype">Eliger Tipo de data</label>
-                    <select name='datatype' id='datatype' class='table_option form-control'>
-                        <option value="not_selected"></option>
-                        <option value="varchar">varchar</option>
-                        
-                        </select>
+                <label for="datatype">Eliger Tipo de data</label>
+                <select name='datatype' id='datatype' class='table_option form-control'>
+                    <option value="not_selected"></option>
+                    <option value="varchar">varchar</option>
+                </select>
             <input type="hidden" name="action" value="add_field">
             <input type="submit" id="campo" class="mySubmit">
                 </div>
@@ -149,6 +147,50 @@ if (!session('admin')){
     
 </div >
 
+
+<div class='border border-dark p-2 m-2'>
+        <form id="measurementform" method="post">
+            {{ csrf_field() }}
+    
+            <h3 id="measurement3">Cambiar Capas</h3>
+            <table class="mytable">
+                <tbody id="measurementTBodycargar">      
+                </tbody>
+            </table>
+    
+            <div>
+                <label for="displayname" class=" h6 displayname">Nombre para Mostrar</label>
+                <input type="text" placeholder="Nombre de Capa" name="displayname" id="displayname">
+            </div>
+            <div>
+                <label for="fillcolor" class=" h6 shapenombre">Fill Color</label>
+                <input type="color" name="fillcolor" id="fillcolor">
+            </div>
+            <div>
+                <label for="lineacolor" class=" h6 shapenombre">Linea Color</label>
+                <input type="color"  name="lineacolor" id="lineacolor">
+            </div>
+            <div>
+                <label for="fillopacidad" class=" h6 shapenombre">Fill Opacidad</label>
+                <input type="number" min=0 max=1 step = 0.1 name="fillopacidad" id="fillopacidad">
+            </div>
+            <div>
+                <label for="lineaopacidad" class=" h6 shapenombre">Linea Opacidad</label>
+                <input type="number" min=0 max=1 step = 0.1 name="lineaopacidad" id="lineaopacidad">
+            </div>
+            <div>
+                <label for="lineaanchura" class=" h6 shapenombre">Linea Anchura</label>
+                <input type="number" min=0 max=1 step = 0.1 name="lineaanchura" id="lineaanchura">
+            </div>
+            <br>
+            
+            <input type="hidden" name="action" value="cargarshape">
+            <input type="submit" id="measurementlinea_mtpSubmit" class="mySubmit">
+        </form>
+        <div style='text-align:center;'> 
+            <a id="cargarbutton" href="/cargarshapesadmin" role="button">Cargar Shapefile</a>
+        </div> 
+    </div>
 
 </div >
 <script src="{{ asset('js/jsfunc.js') }}" >

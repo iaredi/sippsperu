@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
                 $sql = "insert into usuario_permitido (email) values(:targetuser)";
                 $user_data = [':targetuser'=>trim($targetuser)];
                 $results = DB::insert($sql, $user_data);
-                session(['adminerror'=> "{$targetuser} has sido agregado"]);
+                session(['adminerror'=> "{$targetuser} ha sido agregado"]);
 
             }
             if($_POST['admin_option']=='remove_email'){
@@ -69,9 +69,19 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
             $sql = "alter table {$targettable} add column {$targetcampo} {$datatype}";
             $user_data = [];
             $results = DB::statement($sql, $user_data);
-            session(['adminerror'=> "{$targetcampo} has sido agregado en {$targettable}"]);
-
+            session(['adminerror'=> "{$targetcampo} ha sido agregado en {$targettable}"]);
         }
+
+        if($_POST['action']=='cargarshape'){
+            $selectsql = "select tablename from additional_layers where displayname=?";
+            $cargartablename = (DB::select($selectsql, [$_POST["selectadditional_layers"]]))[0]->tablename;
+
+            $arraytopass = [$_POST['displayname'],$_POST['lineacolor'],$_POST['fillcolor'],$_POST['fillopacidad']];
+            array_push( $arraytopass,$_POST['lineaopacidad'],$_POST['lineaanchura'],$cargartablename);
+            $layerresult= DB::update("UPDATE additional_layers set (displayname, color,fillcolor,fillopacity,opacity,weight) = (?,?,?,?,?,?) where tablename = ?", $arraytopass);            
+            session(['adminerror'=> "{$cargartablename} ha cambiado"]);
+        }
+
         
 
         

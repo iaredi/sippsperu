@@ -4,7 +4,6 @@ function buildDropdowns(tableName, menu, jsTable="Form",octothorp=false){
         menu='measurement'
     }
     const myTBody = document.getElementById(menu+"TBody"+jsTable)
-
     const selectList = document.createElement("select");
     selectList.id = menu+tableName+jsTable;
     selectList.name = "select"+tableName;
@@ -922,6 +921,8 @@ if(window.location.href.substr(-5)==='admin'){
     selectOptionsCreate( "usuario",  "measurement",  true,  "Select", [],  false,  false);
     buildDropdowns( "usuario_permitido", "measurement", "Medicion" );
     selectOptionsCreate( "usuario_permitido",  "measurement",  true,  "Medicion", [],  false, false);
+    buildDropdowns( "additional_layers", "measurement", "cargar" );
+    selectOptionsCreate( "additional_layers",  "measurement",  true,  "cargar", [],  false, false);
     addOnChangeAdminTable()
 
 }else{

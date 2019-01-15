@@ -51,9 +51,9 @@ if (!session('admin')){
 
                     $geom= DB::select("select geom from {$shapenombre}", []);
                     if (isset($geom[0])){
-                        $arraytopass = [$_POST['shapenombre'],$_POST['displayname'],$_POST['featurecolumn'],$_POST['lineacolor']];
+                        $arraytopass = [$_POST['shapenombre'],$_POST['displayname'],$_POST['lineacolor']];
                         array_push( $arraytopass,$_POST['fillcolor'],$_POST['fillopacidad'],$_POST['lineaopacidad'],$_POST['lineaanchura'] );
-                        $layerresult= DB::insert("INSERT into additional_layers (tablename, displayname, featurecolumn,color,fillcolor,fillopacity,opacity,weight) values (?,?,?,?,?,?,?,?)", $arraytopass);
+                        $layerresult= DB::insert("INSERT into additional_layers (tablename, displayname, color,fillcolor,fillopacity,opacity,weight) values (?,?,?,?,?,?,?)", $arraytopass);
                         return redirect()->to('/thanks')->send();
                     }else{
                         $errorlist[]= "Su shape no tiene polygono";

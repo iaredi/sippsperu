@@ -3,7 +3,6 @@
 @include('inc/nav')
 
 <?php
-
     if ($_SERVER['REQUEST_METHOD']=="POST") {
         $error=[];
         $nombre = $_POST['nombre'];
@@ -13,12 +12,9 @@
         $direccion = $_POST['direccion'];
         $notas = $_POST['notas'];
         $useremail = $_POST['email'];
-        
         $pword = $_POST['password'];
         $pword_conf = $_POST['password'];
         $comments = $_POST['notas'];
-        
-        
         
         if (strlen( $_POST['password'])<6) {
             $error[] = "contrasenia tiene que ser minimo de 6 caracteres ";
@@ -27,16 +23,11 @@
             $error[] = "Las contrasenias no son iguales";
         }
 
-
-
         $email=DB::select('select email from usuario_permitido where email = ?', [$useremail]);
         $emailvisitante=DB::select('select email from usuario_permitido where email = ?', [$useremail.'*']);
 
         if (!$email && !$emailvisitante) {
             $error[] = "Email '{$_POST['email']}' no es aprovado. Contáctenos en forest.carter@gmail.com ";
-        }else{
-
-
         }
         
         if (DB::select('select email from usuario where email = ?', [$useremail])) {
@@ -60,18 +51,12 @@
                 "fecha_ultimo_login"=> "CURRENT_DATE",
                 "fecha_activacion"=> "CURRENT_DATE",
                 "notas"=> $_POST['notas']
-                    );
-                    
+                    );   
             $resultofusuariosquery[]= savenewentry("usuario", $usuarioscolumns,false);
-
         }
-        
-        
         $email="";
         $pword="";
         $pword_conf="";
-
-
 
     } else {
         $nombre="";
@@ -86,9 +71,7 @@
     }
 ?>
       
-
 <div class=" d-flex flex-column justify-content-around align-items-center" >
-                
     <div>
         <?php 
             if (isset($error)) {
@@ -136,7 +119,6 @@
             <div class="form-group">
                 <textarea name="notas" id="notas" tabindex="7" class="form-control"  placeholder="Notas"><?php echo $notas ?></textarea>
             </div>
-            
             <div class="form-group self-align-center p-3"style="width:50%;margin: auto;">
                 <input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn  btn-success p-15" value="Registro">
             </div>
