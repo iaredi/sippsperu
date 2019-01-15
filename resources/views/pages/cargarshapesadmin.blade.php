@@ -42,13 +42,13 @@ if (!session('admin')){
         if (env("APP_ENV", "somedefaultvalue")=='production'){
         
             //load to temp table 
+
             $db = env("DB_PASSWORD", "somedefaultvalue");
             $dbname = env("DB_DATABASE", "somedefaultvalue");
             $loadshp="shp2pgsql -I -s 4326:4326 ../storage/shp/{$shpfile}2 {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d {$dbname}";
             $output= shell_exec($loadshp);
-            $output= shell_exec("rm -rf ../storage/shp/*");
+            $output2= shell_exec("rm -rf ../storage/shp/*");
                 if (strpos($output, 'ROLLBACK') == false) {
-
                     $geom= DB::select("select geom from {$shapenombre}", []);
                     if (isset($geom[0])){
                         $arraytopass = [$_POST['shapenombre'],$_POST['displayname'],$_POST['featurecolumn'],$_POST['lineacolor']];
