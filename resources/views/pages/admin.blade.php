@@ -181,7 +181,7 @@ if (!session('admin')){
             </div>
             <div>
                 <label for="lineaanchura" class=" h6 shapenombre">Linea Anchura</label>
-                <input type="number" min=0 max=1 step = 0.1 name="lineaanchura" id="lineaanchura">
+                <input type="number" min=0 max=5 step = 0.1 name="lineaanchura" id="lineaanchura">
             </div>
             <br>
             

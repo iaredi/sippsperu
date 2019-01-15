@@ -45,15 +45,15 @@ if (!session('admin')){
             $db = env("DB_PASSWORD", "somedefaultvalue");
             $dbname = env("DB_DATABASE", "somedefaultvalue");
             $loadshp="shp2pgsql -I -s 4326:4326 ../storage/shp/{$shpfile}2 {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d {$dbname}";
-            
             $output= shell_exec($loadshp);
+            $output= shell_exec("rm -rf ../storage/shp/*");
                 if (strpos($output, 'ROLLBACK') == false) {
 
                     $geom= DB::select("select geom from {$shapenombre}", []);
                     if (isset($geom[0])){
-                        $arraytopass = [$_POST['shapenombre'],$_POST['displayname'],$_POST['lineacolor']];
+                        $arraytopass = [$_POST['shapenombre'],$_POST['displayname'],$_POST['featurecolumn'],$_POST['lineacolor']];
                         array_push( $arraytopass,$_POST['fillcolor'],$_POST['fillopacidad'],$_POST['lineaopacidad'],$_POST['lineaanchura'] );
-                        $layerresult= DB::insert("INSERT into additional_layers (tablename, displayname, color,fillcolor,fillopacity,opacity,weight) values (?,?,?,?,?,?,?)", $arraytopass);
+                        $layerresult= DB::insert("INSERT into additional_layers (tablename, displayname, featurecolumn, color,fillcolor,fillopacity,opacity,weight) values (?,?,?,?,?,?,?,?)", $arraytopass);
                         return redirect()->to('/thanks')->send();
                     }else{
                         $errorlist[]= "Su shape no tiene polygono";
@@ -91,8 +91,8 @@ if (!session('admin')){
         <input type="text" placeholder="Nombre de Capa" name="displayname" id="displayname">
     </div>
     <div>
-        <label for="featurecolumn" class=" h6 shapenombre">Mostrar Campo</label>
-        <input type="text" placeholder="description" name="featurecolumn" id="featurecolumn">
+        <label for="featurecolumn" class=" h6 shapenombre">Click Campo</label>
+        <input type="text"  name="featurecolumn" id="featurecolumn">
     </div>
     <div>
         <label for="fillcolor" class=" h6 shapenombre">Fill Color</label>
@@ -112,7 +112,7 @@ if (!session('admin')){
     </div>
     <div>
         <label for="lineaanchura" class=" h6 shapenombre">Linea Anchura</label>
-        <input type="number" min=0 max=1 step = 0.1 name="lineaanchura" id="lineaanchura">
+        <input type="number" min=0 max=5 step = 0.1 name="lineaanchura" id="lineaanchura">
     </div>
     <div>
         <label for="shp" class="h6 shapelabel">.shp</label>
