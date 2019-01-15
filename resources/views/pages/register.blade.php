@@ -12,7 +12,7 @@
         $telefono = $_POST['telefono'];
         $direccion = $_POST['direccion'];
         $notas = $_POST['notas'];
-        $email = $_POST['email'];
+        $useremail = $_POST['email'];
         
         $pword = $_POST['password'];
         $pword_conf = $_POST['password'];
@@ -29,8 +29,8 @@
 
 
 
-        $email=DB::select('select email from usuario_permitido where email = ?', [$_POST['email']]);
-        $emailvisitante=DB::select('select email from usuario_permitido where email = ?', [$_POST['email'].'*']);
+        $email=DB::select('select email from usuario_permitido where email = ?', $useremail]);
+        $emailvisitante=DB::select('select email from usuario_permitido where email = ?', [$useremail.'*']);
 
         if (!$email && !$emailvisitante) {
             $error[] = "Email '{$_POST['email']}' no es aprovado. Contáctenos en forest.carter@gmail.com ";
@@ -39,7 +39,7 @@
 
         }
         
-        if (DB::select('select email from usuario where email = ?', [$_POST['email']])) {
+        if (DB::select('select email from usuario where email = ?', [$useremail])) {
             $error[] = "Email '{$_POST['email']}' ya esta registrado. Por favor, login o reiniciar su contrasenia ";
         }
 
@@ -55,7 +55,7 @@
                 "nombre"=> $_POST['nombre'],
                 "apellido_materno"=> $_POST['apellido_materno'],
                 "apellido_paterno"=> $_POST['apellido_paterno'],
-                "email"=> $_POST['email'],
+                "email"=> $useremail,
                 "hash_password"=> password_hash($_POST['password'],PASSWORD_BCRYPT),
                 "telefono"=> $_POST['telefono'],
                 "direccion"=> $_POST['direccion'],
@@ -63,6 +63,7 @@
                 "fecha_activacion"=> "CURRENT_DATE",
                 "notas"=> $_POST['notas']
                     );
+                    
             $resultofusuariosquery[]= savenewentry("usuario", $usuarioscolumns,false);
             echo '<script>console.log('.json_encode($resultofusuariosquery).');</script>';
 
