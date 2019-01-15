@@ -78,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
             $cargartablename = (DB::select($selectsql, [$_POST["selectadditional_layers"]]))[0]->tablename;
             if ($_POST["deletetable"]==1){
                 $layerresult= DB::delete("DELETE from additional_layers where tablename = ?", [$cargartablename]);
-                DB::statement("DROP table ?", [$cargartablename]);
+                DB::statement("drop table {$cargartablename}");
                 session(['adminerror'=> "{$cargartablename} ha side borrado"]);            
             }else{
                 $arraytopass = [$_POST['displayname'],$_POST['lineacolor'],$_POST['fillcolor'],$_POST['fillopacidad']];
