@@ -29,7 +29,7 @@
 
 
 
-        $email=DB::select('select email from usuario_permitido where email = ?', $useremail]);
+        $email=DB::select('select email from usuario_permitido where email = ?', [$useremail]);
         $emailvisitante=DB::select('select email from usuario_permitido where email = ?', [$useremail.'*']);
 
         if (!$email && !$emailvisitante) {
