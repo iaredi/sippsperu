@@ -26,6 +26,7 @@ Route::get('/reset_1', 'PagesController@reset_1');
 Route::get('/reset_2', 'PagesController@reset_2');
 Route::get('/cargarshapes', 'PagesController@cargarshapes');
 Route::get('/cargarshapesadmin', 'PagesController@cargarshapesadmin');
+Route::get('/udpmapa', 'PagesController@udpmapa');
 
 
 
@@ -40,4 +41,5 @@ Route::post('/reset_1', 'PagesController@reset_1');
 Route::post('/reset_2', 'PagesController@reset_2');
 Route::post('/cargarshapes', 'PagesController@cargarshapes');
 Route::post('/cargarshapesadmin', 'PagesController@cargarshapesadmin');
+Route::post('/udpmapa', 'PagesController@udpmapa');
 

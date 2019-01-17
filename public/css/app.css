@@ -10474,6 +10474,10 @@ body {
   line-height: 1;
 }
 
+#udpbody {
+  size: A4 landscape;
+}
+
 .colorLegend {
   background: white;
   padding: .2rem;

@@ -1,16 +1,13 @@
 import React from 'react';
 //import BootstrapTable from 'react-bootstrap-table-next';
 
-import Map from './Map';
-import MapControl from './MapControl';
-import FeatureInfoDisplay from './FeatureInfoDisplay';
-import SpeciesDisplay from './SpeciesDisplay';
+import UDPMapa from './udpMapa';
 
 
-class Mapapp extends React.Component {
+
+class UDPMapapp extends React.Component {
   constructor(props){
         super(props)
-        
         this.handleMapClick = this.handleMapClick.bind(this);
         this.handleSpeciesChange = this.handleSpeciesChange.bind(this);
         this.handleTotalDistinctChange = this.handleTotalDistinctChange.bind(this);
@@ -22,8 +19,6 @@ class Mapapp extends React.Component {
           speciesResult:[],
           previous:0,
           udp:0,
-          udpButton:false,
-          udpButtonText:'Mapa de UDP Eligido',
           markerPosition: { lat: 18.69349, lng: 360-98.16245 },
           mapSettings:{distinctOrTotal:"total_observaciones", myObsType:"ave", fillOpacity:0.6, maxValue:99},
           featureInfo: { properties:{message:'click somewhere',displayName:'none' }},
@@ -97,12 +92,6 @@ class Mapapp extends React.Component {
   handleFeatureClick(event) {
     const lifeform = this.state.mapSettings.myObsType
     const idtype =event.target.feature.properties.name=='udp_puebla_4326'?'udp':'linea_mtp'
-    this.setState(() => ({
-      udpButton:idtype=='udp'?true:false
-    })); 
-    this.setState(() => ({
-      udpButtonText:idtype=='udp'? 'Mapa de UDP Eligido : '+event.target.feature.properties.iden :'Mapa de UDP Eligido'
-    })); 
     const idnumber = event.target.feature.properties.iden
 
     async function getSpecies(lifeform,idtype,idnumber){
@@ -128,6 +117,7 @@ class Mapapp extends React.Component {
     }
     if (event.target.feature.properties.name=='udp_puebla_4326'||event.target.feature.properties.name=='linea_mtp'){
       getSpecies(lifeform,idtype,idnumber).then(myspeciesResult =>{
+        console.log(myspeciesResult)
         this.setState((prevState) => ({
           speciesResult: myspeciesResult      
         }));
@@ -164,22 +154,25 @@ class Mapapp extends React.Component {
           });
         }
       }
-    this.setState(() => ({
+    this.setState((prevState) => ({
         previous: event.target
         }));
         
     var highlight = {
-      'color': 'yellow',
-      'weight': 3,
-      'opacity': 1
+        'color': 'yellow',
+        'weight': 3,
+        'opacity': 1
     };
     event.target.setStyle(highlight);
 
+
+
     this.setState((prevState) => ({
-      featureInfo: {
-        properties:event.target.feature.properties
-      }
-    }));  
+        featureInfo: {
+            properties:event.target.feature.properties
+        }
+    }));
+        
   }
 
   
@@ -220,57 +213,15 @@ class Mapapp extends React.Component {
         <div className="container mymapcontainer">
           <div className='row justify-content-around align-items-center mapstat'>
             <div className='mymapdiv border border-dark'>
-                <Map
-                    getOutline={this.getOutline}
-                    handleMapClick={this.handleMapClick}
-                    handleFeatureClick={this.handleFeatureClick}
-                    setDefaultMax={this.setDefaultMax}
-                    mapSettings={this.state.mapSettings} 
-                    table = {this.state.table}
-                    />
-            </div>
-
-            <div className='mystatdiv p-1'>
-              <div className='withcontrol flex-column d-flex justify-content-between align-items-start'>
-                  <FeatureInfoDisplay 
-                    markerPosition={this.state.markerPosition} 
-                    featureInfo={this.state.featureInfo}
-                  />
-                  <MapControl
-                    handleSpeciesChange={this.handleSpeciesChange}
-                    handleTotalDistinctChange={this.handleTotalDistinctChange}
-                    handleOpacityChange={this.handleOpacityChange}
-                    handleMaxChange={this.handleMaxChange}
-                    mapSettings={this.state.mapSettings} 
-                  />
-                  <div className='p-2 align-self-center'>
-                    <a className="btn btn-primary m-2" href="/cargarshapes" role="button">Cargar Shapefile</a>
-                    <form action="/udpmapa" method="post">
-                      <input type="submit" className="btn btn-primary m-2" disabled ={!this.state.udpButton} name="udpbutton" value={this.state.udpButtonText} />
-                    </form>
-                  </div>
-                
-              </div>
+                <UDPMapa
+                />
             </div>
           </div>
-          <div className="speciesdisplay">
-            <SpeciesDisplay 
-              speciesResult={this.state.speciesResult} 
-            />
-          </div>
-        </div>
-
-        
-        <div>
-        
-        </div>
-          
-        
-          
+        </div>  
       </div>
     );
   }
 }
 
 
-export default Mapapp;
+export default UDPMapapp;

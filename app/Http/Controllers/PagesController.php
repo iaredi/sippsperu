@@ -31,6 +31,9 @@ class PagesController extends Controller
     public function cargarshapesadmin(){
         return view('pages/cargarshapesadmin');
     }
+    public function udpmapa(){
+        return view('pages/udpmapa');
+    }
     public function ingresarexcel(){
         return view('pages/ingresarexcel');
     }

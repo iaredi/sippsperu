@@ -42,6 +42,8 @@
             $loadshp="shp2pgsql -I -s 4326:4326 ../storage/shp/{$shpfile}2 {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d {$dbname}";
             
             $output= shell_exec($loadshp);
+            $output2= shell_exec("rm -rf ../storage/shp/*");
+
                 if (strpos($output, 'ROLLBACK') == false) {
                     //insert into geom usertable
                     $copyshp="insert into usershapes (nombre, iden_email, geom) values (:nombre, :email, :geom)";
