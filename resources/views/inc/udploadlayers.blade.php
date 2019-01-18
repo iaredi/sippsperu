@@ -10,7 +10,8 @@ class layer
     public $fillOpacity;
 }
 $email=session('email');
-$idennum = explode(" : " , $_POST['udpbutton'])[1];
+//$idennum = explode(" : " , $_POST['udpbutton'])[1];
+$idennum= 55;
 $layer1 = new layer();
 $layer1->tableName = 'udp_puebla_4326';
 $layer1->displayName = 'Unidad de Paisaje';
@@ -25,10 +26,8 @@ $layer1->sql ="SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6_email
 $layersArray = array($layer1);
 $addlayers = DB::select("SELECT * FROM additional_layers",[]);
 
-$focus = 'usos_de_suelo4';
-
 foreach($addlayers as $singlerow) {
-    if ($singlerow->tablename==$focus){
+    if (strpos($singlerow->tablename, 'suelo') !== false){
         $templayer = new layer();
         $templayer->tableName = $singlerow->tablename;
         $templayer->displayName = $singlerow->displayname;
@@ -38,14 +37,10 @@ foreach($addlayers as $singlerow) {
         $templayer->opacity =$singlerow->opacity;
         $templayer->weight =$singlerow->weight;
         $templayer->fillOpacity = $singlerow->fillopacity;
-        $templayer->sql = "SELECT {$singlerow->featurecolumn}, ST_AsGeoJSON(geom, 5) AS geojson FROM {$singlerow->tablename}";
+        $templayer->sql = "SELECT color, {$singlerow->featurecolumn}, ST_AsGeoJSON(geom, 5) AS geojson FROM {$singlerow->tablename}";
         $layersArray[]=$templayer;
     }
 }
-
-
-
-
 
 
 foreach ($layersArray as $layer) {
@@ -74,6 +69,7 @@ foreach ($layersArray as $layer) {
                 $geometry=$row->geojson=json_decode($row->geojson);
                 unset($row->geojson);
                 $row->name=$layer->tableName;
+                
                 $row->displayName=$layer->displayName;
                 $row->featureColumn=$layer->featureColumn;
                 if ($layer->tableName=='udp_puebla_4326'){

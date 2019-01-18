@@ -80,7 +80,7 @@ if (false) {
 
 /***/ }),
 
-/***/ 12:
+/***/ 11:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(13);
@@ -136,7 +136,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _regenerator = __webpack_require__(12);
+var _regenerator = __webpack_require__(11);
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
@@ -341,8 +341,7 @@ var UDPMapapp = function (_React$Component) {
 
       if (event.target.feature.properties.name == 'udp_puebla_4326' || event.target.feature.properties.name == 'linea_mtp') {
         getSpecies(lifeform, idtype, idnumber).then(function (myspeciesResult) {
-          console.log(myspeciesResult);
-          _this2.setState(function (prevState) {
+          _this2.setState(function () {
             return {
               speciesResult: myspeciesResult
             };
@@ -478,6 +477,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _regenerator = __webpack_require__(11);
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
@@ -489,6 +492,8 @@ var _leaflet = __webpack_require__(16);
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -529,7 +534,6 @@ var UDPMapa = function (_React$Component) {
         zoom: 9,
         layers: [],
         zoomControl: false
-
       });
 
       var streets = _leaflet2.default.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
@@ -546,6 +550,9 @@ var UDPMapa = function (_React$Component) {
         "Streets": streets
       };
       var get_shp = function get_shp(item, mymap, getColor) {
+        var boundsresult = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+        console.log(udpsomething);
         var myStyle = function myStyle(feature) {
           return {
             "fillColor": getColor(feature.properties['descripcio']),
@@ -555,48 +562,124 @@ var UDPMapa = function (_React$Component) {
             "fillOpacity": item.fillOpacity
           };
         };
+        if (item.tableName.includes('suelo')) {
+          console.log("hiiii");
+          myStyle = function myStyle(feature) {
+            return {
+              "fillColor": feature.properties['color'],
+              "opacity": item.opacity,
+              "weight": item.weight,
+              "color": item.color,
+              "fillOpacity": item.fillOpacity
+            };
+          };
+        }
 
         var c2 = _leaflet2.default.geoJson(item.geom, {
           style: myStyle
         });
 
         c2.addTo(mymap);
-
         return c2;
       };
 
       var processArray = function processArray(array, mymap, mybaseMaps, getColor, getOutline) {
-        var dynamicLayer = 'notset';
-        var overlayMaps = _this2.overlayMaps || {};
-        array.forEach(function (item) {
-          var myLayer = get_shp(item, mymap, getColor, getOutline);
-          if (item.tableName == 'udp_puebla_4326') {
-            dynamicLayer = myLayer;
-            mymap.fitBounds(myLayer.getBounds());
-            ////ASYNC HERE 
 
+        var overlayMaps = _this2.overlayMaps || {};
+        var bounds = "none";
+        array.forEach(function (item) {
+
+          if (!item.tableName.includes('suelo')) {
+            var myLayer = get_shp(item, mymap, getColor, getOutline);
+            overlayMaps[item.displayName] = myLayer;
+            _leaflet2.default.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
+            if (item.tableName == 'udp_puebla_4326') {
+              mymap.fitBounds(myLayer.getBounds());
+              bounds = mymap.getBounds();
+            }
+          } else {
+            ////ASYNC HERE 
+            //ask the api what layers are in frame so they can be colored and list
+            //later we will get the metrics of soils in our udp square.
+            var getBoundingFeatures = function () {
+              var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(bounds) {
+                var myapi, rawResponse, dataResult;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                  while (1) {
+                    switch (_context.prev = _context.next) {
+                      case 0:
+                        myapi = 'https://biodiversidadpuebla.online/api/getboundingfeatures';
+
+                        if (window.location.host == 'localhost:3000') myapi = 'http://localhost:3000/api/getboundingfeatures';
+                        _context.next = 4;
+                        return fetch(myapi, {
+                          method: 'POST',
+                          headers: {
+                            'Accept': 'application/json',
+                            "Content-Type": "application/json;",
+                            mode: 'cors'
+                          },
+                          body: JSON.stringify({
+                            "north": bounds._northEast.lat,
+                            "east": bounds._northEast.lng,
+                            "south": bounds._southWest.lat,
+                            "west": bounds._southWest.lng
+                          })
+                        });
+
+                      case 4:
+                        rawResponse = _context.sent;
+                        _context.next = 7;
+                        return rawResponse.json();
+
+                      case 7:
+                        dataResult = _context.sent;
+                        return _context.abrupt("return", dataResult);
+
+                      case 9:
+                      case "end":
+                        return _context.stop();
+                    }
+                  }
+                }, _callee, this);
+              }));
+
+              return function getBoundingFeatures(_x2) {
+                return _ref.apply(this, arguments);
+              };
+            }();
+
+            getBoundingFeatures(bounds).then(function (boundsresult) {
+              console.log(boundsresult);
+              // this.setState(() => ({
+              //   speciesResult: myspeciesResult      
+              // }));
+              var myLayer = get_shp(item, mymap, getColor, getOutline, boundsresult);
+              overlayMaps[item.displayName] = myLayer;
+              _leaflet2.default.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
+            });
           }
-          overlayMaps[item.displayName] = myLayer;
         });
-        _leaflet2.default.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
-        return dynamicLayer;
       };
-      this.dynamicLayer = processArray(udpsomething, this.map, this.baseMaps, this.getColor, this.getOutline);
+      processArray(udpsomething, this.map, this.baseMaps, this.getColor, this.getOutline);
       this.map.scrollWheelZoom.disable();
-      console.log(this.map.getBounds());
-      console.log(udpsomething);
+
+      //Make map static
       var lyrcont = document.getElementsByClassName("leaflet-control-layers")[0];
       var lyratt = document.getElementsByClassName("leaflet-control-attribution")[0];
+      var lyrtop = document.getElementsByClassName("leaflet-top")[0];
       lyrcont.style.visibility = 'hidden';
       lyratt.style.visibility = 'hidden';
+      lyrtop.style.visibility = 'hidden';
+
       this.map.dragging.disable();
       this.map.doubleClickZoom.disable();
       /////////////////////////////////////////////////////
     }
   }, {
     key: "componentDidUpdate",
-    value: function componentDidUpdate(_ref) {
-      var mapSettings = _ref.mapSettings;
+    value: function componentDidUpdate(_ref2) {
+      var mapSettings = _ref2.mapSettings;
     }
   }, {
     key: "render",

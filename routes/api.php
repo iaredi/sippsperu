@@ -17,6 +17,30 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('getboundingfeatures', function(Request $request) {
+    $north =  $request->north;
+    $east =  $request->east;
+    $south =  $request->south;
+    $west =  $request->west;
+
+    $sql =   
+    "SELECT distinct descripcio, color
+
+    FROM usos_de_suelo4 
+    where ST_Intersects(usos_de_suelo4.geom,                        
+    ST_GeomFromText('POLYGON(({$east} {$north},{$east} {$south},{$west} {$south},{$west} {$north},{$east} {$north}))',4326))";
+    
+    $result="There was an error";
+    if (is_numeric($north) && is_numeric($east) && is_numeric($south) && is_numeric($west)){
+        $result = DB::select($sql,[]);
+    }
+
+
+
+
+    $geojson=json_encode($result);
+    return $geojson;
+});
 
 Route::post('tester8', function(Request $request) {
     $layer=[];
