@@ -18,28 +18,72 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('getboundingfeatures', function(Request $request) {
+    $result="There was an error";
     $north =  $request->north;
     $east =  $request->east;
     $south =  $request->south;
     $west =  $request->west;
+    $udpiden = $request->udpiden;
+
+    $totalsql = "SELECT ST_Area((select geom from udp_puebla_4326 where iden={$udpiden}))";
+    $totalarea=DB::select($totalsql,[])[0]->st_area;
 
     $sql =   
-    "SELECT distinct descripcio, color
+      "SELECT distinct descripcio, color
+      FROM usos_de_suelo4 
+      where ST_Intersects(usos_de_suelo4.geom,                        
+      ST_GeomFromText('POLYGON(({$east} {$north},{$east} {$south},{$west} {$south},{$west} {$north},{$east} {$north}))',4326))";
 
-    FROM usos_de_suelo4 
-    where ST_Intersects(usos_de_suelo4.geom,                        
-    ST_GeomFromText('POLYGON(({$east} {$north},{$east} {$south},{$west} {$south},{$west} {$north},{$east} {$north}))',4326))";
+    $sqludp =   
+      "SELECT gid, descripcio, color, 2 as aislado, {$totalarea} as totalarea
+      FROM usos_de_suelo4 
+      where ST_Intersects(usos_de_suelo4.geom,
+      (select geom from udp_puebla_4326 where iden={$udpiden}))";
+
     
-    $result="There was an error";
     if (is_numeric($north) && is_numeric($east) && is_numeric($south) && is_numeric($west)){
-        $result = DB::select($sql,[]);
+      $result = DB::select($sql,[]);
     }
 
+    $resultudp = DB::select($sqludp,[]);
+
+    $alldesc=[];
+    foreach($resultudp AS $row) {
+      $gid = $row->gid;
+      $areasql ="SELECT ST_Area(ST_INTERSECTION(usos_de_suelo4.geom, (select geom from udp_puebla_4326 where iden={$udpiden}))) from usos_de_suelo4 where gid = ?";
+      $arearesult = DB::select($areasql,[$gid]);
+      $row->area=(float)($arearesult[0]->st_area);
+      
+      //If soil is completely within, within set to 1. Unaigned is 2
+      $withinsql ="SELECT ST_Within(usos_de_suelo4.geom, (select geom from udp_puebla_4326 where iden={$udpiden})) from usos_de_suelo4 where gid = ?";
+      $withinresult = DB::select($withinsql,[$gid]);
+      if ($withinresult[0]->st_within){
+        $row->aislado=1;
+      }else{
+        $row->aislado=0;
+      }
 
 
+      // foreach($result AS $row2) {
+      //   if($row2->descripcio==$row->descripcio){
+      //     $row2->area=(float)($row2->area)+(float)($row->area);
 
-    $geojson=json_encode($result);
-    return $geojson;
+      //     if ((int)($row2->aislado)==2){
+      //       $row2->aislado=(int)($row->aislado);
+      //     }else{
+      //       if ((int)($row2->aislado)==1){
+      //         $row2->aislado=(int)($row->aislado);
+      //       }
+      //     }
+      //   }
+      // }
+
+    }
+
+    $geojson1=json_encode($result);
+    $geojson2=json_encode($resultudp);
+    
+    return [$geojson1,$geojson2];
 });
 
 Route::post('tester8', function(Request $request) {

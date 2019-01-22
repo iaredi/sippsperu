@@ -17,17 +17,17 @@ $layer1->tableName = 'udp_puebla_4326';
 $layer1->displayName = 'Unidad de Paisaje';
 $layer1->featureColumn = 'iden';
 $layer1->color = 'black';
-$layer1->fillColor = 'blue';
+$layer1->fillColor = 'black';
 $layer1->opacity = 1;
-$layer1->weight = 0.3;
-$layer1->fillOpacity = 0.2;
+$layer1->weight = 2;
+$layer1->fillOpacity = 0;
 $layer1->sql ="SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6_email where iden = '{$idennum}'";
 
 $layersArray = array($layer1);
 $addlayers = DB::select("SELECT * FROM additional_layers",[]);
 
 foreach($addlayers as $singlerow) {
-    if (strpos($singlerow->tablename, 'suelo') !== false){
+    if ($singlerow->tablename=='usos_de_suelo4'){
         $templayer = new layer();
         $templayer->tableName = $singlerow->tablename;
         $templayer->displayName = $singlerow->displayname;
@@ -42,15 +42,12 @@ foreach($addlayers as $singlerow) {
     }
 }
 
-
 foreach ($layersArray as $layer) {
     $features=[];
     $dslist=[];
     $tolist=[];
     $dsmax=[];
     $tomax=[];
-
-    
     
     $result = DB::select($layer->sql,[]);
 

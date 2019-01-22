@@ -102,6 +102,24 @@ tbody#measurementTBodyForm {
 .mymapdiv{
     min-width: 900px;
 }
+.udplayout{
+    display: grid;
+    background-color: #b2d5fc;
+    grid-template-columns: 600px 400px;
+    grid-template-rows: 500px 40px 100px;
+}
+
+#udpmapdiv{
+    background-color: #c2ff5f;
+    grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end:  2;
+  height: 100%;
+  padding: 10px;
+}
+
+
 .mystatdiv{
     min-width: 500px;
     height: 100%;
