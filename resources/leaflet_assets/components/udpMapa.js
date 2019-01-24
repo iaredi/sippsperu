@@ -9,7 +9,6 @@ const style = {
 class UDPMapa extends React.Component {
   constructor(props) {
     super(props);
-    this.getColor = this.getColor.bind(this);
     this.setStateBounds = this.setStateBounds.bind(this);
     this.setSoils = this.setSoils.bind(this);
   }
@@ -19,9 +18,7 @@ class UDPMapa extends React.Component {
   setSoils(soils,udpsoils) {
     this.props.setSoils(soils,udpsoils);
   }
-  getColor(x) {
-    return x == "ZONA URBANA" ? "#edf8fb" : "#005824";
-  }
+  
 
   componentDidMount() {
     // create map
@@ -47,8 +44,7 @@ class UDPMapa extends React.Component {
     //   "Imagery":imagery,
     //   "Streets": streets
     // };
-    const get_shp = (item, mymap, getColor) => {
-      console.log(udpsomething);
+    const get_shp = (item, mymap) => {
       let myStyle = feature => {
         return {
           fillColor: item.fillColor,
@@ -78,15 +74,16 @@ class UDPMapa extends React.Component {
       return c2;
     };
 
-    const processArray = (array, mymap, getColor, setStateBounds, setSoils) => {
+    const processArray = (array, mymap, setStateBounds, setSoils) => {
+    
       const overlayMaps = this.overlayMaps || {};
       var bounds = "none";
       var udpiden = "none";
       array.forEach(function(item) {
         if (item.tableName !== "usos_de_suelo4") {
-          let myLayer = get_shp(item, mymap, getColor);
+          let myLayer = get_shp(item, mymap);
           overlayMaps[item.displayName] = myLayer;
-          L.control.layers(overlayMaps).addTo(mymap);
+          //L.control.layers(overlayMaps).addTo(mymap);
           if (item.tableName == "udp_puebla_4326") {
             mymap.fitBounds(myLayer.getBounds());
             bounds = mymap.getBounds();
@@ -122,11 +119,20 @@ class UDPMapa extends React.Component {
             return dataResult;
           }
           getBoundingFeatures(bounds,udpiden).then(soils => {
-            console.log(JSON.parse(soils[1]))
-            setSoils(JSON.parse(soils[0]),JSON.parse(soils[1]));
-            let myLayer = get_shp(item, mymap, getColor);
+            
+            setSoils(JSON.parse(soils[0]), JSON.parse(soils[1]));
+            let myLayer = get_shp(item, mymap);
             overlayMaps[item.displayName] = myLayer;
-            //L.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
+            console.log(soils[5]);
+
+            [ JSON.parse(soils[2]), JSON.parse(soils[3]), JSON.parse(soils[4]) ].forEach((item) => {
+              console.log(item)
+              if (item.geom){
+                var myLayeragua_lineas = get_shp(item, mymap);
+                //overlayMaps[agua_lineas.displayName] = myLayeragua_lineas;
+              }
+            })
+           
           });
         }
       });
@@ -134,21 +140,20 @@ class UDPMapa extends React.Component {
     processArray(
       udpsomething,
       this.map,
-      this.getColor,
       this.setStateBounds,
       this.setSoils
     );
     this.map.scrollWheelZoom.disable();
 
     //Make map static
-    var lyrcont = document.getElementsByClassName("leaflet-control-layers")[0];
-    var lyratt = document.getElementsByClassName(
-      "leaflet-control-attribution"
-    )[0];
-    var lyrtop = document.getElementsByClassName("leaflet-top")[0];
+    var lyrcont = document.getElementsByClassName("leaflet-control")[0];
+    // var lyratt = document.getElementsByClassName(
+    //   "leaflet-control-attribution"
+    // )[0];
+    // var lyrtop = document.getElementsByClassName("leaflet-top")[0];
     lyrcont.style.visibility = "hidden";
-    lyratt.style.visibility = "hidden";
-    lyrtop.style.visibility = "hidden";
+    // lyratt.style.visibility = "hidden";
+    // lyrtop.style.visibility = "hidden";
 
     this.map.dragging.disable();
     this.map.doubleClickZoom.disable();

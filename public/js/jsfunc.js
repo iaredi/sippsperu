@@ -79,7 +79,7 @@ module.exports = __webpack_require__(119);
 "use strict";
 
 
-var _regenerator = __webpack_require__(12);
+var _regenerator = __webpack_require__(22);
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
@@ -849,7 +849,6 @@ function clickReadyButton(e) {
     if (e.offsetX > 0) {
 
         getData().then(function (dataResult) {
-            console.log(dataResult);
             clearForm(menu, "Form");
             if (dataResult[0].length > 0) {
                 var myTBody = document.getElementById(menu + "TBody" + 'Form');
@@ -1100,15 +1099,15 @@ if (window.location.href.substr(-5) === 'admin') {
 
 /***/ }),
 
-/***/ 12:
+/***/ 22:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(13);
+module.exports = __webpack_require__(23);
 
 
 /***/ }),
 
-/***/ 13:
+/***/ 23:
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1133,7 +1132,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(14);
+module.exports = __webpack_require__(24);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -1150,7 +1149,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 14:
+/***/ 24:
 /***/ (function(module, exports) {
 
 /**

@@ -68,7 +68,6 @@ class UDPMapapp extends React.Component {
   }
 
   render() {
-    console.log(this.state.bounds);
     return (
       <div>
         <div className="udplayout">
@@ -90,13 +89,15 @@ class UDPMapapp extends React.Component {
           </div>
 
           <div id="parchestable">
-            {this.state.boundsobtained ? (
-            <ParchesTable
-            udpsoils={this.state.udpsoils} 
-          />) : <p>'none'</p>
-          }
-            
+            {
+              this.state.boundsobtained ?
+                (<ParchesTable udpsoils={this.state.udpsoils} />) : 
+                <p>'none'</p>
+            }
           </div>
+          <div id="biodivreport">
+          </div>
+
 
         </div>
       </div>

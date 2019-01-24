@@ -6,8 +6,8 @@ ul{
 .udplayout{
     display: grid;
     background-color: #b2d5fc;
-    grid-template-columns: 91mm 80mm 96mm;/*   279.4 */
-    grid-template-rows: 152mm 10mm 54mm;/* 215.9  */
+    grid-template-columns: 93mm 82mm 98mm;/*   279.4 */
+    grid-template-rows: 150mm 8mm 52mm;/* 215.9  */
 }
 
 #udpmapdiv{
@@ -72,15 +72,24 @@ ul{
   grid-row-end:  2;
   height: 100%;
   width: 100%;
- 
 }
 .bsparchtable{
   font-size: 10px;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   border-collapse: collapse;
   border-spacing: 0;
+  margin-top:5px 
 }
 
+#biodivreport{
+  background-color: #9f9bff;
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 2;
+  grid-row-end:  4;
+  height: 100%;
+  width: 100%;
+}
 
 td, th {
   border: 1px solid #0e0e0e;

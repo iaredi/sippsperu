@@ -10,8 +10,8 @@ class layer
     public $fillOpacity;
 }
 $email=session('email');
-//$idennum = explode(" : " , $_POST['udpbutton'])[1];
-$idennum= 55;
+$idennum = explode(" : " , $_POST['udpbutton'])[1];
+//$idennum= 55;
 $layer1 = new layer();
 $layer1->tableName = 'udp_puebla_4326';
 $layer1->displayName = 'Unidad de Paisaje';
@@ -22,6 +22,7 @@ $layer1->opacity = 1;
 $layer1->weight = 2;
 $layer1->fillOpacity = 0;
 $layer1->sql ="SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6_email where iden = '{$idennum}'";
+
 
 $layersArray = array($layer1);
 $addlayers = DB::select("SELECT * FROM additional_layers",[]);
@@ -99,7 +100,6 @@ $geojson=json_encode($layersArray);
 ?>
 <script>
     var udpsomething = {!! $geojson !!};
-    var udpdefaultmax = {!! $defaultmaxjson['udp_puebla_4326'] !!};     
 </script>
 
 

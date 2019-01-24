@@ -27,34 +27,51 @@ Route::post('getboundingfeatures', function(Request $request) {
 
     $totalsql = "SELECT ST_Area((select geom from udp_puebla_4326 where iden={$udpiden}))";
     $totalarea=DB::select($totalsql,[])[0]->st_area;
-
+    //Bounding box and soils 
     $sql =   
       "SELECT distinct descripcio, color
       FROM usos_de_suelo4 
       where ST_Intersects(usos_de_suelo4.geom,                        
       ST_GeomFromText('POLYGON(({$east} {$north},{$east} {$south},{$west} {$south},{$west} {$north},{$east} {$north}))',4326))";
-
+    //udp and soils 
     $sqludp =   
       "SELECT gid, descripcio, color, 2 as aislado, {$totalarea} as totalarea
       FROM usos_de_suelo4 
       where ST_Intersects(usos_de_suelo4.geom,
       (select geom from udp_puebla_4326 where iden={$udpiden}))";
-
-    
+    //udp and water lines 
+    $sqludplineaagua =   
+      "SELECT gid, nombre 
+      FROM agua_lineas 
+      where ST_Intersects(agua_lineas.geom,
+      (select geom from udp_puebla_4326 where iden={$udpiden}))";
+      
     if (is_numeric($north) && is_numeric($east) && is_numeric($south) && is_numeric($west)){
       $result = DB::select($sql,[]);
     }
 
     $resultudp = DB::select($sqludp,[]);
 
-    $alldesc=[];
+    $resultudplineaagua = DB::select($sqludplineaagua,[]);
+
+    $agualength=0;
+    foreach($resultudplineaagua AS $row2) {
+      $agualinegid = $row2->gid;
+      //get length of water lines in udp
+      $lengthsql="SELECT ST_Length(ST_INTERSECTION((select geom from agua_lineas where gid = ?), (select geom from  udp_puebla_4326 where iden={$udpiden})))";
+      $lengthresult = DB::select($lengthsql,[$agualinegid]);
+      $agualength= $agualength + (float)($lengthresult[0]->st_length);
+    }
+
+
     foreach($resultudp AS $row) {
       $gid = $row->gid;
+      //get area of usos de suelo
       $areasql ="SELECT ST_Area(ST_INTERSECTION(usos_de_suelo4.geom, (select geom from udp_puebla_4326 where iden={$udpiden}))) from usos_de_suelo4 where gid = ?";
       $arearesult = DB::select($areasql,[$gid]);
       $row->area=(float)($arearesult[0]->st_area);
       
-      //If soil is completely within, within set to 1. Unaigned is 2
+      //If soil is completely within, within set to 1. Unassigned is 2
       $withinsql ="SELECT ST_Within(usos_de_suelo4.geom, (select geom from udp_puebla_4326 where iden={$udpiden})) from usos_de_suelo4 where gid = ?";
       $withinresult = DB::select($withinsql,[$gid]);
       if ($withinresult[0]->st_within){
@@ -62,29 +79,114 @@ Route::post('getboundingfeatures', function(Request $request) {
       }else{
         $row->aislado=0;
       }
+      $row->agualength=$agualength;
+    }
+    
+    
 
-
-      // foreach($result AS $row2) {
-      //   if($row2->descripcio==$row->descripcio){
-      //     $row2->area=(float)($row2->area)+(float)($row->area);
-
-      //     if ((int)($row2->aislado)==2){
-      //       $row2->aislado=(int)($row->aislado);
-      //     }else{
-      //       if ((int)($row2->aislado)==1){
-      //         $row2->aislado=(int)($row->aislado);
-      //       }
-      //     }
-      //   }
-      // }
-
+/////////////AGUA///////////
+    class layer
+    {
+        public $tableName;
+        public $displayName;
+        public $color;
+        public $fillColor;
+        public $opacity;
+        public $weight;
+        public $fillOpacity;
     }
 
-    $geojson1=json_encode($result);
-    $geojson2=json_encode($resultudp);
+    $layer2 = new layer();
+    $layer2->tableName = 'agua_lineas';
+    $layer2->displayName = 'Agua Lineas';
+    $layer2->featureColumn = 'nombre';
+    $layer2->color = 'blue';
+    $layer2->fillColor = 'blue';
+    $layer2->opacity = 1;
+    $layer2->weight = 1;
+    $layer2->fillOpacity = 1;
+    $layer2->sql = "SELECT nombre, ST_AsGeoJSON(geom, 5) AS geojson FROM agua_lineas
+      where ST_Intersects(agua_lineas.geom,                        
+      ST_GeomFromText('POLYGON(({$east} {$north},{$east} {$south},{$west} {$south},{$west} {$north},{$east} {$north}))',4326))";
+
+    $layer3 = new layer();
+    $layer3->tableName = 'agua_poligonos';
+    $layer3->displayName = 'Agua Poligonos';
+    $layer3->featureColumn = 'nombre';
+    $layer3->color = 'light blue';
+    $layer3->fillColor = 'light blue';
+    $layer3->opacity = 1;
+    $layer3->weight = 1;
+    $layer3->fillOpacity = 1;
+    $layer3->sql = "SELECT nombre, ST_AsGeoJSON(geom, 5) AS geojson FROM agua_poligonos
+      where ST_Intersects(agua_poligonos.geom,                        
+      ST_GeomFromText('POLYGON(({$east} {$north},{$east} {$south},{$west} {$south},{$west} {$north},{$east} {$north}))',4326))";
+      
+    $layer4 = new layer();
+    $layer4->tableName = 'agua_puntos';
+    $layer4->displayName = 'Agua Puntos';
+    $layer4->featureColumn = 'nombre';
+    $layer4->color = 'black';
+    $layer4->fillColor = 'black';
+    $layer4->opacity = 1;
+    $layer4->weight = 1;
+    $layer4->fillOpacity = 1;
+    $layer4->sql = "SELECT nombre, ST_AsGeoJSON(geom, 5) AS geojson FROM agua_puntos
+      where ST_Intersects(agua_puntos.geom,                        
+      ST_GeomFromText('POLYGON(({$east} {$north},{$east} {$south},{$west} {$south},{$west} {$north},{$east} {$north}))',4326))";
+
+    $layersArray = array($layer2,$layer3,$layer4);
+    $mytext = 'none';
+    foreach ($layersArray as $layer) {
+      $features=[];
+      $result2 = DB::select($layer->sql,[]);
+        if (isset($result[0])){
+          foreach($result2 AS $row2){
+            if (isset($row2->geom)){
+              unset($row2->geom);
+            }
+            $geometry=$row2->geojson=json_decode($row2->geojson);
+            unset($row2->geojson);
+
+            $row2->name=$layer->tableName;
+            $row2->displayName=$layer->displayName;
+            $row2->featureColumn=$layer->featureColumn;
+            
+            $feature=["type"=>"Feature", "geometry"=>$geometry, "properties"=>$row2];
+
+            array_push($features, $feature);
+            $featureCollection=["type"=>"FeatureCollection", "features"=>$features];
+          }   
+          if (isset($featureCollection)){
+            $layer->geom=$featureCollection;
+            unset($features);
+            unset($featureCollection);
+          }
+        }
+      
+    }
+/////////////////////////////////
+
+
+   
     
-    return [$geojson1,$geojson2];
+    return [
+      json_encode($result),
+      json_encode($resultudp),
+      json_encode($layersArray[0]),
+      json_encode($layersArray[1]),
+      json_encode($layersArray[2]),
+      json_encode($mytext)
+
+
+    ];
 });
+
+
+
+
+
+
 
 Route::post('tester8', function(Request $request) {
     $layer=[];

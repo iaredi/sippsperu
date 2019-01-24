@@ -1,9 +1,9 @@
 {
     "/leaflet_assets/index.js": "/leaflet_assets/index.js",
+    "/leaflet_assets/udpindex.js": "/leaflet_assets/udpindex.js",
     "/leaflet_assets/components/Mapapp.js": "/leaflet_assets/components/Mapapp.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/leaflet_assets/udpindex.js": "/leaflet_assets/udpindex.js",
     "/leaflet_assets/components/Map.js": "/leaflet_assets/components/Map.js",
     "/js/jsfunc.js": "/js/jsfunc.js",
     "/css/print.css": "/css/print.css",

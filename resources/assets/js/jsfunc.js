@@ -727,7 +727,6 @@ function clickReadyButton(e){
     if (e.offsetX>0){
         
         getData().then(dataResult =>{
-            console.log(dataResult)
             clearForm(menu,"Form")
             if (dataResult[0].length>0){
                 const myTBody = document.getElementById(menu+"TBody"+'Form')
