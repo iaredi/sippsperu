@@ -24129,24 +24129,31 @@ var Mapapp = function (_React$Component) {
       previous: 0,
       udp: 0,
       udpButton: false,
-      udpButtonText: 'Mapa de UDP Eligido',
+      udpButtonText: "Mapa de UDP Eligido",
       markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
-      mapSettings: { distinctOrTotal: "total_observaciones", myObsType: "ave", fillOpacity: 0.6, maxValue: 99 },
-      featureInfo: { properties: { message: 'click somewhere', displayName: 'none' } },
-      table: [{ tableName: 'udp_puebla_4326', color: 'blue' }]
+      mapSettings: {
+        distinctOrTotal: "total_observaciones",
+        myObsType: "ave",
+        fillOpacity: 0.6,
+        maxValue: 99
+      },
+      featureInfo: {
+        properties: { message: "click somewhere", displayName: "none" }
+      },
+      table: [{ tableName: "udp_puebla_4326", color: "blue" }]
     };
     return _this;
   }
 
   _createClass(Mapapp, [{
-    key: 'getOutline',
+    key: "getOutline",
     value: function getOutline(properties, cat) {
-      var email = document.getElementById('useremail').textContent;
+      var email = document.getElementById("useremail").textContent;
       var emailArray = [properties.ave_email, properties.arbol_email, properties.arbusto_email, properties.hierba_email, properties.herpetofauna_email, properties.mamifero_email];
-      if (cat == 'color') {
-        return emailArray.includes(email) ? 'purple' : emailArray.some(function (el) {
+      if (cat == "color") {
+        return emailArray.includes(email) ? "purple" : emailArray.some(function (el) {
           return el !== null;
-        }) ? 'red' : 'black';
+        }) ? "red" : "black";
       } else {
         return emailArray.includes(email) ? 3 : emailArray.some(function (el) {
           return el !== null;
@@ -24154,7 +24161,7 @@ var Mapapp = function (_React$Component) {
       }
     }
   }, {
-    key: 'handleMapClick',
+    key: "handleMapClick",
     value: function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(event) {
         return _regenerator2.default.wrap(function _callee$(_context) {
@@ -24171,7 +24178,7 @@ var Mapapp = function (_React$Component) {
                 });
 
               case 1:
-              case 'end':
+              case "end":
                 return _context.stop();
             }
           }
@@ -24185,9 +24192,9 @@ var Mapapp = function (_React$Component) {
       return handleMapClick;
     }()
   }, {
-    key: 'handleSpeciesChange',
+    key: "handleSpeciesChange",
     value: function handleSpeciesChange(value) {
-      var max = defaultmax[this.state.mapSettings.distinctOrTotal + '_' + value];
+      var max = defaultmax[this.state.mapSettings.distinctOrTotal + "_" + value];
       max = max < 6 ? 6 : max;
       this.setState(function (prevState) {
         return {
@@ -24201,9 +24208,9 @@ var Mapapp = function (_React$Component) {
       });
     }
   }, {
-    key: 'handleTotalDistinctChange',
+    key: "handleTotalDistinctChange",
     value: function handleTotalDistinctChange(value) {
-      var max = defaultmax[value + '_' + this.state.mapSettings.myObsType];
+      var max = defaultmax[value + "_" + this.state.mapSettings.myObsType];
       max = max < 6 ? 6 : max;
       this.setState(function (prevState) {
         return {
@@ -24217,7 +24224,7 @@ var Mapapp = function (_React$Component) {
       });
     }
   }, {
-    key: 'setDefaultMax',
+    key: "setDefaultMax",
     value: function setDefaultMax(max) {
       max = max < 6 ? 6 : max;
       this.setState(function (prevState) {
@@ -24232,7 +24239,7 @@ var Mapapp = function (_React$Component) {
       });
     }
   }, {
-    key: 'handleFeatureClick',
+    key: "handleFeatureClick",
     value: function handleFeatureClick(event) {
       var _this2 = this;
 
@@ -24243,23 +24250,22 @@ var Mapapp = function (_React$Component) {
             while (1) {
               switch (_context2.prev = _context2.next) {
                 case 0:
-                  myapi = 'https://biodiversidadpuebla.online/api/getspecies';
+                  myapi = "https://biodiversidadpuebla.online/api/getspecies";
 
-                  if (window.location.host == 'localhost:3000') myapi = 'http://localhost:3000/api/getspecies';
+                  if (window.location.host == "localhost:3000") myapi = "http://localhost:3000/api/getspecies";
                   _context2.next = 4;
                   return fetch(myapi, {
-                    method: 'POST',
+                    method: "POST",
                     headers: {
-                      'Accept': 'application/json',
+                      Accept: "application/json",
                       "Content-Type": "application/json;",
-                      mode: 'cors'
+                      mode: "cors"
                     },
                     body: JSON.stringify({
-                      "lifeform": lifeform,
-                      "idtype": idtype,
-                      "idnumber": idnumber,
-                      "useremail": document.getElementById('useremail').textContent
-
+                      lifeform: lifeform,
+                      idtype: idtype,
+                      idnumber: idnumber,
+                      useremail: document.getElementById("useremail").textContent
                     })
                   });
 
@@ -24270,10 +24276,10 @@ var Mapapp = function (_React$Component) {
 
                 case 7:
                   dataResult = _context2.sent;
-                  return _context2.abrupt('return', dataResult);
+                  return _context2.abrupt("return", dataResult);
 
                 case 9:
-                case 'end':
+                case "end":
                   return _context2.stop();
               }
             }
@@ -24286,20 +24292,20 @@ var Mapapp = function (_React$Component) {
       }();
 
       var lifeform = this.state.mapSettings.myObsType;
-      var idtype = event.target.feature.properties.name == 'udp_puebla_4326' ? 'udp' : 'linea_mtp';
+      var idtype = event.target.feature.properties.name == "udp_puebla_4326" ? "udp" : "linea_mtp";
       this.setState(function () {
         return {
-          udpButton: idtype == 'udp' ? true : false
+          udpButton: idtype == "udp" ? true : false
         };
       });
       this.setState(function () {
         return {
-          udpButtonText: idtype == 'udp' ? 'Mapa de UDP Eligido : ' + event.target.feature.properties.iden : 'Mapa de UDP Eligido'
+          udpButtonText: idtype == "udp" ? "Mapa de UDP Eligido : " + event.target.feature.properties.iden : "Mapa de UDP Eligido"
         };
       });
       var idnumber = event.target.feature.properties.iden;
 
-      if (event.target.feature.properties.name == 'udp_puebla_4326' || event.target.feature.properties.name == 'linea_mtp') {
+      if (event.target.feature.properties.name == "udp_puebla_4326" || event.target.feature.properties.name == "linea_mtp") {
         getSpecies(lifeform, idtype, idnumber).then(function (myspeciesResult) {
           _this2.setState(function (prevState) {
             return {
@@ -24310,12 +24316,11 @@ var Mapapp = function (_React$Component) {
       }
 
       /////////////////////////////////////////////////////////////////////////////////////////////
-      var myColor = 'green';
+      var myColor = "green";
       var myWeight = 5;
       var myOpacity = 5;
 
       if (this.state.previous) {
-
         something.forEach(function (thing) {
           if (thing.tableName == _this2.state.previous.feature.properties.name) {
             myColor = thing.color;
@@ -24326,15 +24331,15 @@ var Mapapp = function (_React$Component) {
 
         if (this.state.previous.feature.properties.name == "udp_puebla_4326") {
           this.state.previous.setStyle({
-            "weight": this.getOutline(this.state.previous.feature.properties, 'weight'),
-            "color": this.getOutline(this.state.previous.feature.properties, 'color'),
-            'opacity': myOpacity
+            weight: this.getOutline(this.state.previous.feature.properties, "weight"),
+            color: this.getOutline(this.state.previous.feature.properties, "color"),
+            opacity: myOpacity
           });
         } else {
           this.state.previous.setStyle({
-            'color': myColor,
-            'weight': myWeight,
-            'opacity': myOpacity
+            color: myColor,
+            weight: myWeight,
+            opacity: myOpacity
           });
         }
       }
@@ -24345,9 +24350,9 @@ var Mapapp = function (_React$Component) {
       });
 
       var highlight = {
-        'color': 'yellow',
-        'weight': 3,
-        'opacity': 1
+        color: "yellow",
+        weight: 3,
+        opacity: 1
       };
       event.target.setStyle(highlight);
 
@@ -24360,7 +24365,7 @@ var Mapapp = function (_React$Component) {
       });
     }
   }, {
-    key: 'handleOpacityChange',
+    key: "handleOpacityChange",
     value: function handleOpacityChange(value) {
       this.setState(function (prevState) {
         return {
@@ -24374,7 +24379,7 @@ var Mapapp = function (_React$Component) {
       });
     }
   }, {
-    key: 'handleMaxChange',
+    key: "handleMaxChange",
     value: function handleMaxChange(value) {
       this.setState(function (prevState) {
         return {
@@ -24388,7 +24393,7 @@ var Mapapp = function (_React$Component) {
       });
     }
   }, {
-    key: 'updateMarkers',
+    key: "updateMarkers",
     value: function updateMarkers(markersData) {
       var _this3 = this;
 
@@ -24398,20 +24403,21 @@ var Mapapp = function (_React$Component) {
       });
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
+      console.log(this.state.featureInfo);
       return _react2.default.createElement(
-        'div',
+        "div",
         null,
         _react2.default.createElement(
-          'div',
-          { className: 'container mymapcontainer' },
+          "div",
+          { className: "container mymapcontainer" },
           _react2.default.createElement(
-            'div',
-            { className: 'row justify-content-around align-items-center mapstat' },
+            "div",
+            { className: "row justify-content-around align-items-center mapstat" },
             _react2.default.createElement(
-              'div',
-              { className: 'mymapdiv border border-dark' },
+              "div",
+              { className: "mymapdiv border border-dark" },
               _react2.default.createElement(_Map2.default, {
                 getOutline: this.getOutline,
                 handleMapClick: this.handleMapClick,
@@ -24422,11 +24428,11 @@ var Mapapp = function (_React$Component) {
               })
             ),
             _react2.default.createElement(
-              'div',
-              { className: 'mystatdiv p-1' },
+              "div",
+              { className: "mystatdiv p-1" },
               _react2.default.createElement(
-                'div',
-                { className: 'withcontrol flex-column d-flex justify-content-between align-items-start' },
+                "div",
+                { className: "withcontrol flex-column d-flex justify-content-between align-items-start" },
                 _react2.default.createElement(_FeatureInfoDisplay2.default, {
                   markerPosition: this.state.markerPosition,
                   featureInfo: this.state.featureInfo
@@ -24439,31 +24445,40 @@ var Mapapp = function (_React$Component) {
                   mapSettings: this.state.mapSettings
                 }),
                 _react2.default.createElement(
-                  'div',
-                  { className: 'p-2 align-self-center' },
+                  "div",
+                  { className: "p-2 align-self-center" },
                   _react2.default.createElement(
-                    'a',
-                    { className: 'btn btn-primary m-2', href: '/cargarshapes', role: 'button' },
-                    'Cargar Shapefile'
+                    "a",
+                    {
+                      className: "btn btn-primary m-2",
+                      href: "/cargarshapes",
+                      role: "button"
+                    },
+                    "Cargar Shapefile"
                   ),
                   _react2.default.createElement(
-                    'form',
-                    { action: '/udpmapa', method: 'post' },
-                    _react2.default.createElement('input', { type: 'submit', className: 'btn btn-primary m-2', disabled: !this.state.udpButton, name: 'udpbutton', value: this.state.udpButtonText })
+                    "form",
+                    { action: "/udpmapa", method: "post" },
+                    _react2.default.createElement("input", { type: "hidden", name: "shannon", value: this.state.featureInfo.properties.shannon_arbol + "*" + this.state.featureInfo.properties.shannon_arbusto + "*" + this.state.featureInfo.properties.shannon_ave + "*" + this.state.featureInfo.properties.shannon_hierba + "*" + this.state.featureInfo.properties.shannon_herpetofauna + "*" + this.state.featureInfo.properties.shannon_mamifero }),
+                    _react2.default.createElement("input", {
+                      type: "submit",
+                      className: "btn btn-primary m-2",
+                      disabled: !this.state.udpButton,
+                      name: "udpbutton",
+                      value: this.state.udpButtonText
+                    })
                   )
                 )
               )
             )
           ),
           _react2.default.createElement(
-            'div',
-            { className: 'speciesdisplay' },
-            _react2.default.createElement(_SpeciesDisplay2.default, {
-              speciesResult: this.state.speciesResult
-            })
+            "div",
+            { className: "speciesdisplay" },
+            _react2.default.createElement(_SpeciesDisplay2.default, { speciesResult: this.state.speciesResult })
           )
         ),
-        _react2.default.createElement('div', null)
+        _react2.default.createElement("div", null)
       );
     }
   }]);

@@ -45,6 +45,19 @@ Route::post('getboundingfeatures', function(Request $request) {
       FROM agua_lineas 
       where ST_Intersects(agua_lineas.geom,
       (select geom from udp_puebla_4326 where iden={$udpiden}))";
+      //udp and water points
+    $sqludppuntoagua =   
+      "SELECT gid, nombre 
+      FROM agua_puntos 
+      where ST_Intersects(agua_puntos.geom,
+      (select geom from udp_puebla_4326 where iden={$udpiden}))";
+
+      //udp and water points
+    $sqludppoliagua =   
+    "SELECT gid, nombre 
+    FROM agua_poligonos 
+    where ST_Intersects(agua_poligonos.geom,
+    (select geom from udp_puebla_4326 where iden={$udpiden}))";
       
     if (is_numeric($north) && is_numeric($east) && is_numeric($south) && is_numeric($west)){
       $result = DB::select($sql,[]);
@@ -53,14 +66,27 @@ Route::post('getboundingfeatures', function(Request $request) {
     $resultudp = DB::select($sqludp,[]);
 
     $resultudplineaagua = DB::select($sqludplineaagua,[]);
+    $resultudppuntoagua = DB::select($sqludppuntoagua,[]);
+    $resultudppoliagua = DB::select($sqludppoliagua,[]);
 
-    $agualength=0;
+    
+
+    //Get length of water lines
+    $agualength =0;
     foreach($resultudplineaagua AS $row2) {
       $agualinegid = $row2->gid;
       //get length of water lines in udp
       $lengthsql="SELECT ST_Length(ST_INTERSECTION((select geom from agua_lineas where gid = ?), (select geom from  udp_puebla_4326 where iden={$udpiden})))";
       $lengthresult = DB::select($lengthsql,[$agualinegid]);
       $agualength= $agualength + (float)($lengthresult[0]->st_length);
+    }
+    $aguaarea = 0;
+    foreach($resultudppoliagua AS $row3) {
+      $aguapoligid = $row3->gid;
+      //get length of water lines in udp
+      $areasql="SELECT ST_Area(ST_INTERSECTION((select geom from agua_lineas where gid = ?), (select geom from  udp_puebla_4326 where iden={$udpiden})))";
+      $arearesult = DB::select($areasql,[$aguapoligid]);
+      $aguaarea= $aguaarea + (float)($arearesult[0]->st_area);
     }
 
 
@@ -80,6 +106,9 @@ Route::post('getboundingfeatures', function(Request $request) {
         $row->aislado=0;
       }
       $row->agualength=$agualength;
+      $row->aguacount=sizeof($resultudppuntoagua);
+      $row->aguaarea=$aguaarea;
+
     }
     
     

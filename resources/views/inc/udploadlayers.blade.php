@@ -97,9 +97,12 @@ foreach ($layersArray as $layer) {
 }
 
 $geojson=json_encode($layersArray);
+$shannon = json_encode($_POST['shannon']);
 ?>
 <script>
     var udpsomething = {!! $geojson !!};
+    var idennum = {!! $idennum !!};
+    var shannon = {!! $shannon !!};
 </script>
 
 

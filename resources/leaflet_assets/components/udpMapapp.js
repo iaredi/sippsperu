@@ -11,8 +11,10 @@ class UDPMapapp extends React.Component {
     super(props);
     this.setSoils = this.setSoils.bind(this);
     this.setStateBounds = this.setStateBounds.bind(this);
+    this.setText = this.setText.bind(this);
 
     this.state = {
+      mytext:"Nothing yet",
       speciesResult: [],
       bounds: "none",
       boundsobtained:false,
@@ -33,7 +35,13 @@ class UDPMapapp extends React.Component {
       table: [{ tableName: "udp_puebla_4326", color: "blue" }]
     };
   }
-
+  setText(mytext) {
+    if (mytext != this.state.mytext) {
+      this.setState(prevState => ({
+        mytext: mytext
+      }));
+    }
+  }
   setSoils(soils,udpsoils) {
     if (soils != this.state.soils) {
       this.setState(prevState => ({
@@ -68,6 +76,7 @@ class UDPMapapp extends React.Component {
   }
 
   render() {
+    console.log("HELLO",shannon)
     return (
       <div>
         <div className="udplayout">
@@ -86,16 +95,24 @@ class UDPMapapp extends React.Component {
           </div>
 
           <div id="descriptiondiv">
+          <h6 id="descripcionheader">DESCRIPCIÓN </h6>
+          <p id="descripciontext">{this.state.mytext}</p>
           </div>
 
           <div id="parchestable">
             {
               this.state.boundsobtained ?
-                (<ParchesTable udpsoils={this.state.udpsoils} />) : 
+                (<ParchesTable 
+                  udpsoils={this.state.udpsoils} 
+                  setText={this.setText}
+                />) : 
                 <p>'none'</p>
+                
             }
+            
           </div>
           <div id="biodivreport">
+          
           </div>
 
 

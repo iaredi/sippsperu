@@ -123,10 +123,8 @@ class UDPMapa extends React.Component {
             setSoils(JSON.parse(soils[0]), JSON.parse(soils[1]));
             let myLayer = get_shp(item, mymap);
             overlayMaps[item.displayName] = myLayer;
-            console.log(soils[5]);
 
             [ JSON.parse(soils[2]), JSON.parse(soils[3]), JSON.parse(soils[4]) ].forEach((item) => {
-              console.log(item)
               if (item.geom){
                 var myLayeragua_lineas = get_shp(item, mymap);
                 //overlayMaps[agua_lineas.displayName] = myLayeragua_lineas;

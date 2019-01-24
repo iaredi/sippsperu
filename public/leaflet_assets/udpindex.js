@@ -43998,7 +43998,7 @@ module.exports = "/images/layers-2x.png?4f0283c6ce28e888000e978e537a6a56";
 /* 81 */
 /***/ (function(module, exports) {
 
-module.exports = "/images/marker-icon.png?2273e3d8ad9264b7daa5bdbf8e6b47f8";
+module.exports = "/images/marker-icon.png?ae5e36b46323e5991969aec3b7284b28";
 
 /***/ }),
 /* 82 */
@@ -44010,7 +44010,7 @@ module.exports = "/images/marker-shadow.png?44a526eed258222515aa21eaffd14a96";
 /* 83 */
 /***/ (function(module, exports) {
 
-module.exports = "/images/marker-icon-2x.png?401d815dc206b8dc1b17cd0e37695975";
+module.exports = "/images/marker-icon-2x.png?a4ead1b13fb0cc46d9e43120b799f9fc";
 
 /***/ }),
 /* 84 */,
@@ -44136,8 +44136,10 @@ var UDPMapapp = function (_React$Component) {
 
     _this.setSoils = _this.setSoils.bind(_this);
     _this.setStateBounds = _this.setStateBounds.bind(_this);
+    _this.setText = _this.setText.bind(_this);
 
     _this.state = {
+      mytext: "Nothing yet",
       speciesResult: [],
       bounds: "none",
       boundsobtained: false,
@@ -44161,6 +44163,17 @@ var UDPMapapp = function (_React$Component) {
   }
 
   _createClass(UDPMapapp, [{
+    key: "setText",
+    value: function setText(mytext) {
+      if (mytext != this.state.mytext) {
+        this.setState(function (prevState) {
+          return {
+            mytext: mytext
+          };
+        });
+      }
+    }
+  }, {
     key: "setSoils",
     value: function setSoils(soils, udpsoils) {
       if (soils != this.state.soils) {
@@ -44209,6 +44222,7 @@ var UDPMapapp = function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      console.log("HELLO", shannon);
       return _react2.default.createElement(
         "div",
         null,
@@ -44230,11 +44244,27 @@ var UDPMapapp = function (_React$Component) {
               soils: this.state.soils
             })
           ),
-          _react2.default.createElement("div", { id: "descriptiondiv" }),
+          _react2.default.createElement(
+            "div",
+            { id: "descriptiondiv" },
+            _react2.default.createElement(
+              "h6",
+              { id: "descripcionheader" },
+              "DESCRIPCI\xD3N "
+            ),
+            _react2.default.createElement(
+              "p",
+              { id: "descripciontext" },
+              this.state.mytext
+            )
+          ),
           _react2.default.createElement(
             "div",
             { id: "parchestable" },
-            this.state.boundsobtained ? _react2.default.createElement(_ParchesTable2.default, { udpsoils: this.state.udpsoils }) : _react2.default.createElement(
+            this.state.boundsobtained ? _react2.default.createElement(_ParchesTable2.default, {
+              udpsoils: this.state.udpsoils,
+              setText: this.setText
+            }) : _react2.default.createElement(
               "p",
               null,
               "'none'"
@@ -44447,10 +44477,8 @@ var UDPMapa = function (_React$Component) {
               setSoils(JSON.parse(soils[0]), JSON.parse(soils[1]));
               var myLayer = get_shp(item, mymap);
               overlayMaps[item.displayName] = myLayer;
-              console.log(soils[5]);
 
               [JSON.parse(soils[2]), JSON.parse(soils[3]), JSON.parse(soils[4])].forEach(function (item) {
-                console.log(item);
                 if (item.geom) {
                   var myLayeragua_lineas = get_shp(item, mymap);
                   //overlayMaps[agua_lineas.displayName] = myLayeragua_lineas;
@@ -44502,7 +44530,7 @@ exports.default = UDPMapa;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _react = __webpack_require__(0);
@@ -44512,29 +44540,60 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Alist(props) {
-    return _react2.default.createElement(
-        "div",
-        null,
-        _react2.default.createElement("div", { className: "legendColorBox", style: { backgroundColor: props.color } }),
-        _react2.default.createElement(
-            "p",
-            { className: "legendp" },
-            props.descripcio
-        )
-    );
+  return _react2.default.createElement(
+    "div",
+    null,
+    _react2.default.createElement("div", {
+      className: "legendColorBox",
+      style: { backgroundColor: props.color }
+    }),
+    _react2.default.createElement(
+      "p",
+      { className: "legendp" },
+      props.descripcio
+    )
+  );
+}
+
+function Blist(props) {
+  return _react2.default.createElement(
+    "div",
+    null,
+    _react2.default.createElement("img", {
+      src: "/img/" + props.descripcio + '.png'
+
+    }),
+    _react2.default.createElement(
+      "p",
+      { className: "legendp" },
+      props.descripcio
+    )
+  );
 }
 
 function Legend(props) {
-    var listItems = props.soils.map(function (soil) {
-        return _react2.default.createElement(Alist, { key: soil.descripcio + 'both',
-            color: soil.color,
-            descripcio: soil.descripcio });
+
+  var listItems = props.soils.map(function (soil) {
+    return _react2.default.createElement(Alist, {
+      key: soil.descripcio + "both",
+      color: soil.color,
+      descripcio: soil.descripcio
     });
-    return _react2.default.createElement(
-        "ul",
-        null,
-        listItems
-    );
+  });
+
+  var finalItems = ["MANANTIAL", "CORRIENTE DE AGUA"].map(function (name) {
+    return _react2.default.createElement(Blist, {
+      key: name,
+      descripcio: name
+    });
+  });
+
+  return _react2.default.createElement(
+    "ul",
+    null,
+    listItems,
+    finalItems
+  );
 }
 
 exports.default = Legend;
@@ -44576,19 +44635,66 @@ var ParchesTable = function (_React$Component) {
   function ParchesTable(props) {
     _classCallCheck(this, ParchesTable);
 
-    return _possibleConstructorReturn(this, (ParchesTable.__proto__ || Object.getPrototypeOf(ParchesTable)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (ParchesTable.__proto__ || Object.getPrototypeOf(ParchesTable)).call(this, props));
+
+    _this.state = {
+      columns1: [{ dataField: "gid", text: "Tipo de Parche1" }],
+      allParches: [{ gid: "test1" }],
+      columnsSum: [{ dataField: "name", text: "Tipo de Parche2" }],
+      allParchesSum: [{ name: "test2" }],
+      columnsAguaLinea: [{ dataField: "elemento", text: "Tipo de Parche3" }],
+      dataAguaLinea: [{ elemento: "test3" }]
+
+    };
+    _this.setText = _this.setText.bind(_this);
+
+    return _this;
   }
 
   _createClass(ParchesTable, [{
-    key: "render",
-    value: function render() {
+    key: "setText",
+    value: function setText(text) {
+      this.props.setText(text);
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
       var descripcioSet = new Set();
       var continuoList = [];
+      var maxarea = 0;
+      var parchetotal = {};
+      var largestTypeArea = 0;
+      var largestTypeName = '';
+      var largestTypeCobertura = 0;
+      var maxname = '';
+      var listofareas = {};
       var allParches = this.props.udpsoils.map(function (parche) {
         parche.continuidad = parche.aislado ? "Aislado" : "Continuo";
-        parche.cobertura = (100 * parche.area / parche.totalarea).toPrecision(4).toString() + "%";
-        parche.area = (parche.area * (25 / 0.00218206963154496)).toPrecision(4);
+        parche.cobertura = (100 * parseFloat(parche.area) / parche.totalarea).toPrecision(4).toString() + "%";
+        parche.area = parseFloat((parseFloat(parche.area) * (2500 / 0.00218206963154496)).toPrecision(4));
+
         descripcioSet.add(parche.descripcio);
+        maxarea = parche.area > maxarea ? parche.area : maxarea;
+        maxname = parche.area > maxarea ? parche.descripcio : maxname;
+        if (parchetotal[parche.descripcio]) {
+          parchetotal[parche.descripcio] = parseFloat(parche.area) + parchetotal[parche.descripcio];
+        } else {
+          parchetotal[parche.descripcio] = parseFloat(parche.area);
+        }
+
+        if (listofareas[parche.descripcio]) {
+          listofareas[parche.descripcio].push(parche.area.toString());
+        } else {
+          listofareas[parche.descripcio] = [parche.area.toString()];
+        }
+        if (parchetotal[parche.descripcio] > largestTypeArea) {
+          largestTypeName = parche.descripcio;
+          largestTypeArea = parchetotal[parche.descripcio];
+          largestTypeCobertura = largestTypeArea / 25;
+        }
+        // largestTypeName = parchetotal[parche.descripcio]>largestTypeArea?parche.descripcio:largestTypeName
+        // largestTypeCobertura = parchetotal[parche.descripcio]>largestTypeArea?(largestTypeArea/25):largestTypeCobertura
+        // largestTypeArea = parchetotal[parche.descripcio]>largestTypeArea? parchetotal[parche.descripcio]:largestTypeArea
         if (!parche.aislado) continuoList.push(parche.descripcio);
         return parche;
       });
@@ -44600,8 +44706,13 @@ var ParchesTable = function (_React$Component) {
       }
 
       allParches.sort(compare);
+      this.setState(function (prevState) {
+        return {
+          allParches: allParches
+        };
+      });
 
-      var columns = [{
+      var columns1 = [{
         dataField: "descripcio",
         text: "Tipo de Parche"
       }, {
@@ -44612,10 +44723,20 @@ var ParchesTable = function (_React$Component) {
         text: "Continuidad"
       }, {
         dataField: "area",
-        text: "Area (km)"
+        text: "Area (h)"
       }];
+      this.setState(function (prevState) {
+        return {
+          columns1: columns1
+        };
+      });
 
-      var allParchesSum = [{ name: "REQUEZA DE TIPOS DE PARCHE", number: descripcioSet.size }, { name: "ABUNDANCIA DE PARCHEA", number: allParches.length }, { name: "PARCHES CONTINUOS", number: continuoList.length }, { name: "RAZON DE CONTINUIDAD DE PARCHES", number: (continuoList.length / allParches.length).toPrecision(4) }, { name: "DOMINANCIA ENTRE TAMANOS DE PARCHE", number: 0 }, { name: "DOMINANCIA ENTRE TIPOS DE PARCHE", number: 0 }];
+      var allParchesSum = [{ name: "REQUEZA DE TIPOS DE PARCHE", number: descripcioSet.size }, { name: "ABUNDANCIA DE PARCHEA", number: allParches.length }, { name: "PARCHES CONTINUOS", number: continuoList.length }, { name: "RAZON DE CONTINUIDAD DE PARCHES", number: (continuoList.length / allParches.length).toPrecision(4) }, { name: "DOMINANCIA ENTRE TAMANOS DE PARCHE", number: (maxarea / 2500).toPrecision(4) }, { name: "DOMINANCIA ENTRE TIPOS DE PARCHE", number: (largestTypeArea / 2500).toPrecision(4) }];
+      this.setState(function (prevState) {
+        return {
+          allParchesSum: allParchesSum
+        };
+      });
       var columnsSum = [{
         dataField: "name",
         text: " "
@@ -44623,22 +44744,47 @@ var ParchesTable = function (_React$Component) {
         dataField: "number",
         text: " "
       }];
-      var agualength = (allParches[0].agualength * (20 / 0.186914851250046)).toPrecision(4);
-      var dataAguaLinea = [{ elemento: "Corriente  de agua", longitud: agualength, area: "-", densidad: "-" }, { elemento: "Cuerpo de agua", longitud: "-", area: "-", densidad: "-" }, { elemento: "Manantial", longitud: "-", area: "-", densidad: "-" }, { elemento: "TOTAL", longitud: agualength, area: "-", densidad: "-" }];
+      this.setState(function (prevState) {
+        return {
+          columnsSum: columnsSum
+        };
+      });
+      var agualength = (allParches[0].agualength * (2000 / 0.186914851250046)).toPrecision(4);
+      var aguacount = allParches[0].aguacount;
+      var aguaarea = (allParches[0].aguaarea * (2500 / 0.00218206963154496)).toPrecision(4);
+
+      var dataAguaLinea = [{ elemento: "Corriente  de agua", longitud: agualength, area: "-", densidad: "-" }, { elemento: "Cuerpo de agua", longitud: "-", area: aguaarea, densidad: "-" }, { elemento: "Manantial", longitud: "-", area: "-", densidad: aguacount }, { elemento: "TOTAL", longitud: agualength, area: aguaarea, densidad: aguacount }];
+      this.setState(function (prevState) {
+        return {
+          dataAguaLinea: dataAguaLinea
+        };
+      });
       var columnsAguaLinea = [{
         dataField: "elemento",
         text: "ELEMENTO"
       }, {
         dataField: "longitud",
-        text: "LONGITUD (m)"
+        text: "LONGITUD (h)"
       }, {
         dataField: "area",
-        text: "AREA (m^2)"
+        text: "AREA (h^2)"
       }, {
         dataField: "densidad",
         text: "DENSIDAD (unidades)"
       }];
+      this.setState(function (prevState) {
+        return {
+          columnsAguaLinea: columnsAguaLinea
+        };
+      });
+      console.log(listofareas);
+      var mystring = "La Unidad de Paisaje " + idennum + "       (UP) " + idennum + "  presenta una riqueza de parches igual a " + descripcioSet.size + " y una abundancia de parches       igual a " + allParches.length + ". De estos parches, " + continuoList.length + " son continuos presentando       una raz\xF3n de continuidad de" + (continuoList.length / allParches.length).toPrecision(4) + ". Dentro de los aproximadamente 25 Km2 que       conforman la UP , el Uso de Suelo y Vegetaci\xF3n (USV) m\xE1s dominante es " + largestTypeName + " que representa el " + largestTypeCobertura.toPrecision(4) + "%  \n      del \xE1rea total de la unidad y est\xE1 dividido en       " + listofareas[largestTypeName].length + " parches de " + listofareas[largestTypeName] + " hectares respectivamente. Sin embargo, el parche de mayor       tama\xF1o corresponde al USV de " + maxarea + " un \xE1rea de      aproximadamente " + maxarea + " hectares. La dominancia entre tama\xF1os de parche dentro de esta UP es       de " + (maxarea / 2500).toPrecision(4) + ", mientras que la dominancia entre tipos de parche es igual       a " + (largestTypeArea / 2500).toPrecision(4) + ". Esta UP presenta adem\xE1s una raz\xF3n de dispersi\xF3n h\xEDdrica de 0.00096       con corrientes de agua que cubren un total de " + agualength + " kilometros lineales; as\xED        como una densidad de cuerpos de agua de " + aguaarea / 2500 + " y un \xE1rea de " + aguaarea + " hectares.";
 
+      this.setText(mystring);
+    }
+  }, {
+    key: "render",
+    value: function render() {
       return _react2.default.createElement(
         "div",
         null,
@@ -44650,8 +44796,8 @@ var ParchesTable = function (_React$Component) {
             { className: "flex-column d-flex justify-content-around align-items-center p-3" },
             _react2.default.createElement(_reactBootstrapTableNext2.default, {
               keyField: "gid",
-              data: allParches,
-              columns: columns,
+              data: this.state.allParches,
+              columns: this.state.columns1,
               bootstrap4: false,
               bordered: true,
               classes: "bsparchtable",
@@ -44670,8 +44816,8 @@ var ParchesTable = function (_React$Component) {
             { className: "flex-column d-flex justify-content-around align-items-center p-3" },
             _react2.default.createElement(_reactBootstrapTableNext2.default, {
               keyField: "name",
-              data: allParchesSum,
-              columns: columnsSum,
+              data: this.state.allParchesSum,
+              columns: this.state.columnsSum,
               bootstrap4: false,
               bordered: true,
               classes: "bsparchtable",
@@ -44690,8 +44836,8 @@ var ParchesTable = function (_React$Component) {
             { className: "flex-column d-flex justify-content-around align-items-center p-3" },
             _react2.default.createElement(_reactBootstrapTableNext2.default, {
               keyField: "elemento",
-              data: dataAguaLinea,
-              columns: columnsAguaLinea,
+              data: this.state.dataAguaLinea,
+              columns: this.state.columnsAguaLinea,
               bootstrap4: false,
               bordered: true,
               classes: "bsparchtable",
