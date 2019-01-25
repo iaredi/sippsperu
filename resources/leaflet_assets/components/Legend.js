@@ -17,7 +17,7 @@ function Blist(props) {
     <div>
       <img
         src={"/img/"+props.descripcio+'.png'}
-        id = {props.descripcio}
+        id = {props.descripcio == "CORRIENTE DE AGUA"?"CORRIENTEDEAGUA":props.descripcio}
       />
       <p className="legendp">{props.descripcio}</p>
     </div>

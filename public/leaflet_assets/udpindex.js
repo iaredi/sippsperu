@@ -44117,6 +44117,10 @@ var _ParchesTable = __webpack_require__(129);
 
 var _ParchesTable2 = _interopRequireDefault(_ParchesTable);
 
+var _UdpTitle = __webpack_require__(131);
+
+var _UdpTitle2 = _interopRequireDefault(_UdpTitle);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -44240,27 +44244,12 @@ var UDPMapapp = function (_React$Component) {
           _react2.default.createElement(
             "div",
             { id: "legenddiv" },
-            _react2.default.createElement(_Legend2.default, {
-              soils: this.state.soils
-            })
-          ),
-          _react2.default.createElement(
-            "div",
-            { id: "descriptiondiv" },
-            _react2.default.createElement(
-              "h6",
-              { id: "descripcionheader" },
-              "DESCRIPCI\xD3N "
-            ),
-            _react2.default.createElement(
-              "p",
-              { id: "descripciontext" },
-              this.state.mytext
-            )
+            _react2.default.createElement(_Legend2.default, { soils: this.state.soils })
           ),
           _react2.default.createElement(
             "div",
             { id: "parchestable" },
+            _react2.default.createElement(_UdpTitle2.default, null),
             this.state.boundsobtained ? _react2.default.createElement(_ParchesTable2.default, {
               udpsoils: this.state.udpsoils,
               setText: this.setText
@@ -44560,8 +44549,8 @@ function Blist(props) {
     "div",
     null,
     _react2.default.createElement("img", {
-      src: "/img/" + props.descripcio + '.png'
-
+      src: "/img/" + props.descripcio + '.png',
+      id: props.descripcio == "CORRIENTE DE AGUA" ? "CORRIENTEDEAGUA" : props.descripcio
     }),
     _react2.default.createElement(
       "p",
@@ -44856,6 +44845,54 @@ var ParchesTable = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = ParchesTable;
+
+/***/ }),
+/* 130 */,
+/* 131 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function UdpTitle(props) {
+
+  return _react2.default.createElement(
+    "div",
+    null,
+    _react2.default.createElement(
+      "h4",
+      { id: "updtitle" },
+      " PROPUESTA DE MONITOREO ARTICULADO DE LA BIODIVERSIDAD (MTP + SMC): SECTOR FORESTAL"
+    ),
+    _react2.default.createElement(
+      "div",
+      { id: "updmunititle" },
+      _react2.default.createElement(
+        "h5",
+        { id: "framentation" },
+        " MAPA DE FRAGMENTACI\xD3N AMBIENTAL"
+      ),
+      _react2.default.createElement(
+        "h6",
+        { id: "muniudp" },
+        " MUNICIPIO DE , PUEBLA, UNIDAD DE PAISAJE ",
+        idennum
+      )
+    )
+  );
+}
+
+exports.default = UdpTitle;
 
 /***/ })
 /******/ ]);

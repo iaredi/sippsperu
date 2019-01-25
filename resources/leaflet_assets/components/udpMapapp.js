@@ -4,6 +4,7 @@ import React from "react";
 import UDPMapa from "./udpMapa";
 import Legend from "./Legend";
 import ParchesTable from "./ParchesTable";
+import UdpTitle from "./UdpTitle";
 
 
 class UDPMapapp extends React.Component {
@@ -14,10 +15,10 @@ class UDPMapapp extends React.Component {
     this.setText = this.setText.bind(this);
 
     this.state = {
-      mytext:"Nothing yet",
+      mytext: "Nothing yet",
       speciesResult: [],
       bounds: "none",
-      boundsobtained:false,
+      boundsobtained: false,
       soils: [{ color: "rgb:000", descripcio: "None" }],
       udpsoils: [{ color: "rgb:000", descripcio: "None" }],
       previous: 0,
@@ -42,7 +43,7 @@ class UDPMapapp extends React.Component {
       }));
     }
   }
-  setSoils(soils,udpsoils) {
+  setSoils(soils, udpsoils) {
     if (soils != this.state.soils) {
       this.setState(prevState => ({
         soils: soils
@@ -76,11 +77,10 @@ class UDPMapapp extends React.Component {
   }
 
   render() {
-    console.log("HELLO",shannon)
+    console.log("HELLO", shannon);
     return (
       <div>
         <div className="udplayout">
-          
           <div id="udpmapdiv" className="border border-dark">
             <UDPMapa
               setStateBounds={this.setStateBounds}
@@ -89,36 +89,24 @@ class UDPMapapp extends React.Component {
           </div>
 
           <div id="legenddiv">
-            <Legend 
-              soils={this.state.soils} 
-            />
-          </div>
-
-          <div id="descriptiondiv">
-          <h6 id="descripcionheader">DESCRIPCIÓN </h6>
-          <p id="descripciontext">{this.state.mytext}</p>
+            <Legend soils={this.state.soils} />
           </div>
 
           <div id="parchestable">
-            {
-              this.state.boundsobtained ?
-                (<ParchesTable 
-                  udpsoils={this.state.udpsoils} 
-                  setText={this.setText}
-                />) : 
-                <p>'none'</p>
-                
-            }
-            
-          </div>
-          <div id="biodivreport">
-          
-          </div>
+          <UdpTitle/>
 
-
+            {this.state.boundsobtained ? (
+              <ParchesTable
+                udpsoils={this.state.udpsoils}
+                setText={this.setText}
+              />
+            ) : (
+              <p>'none'</p>
+            )}
+          </div>
+          <div id="biodivreport" />
         </div>
       </div>
-
     );
   }
 }

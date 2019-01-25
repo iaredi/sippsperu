@@ -105,6 +105,7 @@ Route::post('getboundingfeatures', function(Request $request) {
       }else{
         $row->aislado=0;
       }
+      //Data that free-rides on resultudp
       $row->agualength=$agualength;
       $row->aguacount=sizeof($resultudppuntoagua);
       $row->aguaarea=$aguaarea;
