@@ -44250,6 +44250,20 @@ var UDPMapapp = function (_React$Component) {
           ),
           _react2.default.createElement(
             "div",
+            { id: "descriptiondiv" },
+            _react2.default.createElement(
+              "h6",
+              { id: "descripcionheader" },
+              "DESCRIPCI\xD3N "
+            ),
+            _react2.default.createElement(
+              "p",
+              { id: "descripciontext" },
+              this.state.mytext
+            )
+          ),
+          _react2.default.createElement(
+            "div",
             { id: "parchestable" },
             this.state.boundsobtained ? _react2.default.createElement(_UdpTitle2.default, {
               udpsoils: this.state.udpsoils
@@ -44711,7 +44725,7 @@ var ParchesTable = function (_React$Component) {
 
       var columns1 = [{
         dataField: "descripcio",
-        text: "Tipo de Parche"
+        text: "Parche"
       }, {
         dataField: "cobertura",
         text: "Cobertura"

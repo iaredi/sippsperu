@@ -94,6 +94,11 @@ class UDPMapapp extends React.Component {
             />
           </div>
 
+          <div id="descriptiondiv">
+            <h6 id="descripcionheader">DESCRIPCIÓN </h6>
+            <p id="descripciontext">{this.state.mytext}</p>
+          </div>
+
           <div id="parchestable">
             {this.state.boundsobtained ? (
               <UdpTitle

@@ -81,7 +81,7 @@ class ParchesTable extends React.Component {
     const columns1 = [
       {
         dataField: "descripcio",
-        text: "Tipo de Parche"
+        text: "Parche"
       },
       {
         dataField: "cobertura",
