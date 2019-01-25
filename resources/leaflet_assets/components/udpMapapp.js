@@ -89,11 +89,19 @@ class UDPMapapp extends React.Component {
           </div>
 
           <div id="legenddiv">
-            <Legend soils={this.state.soils} />
+            <Legend 
+            soils={this.state.soils} 
+            />
           </div>
 
           <div id="parchestable">
-          <UdpTitle/>
+            {this.state.boundsobtained ? (
+              <UdpTitle
+              udpsoils={this.state.udpsoils}
+              />
+              ) : (
+                <p>'none'</p>
+            )}
 
             {this.state.boundsobtained ? (
               <ParchesTable

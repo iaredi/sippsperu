@@ -58,6 +58,13 @@ Route::post('getboundingfeatures', function(Request $request) {
     FROM agua_poligonos 
     where ST_Intersects(agua_poligonos.geom,
     (select geom from udp_puebla_4326 where iden={$udpiden}))";
+
+    //which munis interect with udp
+    $sqludpmuni =   
+    "SELECT nomgeo 
+    FROM municipio_puebla_4326 
+    where ST_Intersects(ST_SetSRID(municipio_puebla_4326.geom, 4326),
+    (select geom from udp_puebla_4326 where iden={$udpiden}))";
       
     if (is_numeric($north) && is_numeric($east) && is_numeric($south) && is_numeric($west)){
       $result = DB::select($sql,[]);
@@ -68,6 +75,7 @@ Route::post('getboundingfeatures', function(Request $request) {
     $resultudplineaagua = DB::select($sqludplineaagua,[]);
     $resultudppuntoagua = DB::select($sqludppuntoagua,[]);
     $resultudppoliagua = DB::select($sqludppoliagua,[]);
+    $resultudpmuni = DB::select($sqludpmuni,[]);
 
     
 
@@ -109,6 +117,8 @@ Route::post('getboundingfeatures', function(Request $request) {
       $row->agualength=$agualength;
       $row->aguacount=sizeof($resultudppuntoagua);
       $row->aguaarea=$aguaarea;
+      $row->munilist=$resultudpmuni;
+
 
     }
     

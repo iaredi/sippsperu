@@ -159,7 +159,7 @@ class ParchesTable extends React.Component {
     this.setState(prevState => ({
       columnsAguaLinea: columnsAguaLinea
     }));
-    console.log(listofareas)
+    console.log(allParches)
     const mystring = `La Unidad de Paisaje ${idennum} \
       (UP) ${idennum}  presenta una riqueza de parches igual a ${descripcioSet.size} y una abundancia de parches \
       igual a ${allParches.length}. De estos parches, ${continuoList.length} son continuos presentando \

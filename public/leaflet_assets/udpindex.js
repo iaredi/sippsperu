@@ -44117,7 +44117,7 @@ var _ParchesTable = __webpack_require__(129);
 
 var _ParchesTable2 = _interopRequireDefault(_ParchesTable);
 
-var _UdpTitle = __webpack_require__(131);
+var _UdpTitle = __webpack_require__(130);
 
 var _UdpTitle2 = _interopRequireDefault(_UdpTitle);
 
@@ -44244,12 +44244,20 @@ var UDPMapapp = function (_React$Component) {
           _react2.default.createElement(
             "div",
             { id: "legenddiv" },
-            _react2.default.createElement(_Legend2.default, { soils: this.state.soils })
+            _react2.default.createElement(_Legend2.default, {
+              soils: this.state.soils
+            })
           ),
           _react2.default.createElement(
             "div",
             { id: "parchestable" },
-            _react2.default.createElement(_UdpTitle2.default, null),
+            this.state.boundsobtained ? _react2.default.createElement(_UdpTitle2.default, {
+              udpsoils: this.state.udpsoils
+            }) : _react2.default.createElement(
+              "p",
+              null,
+              "'none'"
+            ),
             this.state.boundsobtained ? _react2.default.createElement(_ParchesTable2.default, {
               udpsoils: this.state.udpsoils,
               setText: this.setText
@@ -44766,7 +44774,7 @@ var ParchesTable = function (_React$Component) {
           columnsAguaLinea: columnsAguaLinea
         };
       });
-      console.log(listofareas);
+      console.log(allParches);
       var mystring = "La Unidad de Paisaje " + idennum + "       (UP) " + idennum + "  presenta una riqueza de parches igual a " + descripcioSet.size + " y una abundancia de parches       igual a " + allParches.length + ". De estos parches, " + continuoList.length + " son continuos presentando       una raz\xF3n de continuidad de" + (continuoList.length / allParches.length).toPrecision(4) + ". Dentro de los aproximadamente 25 Km2 que       conforman la UP , el Uso de Suelo y Vegetaci\xF3n (USV) m\xE1s dominante es " + largestTypeName + " que representa el " + largestTypeCobertura.toPrecision(4) + "%  \n      del \xE1rea total de la unidad y est\xE1 dividido en       " + listofareas[largestTypeName].length + " parches de " + listofareas[largestTypeName] + " hectares respectivamente. Sin embargo, el parche de mayor       tama\xF1o corresponde al USV de " + maxarea + " un \xE1rea de      aproximadamente " + maxarea + " hectares. La dominancia entre tama\xF1os de parche dentro de esta UP es       de " + (maxarea / 2500).toPrecision(4) + ", mientras que la dominancia entre tipos de parche es igual       a " + (largestTypeArea / 2500).toPrecision(4) + ". Esta UP presenta adem\xE1s una raz\xF3n de dispersi\xF3n h\xEDdrica de 0.00096       con corrientes de agua que cubren un total de " + agualength + " kilometros lineales; as\xED        como una densidad de cuerpos de agua de " + aguaarea / 2500 + " y un \xE1rea de " + aguaarea + " hectares.";
 
       this.setText(mystring);
@@ -44847,8 +44855,7 @@ var ParchesTable = function (_React$Component) {
 exports.default = ParchesTable;
 
 /***/ }),
-/* 130 */,
-/* 131 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44865,6 +44872,10 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function UdpTitle(props) {
+  console.log(props.udpsoils);
+  var munilist = props.udpsoils[0].munilist.map(function (item) {
+    return item.nomgeo.toUpperCase() + ", ";
+  });
 
   return _react2.default.createElement(
     "div",
@@ -44885,7 +44896,9 @@ function UdpTitle(props) {
       _react2.default.createElement(
         "h6",
         { id: "muniudp" },
-        " MUNICIPIO DE , PUEBLA, UNIDAD DE PAISAJE ",
+        " MUNICIPIO DE ",
+        munilist,
+        " PUEBLA, UNIDAD DE PAISAJE ",
         idennum
       )
     )

@@ -2,8 +2,12 @@ import React from "react";
 
 
 function UdpTitle(props) {
+  console.log(props.udpsoils)
+  const munilist = props.udpsoils[0].munilist.map((item) => {
+    return `${(item.nomgeo).toUpperCase()}, `
 
-
+  })
+ 
   return ( 
     <div>
       
@@ -13,7 +17,7 @@ function UdpTitle(props) {
       <div id="updmunititle">
         <h5 id="framentation"> MAPA DE FRAGMENTACIÓN AMBIENTAL
         </h5>
-        <h6 id='muniudp'> MUNICIPIO DE , PUEBLA, UNIDAD DE PAISAJE {idennum}
+        <h6 id='muniudp'> MUNICIPIO DE {munilist} PUEBLA, UNIDAD DE PAISAJE {idennum}
         </h6>
     </div>
   </div>

@@ -128,14 +128,16 @@ tr:nth-child(odd) {
 }
 
 #updmunititle{
-  text-align: center
+  text-align: center;
+ 
 }
 
 #framentation{
   margin-bottom: 0px;
+  margin-top: 4px;
 }
 
 #muniudp{
   margin-top: 2px;
-
+  margin-bottom: 4px;
 }
