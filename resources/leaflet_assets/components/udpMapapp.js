@@ -5,6 +5,8 @@ import UDPMapa from "./udpMapa";
 import Legend from "./Legend";
 import ParchesTable from "./ParchesTable";
 import UdpTitle from "./UdpTitle";
+import UdpDiversity from "./UdpDiversity";
+
 
 
 class UDPMapapp extends React.Component {
@@ -77,7 +79,7 @@ class UDPMapapp extends React.Component {
   }
 
   render() {
-    console.log("HELLO", shannon);
+    
     return (
       <div>
         <div className="udplayout">
@@ -117,7 +119,11 @@ class UDPMapapp extends React.Component {
               <p>'none'</p>
             )}
           </div>
-          <div id="biodivreport" />
+          <div id="biodivreport">
+          
+            <UdpDiversity
+            />
+            </div>
         </div>
       </div>
     );

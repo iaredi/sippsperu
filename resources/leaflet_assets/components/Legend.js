@@ -17,7 +17,7 @@ function Blist(props) {
     <div>
       <img
         src={"/img/"+props.descripcio+'.png'}
-        id = {props.descripcio == "CORRIENTE DE AGUA"?"CORRIENTEDEAGUA":props.descripcio}
+        id = {props.descripcio}
       />
       <p className="legendp">{props.descripcio}</p>
     </div>
@@ -34,7 +34,7 @@ function Legend(props) {
     />
   ));
 
-  const finalItems = ["MANANTIAL","CORRIENTE DE AGUA"].map(name => (
+  const finalItems = ["MANANTIAL","CORRIENTE_DE_AGUA"].map(name => (
     <Blist
       key={name}
       descripcio={name}

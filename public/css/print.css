@@ -113,31 +113,62 @@ tr:nth-child(odd) {
 }
 
 #MANANTIAL {
-  width: 10px;
+  width: 15px;
+  padding-right: 5px;
 }
 
-#CORRIENTEDEAGUA {
-  width: 10px;
+#CORRIENTE_DE_AGUA {
+  width: 15px;
+  padding-right: 5px;
 }
 
-#updtitle{
+#updtitle {
   text-align: center;
-  border : solid black 1px;
-  padding:5px;
-  margin:10px 15px;
+  border: solid black 1px;
+  padding: 5px;
+  margin: 10px 15px;
 }
 
-#updmunititle{
+#updmunititle {
   text-align: center;
- 
 }
 
-#framentation{
+#framentation {
   margin-bottom: 0px;
   margin-top: 4px;
 }
 
-#muniudp{
+#muniudp {
   margin-top: 2px;
   margin-bottom: 4px;
+}
+
+#udpDiversity {
+  display: grid;
+  background-color: #c9ff7e;
+  grid-template-columns: 10mm 1fr 10mm; /*   279.4 */
+  grid-template-rows: 1fr; /* 215.9  */
+}
+#startScale {
+  grid-column-start: 1;
+  height: 100%;
+  width: 100%;
+  text-align: center;
+}
+#pngScale {
+  grid-column-start: 2;
+  height: 100%;
+  width: 100%;
+}
+
+#endScale {
+  grid-column-start: 3;
+  height: 100%;
+  width: 100%;
+}
+
+#scaleImage {
+  padding: 5px;
+  max-width: 95%;
+  height: auto;
 }

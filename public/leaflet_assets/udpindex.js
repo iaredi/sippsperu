@@ -43998,19 +43998,19 @@ module.exports = "/images/layers-2x.png?4f0283c6ce28e888000e978e537a6a56";
 /* 81 */
 /***/ (function(module, exports) {
 
-module.exports = "/images/marker-icon.png?ae5e36b46323e5991969aec3b7284b28";
+module.exports = "/images/marker-icon.png?314bb1697dc187df9e9abf35e7094197";
 
 /***/ }),
 /* 82 */
 /***/ (function(module, exports) {
 
-module.exports = "/images/marker-shadow.png?44a526eed258222515aa21eaffd14a96";
+module.exports = "/images/marker-shadow.png?5d26d92110d6f81033ede07f5aa2f369";
 
 /***/ }),
 /* 83 */
 /***/ (function(module, exports) {
 
-module.exports = "/images/marker-icon-2x.png?a4ead1b13fb0cc46d9e43120b799f9fc";
+module.exports = "/images/marker-icon-2x.png?314bb1697dc187df9e9abf35e7094197";
 
 /***/ }),
 /* 84 */,
@@ -44121,6 +44121,10 @@ var _UdpTitle = __webpack_require__(130);
 
 var _UdpTitle2 = _interopRequireDefault(_UdpTitle);
 
+var _UdpDiversity = __webpack_require__(131);
+
+var _UdpDiversity2 = _interopRequireDefault(_UdpDiversity);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -44226,7 +44230,7 @@ var UDPMapapp = function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      console.log("HELLO", shannon);
+
       return _react2.default.createElement(
         "div",
         null,
@@ -44281,7 +44285,11 @@ var UDPMapapp = function (_React$Component) {
               "'none'"
             )
           ),
-          _react2.default.createElement("div", { id: "biodivreport" })
+          _react2.default.createElement(
+            "div",
+            { id: "biodivreport" },
+            _react2.default.createElement(_UdpDiversity2.default, null)
+          )
         )
       );
     }
@@ -44572,7 +44580,7 @@ function Blist(props) {
     null,
     _react2.default.createElement("img", {
       src: "/img/" + props.descripcio + '.png',
-      id: props.descripcio == "CORRIENTE DE AGUA" ? "CORRIENTEDEAGUA" : props.descripcio
+      id: props.descripcio
     }),
     _react2.default.createElement(
       "p",
@@ -44592,7 +44600,7 @@ function Legend(props) {
     });
   });
 
-  var finalItems = ["MANANTIAL", "CORRIENTE DE AGUA"].map(function (name) {
+  var finalItems = ["MANANTIAL", "CORRIENTE_DE_AGUA"].map(function (name) {
     return _react2.default.createElement(Blist, {
       key: name,
       descripcio: name
@@ -44920,6 +44928,87 @@ function UdpTitle(props) {
 }
 
 exports.default = UdpTitle;
+
+/***/ }),
+/* 131 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function Alist(props) {
+  return _react2.default.createElement(
+    "div",
+    { id: props.type + "div" },
+    _react2.default.createElement(
+      "p",
+      { className: "shannonp" },
+      props.shannon
+    ),
+    _react2.default.createElement(
+      "p",
+      { className: "iconp" },
+      props.icon
+    )
+  );
+}
+function UdpDiversity(props) {
+  var bigArray = [{ type: 'arbol', icon: '🌲', shannon: shannon.split('*')[0] }, { type: 'arbusto', icon: '🌳', shannon: shannon.split('*')[1] }, { type: 'ave', icon: '🦅', shannon: shannon.split('*')[2] }, { type: 'hierba', icon: '🌱', shannon: shannon.split('*')[3] }, { type: 'herpetofauna', icon: '🐍', shannon: shannon.split('*')[4] }, { type: 'mamifero', icon: '🦌', shannon: shannon.split('*')[5] }];
+  console.log(shannon);
+  var listItems = bigArray.map(function (animal) {
+    return _react2.default.createElement(Alist, {
+      key: animal.type,
+      icon: animal.icon,
+      shannon: animal.shannon,
+      type: animal.type
+    });
+  });
+
+  return _react2.default.createElement(
+    "div",
+    null,
+    listItems,
+    _react2.default.createElement(
+      "div",
+      { id: "udpDiversity" },
+      _react2.default.createElement(
+        "div",
+        { id: "startScale" },
+        _react2.default.createElement(
+          "p",
+          null,
+          "0"
+        )
+      ),
+      _react2.default.createElement(
+        "div",
+        { id: "pngScale" },
+        _react2.default.createElement("img", { id: "scaleImage", src: "/img/scale.png" })
+      ),
+      _react2.default.createElement(
+        "div",
+        { id: "endScale" },
+        _react2.default.createElement(
+          "p",
+          null,
+          "100"
+        )
+      )
+    )
+  );
+}
+
+exports.default = UdpDiversity;
 
 /***/ })
 /******/ ]);
