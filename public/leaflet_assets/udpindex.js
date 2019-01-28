@@ -44147,12 +44147,12 @@ var UDPMapapp = function (_React$Component) {
     _this.setText = _this.setText.bind(_this);
 
     _this.state = {
-      mytext: "Nothing yet",
+      mytext: "Cargando...",
       speciesResult: [],
-      bounds: "none",
+      bounds: "Cargando...",
       boundsobtained: false,
-      soils: [{ color: "rgb:000", descripcio: "None" }],
-      udpsoils: [{ color: "rgb:000", descripcio: "None" }],
+      soils: [{ color: "rgb:000", descripcio: "Cargando..." }],
+      udpsoils: [{ color: "rgb:000", descripcio: "Cargando..." }],
       previous: 0,
       udp: 0,
       markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
@@ -44163,7 +44163,7 @@ var UDPMapapp = function (_React$Component) {
         maxValue: 99
       },
       featureInfo: {
-        properties: { message: "click somewhere", displayName: "none" }
+        properties: { message: "click somewhere", displayName: "Cargando..." }
       },
       table: [{ tableName: "udp_puebla_4326", color: "blue" }]
     };
@@ -44274,7 +44274,7 @@ var UDPMapapp = function (_React$Component) {
             }) : _react2.default.createElement(
               "p",
               null,
-              "'none'"
+              "Cargando..."
             ),
             this.state.boundsobtained ? _react2.default.createElement(_ParchesTable2.default, {
               udpsoils: this.state.udpsoils,
@@ -44282,7 +44282,7 @@ var UDPMapapp = function (_React$Component) {
             }) : _react2.default.createElement(
               "p",
               null,
-              "'none'"
+              "Cargando..."
             )
           ),
           _react2.default.createElement(
@@ -44797,7 +44797,7 @@ var ParchesTable = function (_React$Component) {
         };
       });
       console.log(allParches);
-      var mystring = "La Unidad de Paisaje " + idennum + "       (UP) " + idennum + "  presenta una riqueza de parches igual a " + descripcioSet.size + " y una abundancia de parches       igual a " + allParches.length + ". De estos parches, " + continuoList.length + " son continuos presentando       una raz\xF3n de continuidad de" + (continuoList.length / allParches.length).toPrecision(4) + ". Dentro de los aproximadamente 25 Km2 que       conforman la UP , el Uso de Suelo y Vegetaci\xF3n (USV) m\xE1s dominante es " + largestTypeName + " que representa el " + largestTypeCobertura.toPrecision(4) + "%  \n      del \xE1rea total de la unidad y est\xE1 dividido en       " + listofareas[largestTypeName].length + " parches de " + listofareas[largestTypeName] + " hectares respectivamente. Sin embargo, el parche de mayor       tama\xF1o corresponde al USV de " + maxarea + " un \xE1rea de      aproximadamente " + maxarea + " hectares. La dominancia entre tama\xF1os de parche dentro de esta UP es       de " + (maxarea / 2500).toPrecision(4) + ", mientras que la dominancia entre tipos de parche es igual       a " + (largestTypeArea / 2500).toPrecision(4) + ". Esta UP presenta adem\xE1s una raz\xF3n de dispersi\xF3n h\xEDdrica de 0.00096       con corrientes de agua que cubren un total de " + agualength + " kilometros lineales; as\xED        como una densidad de cuerpos de agua de " + aguaarea / 2500 + " y un \xE1rea de " + aguaarea + " hectares.";
+      var mystring = "La Unidad de Paisaje " + idennum + "       (UP) " + idennum + "  presenta una riqueza de parches igual a " + descripcioSet.size + " y una abundancia de parches       igual a " + allParches.length + ". De estos parches, " + continuoList.length + " son continuos presentando       una raz\xF3n de continuidad de" + (continuoList.length / allParches.length).toPrecision(4) + ". Dentro de los aproximadamente 25 Km2 que       conforman la UP , el Uso de Suelo y Vegetaci\xF3n (USV) m\xE1s dominante es " + largestTypeName + " que representa el " + largestTypeCobertura.toPrecision(4) + "%  \n      del \xE1rea total de la unidad y est\xE1 dividido en       " + listofareas[largestTypeName].length + " parches de " + listofareas[largestTypeName] + " hectares respectivamente. Sin embargo, el parche de mayor       tama\xF1o corresponde al USV de " + maxarea + " un \xE1rea de      aproximadamente " + maxarea + " hectares. La dominancia entre tama\xF1os de parche dentro de esta UP es       de " + (maxarea / 2500).toPrecision(4) + ", mientras que la dominancia entre tipos de parche es igual       a " + (largestTypeArea / 2500).toPrecision(4) + ". Esta UP presenta adem\xE1s una raz\xF3n de dispersi\xF3n h\xEDdrica de 0.00096       con corrientes de agua que cubren un total de " + agualength + " kilometros lineales; as\xED        como una densidad de cuerpos de agua de " + (aguaarea / 2500).toPrecision(4) + " y un \xE1rea de " + aguaarea + " hectares.";
 
       this.setText(mystring);
     }
@@ -44814,7 +44814,7 @@ var ParchesTable = function (_React$Component) {
             "div",
             { className: "flex-column d-flex justify-content-around align-items-center p-3" },
             _react2.default.createElement(_reactBootstrapTableNext2.default, {
-              keyField: "gid",
+              keyField: "area",
               data: this.state.allParches,
               columns: this.state.columns1,
               bootstrap4: false,
@@ -44823,7 +44823,7 @@ var ParchesTable = function (_React$Component) {
               striped: true,
               hover: true,
               condensed: true,
-              noDataIndication: "No hay datos"
+              noDataIndication: "Cargando..."
             })
           )
         ),
@@ -44903,7 +44903,7 @@ function UdpTitle(props) {
     "div",
     null,
     _react2.default.createElement(
-      "h4",
+      "h5",
       { id: "updtitle" },
       " PROPUESTA DE MONITOREO ARTICULADO DE LA BIODIVERSIDAD (MTP + SMC): SECTOR FORESTAL"
     ),
@@ -44911,7 +44911,7 @@ function UdpTitle(props) {
       "div",
       { id: "updmunititle" },
       _react2.default.createElement(
-        "h5",
+        "h6",
         { id: "framentation" },
         " MAPA DE FRAGMENTACI\xD3N AMBIENTAL"
       ),
@@ -44947,9 +44947,15 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Alist(props) {
+  var shannonPadding = props.shannon * 0.75 + 9;
+
   return _react2.default.createElement(
-    "div",
-    { id: props.type + "div" },
+    "span",
+    {
+      className: "biodivcontainer",
+      id: props.type + "span",
+      style: { float: "left", paddingLeft: "20px" }
+    },
     _react2.default.createElement(
       "p",
       { className: "shannonp" },
@@ -44963,21 +44969,51 @@ function Alist(props) {
   );
 }
 function UdpDiversity(props) {
-  var bigArray = [{ type: 'arbol', icon: '🌲', shannon: shannon.split('*')[0] }, { type: 'arbusto', icon: '🌳', shannon: shannon.split('*')[1] }, { type: 'ave', icon: '🦅', shannon: shannon.split('*')[2] }, { type: 'hierba', icon: '🌱', shannon: shannon.split('*')[3] }, { type: 'herpetofauna', icon: '🐍', shannon: shannon.split('*')[4] }, { type: 'mamifero', icon: '🦌', shannon: shannon.split('*')[5] }];
-  console.log(shannon);
-  var listItems = bigArray.map(function (animal) {
-    return _react2.default.createElement(Alist, {
-      key: animal.type,
-      icon: animal.icon,
-      shannon: animal.shannon,
-      type: animal.type
-    });
+  var bigArray = [{ type: "arbol", icon: "🌲", shannon: shannon.split("*")[0] }, { type: "arbusto", icon: "🌳", shannon: shannon.split("*")[1] }, { type: "ave", icon: "🦅", shannon: shannon.split("*")[2] }, { type: "hierba", icon: "🌱", shannon: shannon.split("*")[3] }, { type: "herpetofauna", icon: "🐍", shannon: shannon.split("*")[4] }, { type: "mamifero", icon: "🦌", shannon: shannon.split("*")[5] }];
+  function compare(a, b) {
+    if (a.shannon < b.shannon) return -1;
+    if (a.shannon > b.shannon) return 1;
+    return 0;
+  }
+
+  bigArray.sort(compare);
+
+  var listItems = bigArray.map(function (animal, ind) {
+    if (animal.shannon > 0) {
+      return _react2.default.createElement(Alist, {
+        key: animal.type,
+        icon: animal.icon,
+        shannon: animal.shannon,
+        type: animal.type,
+        index: ind
+      });
+    }
+  });
+  var previousAnimal = -1;
+
+  var svgLines = bigArray.map(function (animal, ind) {
+    if (animal.shannon > 0) {
+      previousAnimal++;
+      var x1my = 43 + previousAnimal * 64;
+      var x2my = 44.0 + +animal.shannon * 2.68;
+      return _react2.default.createElement("line", { x1: x1my, y1: "3", x2: x2my, y2: "58", style: { stroke: "rgb(255,0,0)" } });
+    }
   });
 
   return _react2.default.createElement(
     "div",
     null,
+    _react2.default.createElement(
+      "h5",
+      { id: "shannonTitle" },
+      "Biodiversidad : Indice de Shannon"
+    ),
     listItems,
+    _react2.default.createElement(
+      "svg",
+      { height: "60", width: "100%" },
+      svgLines
+    ),
     _react2.default.createElement(
       "div",
       { id: "udpDiversity" },

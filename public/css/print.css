@@ -172,3 +172,28 @@ tr:nth-child(odd) {
   max-width: 95%;
   height: auto;
 }
+
+.shannonp{
+  margin:0;
+}
+.iconp{
+  margin:0;
+  text-align: center
+}
+
+.downarrow{
+  height:40px;
+  width:20px;
+}
+
+.biodivcontainer{
+ 
+}
+
+#udpDiversity{
+  width: 100%;
+}
+
+#shannonTitle{
+  text-align: center;
+}

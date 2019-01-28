@@ -35,7 +35,7 @@ Route::post('getboundingfeatures', function(Request $request) {
       ST_GeomFromText('POLYGON(({$east} {$north},{$east} {$south},{$west} {$south},{$west} {$north},{$east} {$north}))',4326))";
     //udp and soils 
     $sqludp =   
-      "SELECT gid, descripcio, color, 2 as aislado, {$totalarea} as totalarea
+      "SELECT gid, descripcio, color, 2 as aislado, {$totalarea} as totalarea, false as ismulti
       FROM usos_de_suelo4 
       where ST_Intersects(usos_de_suelo4.geom,
       (select geom from udp_puebla_4326 where iden={$udpiden}))";
@@ -83,6 +83,7 @@ Route::post('getboundingfeatures', function(Request $request) {
     $agualength =0;
     foreach($resultudplineaagua AS $row2) {
       $agualinegid = $row2->gid;
+ 
       //get length of water lines in udp
       $lengthsql="SELECT ST_Length(ST_INTERSECTION((select geom from agua_lineas where gid = ?), (select geom from  udp_puebla_4326 where iden=?)))";
       $lengthresult = DB::select($lengthsql,[$agualinegid,$udpiden]);
@@ -92,32 +93,65 @@ Route::post('getboundingfeatures', function(Request $request) {
     foreach($resultudppoliagua AS $row3) {
       $aguapoligid = $row3->gid;
       //get length of water lines in udp
-      $areasql="SELECT ST_Area(ST_INTERSECTION((select geom from agua_lineas where gid = ?), (select geom from  udp_puebla_4326 where iden=?)))";
+      $areasql="SELECT ST_Area(ST_INTERSECTION((select geom from agua_poligonos where gid = ?), (select geom from  udp_puebla_4326 where iden=?)))";
       $arearesult = DB::select($areasql,[$aguapoligid,$udpiden]);
       $aguaarea= $aguaarea + (float)($arearesult[0]->st_area);
     }
 
+    $multisql =" SELECT (ST_DUMP(ST_INTERSECTION((select geom from usos_de_suelo4 where gid = ?), 
+          (select geom from udp_puebla_4326 where iden=?)
+          ))).geom::geometry(Polygon,4326)";
 
+    $newrows=[];
     foreach($resultudp AS $row) {
       $gid = $row->gid;
-      //get area of usos de suelo
-      $areasql ="SELECT ST_Area(ST_INTERSECTION(usos_de_suelo4.geom, (select geom from udp_puebla_4326 where iden=?))) from usos_de_suelo4 where gid = ?";
-      $arearesult = DB::select($areasql,[$udpiden,$gid]);
-      $row->area=(float)($arearesult[0]->st_area);
-      
       //If soil is completely within, within set to 1. Unassigned is 2
-      $withinsql ="SELECT ST_Within(usos_de_suelo4.geom, (select geom from udp_puebla_4326 where iden=?)) from usos_de_suelo4 where gid = ?";
-      $withinresult = DB::select($withinsql,[$udpiden,$gid]);
-      if ($withinresult[0]->st_within){
-        $row->aislado=1;
-      }else{
-        $row->aislado=0;
+      // $withinsql ="SELECT ST_Within(usos_de_suelo4.geom, (select geom from udp_puebla_4326 where iden=?)) from usos_de_suelo4 where gid = ?";
+      // $withinresult = DB::select($withinsql,[$udpiden,$gid]);
+      // if ($withinresult[0]->st_within){
+      //   $row->aislado=1;
+      // }else{
+      //   $row->aislado=0;
+      // }
+      
+      $multiresult = DB::select($multisql,[$gid,$udpiden]);
+      foreach($multiresult AS $patchrow) {
+        $areasql ="SELECT ST_Area(?)";
+        $arearesult = DB::select($areasql,[$patchrow->geom]);
+        $newrow = new stdClass();
+        $newrow->area=(float)($arearesult[0]->st_area);
+        
+        $newrow->descripcio=$row->descripcio;
+        $newrow->totalarea=$row->totalarea;
+        $newrow->color=$row->color;
+
+
+        $withinsql2 ="SELECT ST_Within(?, (select geom from udp_puebla_4326 where iden=?))";
+        $withinresult2 = DB::select($withinsql2,[$patchrow->geom,$udpiden]);
+        if ($withinresult2[0]->st_within){
+          $newrow->aislado=1;
+        }else{
+          $newrow->aislado=0;
+        }
+
+        //Data that free-rides on resultudp
+        $newrow->agualength=$agualength;
+        $newrow->aguacount=sizeof($resultudppuntoagua)/2;
+        $newrow->aguaarea=$aguaarea;
+        $newrow->munilist=$resultudpmuni;
+        $newrows[]=$newrow;
       }
+      //get area of usos de suelo
+      // $areasql ="SELECT ST_Area(ST_INTERSECTION(usos_de_suelo4.geom, (select geom from udp_puebla_4326 where iden=?))) from usos_de_suelo4 where gid = ?";
+      // $arearesult = DB::select($areasql,[$udpiden,$gid]);
+      // $row->area=(float)($arearesult[0]->st_area);
+      
+     
       //Data that free-rides on resultudp
-      $row->agualength=$agualength;
-      $row->aguacount=sizeof($resultudppuntoagua)/2;
-      $row->aguaarea=$aguaarea;
-      $row->munilist=$resultudpmuni;
+      // $row->agualength=$agualength;
+      // $row->aguacount=sizeof($resultudppuntoagua)/2;
+      // $row->aguaarea=$aguaarea;
+      // $row->munilist=$resultudpmuni;
 
 
     }
@@ -153,8 +187,8 @@ Route::post('getboundingfeatures', function(Request $request) {
     $layer3->tableName = 'agua_poligonos';
     $layer3->displayName = 'Agua Poligonos';
     $layer3->featureColumn = 'nombre';
-    $layer3->color = 'light blue';
-    $layer3->fillColor = 'light blue';
+    $layer3->color = 'black';
+    $layer3->fillColor = 'blue';
     $layer3->opacity = 1;
     $layer3->weight = 1;
     $layer3->fillOpacity = 1;
@@ -209,7 +243,7 @@ Route::post('getboundingfeatures', function(Request $request) {
     
     return [
       json_encode($result),
-      json_encode($resultudp),
+      json_encode($newrows),
       json_encode($layersArray[0]),
       json_encode($layersArray[1]),
       json_encode($layersArray[2]),

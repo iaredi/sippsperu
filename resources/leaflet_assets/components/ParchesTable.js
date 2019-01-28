@@ -172,7 +172,7 @@ class ParchesTable extends React.Component {
       de ${(maxarea / 2500).toPrecision(4)}, mientras que la dominancia entre tipos de parche es igual \
       a ${(largestTypeArea / 2500).toPrecision(4)}. Esta UP presenta además una razón de dispersión hídrica de 0.00096 \
       con corrientes de agua que cubren un total de ${agualength} kilometros lineales; así  \
-      como una densidad de cuerpos de agua de ${aguaarea / 2500} y un área de ${aguaarea} hectares.`
+      como una densidad de cuerpos de agua de ${(aguaarea / 2500).toPrecision(4)} y un área de ${aguaarea} hectares.`
 
     this.setText(mystring)
   }
@@ -184,7 +184,7 @@ class ParchesTable extends React.Component {
         <div className="container">
           <div className="flex-column d-flex justify-content-around align-items-center p-3">
             <BootstrapTable
-              keyField="gid"
+              keyField="area"
               data={this.state.allParches}
               columns={this.state.columns1}
               bootstrap4={false}
@@ -193,7 +193,7 @@ class ParchesTable extends React.Component {
               striped
               hover
               condensed
-              noDataIndication={"No hay datos"}
+              noDataIndication={"Cargando..."}
             />
           </div>
         </div>

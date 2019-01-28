@@ -17,12 +17,12 @@ class UDPMapapp extends React.Component {
     this.setText = this.setText.bind(this);
 
     this.state = {
-      mytext: "Nothing yet",
+      mytext: "Cargando...",
       speciesResult: [],
-      bounds: "none",
+      bounds: "Cargando...",
       boundsobtained: false,
-      soils: [{ color: "rgb:000", descripcio: "None" }],
-      udpsoils: [{ color: "rgb:000", descripcio: "None" }],
+      soils: [{ color: "rgb:000", descripcio: "Cargando..." }],
+      udpsoils: [{ color: "rgb:000", descripcio: "Cargando..." }],
       previous: 0,
       udp: 0,
       markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
@@ -33,7 +33,7 @@ class UDPMapapp extends React.Component {
         maxValue: 99
       },
       featureInfo: {
-        properties: { message: "click somewhere", displayName: "none" }
+        properties: { message: "click somewhere", displayName: "Cargando..." }
       },
       table: [{ tableName: "udp_puebla_4326", color: "blue" }]
     };
@@ -107,7 +107,7 @@ class UDPMapapp extends React.Component {
               udpsoils={this.state.udpsoils}
               />
               ) : (
-                <p>'none'</p>
+                <p>Cargando...</p>
             )}
 
             {this.state.boundsobtained ? (
@@ -116,7 +116,7 @@ class UDPMapapp extends React.Component {
                 setText={this.setText}
               />
             ) : (
-              <p>'none'</p>
+              <p>Cargando...</p>
             )}
           </div>
           <div id="biodivreport">

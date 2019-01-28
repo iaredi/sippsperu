@@ -11,12 +11,12 @@ function UdpTitle(props) {
   return ( 
     <div>
       
-        <h4 id="updtitle"> PROPUESTA DE MONITOREO ARTICULADO DE LA BIODIVERSIDAD (MTP + SMC): SECTOR FORESTAL
-        </h4>
+        <h5 id="updtitle"> PROPUESTA DE MONITOREO ARTICULADO DE LA BIODIVERSIDAD (MTP + SMC): SECTOR FORESTAL
+        </h5>
       
       <div id="updmunititle">
-        <h5 id="framentation"> MAPA DE FRAGMENTACIÓN AMBIENTAL
-        </h5>
+        <h6 id="framentation"> MAPA DE FRAGMENTACIÓN AMBIENTAL
+        </h6>
         <h6 id='muniudp'> MUNICIPIO DE {munilist} PUEBLA, UNIDAD DE PAISAJE {idennum}
         </h6>
     </div>
