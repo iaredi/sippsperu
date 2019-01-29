@@ -7,7 +7,7 @@ class ParchesTable extends React.Component {
     super(props);
     this.state = {
       columns1 : [ { dataField: "gid", text: "Tipo de Parche1" }],
-      allParches:[{ gid: "test1" }],
+      allParches:[{ area: "test1" }],
       columnsSum:[{ dataField: "name", text: "Tipo de Parche2" }],
       allParchesSum:[{ name: "test2" }],
       columnsAguaLinea:[{ dataField: "elemento", text: "Tipo de Parche3" }],

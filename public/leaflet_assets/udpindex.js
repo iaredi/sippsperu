@@ -44149,7 +44149,10 @@ var UDPMapapp = function (_React$Component) {
     _this.state = {
       mytext: "Cargando...",
       speciesResult: [],
-      bounds: "Cargando...",
+      bounds: {
+        _northEast: { lat: 1, lng: 1 },
+        _southWest: { lat: 1, lng: 1 }
+      },
       boundsobtained: false,
       soils: [{ color: "rgb:000", descripcio: "Cargando..." }],
       udpsoils: [{ color: "rgb:000", descripcio: "Cargando..." }],
@@ -44230,6 +44233,11 @@ var UDPMapapp = function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
+      console.log(this.state.bounds);
+      var westernLongitude = this.state.bounds._southWest.lng.toPrecision(6);
+      var easternLongitude = this.state.bounds._northEast.lng.toPrecision(6);
+      var southernLatitude = this.state.bounds._southWest.lat.toPrecision(6);
+      var northernLatitude = this.state.bounds._northEast.lat.toPrecision(6);
 
       return _react2.default.createElement(
         "div",
@@ -44237,6 +44245,20 @@ var UDPMapapp = function (_React$Component) {
         _react2.default.createElement(
           "div",
           { className: "udplayout" },
+          _react2.default.createElement(
+            "div",
+            { id: "bbtop" },
+            _react2.default.createElement(
+              "span",
+              { className: "top left" },
+              northernLatitude + ", " + westernLongitude
+            ),
+            _react2.default.createElement(
+              "span",
+              { className: "top right" },
+              northernLatitude + ", " + easternLongitude
+            )
+          ),
           _react2.default.createElement(
             "div",
             { id: "udpmapdiv", className: "border border-dark" },
@@ -44247,10 +44269,22 @@ var UDPMapapp = function (_React$Component) {
           ),
           _react2.default.createElement(
             "div",
+            { id: "bbbottom" },
+            _react2.default.createElement(
+              "span",
+              { className: "bottom left" },
+              southernLatitude + ", " + westernLongitude
+            ),
+            _react2.default.createElement(
+              "span",
+              { className: "bottom right" },
+              southernLatitude + ", " + easternLongitude
+            )
+          ),
+          _react2.default.createElement(
+            "div",
             { id: "legenddiv" },
-            _react2.default.createElement(_Legend2.default, {
-              soils: this.state.soils
-            })
+            _react2.default.createElement(_Legend2.default, { soils: this.state.soils })
           ),
           _react2.default.createElement(
             "div",
@@ -44269,9 +44303,7 @@ var UDPMapapp = function (_React$Component) {
           _react2.default.createElement(
             "div",
             { id: "parchestable" },
-            this.state.boundsobtained ? _react2.default.createElement(_UdpTitle2.default, {
-              udpsoils: this.state.udpsoils
-            }) : _react2.default.createElement(
+            this.state.boundsobtained ? _react2.default.createElement(_UdpTitle2.default, { udpsoils: this.state.udpsoils }) : _react2.default.createElement(
               "p",
               null,
               "Cargando..."
@@ -44336,8 +44368,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var style = {
-  width: "91%",
-  height: "90%"
+  width: "98%",
+  height: "100%"
 };
 
 var UDPMapa = function (_React$Component) {
@@ -44509,9 +44541,10 @@ var UDPMapa = function (_React$Component) {
       };
       processArray(udpsomething, this.map, this.setStateBounds, this.setSoils);
       this.map.scrollWheelZoom.disable();
+      _leaflet2.default.control.scale({ imperial: false }).addTo(this.map);
 
       //Make map static
-      var lyrcont = document.getElementsByClassName("leaflet-control")[0];
+      var lyrcont = document.getElementsByClassName("leaflet-control-attribution")[0];
       // var lyratt = document.getElementsByClassName(
       //   "leaflet-control-attribution"
       // )[0];
@@ -44519,7 +44552,13 @@ var UDPMapa = function (_React$Component) {
       lyrcont.style.visibility = "hidden";
       // lyratt.style.visibility = "hidden";
       // lyrtop.style.visibility = "hidden";
-
+      var north = _leaflet2.default.control({ position: "topright" });
+      north.onAdd = function (map) {
+        var div = _leaflet2.default.DomUtil.create("div", "info legend");
+        div.innerHTML = '<img id="northarrow" src="img/north.png">';
+        return div;
+      };
+      north.addTo(this.map);
       this.map.dragging.disable();
       this.map.doubleClickZoom.disable();
       /////////////////////////////////////////////////////
@@ -44658,7 +44697,7 @@ var ParchesTable = function (_React$Component) {
 
     _this.state = {
       columns1: [{ dataField: "gid", text: "Tipo de Parche1" }],
-      allParches: [{ gid: "test1" }],
+      allParches: [{ area: "test1" }],
       columnsSum: [{ dataField: "name", text: "Tipo de Parche2" }],
       allParchesSum: [{ name: "test2" }],
       columnsAguaLinea: [{ dataField: "elemento", text: "Tipo de Parche3" }],
@@ -45002,7 +45041,7 @@ function UdpDiversity(props) {
 
   return _react2.default.createElement(
     "div",
-    null,
+    { id: "biodivContainer" },
     _react2.default.createElement(
       "h5",
       { id: "shannonTitle" },

@@ -2,8 +2,8 @@ import React from "react";
 import L from "leaflet";
 
 const style = {
-  width: "91%",
-  height: "90%"
+  width: "98%",
+  height: "100%"
 };
 
 class UDPMapa extends React.Component {
@@ -142,9 +142,11 @@ class UDPMapa extends React.Component {
       this.setSoils
     );
     this.map.scrollWheelZoom.disable();
+    L.control.scale({imperial: false}).addTo(this.map);  
+   
 
     //Make map static
-    var lyrcont = document.getElementsByClassName("leaflet-control")[0];
+    var lyrcont = document.getElementsByClassName("leaflet-control-attribution")[0];
     // var lyratt = document.getElementsByClassName(
     //   "leaflet-control-attribution"
     // )[0];
@@ -152,7 +154,13 @@ class UDPMapa extends React.Component {
     lyrcont.style.visibility = "hidden";
     // lyratt.style.visibility = "hidden";
     // lyrtop.style.visibility = "hidden";
-
+    var north = L.control({position: "topright"});
+    north.onAdd = function(map) {
+        var div = L.DomUtil.create("div", "info legend");
+        div.innerHTML = '<img id="northarrow" src="img/north.png">';
+        return div;
+    }
+    north.addTo(this.map);
     this.map.dragging.disable();
     this.map.doubleClickZoom.disable();
     /////////////////////////////////////////////////////

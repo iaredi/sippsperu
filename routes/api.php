@@ -106,13 +106,13 @@ Route::post('getboundingfeatures', function(Request $request) {
     foreach($resultudp AS $row) {
       $gid = $row->gid;
       //If soil is completely within, within set to 1. Unassigned is 2
-      // $withinsql ="SELECT ST_Within(usos_de_suelo4.geom, (select geom from udp_puebla_4326 where iden=?)) from usos_de_suelo4 where gid = ?";
-      // $withinresult = DB::select($withinsql,[$udpiden,$gid]);
-      // if ($withinresult[0]->st_within){
-      //   $row->aislado=1;
-      // }else{
-      //   $row->aislado=0;
-      // }
+      $withinsql ="SELECT ST_Within(usos_de_suelo4.geom, (select geom from udp_puebla_4326 where iden=?)) from usos_de_suelo4 where gid = ?";
+      $withinresult = DB::select($withinsql,[$udpiden,$gid]);
+      if ($withinresult[0]->st_within){
+        $row->aislado=1;
+      }else{
+        $row->aislado=0;
+      }
       
       $multiresult = DB::select($multisql,[$gid,$udpiden]);
       foreach($multiresult AS $patchrow) {
@@ -124,15 +124,15 @@ Route::post('getboundingfeatures', function(Request $request) {
         $newrow->descripcio=$row->descripcio;
         $newrow->totalarea=$row->totalarea;
         $newrow->color=$row->color;
-
-
-        $withinsql2 ="SELECT ST_Within(?, (select geom from udp_puebla_4326 where iden=?))";
-        $withinresult2 = DB::select($withinsql2,[$patchrow->geom,$udpiden]);
-        if ($withinresult2[0]->st_within){
-          $newrow->aislado=1;
-        }else{
-          $newrow->aislado=0;
-        }
+        $newrow->aislado=$row->aislado;
+        //Aisilado for smallest subdivsions 
+        // $withinsql2 ="SELECT ST_Within(?, (select geom from udp_puebla_4326 where iden=?))";
+        // $withinresult2 = DB::select($withinsql2,[$patchrow->geom,$udpiden]);
+        // if ($withinresult2[0]->st_within){
+        //   $newrow->aislado=1;
+        // }else{
+        //   $newrow->aislado=0;
+        // }
 
         //Data that free-rides on resultudp
         $newrow->agualength=$agualength;

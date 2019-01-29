@@ -62,7 +62,7 @@ function UdpDiversity(props) {
   
 
   return (
-    <div>
+    <div id="biodivContainer">
     <h5 id="shannonTitle">Biodiversidad : Indice de Shannon</h5>
       {listItems}
       <svg height="60" width="100%">

@@ -7,8 +7,6 @@ import ParchesTable from "./ParchesTable";
 import UdpTitle from "./UdpTitle";
 import UdpDiversity from "./UdpDiversity";
 
-
-
 class UDPMapapp extends React.Component {
   constructor(props) {
     super(props);
@@ -19,7 +17,10 @@ class UDPMapapp extends React.Component {
     this.state = {
       mytext: "Cargando...",
       speciesResult: [],
-      bounds: "Cargando...",
+      bounds: {
+        _northEast:{lat:1,lng:1},
+        _southWest:{lat:1,lng:1}
+      },
       boundsobtained: false,
       soils: [{ color: "rgb:000", descripcio: "Cargando..." }],
       udpsoils: [{ color: "rgb:000", descripcio: "Cargando..." }],
@@ -79,21 +80,33 @@ class UDPMapapp extends React.Component {
   }
 
   render() {
-    
+    console.log(this.state.bounds)
+    const westernLongitude = (this.state.bounds._southWest.lng).toPrecision(6)
+    const easternLongitude = (this.state.bounds._northEast.lng).toPrecision(6)
+    const southernLatitude = (this.state.bounds._southWest.lat).toPrecision(6)
+    const northernLatitude = (this.state.bounds._northEast.lat).toPrecision(6)
+
     return (
       <div>
         <div className="udplayout">
+          <div id="bbtop">
+            <span className="top left">{northernLatitude +", "+westernLongitude}</span>
+            <span className="top right">{northernLatitude +", "+easternLongitude}</span>
+          </div>
           <div id="udpmapdiv" className="border border-dark">
             <UDPMapa
               setStateBounds={this.setStateBounds}
               setSoils={this.setSoils}
             />
           </div>
+          
+          <div id="bbbottom">
+            <span className="bottom left">{southernLatitude +", "+westernLongitude}</span>
+            <span className="bottom right">{southernLatitude +", "+easternLongitude}</span>
+          </div>
 
           <div id="legenddiv">
-            <Legend 
-            soils={this.state.soils} 
-            />
+            <Legend soils={this.state.soils} />
           </div>
 
           <div id="descriptiondiv">
@@ -103,11 +116,9 @@ class UDPMapapp extends React.Component {
 
           <div id="parchestable">
             {this.state.boundsobtained ? (
-              <UdpTitle
-              udpsoils={this.state.udpsoils}
-              />
-              ) : (
-                <p>Cargando...</p>
+              <UdpTitle udpsoils={this.state.udpsoils} />
+            ) : (
+              <p>Cargando...</p>
             )}
 
             {this.state.boundsobtained ? (
@@ -120,10 +131,8 @@ class UDPMapapp extends React.Component {
             )}
           </div>
           <div id="biodivreport">
-          
-            <UdpDiversity
-            />
-            </div>
+            <UdpDiversity />
+          </div>
         </div>
       </div>
     );
