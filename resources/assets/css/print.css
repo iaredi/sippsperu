@@ -17,6 +17,8 @@ div#map {
   padding-left:4px;
 }
 .udplayout {
+  height:210mm;
+  width:265mm;
   display: grid;
   background-color: #ecf3fa;
   border:black solid 0.25px;

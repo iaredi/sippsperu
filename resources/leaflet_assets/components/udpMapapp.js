@@ -80,7 +80,9 @@ class UDPMapapp extends React.Component {
   }
 
   render() {
-    console.log(this.state.bounds)
+    
+    const shannonbool = shannon.split("*")[0]>0 || shannon.split("*")[1]>0 || shannon.split("*")[2]>0 || shannon.split("*")[3]>0 || shannon.split("*")[4]>0 || shannon.split("*")[5]>0
+    console.log(shannon)
     const westernLongitude = (this.state.bounds._southWest.lng).toPrecision(6)
     const easternLongitude = (this.state.bounds._northEast.lng).toPrecision(6)
     const southernLatitude = (this.state.bounds._southWest.lat).toPrecision(6)
@@ -130,9 +132,11 @@ class UDPMapapp extends React.Component {
               <p>Cargando...</p>
             )}
           </div>
+          { shannonbool &&
           <div id="biodivreport">
             <UdpDiversity />
           </div>
+            }
         </div>
       </div>
     );

@@ -1,8 +1,6 @@
 import React from "react";
 
 function Alist(props) {
-  const shannonPadding = props.shannon * 0.75 + 9;
-
   return (
     <span
       className="biodivcontainer"

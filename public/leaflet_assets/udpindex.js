@@ -44233,7 +44233,9 @@ var UDPMapapp = function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      console.log(this.state.bounds);
+
+      var shannonbool = shannon.split("*")[0] > 0 || shannon.split("*")[1] > 0 || shannon.split("*")[2] > 0 || shannon.split("*")[3] > 0 || shannon.split("*")[4] > 0 || shannon.split("*")[5] > 0;
+      console.log(shannon);
       var westernLongitude = this.state.bounds._southWest.lng.toPrecision(6);
       var easternLongitude = this.state.bounds._northEast.lng.toPrecision(6);
       var southernLatitude = this.state.bounds._southWest.lat.toPrecision(6);
@@ -44317,7 +44319,7 @@ var UDPMapapp = function (_React$Component) {
               "Cargando..."
             )
           ),
-          _react2.default.createElement(
+          shannonbool && _react2.default.createElement(
             "div",
             { id: "biodivreport" },
             _react2.default.createElement(_UdpDiversity2.default, null)
@@ -44986,8 +44988,6 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Alist(props) {
-  var shannonPadding = props.shannon * 0.75 + 9;
-
   return _react2.default.createElement(
     "span",
     {

@@ -22,7 +22,7 @@ class Mapapp extends React.Component {
       previous: 0,
       udp: 0,
       udpButton: false,
-      udpButtonText: "Mapa de UDP Eligido",
+      udpButtonText: "Suelo y Agua de UDP",
       markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
       mapSettings: {
         distinctOrTotal: "total_observaciones",
@@ -120,8 +120,8 @@ class Mapapp extends React.Component {
     this.setState(() => ({
       udpButtonText:
         idtype == "udp"
-          ? "Mapa de UDP Eligido : " + event.target.feature.properties.iden
-          : "Mapa de UDP Eligido"
+          ? "Suelo y Agua de UDP  : " + event.target.feature.properties.iden
+          : "Suelo y Agua de UDP"
     }));
     const idnumber = event.target.feature.properties.iden;
 
