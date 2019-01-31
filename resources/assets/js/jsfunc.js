@@ -923,7 +923,9 @@ if(window.location.href.substr(-5)==='admin'){
     buildDropdowns( "additional_layers", "measurement", "cargar" );
     selectOptionsCreate( "additional_layers",  "measurement",  true,  "cargar", [],  false, false);
     addOnChangeAdminTable()
-
+}else if(window.location.href.substr(-5)==='excel'){
+    buildDropdowns( "linea_mtp", "measurement", "Select" );
+    selectOptionsCreate( "linea_mtp", "measurement", true,  "Select" );
 }else{
     buildDropdowns( "linea_mtp", "measurement", "Select" );
     selectOptionsCreate( "linea_mtp", "measurement", true,  "Select" );

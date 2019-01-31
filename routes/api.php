@@ -103,6 +103,7 @@ Route::post('getboundingfeatures', function(Request $request) {
           ))).geom::geometry(Polygon,4326)";
 
     $newrows=[];
+  
     foreach($resultudp AS $row) {
       $gid = $row->gid;
       //If soil is completely within, within set to 1. Unassigned is 2
@@ -113,6 +114,7 @@ Route::post('getboundingfeatures', function(Request $request) {
       }else{
         $row->aislado=0;
       }
+
       
       $multiresult = DB::select($multisql,[$gid,$udpiden]);
       foreach($multiresult AS $patchrow) {

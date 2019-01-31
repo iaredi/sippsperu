@@ -24,7 +24,7 @@ class ParchesTable extends React.Component {
   componentDidMount(){
     const descripcioSet = new Set();
     const continuoList =[]
-    let maxarea = 0
+    let maxarea = 0.0
     let parchetotal ={}
     let largestTypeArea=0
     let largestTypeName =''
@@ -38,8 +38,16 @@ class ParchesTable extends React.Component {
       
       
       descripcioSet.add(parche.descripcio)
-      maxarea = ((parche.area>maxarea)?parche.area:maxarea)
-      maxname = ((parche.area>maxarea)?parche.descripcio:maxname)
+      if (parche.area>maxarea){
+        maxarea = parche.area
+        maxname = parche.descripcio
+      }
+      // maxarea = (parche.area>maxarea)?parche.area:maxarea
+      // maxname = parche.area>maxarea?parche.descripcio:maxname
+      console.log(parche.descripcio)
+      console.log(maxarea)
+      console.log(parche.area)
+      console.log('maxname is '+maxname )
       if (parchetotal[parche.descripcio]){
         parchetotal[parche.descripcio] = parseFloat(parche.area) + parchetotal[parche.descripcio]
       }else{
@@ -48,7 +56,7 @@ class ParchesTable extends React.Component {
       
 
       if (listofareas[parche.descripcio]){
-        listofareas[parche.descripcio].push(parche.area.toString())
+        listofareas[parche.descripcio].push((parche.area.toString())+" hectáreas ")
       }else{
         listofareas[parche.descripcio]=[parche.area.toString()]
       }
@@ -101,12 +109,12 @@ class ParchesTable extends React.Component {
     }));
     
     const allParchesSum=[
-      {name:"REQUEZA DE TIPOS DE PARCHE",number:descripcioSet.size},
-      {name:"ABUNDANCIA DE PARCHEA",number:allParches.length},
-      {name:"PARCHES CONTINUOS",number: continuoList.length},
-      {name:"RAZON DE CONTINUIDAD DE PARCHES",number:(continuoList.length / allParches.length).toPrecision(4)},
-      {name:"DOMINANCIA ENTRE TAMANOS DE PARCHE",number:(maxarea / 2500).toPrecision(4) },
-      {name:"DOMINANCIA ENTRE TIPOS DE PARCHE",number:(largestTypeArea / 2500).toPrecision(4) }
+      {name:"REQUEZA DE TIPOS DE PARCHE",number:descripcioSet.size,nombre:"-"},
+      {name:"ABUNDANCIA DE PARCHES",number:allParches.length,nombre:"-"},
+      {name:"PARCHES CONTINUOS",number: continuoList.length,nombre:"-"},
+      {name:"RAZON DE CONTINUIDAD DE PARCHES",number:(continuoList.length / allParches.length).toPrecision(4),nombre:"-"},
+      {name:"DOMINANCIA ENTRE TAMANOS DE PARCHE",number:(maxarea / 2500).toPrecision(4) ,nombre:maxname},
+      {name:"DOMINANCIA ENTRE TIPOS DE PARCHE",number:(largestTypeArea / 2500).toPrecision(4),nombre:largestTypeName }
     ]
     this.setState(prevState => ({
       allParchesSum: allParchesSum
@@ -118,6 +126,10 @@ class ParchesTable extends React.Component {
       },
       {
         dataField: "number",
+        text: " "
+      },
+      {
+        dataField: "nombre",
         text: " "
       }
     ];
@@ -145,7 +157,7 @@ class ParchesTable extends React.Component {
       },
       {
         dataField: "longitud",
-        text: "LONGITUD (h)"
+        text: "LONGITUD (km)"
       },
       {
         dataField: "area",
@@ -163,16 +175,16 @@ class ParchesTable extends React.Component {
     const mystring = `La Unidad de Paisaje ${idennum} \
       (UP) ${idennum}  presenta una riqueza de parches igual a ${descripcioSet.size} y una abundancia de parches \
       igual a ${allParches.length}. De estos parches, ${continuoList.length} son continuos presentando \
-      una razón de continuidad de${(continuoList.length / allParches.length).toPrecision(4)}. Dentro de los aproximadamente 25 Km2 que \
+      una razón de continuidad de${(continuoList.length / allParches.length).toPrecision(4)}. Dentro de los aproximadamente 2500 hecatares que \
       conforman la UP , el Uso de Suelo y Vegetación (USV) más dominante es ${largestTypeName} que representa el ${largestTypeCobertura.toPrecision(4)}% \ 
       del área total de la unidad y está dividido en \
-      ${listofareas[largestTypeName].length} parches de ${listofareas[largestTypeName]} hectares respectivamente. Sin embargo, el parche de mayor \
-      tamaño corresponde al USV de ${maxarea} un área de\
-      aproximadamente ${maxarea} hectares. La dominancia entre tamaños de parche dentro de esta UP es \
+      ${listofareas[largestTypeName].length} parches de ${listofareas[largestTypeName]} hectáreas respectivamente. El parche de mayor \
+      tamaño corresponde al USV de ${maxname} con un área de\
+      aproximadamente ${maxarea} hectáreas. La dominancia entre tamaños de parche dentro de esta UP es \
       de ${(maxarea / 2500).toPrecision(4)}, mientras que la dominancia entre tipos de parche es igual \
       a ${(largestTypeArea / 2500).toPrecision(4)}. Esta UP presenta además una razón de dispersión hídrica de 0.00096 \
       con corrientes de agua que cubren un total de ${agualength} kilometros lineales; así  \
-      como una densidad de cuerpos de agua de ${(aguaarea / 2500).toPrecision(4)} y un área de ${aguaarea} hectares.`
+      como una densidad de cuerpos de agua de ${(aguaarea / 2500).toPrecision(4)} y un área de ${aguaarea} hectáreas.`
 
     this.setText(mystring)
   }

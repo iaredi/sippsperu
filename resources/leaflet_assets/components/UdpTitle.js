@@ -11,8 +11,8 @@ function UdpTitle(props) {
   return ( 
     <div>
       
-        <h5 id="updtitle"> PROPUESTA DE MONITOREO ARTICULADO DE LA BIODIVERSIDAD (MTP + SMC): SECTOR FORESTAL
-        </h5>
+        <h6 id="updtitle"> PROPUESTA DE MONITOREO ARTICULADO DE LA BIODIVERSIDAD (MTP + SMC): SECTOR FORESTAL
+        </h6>
       
       <div id="updmunititle">
         <h6 id="framentation"> MAPA DE FRAGMENTACIÓN AMBIENTAL

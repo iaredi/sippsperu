@@ -24129,7 +24129,7 @@ var Mapapp = function (_React$Component) {
       previous: 0,
       udp: 0,
       udpButton: false,
-      udpButtonText: "Suelo y Agua de UDP",
+      udpButtonText: "Fragmentación Ambiental de UDP",
       markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
       mapSettings: {
         distinctOrTotal: "total_observaciones",
@@ -24300,7 +24300,7 @@ var Mapapp = function (_React$Component) {
       });
       this.setState(function () {
         return {
-          udpButtonText: idtype == "udp" ? "Suelo y Agua de UDP  : " + event.target.feature.properties.iden : "Suelo y Agua de UDP"
+          udpButtonText: idtype == "udp" ? "Fragmentación Ambiental de UDP  : " + event.target.feature.properties.iden : "Fragmentación Ambiental de UDP"
         };
       });
       var idnumber = event.target.feature.properties.iden;

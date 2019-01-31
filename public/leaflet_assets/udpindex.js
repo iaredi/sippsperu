@@ -44721,7 +44721,7 @@ var ParchesTable = function (_React$Component) {
     value: function componentDidMount() {
       var descripcioSet = new Set();
       var continuoList = [];
-      var maxarea = 0;
+      var maxarea = 0.0;
       var parchetotal = {};
       var largestTypeArea = 0;
       var largestTypeName = '';
@@ -44734,8 +44734,16 @@ var ParchesTable = function (_React$Component) {
         parche.area = parseFloat((parseFloat(parche.area) * (2500 / 0.00218206963154496)).toPrecision(4));
 
         descripcioSet.add(parche.descripcio);
-        maxarea = parche.area > maxarea ? parche.area : maxarea;
-        maxname = parche.area > maxarea ? parche.descripcio : maxname;
+        if (parche.area > maxarea) {
+          maxarea = parche.area;
+          maxname = parche.descripcio;
+        }
+        // maxarea = (parche.area>maxarea)?parche.area:maxarea
+        // maxname = parche.area>maxarea?parche.descripcio:maxname
+        console.log(parche.descripcio);
+        console.log(maxarea);
+        console.log(parche.area);
+        console.log('maxname is ' + maxname);
         if (parchetotal[parche.descripcio]) {
           parchetotal[parche.descripcio] = parseFloat(parche.area) + parchetotal[parche.descripcio];
         } else {
@@ -44743,7 +44751,7 @@ var ParchesTable = function (_React$Component) {
         }
 
         if (listofareas[parche.descripcio]) {
-          listofareas[parche.descripcio].push(parche.area.toString());
+          listofareas[parche.descripcio].push(parche.area.toString() + " hectáreas ");
         } else {
           listofareas[parche.descripcio] = [parche.area.toString()];
         }
@@ -44791,7 +44799,7 @@ var ParchesTable = function (_React$Component) {
         };
       });
 
-      var allParchesSum = [{ name: "REQUEZA DE TIPOS DE PARCHE", number: descripcioSet.size }, { name: "ABUNDANCIA DE PARCHEA", number: allParches.length }, { name: "PARCHES CONTINUOS", number: continuoList.length }, { name: "RAZON DE CONTINUIDAD DE PARCHES", number: (continuoList.length / allParches.length).toPrecision(4) }, { name: "DOMINANCIA ENTRE TAMANOS DE PARCHE", number: (maxarea / 2500).toPrecision(4) }, { name: "DOMINANCIA ENTRE TIPOS DE PARCHE", number: (largestTypeArea / 2500).toPrecision(4) }];
+      var allParchesSum = [{ name: "REQUEZA DE TIPOS DE PARCHE", number: descripcioSet.size, nombre: "-" }, { name: "ABUNDANCIA DE PARCHES", number: allParches.length, nombre: "-" }, { name: "PARCHES CONTINUOS", number: continuoList.length, nombre: "-" }, { name: "RAZON DE CONTINUIDAD DE PARCHES", number: (continuoList.length / allParches.length).toPrecision(4), nombre: "-" }, { name: "DOMINANCIA ENTRE TAMANOS DE PARCHE", number: (maxarea / 2500).toPrecision(4), nombre: maxname }, { name: "DOMINANCIA ENTRE TIPOS DE PARCHE", number: (largestTypeArea / 2500).toPrecision(4), nombre: largestTypeName }];
       this.setState(function (prevState) {
         return {
           allParchesSum: allParchesSum
@@ -44802,6 +44810,9 @@ var ParchesTable = function (_React$Component) {
         text: " "
       }, {
         dataField: "number",
+        text: " "
+      }, {
+        dataField: "nombre",
         text: " "
       }];
       this.setState(function (prevState) {
@@ -44824,7 +44835,7 @@ var ParchesTable = function (_React$Component) {
         text: "ELEMENTO"
       }, {
         dataField: "longitud",
-        text: "LONGITUD (h)"
+        text: "LONGITUD (km)"
       }, {
         dataField: "area",
         text: "AREA (h^2)"
@@ -44838,7 +44849,7 @@ var ParchesTable = function (_React$Component) {
         };
       });
       console.log(allParches);
-      var mystring = "La Unidad de Paisaje " + idennum + "       (UP) " + idennum + "  presenta una riqueza de parches igual a " + descripcioSet.size + " y una abundancia de parches       igual a " + allParches.length + ". De estos parches, " + continuoList.length + " son continuos presentando       una raz\xF3n de continuidad de" + (continuoList.length / allParches.length).toPrecision(4) + ". Dentro de los aproximadamente 25 Km2 que       conforman la UP , el Uso de Suelo y Vegetaci\xF3n (USV) m\xE1s dominante es " + largestTypeName + " que representa el " + largestTypeCobertura.toPrecision(4) + "%  \n      del \xE1rea total de la unidad y est\xE1 dividido en       " + listofareas[largestTypeName].length + " parches de " + listofareas[largestTypeName] + " hectares respectivamente. Sin embargo, el parche de mayor       tama\xF1o corresponde al USV de " + maxarea + " un \xE1rea de      aproximadamente " + maxarea + " hectares. La dominancia entre tama\xF1os de parche dentro de esta UP es       de " + (maxarea / 2500).toPrecision(4) + ", mientras que la dominancia entre tipos de parche es igual       a " + (largestTypeArea / 2500).toPrecision(4) + ". Esta UP presenta adem\xE1s una raz\xF3n de dispersi\xF3n h\xEDdrica de 0.00096       con corrientes de agua que cubren un total de " + agualength + " kilometros lineales; as\xED        como una densidad de cuerpos de agua de " + (aguaarea / 2500).toPrecision(4) + " y un \xE1rea de " + aguaarea + " hectares.";
+      var mystring = "La Unidad de Paisaje " + idennum + "       (UP) " + idennum + "  presenta una riqueza de parches igual a " + descripcioSet.size + " y una abundancia de parches       igual a " + allParches.length + ". De estos parches, " + continuoList.length + " son continuos presentando       una raz\xF3n de continuidad de" + (continuoList.length / allParches.length).toPrecision(4) + ". Dentro de los aproximadamente 2500 hecatares que       conforman la UP , el Uso de Suelo y Vegetaci\xF3n (USV) m\xE1s dominante es " + largestTypeName + " que representa el " + largestTypeCobertura.toPrecision(4) + "%  \n      del \xE1rea total de la unidad y est\xE1 dividido en       " + listofareas[largestTypeName].length + " parches de " + listofareas[largestTypeName] + " hect\xE1reas respectivamente. El parche de mayor       tama\xF1o corresponde al USV de " + maxname + " con un \xE1rea de      aproximadamente " + maxarea + " hect\xE1reas. La dominancia entre tama\xF1os de parche dentro de esta UP es       de " + (maxarea / 2500).toPrecision(4) + ", mientras que la dominancia entre tipos de parche es igual       a " + (largestTypeArea / 2500).toPrecision(4) + ". Esta UP presenta adem\xE1s una raz\xF3n de dispersi\xF3n h\xEDdrica de 0.00096       con corrientes de agua que cubren un total de " + agualength + " kilometros lineales; as\xED        como una densidad de cuerpos de agua de " + (aguaarea / 2500).toPrecision(4) + " y un \xE1rea de " + aguaarea + " hect\xE1reas.";
 
       this.setText(mystring);
     }
@@ -44944,7 +44955,7 @@ function UdpTitle(props) {
     "div",
     null,
     _react2.default.createElement(
-      "h5",
+      "h6",
       { id: "updtitle" },
       " PROPUESTA DE MONITOREO ARTICULADO DE LA BIODIVERSIDAD (MTP + SMC): SECTOR FORESTAL"
     ),
