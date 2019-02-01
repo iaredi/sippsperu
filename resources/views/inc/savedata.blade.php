@@ -39,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
         //Save New Predio Data
         if ($_POST['selectpredio']=="Nuevo") {
             
-            
             $prediofkey=askforkey("municipio_puebla_4326", "gid", "nomgeo", $_POST['selectmunicipio']);
             
             $prediocolumns=array(
@@ -86,9 +85,6 @@ if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!sessio
                 $stmnt9 = DB::update($updatesql, []);
                 //////////////////////
             }
-
-
-
 
    } else {
         $medicionchoice = $_POST['selectmedicion'];

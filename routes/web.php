@@ -42,4 +42,5 @@ Route::post('/reset_2', 'PagesController@reset_2');
 Route::post('/cargarshapes', 'PagesController@cargarshapes');
 Route::post('/cargarshapesadmin', 'PagesController@cargarshapesadmin');
 Route::post('/udpmapa', 'PagesController@udpmapa');
+Route::post('/ingresarexcel', 'PagesController@ingresarexcel');
 

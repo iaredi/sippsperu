@@ -24454,7 +24454,7 @@ var Mapapp = function (_React$Component) {
                       href: "/cargarshapes",
                       role: "button"
                     },
-                    "Cargar Shapefile"
+                    "Cargar Shapefile de Predio"
                   ),
                   _react2.default.createElement(
                     "form",

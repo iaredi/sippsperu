@@ -274,7 +274,7 @@ class Mapapp extends React.Component {
                     href="/cargarshapes"
                     role="button"
                   >
-                    Cargar Shapefile
+                    Cargar Shapefile de Predio
                   </a>
                   <form action="/udpmapa" method="post">
 

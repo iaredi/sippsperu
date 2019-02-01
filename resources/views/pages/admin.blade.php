@@ -164,6 +164,10 @@ if (!session('admin')){
                 <input type="text" placeholder="Nombre de Capa" name="displayname" id="displayname">
             </div>
             <div>
+              <label for="campoclick" class=" h6 displayname">Campo Click</label>
+              <input type="text" name="campoclick" id="campoclick">
+          </div>
+            <div>
                 <label for="fillcolor" class=" h6 shapenombre">Fill Color</label>
                 <input type="color" name="fillcolor" id="fillcolor">
             </div>

@@ -76,14 +76,14 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
             
             $selectsql = "select tablename from additional_layers where displayname=?";
             $cargartablename = (DB::select($selectsql, [$_POST["selectadditional_layers"]]))[0]->tablename;
-            if ($_POST["deletetable"]==1){
+            if (isset($_POST["deletetable"]) && $_POST["deletetable"]==1){
                 $layerresult= DB::delete("DELETE from additional_layers where tablename = ?", [$cargartablename]);
                 DB::statement("drop table {$cargartablename}");
                 session(['adminerror'=> "{$cargartablename} ha side borrado"]);            
             }else{
-                $arraytopass = [$_POST['displayname'],$_POST['lineacolor'],$_POST['fillcolor'],$_POST['fillopacidad']];
+                $arraytopass = [$_POST['displayname'],$_POST['campoclick'],$_POST['lineacolor'],$_POST['fillcolor'],$_POST['fillopacidad']];
                 array_push( $arraytopass,$_POST['lineaopacidad'],$_POST['lineaanchura'],$cargartablename);
-                $layerresult= DB::update("UPDATE additional_layers set (displayname, color,fillcolor,fillopacity,opacity,weight) = (?,?,?,?,?,?) where tablename = ?", $arraytopass);            
+                $layerresult= DB::update("UPDATE additional_layers set (displayname,featurecolumn,color,fillcolor,fillopacity,opacity,weight) = (?,?,?,?,?,?,?) where tablename = ?", $arraytopass);            
                 session(['adminerror'=> "{$cargartablename} ha cambiado"]);
             }
         }

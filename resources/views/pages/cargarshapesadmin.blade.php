@@ -51,7 +51,7 @@ if (!session('admin')){
                 if (strpos($output, 'ROLLBACK') == false) {
                     $geom= DB::select("select geom from {$shapenombre}", []);
                     if (isset($geom[0])){
-                        $arraytopass = [$_POST['shapenombre'],$_POST['displayname'],$_POST['featurecolumn'],$_POST['lineacolor']];
+                        $arraytopass = [$_POST['shapenombre'],$_POST['displayname'],strtolower($_POST['featurecolumn']),$_POST['lineacolor']];
                         array_push( $arraytopass,$_POST['fillcolor'],$_POST['fillopacidad'],$_POST['lineaopacidad'],$_POST['lineaanchura'] );
                         $layerresult= DB::insert("INSERT into additional_layers (tablename, displayname, featurecolumn, color,fillcolor,fillopacity,opacity,weight) values (?,?,?,?,?,?,?,?)", $arraytopass);
                         return redirect()->to('/thanks')->send();
@@ -73,6 +73,11 @@ if (!session('admin')){
     <p class="text-center h2">Cargar Shapes</p>
     <div class=" warnings">
         <?php
+
+
+                $hint1="A veces no salga correcto si la proyección no es ESPG:4326";
+                echo "<p class='text-dark text-center' style='background-color: lightsteelblue;'>{$hint1}</p>";
+                
             if (sizeof($errorlist)>0){
                 foreach ($errorlist as $msg) {
                     echo "<p class='bg-danger2 text-center'>{$msg}</p>";

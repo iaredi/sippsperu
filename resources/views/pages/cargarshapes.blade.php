@@ -3,7 +3,7 @@
 
 <?php
     $errorlist=[];
-    if ($_SERVER['REQUEST_METHOD']=="POST"){
+    if ($_SERVER['REQUEST_METHOD']=="POST"&& (!session('visitante'))){
         $filearray=['shp','shx','dbf','prj'];
         $base = substr($_FILES['prj']["name"],0,-4);
         foreach( $filearray as $filetype) {
@@ -78,6 +78,9 @@
     <p class="text-center h2">Cargar Shapes</p>
     <div class=" warnings">
         <?php
+
+          $hint1="A veces no salga correcto si la proyección no es ESPG:4326";
+          echo "<p class='text-dark text-center' style='background-color: lightsteelblue;'>{$hint1}</p>";
             if (sizeof($errorlist)>0){
                 foreach ($errorlist as $msg) {
                     echo "<p class='bg-danger2 text-center'>{$msg}</p>";
