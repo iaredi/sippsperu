@@ -16,27 +16,32 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
       $errorlist[]= "Los menus desplegables no deben estar vacios";
       break;
     }
-
+    if ($_POST['selectlinea_mtp']=='Nuevo') {
+      $errorlist[]= "Por favor, use la pagina 'Ingesar Datos' para guardar su linea nueva.";
+      break;
+    }
+    
     $target_dir = "../storage/shp/";
     $target_file = $target_dir . basename($_FILES['excelFromUser']["name"]);
     $inputFileName = $_FILES['excelFromUser'];
     move_uploaded_file($_FILES['excelFromUser']["tmp_name"], $target_file);
+    $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
+    $worksheetNames = $reader->listWorksheetNames($target_file);
+    $spreadsheet = $reader->load($target_file);
 
-$reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
 
-$worksheetNames = $reader->listWorksheetNames($target_file);
-$spreadsheet = $reader->load($target_file);
+    
+    foreach ($worksheetNames as $sheet) {
+      echo $sheet;
+      $myval = $spreadsheet->getSheetByName($sheet)->getCell('A1')->getValue();
+      echo $myval;
+    }
 
-foreach ($worksheetNames as $sheet) {
-  echo $sheet;
-  $myval = $spreadsheet->getSheetByName($sheet)->getCell('A1')->getValue();
-  echo $myval;
-}
 
-//$spreadsheet->getSheetByName($sheet);
 
-    //$spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($target_file);
 
+    $newpost = array('selectlinea_mtp' => $_POST['selectlinea_mtp']);
+    $newpost['row0*medicion*fecha'] = 
     break;
   }
 

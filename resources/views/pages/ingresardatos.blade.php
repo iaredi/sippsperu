@@ -1,17 +1,22 @@
+@include('inc/savedata')
+@include('inc/php_functions')
+
+
 <?php
     if (!session('email')){
         return redirect()->to('/login')->send();
     }
     $useremail=json_encode(session('email'));
+    if ($_SERVER['REQUEST_METHOD']=="POST"){
+      savedata($_POST,$useremail);
+    }
 ?>
 
 <script>
     var useremail = {!! $useremail !!};
 </script>
-@include('inc/php_functions')
 @include('inc/setuppage')
 @include('inc/checkdata')
-@include('inc/savedata')
 @include('inc/header')
 @include('inc/nav')
 
