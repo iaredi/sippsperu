@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
 
 
     $newpost = array('selectlinea_mtp' => $_POST['selectlinea_mtp']);
-    $newpost['row0*medicion*fecha'] = 
+    //$newpost['row0*medicion*fecha'] = 
     break;
   }
 

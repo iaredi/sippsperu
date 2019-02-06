@@ -1,5 +1,6 @@
-@include('inc/savedata')
 @include('inc/php_functions')
+@include('inc/checkdata')
+@include('inc/savedata')
 
 
 <?php
@@ -16,7 +17,6 @@
     var useremail = {!! $useremail !!};
 </script>
 @include('inc/setuppage')
-@include('inc/checkdata')
 @include('inc/header')
 @include('inc/nav')
 
