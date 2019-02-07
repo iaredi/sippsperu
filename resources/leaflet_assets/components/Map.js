@@ -48,6 +48,16 @@ class Map extends React.Component {
     };
 
     const get_shp =(item,mymap)=>{
+      ////
+      let geojsonMarkerOptions = {
+        radius: 4,
+        fillColor: "#ff7800",
+        color: "#000",
+        weight: 1,
+        opacity: 1,
+        fillOpacity: 0.8
+    };
+    
         let myStyle={
             weight: item.weight,
             color: item.color,
@@ -62,10 +72,21 @@ class Map extends React.Component {
             }
             layer.on('click',handleFeatureClick)
         }
+        
         let c2 = L.geoJson(item.geom, {
             style: myStyle,
             onEachFeature: onEachFeature
         })
+        if (item.geom.features[0].geometry.type=='Point'){
+          c2 = L.geoJSON(item.geom, {
+            pointToLayer: function (feature, latlng) {
+              return L.circleMarker(latlng, geojsonMarkerOptions);
+            },
+            onEachFeature: onEachFeature,
+            style: myStyle,
+
+          })
+        }
         if (item.tableName=='linea_mtp'||item.tableName=='udp_puebla_4326'){
             c2.addTo(mymap)
         }

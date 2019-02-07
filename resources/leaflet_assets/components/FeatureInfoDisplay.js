@@ -59,10 +59,16 @@ class FeatureInfoDisplay extends React.Component {
               }
             },{
             dataField: 'total_observaciones',
-            text: 'Individuos'
+            text: 'Individuos',
+            headerStyle: {
+                width: '80px'
+              }
             }, {
             dataField: 'distinct_species',
-            text: 'Especies Distintas'
+            text: 'Especies Distintas',
+            headerStyle: {
+                width: '80px'
+              }
             }, {
             dataField: 'dominancia',
             headerStyle: {

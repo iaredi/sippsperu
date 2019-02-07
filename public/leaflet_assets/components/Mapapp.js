@@ -18511,6 +18511,16 @@ var Map = function (_React$Component) {
             };
 
             var get_shp = function get_shp(item, mymap) {
+                ////
+                var geojsonMarkerOptions = {
+                    radius: 4,
+                    fillColor: "#ff7800",
+                    color: "#000",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                };
+
                 var myStyle = {
                     weight: item.weight,
                     color: item.color,
@@ -18525,10 +18535,21 @@ var Map = function (_React$Component) {
                     };
                     layer.on('click', handleFeatureClick);
                 };
+
                 var c2 = _leaflet2.default.geoJson(item.geom, {
                     style: myStyle,
                     onEachFeature: onEachFeature
                 });
+                if (item.geom.features[0].geometry.type == 'Point') {
+                    c2 = _leaflet2.default.geoJSON(item.geom, {
+                        pointToLayer: function pointToLayer(feature, latlng) {
+                            return _leaflet2.default.circleMarker(latlng, geojsonMarkerOptions);
+                        },
+                        onEachFeature: onEachFeature,
+                        style: myStyle
+
+                    });
+                }
                 if (item.tableName == 'linea_mtp' || item.tableName == 'udp_puebla_4326') {
                     c2.addTo(mymap);
                 }
@@ -24780,10 +24801,16 @@ var FeatureInfoDisplay = function (_React$Component) {
                 }
             }, {
                 dataField: 'total_observaciones',
-                text: 'Individuos'
+                text: 'Individuos',
+                headerStyle: {
+                    width: '80px'
+                }
             }, {
                 dataField: 'distinct_species',
-                text: 'Especies Distintas'
+                text: 'Especies Distintas',
+                headerStyle: {
+                    width: '80px'
+                }
             }, {
                 dataField: 'dominancia',
                 headerStyle: {

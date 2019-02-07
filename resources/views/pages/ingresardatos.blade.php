@@ -26,12 +26,12 @@
                 $hint1="Si no hizo la observacion, ingrese 0000.";
                 $hint2="Si hiciera observacion y no hubiera especies, ingrese 000.";
                 $hint3="Si no sabe con certeza algún dato, ingrese 00.";
-                $hint3="Todos los medida son de 3 grados de precision. Por ejemplo 1.792";
+                $hint4="Todos los medida son de 3 grados de precision. Por ejemplo 1.792";
 
                 echo "<p class='text-dark text-center' style='background-color: lightsteelblue;'>{$hint1}</p>";
                 echo "<p class='text-dark text-center'style='background-color: lightsteelblue;'>{$hint2}</p>";
                 echo "<p class='text-dark text-center'style='background-color: lightsteelblue;'>{$hint3}</p>";
-                echo "<p class='text-dark text-center'style='background-color: lightsteelblue;'>{$hint3}</p>";
+                echo "<p class='text-dark text-center'style='background-color: lightsteelblue;'>{$hint4}</p>";
 
                     foreach (session('error') as $msg) {
                         echo "<p class='bg-danger2 text-center'>{$msg}</p>";
