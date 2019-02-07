@@ -24735,7 +24735,7 @@ var FeatureInfoDisplay = function (_React$Component) {
             if (this.props.featureInfo.properties.displayName == 'Linea MTP' || this.props.featureInfo.properties.displayName == 'Unidad de Paisaje') {
 
                 var lifeForms = ['arbol', 'arbusto', 'hierba', 'ave', 'herpetofauna', 'mamifero', 'Dato acumulado'];
-                var mya2 = ['total_observaciones', 'distinct_species', 'dominancia', 'shannon'];
+                var mya2 = ['total_observaciones', 'distinct_species', 'dominancia', 'shannon', 'biodiversidad_verdadera'];
                 var myIcons = { 'ave': '🦅', 'arbol': '🌲', 'arbusto': '🌳', 'hierba': '🌱', 'herpetofauna': '🐍', 'mamifero': '🦌' };
 
                 lifeForms.map(function (life) {
@@ -24745,12 +24745,27 @@ var FeatureInfoDisplay = function (_React$Component) {
 
                     mya2.map(function (category, ind) {
                         if (life == 'Dato acumulado') {
-                            var mysum = +_this2.props.featureInfo.properties[category + '_ave'] + +_this2.props.featureInfo.properties[category + '_hierba'] + +_this2.props.featureInfo.properties[category + '_arbusto'] + +_this2.props.featureInfo.properties[category + '_arbol'] + +_this2.props.featureInfo.properties[category + '_herpetofauna'] + +_this2.props.featureInfo.properties[category + '_mamifero'];
+                            var mysum = -999.99;
+                            if (category == 'biodiversidad_verdadera') {
+                                mysum = Math.exp(-_this2.props.featureInfo.properties['shannon_ave']) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties['shannon_ave']);
+                                mysum += Math.exp(-_this2.props.featureInfo.properties['shannon_hierba']) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties['shannon_hierba']);
+                                mysum += Math.exp(-_this2.props.featureInfo.properties['shannon_arbusto']) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties['shannon_arbusto']);
+                                mysum += Math.exp(-_this2.props.featureInfo.properties['shannon_arbol']) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties['shannon_arbol']);
+                                mysum += Math.exp(-_this2.props.featureInfo.properties['shannon_herpetofauna']) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties['shannon_herpetofauna']);
+                                mysum += Math.exp(-_this2.props.featureInfo.properties['shannon_mamifero']) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties['shannon_mamifero']);
+                            } else {
+                                mysum = +_this2.props.featureInfo.properties[category + '_ave'] + +_this2.props.featureInfo.properties[category + '_hierba'] + +_this2.props.featureInfo.properties[category + '_arbusto'] + +_this2.props.featureInfo.properties[category + '_arbol'] + +_this2.props.featureInfo.properties[category + '_herpetofauna'] + +_this2.props.featureInfo.properties[category + '_mamifero'];
+                            }
                             if (ind > 1) mysum = (mysum / 6).toPrecision(4);
                             oneTableRow[category] = mysum;
                         } else {
                             var newCat = category.replace('_' + life, '');
-                            var myValue = ind > 1 ? (+_this2.props.featureInfo.properties[category + '_' + life]).toPrecision(4) : _this2.props.featureInfo.properties[category + '_' + life];
+                            var myValue = -999.99;
+                            if (newCat == 'biodiversidad_verdadera') {
+                                myValue = Math.exp(-oneTableRow['shannon']).toPrecision(4) == 1 ? 0 : Math.exp(-oneTableRow['shannon']).toPrecision(4);
+                            } else {
+                                myValue = ind > 1 ? (+_this2.props.featureInfo.properties[category + '_' + life]).toPrecision(4) : _this2.props.featureInfo.properties[category + '_' + life];
+                            }
                             oneTableRow[newCat] = myValue;
                         }
                     });
@@ -24771,6 +24786,9 @@ var FeatureInfoDisplay = function (_React$Component) {
                 text: 'Especies Distintas'
             }, {
                 dataField: 'dominancia',
+                headerStyle: {
+                    width: '92px'
+                },
                 text: 'Dominancia',
                 classes: 'testme'
             }, {
@@ -24779,6 +24797,13 @@ var FeatureInfoDisplay = function (_React$Component) {
                     width: '62px'
                 },
                 text: 'Shannon'
+            }, {
+                dataField: 'biodiversidad_verdadera',
+                headerStyle: {
+                    width: '92px'
+                },
+                text: 'Biodiversidad Verdadera',
+                classes: 'testme'
             }];
 
             return _react2.default.createElement(

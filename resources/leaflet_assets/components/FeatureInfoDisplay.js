@@ -13,7 +13,7 @@ class FeatureInfoDisplay extends React.Component {
         if(this.props.featureInfo.properties.displayName=='Linea MTP' || this.props.featureInfo.properties.displayName=='Unidad de Paisaje'){
             
             let lifeForms= ['arbol','arbusto','hierba', 'ave', 'herpetofauna','mamifero','Dato acumulado']
-            let mya2=['total_observaciones','distinct_species','dominancia','shannon']
+            let mya2=['total_observaciones','distinct_species','dominancia','shannon','biodiversidad_verdadera']
             let myIcons={'ave':'🦅','arbol':'🌲','arbusto':'🌳','hierba':'🌱','herpetofauna':'🐍','mamifero':'🦌'}
             
             lifeForms.map((life)=>{
@@ -24,12 +24,27 @@ class FeatureInfoDisplay extends React.Component {
 
                 mya2.map((category,ind)=>{
                     if (life=='Dato acumulado'){
-                        let mysum= +this.props.featureInfo.properties[`${category}_ave`] + +this.props.featureInfo.properties[`${category}_hierba`] + +this.props.featureInfo.properties[`${category}_arbusto`] + +this.props.featureInfo.properties[`${category}_arbol`] + +this.props.featureInfo.properties[`${category}_herpetofauna`] + +this.props.featureInfo.properties[`${category}_mamifero`]                                
+                      let mysum = -999.99
+                        if (category=='biodiversidad_verdadera'){
+                          mysum= Math.exp(-this.props.featureInfo.properties[`shannon_ave`])==1?0:Math.exp(-this.props.featureInfo.properties[`shannon_ave`]) 
+                          mysum+=Math.exp(-this.props.featureInfo.properties[`shannon_hierba`]) ==1?0:Math.exp(-this.props.featureInfo.properties[`shannon_hierba`])
+                          mysum+=Math.exp(-this.props.featureInfo.properties[`shannon_arbusto`])==1?0: Math.exp(-this.props.featureInfo.properties[`shannon_arbusto`]) 
+                          mysum+=Math.exp(-this.props.featureInfo.properties[`shannon_arbol`])==1?0: Math.exp(-this.props.featureInfo.properties[`shannon_arbol`])
+                          mysum+=Math.exp(-this.props.featureInfo.properties[`shannon_herpetofauna`])==1?0: Math.exp(-this.props.featureInfo.properties[`shannon_herpetofauna`]) 
+                          mysum+=Math.exp(-this.props.featureInfo.properties[`shannon_mamifero`]) ==1?0:Math.exp(-this.props.featureInfo.properties[`shannon_mamifero`])
+                        }else{
+                          mysum= +this.props.featureInfo.properties[`${category}_ave`] + +this.props.featureInfo.properties[`${category}_hierba`] + +this.props.featureInfo.properties[`${category}_arbusto`] + +this.props.featureInfo.properties[`${category}_arbol`] + +this.props.featureInfo.properties[`${category}_herpetofauna`] + +this.props.featureInfo.properties[`${category}_mamifero`]                                
+                        }
                         if (ind>1) mysum=(mysum/6).toPrecision(4)
                         oneTableRow[category]=mysum
                     }else{
                         let newCat=category.replace(`_${life}`,'')
-                        let myValue=  ind>1 ? (+this.props.featureInfo.properties[`${category}_${life}`]).toPrecision(4):this.props.featureInfo.properties[`${category}_${life}`]
+                        let myValue = -999.99
+                        if (newCat=='biodiversidad_verdadera'){
+                          myValue = Math.exp(-oneTableRow['shannon']).toPrecision(4)==1?0:Math.exp(-oneTableRow['shannon']).toPrecision(4)
+                        }else{
+                          myValue = ind>1 ? (+this.props.featureInfo.properties[`${category}_${life}`]).toPrecision(4):this.props.featureInfo.properties[`${category}_${life}`]
+                        }
                         oneTableRow[newCat]=myValue
                     }
                 })
@@ -50,14 +65,24 @@ class FeatureInfoDisplay extends React.Component {
             text: 'Especies Distintas'
             }, {
             dataField: 'dominancia',
+            headerStyle: {
+              width: '92px'
+            },
             text: 'Dominancia',
             classes: 'testme' 
-            }, {
+            },{
             dataField: 'shannon',
             headerStyle: {
                 width: '62px'
               },
             text: 'Shannon'
+            }, {
+            dataField: 'biodiversidad_verdadera',
+            headerStyle: {
+              width: '92px'
+            },
+            text: 'Biodiversidad Verdadera',
+            classes: 'testme' 
             }];
 
         return(
