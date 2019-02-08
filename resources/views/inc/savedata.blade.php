@@ -62,15 +62,29 @@ function savedata($newpost,$useremail){
               }
               //Save New Linea_MTP Data
               for($i=0; $i<countrows("linea_mtp"); $i++) {
-                  $comienzo_longitud = round(floatval($newpost["row{$i}*linea_mtp*comienzo_longitud"]),6);
-                  $fin_longitud = round(floatval($newpost["row{$i}*linea_mtp*fin_longitud"]),6);
                   $comienzo_latitud = round(floatval($newpost["row{$i}*linea_mtp*comienzo_latitud"]),6);
+                  $comienzo_longitud = round(floatval($newpost["row{$i}*linea_mtp*comienzo_longitud"]),6);
+                  $punto_2_latitud = round(floatval($newpost["row{$i}*linea_mtp*punto_2_latitud"]),6);
+                  $punto_2_longitud = round(floatval($newpost["row{$i}*linea_mtp*punto_2_longitud"]),6);
+                  $punto_3_latitud = round(floatval($newpost["row{$i}*linea_mtp*punto_3_latitud"]),6);
+                  $punto_3_longitud = round(floatval($newpost["row{$i}*linea_mtp*punto_3_longitud"]),6);
+                  $punto_4_latitud = round(floatval($newpost["row{$i}*linea_mtp*punto_4_latitud"]),6);
+                  $punto_4_longitud = round(floatval($newpost["row{$i}*linea_mtp*punto_4_longitud"]),6);
                   $fin_latitud = round(floatval($newpost["row{$i}*linea_mtp*fin_latitud"]),6);
+                  $fin_longitud = round(floatval($newpost["row{$i}*linea_mtp*fin_longitud"]),6);
+
+                 
                   $linea_mtpcolumns=array(
                       "comienzo_longitud"=> $comienzo_longitud,
                       "fin_longitud"=> $fin_longitud,
                       "comienzo_latitud"=> $comienzo_latitud,
                       "fin_latitud"=> $fin_latitud,
+                      "punto_2_latitud"=> $punto_2_latitud,
+                      "punto_2_longitud"=> $punto_2_longitud,
+                      "punto_3_latitud"=> $punto_3_latitud,
+                      "punto_3_longitud"=> $punto_3_longitud,
+                      "punto_4_latitud"=> $punto_4_latitud,
+                      "punto_4_longitud"=> $punto_4_longitud,
                       "nombre_iden"=> "{$linea_mtppredioname} ({$comienzo_latitud},{$comienzo_longitud}) ({$fin_latitud},{$fin_longitud})",
                       "iden_predio"=> $linea_mtpfkey,
                       "iden_unidad_de_paisaje"=> "notset"
@@ -80,7 +94,7 @@ function savedata($newpost,$useremail){
                   $max_line = getserialmax( "linea_mtp");
 
                   /////////////////////
-                  $updatesql = "UPDATE linea_mtp set iden_geom = (SELECT ST_GeomFromText('MultiLineString(({$comienzo_longitud} {$comienzo_latitud}, {$fin_longitud} {$fin_latitud}))',4326)) where iden = {$max_line}";
+                  $updatesql = "UPDATE linea_mtp set iden_geom = (SELECT ST_GeomFromText('MultiLineString(({$comienzo_longitud} {$comienzo_latitud},{$punto_2_longitud} {$punto_2_latitud},{$punto_3_longitud} {$punto_3_latitud},{$punto_4_longitud} {$punto_4_latitud}, {$fin_longitud} {$fin_latitud}))',4326)) where iden = {$max_line}";
                   $stmnt9 = DB::update($updatesql, []);
                   //////////////////////
               }

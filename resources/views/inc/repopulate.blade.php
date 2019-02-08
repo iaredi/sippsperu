@@ -16,7 +16,7 @@
             }
         }
 
-    if (sizeof(session('error'))>0) {
+    if (sizeof(session('error'))>0 && isset($_POST['mode']) ) {
         echo '<script>var newold='.json_encode($_POST['mode']).'</script>';
 
         if (isset($_POST['hiddenlocation'])){

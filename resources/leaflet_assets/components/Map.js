@@ -77,7 +77,7 @@ class Map extends React.Component {
             style: myStyle,
             onEachFeature: onEachFeature
         })
-        if (item.geom.features[0].geometry.type=='Point'){
+        if (item.geom && item.geom.features[0].geometry.type=='Point'){
           c2 = L.geoJSON(item.geom, {
             pointToLayer: function (feature, latlng) {
               return L.circleMarker(latlng, geojsonMarkerOptions);

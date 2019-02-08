@@ -18540,7 +18540,7 @@ var Map = function (_React$Component) {
                     style: myStyle,
                     onEachFeature: onEachFeature
                 });
-                if (item.geom.features[0].geometry.type == 'Point') {
+                if (item.geom && item.geom.features[0].geometry.type == 'Point') {
                     c2 = _leaflet2.default.geoJSON(item.geom, {
                         pointToLayer: function pointToLayer(feature, latlng) {
                             return _leaflet2.default.circleMarker(latlng, geojsonMarkerOptions);

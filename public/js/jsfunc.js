@@ -260,7 +260,9 @@ function addOnChangeMTP(tableName, menu) {
             clearForm(menu, "Observaciones");
             clearForm(menu, "Numero");
             clearForm(menu, "Form");
+            //buildForm("linea_mtp", menu, "Coordenadas de Linea (si la linea es recta, puede ingresar 'recta' por puntos 2, 3, y 4)")
             buildForm("linea_mtp", menu, "Coordenadas de Linea");
+
             var newMTPdropdowns = ["predio", "municipio", "estado"];
             newMTPdropdowns.forEach(function (newTable) {
                 buildDropdowns(newTable, menu, "Form");
@@ -356,6 +358,12 @@ function createRows(tableName, menu, myCols, myNumRow) {
         if (b == 'notas') return -1;
         if (a.indexOf('omienzo') !== -1) return -1;
         if (b.indexOf('omienzo') !== -1) return 1;
+        if (a.indexOf('punto_2') !== -1) return -1;
+        if (b.indexOf('punto_2') !== -1) return 1;
+        if (a.indexOf('punto_3') !== -1) return -1;
+        if (b.indexOf('punto_3') !== -1) return 1;
+        if (a.indexOf('punto_4') !== -1) return -1;
+        if (b.indexOf('punto_4') !== -1) return 1;
         if (a.indexOf('long') !== -1) return -1;
         if (b.indexOf('long') !== -1) return 1;
         if (a.indexOf('lat') !== -1) return -1;
@@ -570,10 +578,12 @@ function buildForm(tableName, menu, myTitle) {
     }
     var myTBody = document.getElementById(menu + "TBodyForm");
     var myCols = tabletoColumns[tableName];
-    var spaceRow = document.createElement("tr");
+    var spaceRow = document.createElement("th");
+    spaceRow.colSpan = '4';
     spaceRow.className = "formtitles";
     spaceRow.innerHTML = "<br> ";
     if (myTitle !== "none") spaceRow.innerHTML = myTitle;
+
     var buttonRow = document.createElement("tr");
     var mySubmit = document.createElement("INPUT");
     mySubmit.setAttribute("type", "submit");

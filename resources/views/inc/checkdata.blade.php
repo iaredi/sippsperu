@@ -74,7 +74,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
                   'dc2'=>'3','acc1'=>'3','acc2'=>'3','acc3'=>'3',
                   'altura'=>'3','distancia'=>'3','azimut'=>'3',
                   'longitud_gps'=>'4', 'latitud_gps'=>'4',
-                  'cominezo_longitud'=>'4','comienzo_latitud'=>'4',
+                  'comienezo_longitud'=>'4','comienzo_latitud'=>'4',
                   'fin_longitud'=>'4','fin_latitud'=>'4',
                   'anio_de_camara'=>'0', 'numero_de_photos_totales'=>'0', 
                   'portcentaje_de_bateria'=>'0',
