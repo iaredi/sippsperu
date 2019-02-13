@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
     $myfile= "C:\\Users\\fores\\Desktop\\sql\\{$name}_{$_POST['dl_option']}.csv";
     
     if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
-        $myfile= "/var/www/html/lsapp3/storage/csv//{$name}_{$_POST['dl_option']}.csv";
+        $myfile= "/postgres/{$name}_{$_POST['dl_option']}.csv";
     } 
     
 

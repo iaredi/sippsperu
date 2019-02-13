@@ -39,7 +39,7 @@
     <label for="photosFromUser" class="dropDownTitles" >Fotos</label>
     <input type="file" name="photosFromUser" id="photosFromUser" multiple>
     <br>
-    <input type="submit" id="excelSubmit" class="border border-secondary btn btn-success mySubmit p-2 m-2" value="Enviar">
+    <input type="submit" id="excelSubmit" class="border border-secondary btn btn-success mySubmit p-2 m-2" value="Enviar" disabled>
   </form>
 </div >
 <script src="{{ asset('js/jsfunc.js') }}" ></script>

@@ -270,3 +270,17 @@ img {
   grid-row:6 / 7;
   grid-column: 2 / 3;
 } 
+
+.normaTitles{
+  text-align: center
+}
+
+#buttonContainer{
+  display: flex;
+  justify-content:flex-start;
+
+}
+
+.mapInfoButton{
+  height: 30.8px
+}

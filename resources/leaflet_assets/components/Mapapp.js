@@ -4,7 +4,6 @@ import React from "react";
 import Map from "./Map";
 import MapControl from "./MapControl";
 import FeatureInfoDisplay from "./FeatureInfoDisplay";
-import SpeciesDisplay from "./SpeciesDisplay";
 
 class Normaapp extends React.Component {
   constructor(props) {
@@ -18,13 +17,14 @@ class Normaapp extends React.Component {
     this.handleFeatureClick = this.handleFeatureClick.bind(this);
     this.setDefaultMax = this.setDefaultMax.bind(this);
     this.state = {
-      currentUdpId:-1,
+      currentUdpId: -1,
       speciesResult: [],
       previous: 0,
       udp: 0,
       udpButton: false,
       udpButtonText: "Fragmentación Ambiental de UDP",
-      normasButtonText: "Especies y Normas OSG",
+      normasButtonText: "Especies y Normas OSG de UDP",
+      aeButtonText: "Attributos Ecologicos de UDP",
 
       markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
       mapSettings: {
@@ -123,7 +123,8 @@ class Normaapp extends React.Component {
     this.setState(() => ({
       udpButtonText:
         idtype == "udp"
-          ? "Fragmentación Ambiental de UDP  : " + event.target.feature.properties.iden
+          ? "Fragmentación Ambiental de UDP  : " +
+            event.target.feature.properties.iden
           : "Fragmentación Ambiental de UDP"
     }));
     this.setState(() => ({
@@ -133,8 +134,13 @@ class Normaapp extends React.Component {
           : "Especies y Normas OSG de UDP"
     }));
     this.setState(() => ({
-      currentUdpId:event.target.feature.properties.iden
-      
+      aeButtonText:
+        idtype == "udp"
+          ? "Attributos Ecologicos  : " + event.target.feature.properties.iden
+          : "Attributos Ecologicos de UDP"
+    }));
+    this.setState(() => ({
+      currentUdpId: event.target.feature.properties.iden
     }));
     const idnumber = event.target.feature.properties.iden;
 
@@ -252,7 +258,7 @@ class Normaapp extends React.Component {
   }
 
   render() {
-    console.log(this.state.featureInfo)
+    console.log(this.state.featureInfo);
     return (
       <div>
         <div className="container mymapcontainer">
@@ -283,40 +289,51 @@ class Normaapp extends React.Component {
                 />
                 <div className="p-2 align-self-center">
                   <a
-                    className="btn btn-primary m-2"
+                    className="btn btn-info btn-sm m-2"
                     href="/cargarshapes"
                     role="button"
                   >
                     Cargar Shapefile de Predio
                   </a>
-                  <form action="/udpmapa" method="post">
-                  <input type = "hidden" name = "shannon" value = {`${this.state.featureInfo.properties.shannon_arbol}*${this.state.featureInfo.properties.shannon_arbusto}*${this.state.featureInfo.properties.shannon_ave}*${this.state.featureInfo.properties.shannon_hierba}*${this.state.featureInfo.properties.shannon_herpetofauna}*${this.state.featureInfo.properties.shannon_mamifero}`} />
-                  <input
-                      type="submit"
-                      className="btn btn-primary m-2"
-                      disabled={!this.state.udpButton}
-                      name="udpbutton"
-                      value={this.state.udpButtonText}
-                    />
-                  </form>
-                  <form action={"/mostrarnormas/"+this.state.currentUdpId} method="get">
-                  <input
-                      type="submit"
-                      className="btn btn-primary m-2"
-                      disabled={!this.state.udpButton}
-                      value={this.state.normasButtonText}
-                    />
-                  </form>
                 </div>
+
+                {this.state.udpButton &&
+                  
+                
+                <div id="buttonContainer">
+                  <a className="btn btn-primary m-2 btn-sm mapInfoButton"
+                    href={"/mostrarnormas/normas/" + this.state.currentUdpId}
+                    role="button"
+                  > Especies y Normas OSG </a>
+
+                  <a className="btn btn-primary m-2 btn-sm mapInfoButton"
+                  href={"/mostrarnormas/ae/" + this.state.currentUdpId}
+                  role="button"
+                > Attributos Ecologicos </a>
+
+               
+                <a className="btn btn-primary m-2 btn-sm mapInfoButton"
+                href={"/udpmapa/" + this.state.currentUdpId+ "/"+
+                  `${this.state.featureInfo.properties.shannon_arbol}*${
+                    this.state.featureInfo.properties.shannon_arbusto
+                  }*${this.state.featureInfo.properties.shannon_ave}*${
+                    this.state.featureInfo.properties.shannon_hierba
+                  }*${this.state.featureInfo.properties.shannon_herpetofauna}*${
+                    this.state.featureInfo.properties.shannon_mamifero
+                  }`
+                }
+                role="button"
+              > Fragmentación Ambiental </a>
+              </div>
+            }
+
               </div>
             </div>
           </div>
-          <div className="speciesdisplay">
-            <SpeciesDisplay speciesResult={this.state.speciesResult} />
-          </div>
-        </div>
+        
 
-        <div />
+       
+        </div>
       </div>
     );
   }

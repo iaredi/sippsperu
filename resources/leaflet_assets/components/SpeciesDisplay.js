@@ -40,32 +40,75 @@ class SpeciesDisplay extends React.Component {
             },{
             dataField: 'cientifico',
             text: 'Cientifico'
-            }, {
-            dataField: 'total_cientifico',
-            text: 'Cantidad'
-            }, {
-            dataField: 'subespecie',
-            text: 'Subespecie Enlistada'
-            }, {
-            dataField: 'categoria',
-            text: 'Categoria '
-            }, {
-            dataField: 'distribution',
-            text: 'Distribution '
-            }, {
-            dataField: 'ivi100',
-            text: 'Valor de Importancia'
-            }, {
-            dataField: 'densidad',
-            text: 'Densidad '
-            }, {
-            dataField: 'dominancia',
-            text: 'Dominancia '
-            }, {
-            dataField: 'frequencia',
-            text: 'Frequencia '
-            },
-        ];
+            }
+          ]
+          if (infotype=='normas'){
+            columns.push(
+              {
+              dataField: 'total_cientifico',
+              text: 'Cantidad'
+              }, {
+              dataField: 'subespecie',
+              text: 'Subespecie Enlistada'
+              }, {
+              dataField: 'categoria',
+              text: 'Categoria '
+              }, {
+              dataField: 'distribution',
+              text: 'Distribution '
+              }
+            )
+          }else{
+            columns.push(
+              {
+                dataField: 'abundancia',
+                text: 'Abundancia'
+              }, {
+                dataField: 'abundancia_relativa',
+                text: 'Abundancia Relativa'
+              }, {
+                dataField: 'densidad',
+                text: 'Densidad '
+              }, {
+                dataField: 'dominancia',
+                text: 'Dominancia '
+              }, {
+                dataField: 'frequencia',
+                text: 'Frequencia '
+              },
+            )
+            if(this.props.lifeform=='hierba'){
+              columns.push(
+                {
+                  dataField: 'ivi100',
+                  text: 'Valor de Importancia'
+                },
+                )
+            }
+            if(this.props.lifeform=='arbol'||this.props.lifeform=='arbusto'){
+              columns.push(
+                {
+                  dataField: 'dn',
+                  text: 'Diametro'
+                }, {
+                  dataField: 'altura',
+                  text: 'Altura'
+                },
+              )
+            }
+
+
+
+          }
+            
+            
+            
+        
+
+
+
+
+
         return(
         <div>
             <div className="container">
@@ -83,7 +126,7 @@ class SpeciesDisplay extends React.Component {
                     condensed
                     noDataIndication={ 'No hay datos' }
                     />
-                    <h3>Invasores</h3>
+                    <h6>Invasores</h6>
                     <BootstrapTable 
                     keyField='cientifico' 
                     data={ speciesResultInvador } 

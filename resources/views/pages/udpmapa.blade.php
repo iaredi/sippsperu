@@ -2,7 +2,14 @@
 if (!session('email')){
     return redirect()->to('/login')->send();
 }
+$geojsonidennum=json_encode($idennum);
+$geojsonshannon=json_encode($shannon);
 ?>
+
+<script>
+  var idennum = {!! $geojsonidennum !!};
+  var shannon = {!! $geojsonshannon !!};
+</script>
 
 @include('inc/udploadlayers')
 <!DOCTYPE html>

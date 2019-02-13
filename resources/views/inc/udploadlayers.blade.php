@@ -10,7 +10,7 @@ class layer
     public $fillOpacity;
 }
 $email=session('email');
-$idennum = explode(" : " , $_POST['udpbutton'])[1];
+//$idennum = explode(" : " , $_POST['udpbutton'])[1];
 //$idennum= 55;
 $layer1 = new layer();
 $layer1->tableName = 'udp_puebla_4326';
@@ -97,12 +97,11 @@ foreach ($layersArray as $layer) {
 }
 
 $geojson=json_encode($layersArray);
-$shannon = json_encode($_POST['shannon']);
+//$shannon = json_encode($_POST['shannon']);
 ?>
 <script>
     var udpsomething = {!! $geojson !!};
-    var idennum = {!! $idennum !!};
-    var shannon = {!! $shannon !!};
+    
 </script>
 
 

@@ -59,7 +59,7 @@ if (!session('admin')){
 
         <input type="radio" name="admin_option" value="remove_email"> Borrar Email <br>
         <input type="radio" name="admin_option" value="add_email"> Añadir Email Nuevo
-        <input type="text"  name="email_input" placeholder="">
+        <input type="text"  name="email_input">
         <input type="checkbox" name="visitante" value="1"> *Visitante<br>
         
         <br>
@@ -161,31 +161,31 @@ if (!session('admin')){
 
             <div>
                 <label for="displayname" class=" h6 displayname">Nombre para Mostrar</label>
-                <input type="text" placeholder="Nombre de Capa" name="displayname" id="displayname">
+                <input type="text" required name="displayname" id="displayname">
             </div>
             <div>
               <label for="campoclick" class=" h6 displayname">Campo Click</label>
-              <input type="text" name="campoclick" id="campoclick">
+              <input type="text" required name="campoclick" id="campoclick">
           </div>
             <div>
                 <label for="fillcolor" class=" h6 shapenombre">Fill Color</label>
-                <input type="color" name="fillcolor" id="fillcolor">
+                <input type="color" required name="fillcolor" id="fillcolor">
             </div>
             <div>
                 <label for="lineacolor" class=" h6 shapenombre">Linea Color</label>
-                <input type="color"  name="lineacolor" id="lineacolor">
+                <input type="color"  required name="lineacolor" id="lineacolor">
             </div>
             <div>
                 <label for="fillopacidad" class=" h6 shapenombre">Fill Opacidad</label>
-                <input type="number" min=0 max=1 step = 0.1 name="fillopacidad" id="fillopacidad">
+                <input type="number" min=0 max=1 step = 0.1 required name="fillopacidad" id="fillopacidad">
             </div>
             <div>
                 <label for="lineaopacidad" class=" h6 shapenombre">Linea Opacidad</label>
-                <input type="number" min=0 max=1 step = 0.1 name="lineaopacidad" id="lineaopacidad">
+                <input type="number" min=0 max=1 step = 0.1 required name="lineaopacidad" id="lineaopacidad">
             </div>
             <div>
                 <label for="lineaanchura" class=" h6 shapenombre">Linea Anchura</label>
-                <input type="number" min=0 max=5 step = 0.1 name="lineaanchura" id="lineaanchura">
+                <input type="number" min=0 max=5 step = 0.1 required name="lineaanchura" id="lineaanchura">
             </div>
             <br>
             

@@ -502,7 +502,10 @@ Route::post('getspecies', function(Request $request) {
         }else{
             $row4->ivi100='';
         } 
-        
+        $row4->dn=0;
+        $row4->altura=0;
+        $row4->abundancia=0;
+        $row4->abundancia_relativa=0;
     }
     
     return json_encode($obresult);

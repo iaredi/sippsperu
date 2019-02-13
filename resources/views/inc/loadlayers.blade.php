@@ -60,6 +60,8 @@ $layer4->sql = "SELECT geometry_id,nomgeo, ST_AsGeoJSON(level_3, 5) AS geojson F
 $layersArray = array($layer1, $layer2, $layer3, $layer4);
 $addlayers = DB::select("SELECT * FROM additional_layers",[]);
 
+
+
 foreach($addlayers as $singlerow) {
     $templayer = new layer();
     $templayer->tableName = $singlerow->tablename;
@@ -71,7 +73,15 @@ foreach($addlayers as $singlerow) {
     $templayer->weight =$singlerow->weight;
     $templayer->fillOpacity = $singlerow->fillopacity;
     $templayer->sql = "SELECT {$singlerow->featurecolumn}, ST_AsGeoJSON(geom, 5) AS geojson FROM {$singlerow->tablename}";
-    $layersArray[]=$templayer;
+
+    $lowername=strtolower($templayer->tableName);
+    $lowercolumn=strtolower($templayer->featureColumn);
+    $checkfeaturesql= "SELECT * 
+      FROM information_schema.columns 
+      WHERE table_name='{$lowername}' and column_name='{$lowercolumn}'";
+    if (sizeof(DB::select($checkfeaturesql,[]))>0){
+      $layersArray[]=$templayer;
+    }
 }
 
 foreach ($layersArray as $layer) {
@@ -85,49 +95,52 @@ foreach ($layersArray as $layer) {
         $layer->sql = "SELECT nombre, ST_AsGeoJSON(geom, 5) AS geojson FROM usershapes";
     }
     
-    $result = DB::select($layer->sql,[]);
+    
 
-        $categorylist=['ave','arbol', 'arbusto', 'mamifero', 'herpetofauna', 'hierba'];
-        foreach($categorylist as $cat){
-            $dslist[]="distinct_species_{$cat}";
-            $tolist[]="total_observaciones_{$cat}";
-            $defaultmax["total_observaciones_{$cat}"]=0;
-            $defaultmax["distinct_species_{$cat}"]=0;
-        }
-        if (isset($result[0])){
-            foreach($result AS $row) {
-                if (isset($row->geom)){
-                    unset($row->geom);
-                }
-                $geometry=$row->geojson=json_decode($row->geojson);
-                unset($row->geojson);
-                $row->name=$layer->tableName;
-                $row->displayName=$layer->displayName;
-                $row->featureColumn=$layer->featureColumn;
-                if ($layer->tableName=='udp_puebla_4326'){
-                    foreach($dslist as $ds){
-                        if($defaultmax[$ds]<$row->$ds){
-                        $defaultmax[$ds]=$row->$ds;
-                        }
-                    }
-                    foreach($tolist as $to){
-                        if($defaultmax[$to]<$row->$to){
-                            $defaultmax[$to]=$row->$to;
-                        }
-                    }
-                }
+      $result = DB::select($layer->sql,[]);
 
-                $feature=["type"=>"Feature", "geometry"=>$geometry, "properties"=>$row];
+          $categorylist=['ave','arbol', 'arbusto', 'mamifero', 'herpetofauna', 'hierba'];
+          foreach($categorylist as $cat){
+              $dslist[]="distinct_species_{$cat}";
+              $tolist[]="total_observaciones_{$cat}";
+              $defaultmax["total_observaciones_{$cat}"]=0;
+              $defaultmax["distinct_species_{$cat}"]=0;
+          }
+          if (isset($result[0])){
+              foreach($result AS $row) {
+                  if (isset($row->geom)){
+                      unset($row->geom);
+                  }
+                  $geometry=$row->geojson=json_decode($row->geojson);
+                  unset($row->geojson);
+                  $row->name=$layer->tableName;
+                  $row->displayName=$layer->displayName;
+                  $row->featureColumn=$layer->featureColumn;
+                  if ($layer->tableName=='udp_puebla_4326'){
+                      foreach($dslist as $ds){
+                          if($defaultmax[$ds]<$row->$ds){
+                          $defaultmax[$ds]=$row->$ds;
+                          }
+                      }
+                      foreach($tolist as $to){
+                          if($defaultmax[$to]<$row->$to){
+                              $defaultmax[$to]=$row->$to;
+                          }
+                      }
+                  }
 
-                array_push($features, $feature);
-                $featureCollection=["type"=>"FeatureCollection", "features"=>$features];
-                
-            }   
-        $layer->geom=$featureCollection;
-        unset($features);
-        unset($featureCollection);
-        $defaultmaxjson[$layer->tableName]=json_encode($defaultmax);
-        }
+                  $feature=["type"=>"Feature", "geometry"=>$geometry, "properties"=>$row];
+
+                  array_push($features, $feature);
+                  $featureCollection=["type"=>"FeatureCollection", "features"=>$features];
+                  
+              }   
+          $layer->geom=$featureCollection;
+          unset($features);
+          unset($featureCollection);
+          $defaultmaxjson[$layer->tableName]=json_encode($defaultmax);
+          }
+    
 }
 
 $geojson=json_encode($layersArray);

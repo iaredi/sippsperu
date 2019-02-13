@@ -88,52 +88,52 @@ if (!session('admin')){
     <form id="login-form"  method="post" role="form" style="display: block;" enctype="multipart/form-data">
         {{ csrf_field() }}
     <div>
-        <label for="shapenombre" class=" h6 shapenombre">Nombre de tabla</label>
-        <input type="text" placeholder="nombre_de_tabla" name="shapenombre" id="shapenombre">
+        <label for="shapenombre" class="h6 shapenombre">Nombre de tabla</label>
+        <input type="text" placeholder="nombre_de_tabla" required name="shapenombre" id="shapenombre">
     </div>
     <div>
-        <label for="displayname" class=" h6 displayname">Nombre para Mostrar</label>
-        <input type="text" placeholder="Nombre de Capa" name="displayname" id="displayname">
+        <label for="displayname" class="h6 displayname">Nombre para Mostrar</label>
+        <input type="text" placeholder="Nombre de Capa" required name="displayname" id="displayname" >
     </div>
     <div>
-        <label for="featurecolumn" class=" h6 shapenombre">Click Campo</label>
-        <input type="text"  name="featurecolumn" id="featurecolumn">
+        <label for="featurecolumn" class="h6 shapenombre">Click Campo</label>
+        <input type="text"  required name="featurecolumn" id="featurecolumn">
     </div>
     <div>
         <label for="fillcolor" class=" h6 shapenombre">Fill Color</label>
-        <input type="color" name="fillcolor" id="fillcolor">
+        <input type="color" required name="fillcolor" id="fillcolor">
     </div>
     <div>
         <label for="lineacolor" class=" h6 shapenombre">Linea Color</label>
-        <input type="color"  name="lineacolor" id="lineacolor">
+        <input type="color"  required name="lineacolor" id="lineacolor">
     </div>
     <div>
         <label for="fillopacidad" class=" h6 shapenombre">Fill Opacidad</label>
-        <input type="number" min=0 max=1 step = 0.1 name="fillopacidad" id="fillopacidad">
+        <input type="number" min=0 max=1 step = 0.1 required name="fillopacidad" id="fillopacidad">
     </div>
     <div>
         <label for="lineaopacidad" class=" h6 shapenombre">Linea Opacidad</label>
-        <input type="number" min=0 max=1 step = 0.1 name="lineaopacidad" id="lineaopacidad">
+        <input type="number" min=0 max=1 step = 0.1 required name="lineaopacidad" id="lineaopacidad">
     </div>
     <div>
         <label for="lineaanchura" class=" h6 shapenombre">Linea Anchura</label>
-        <input type="number" min=0 max=5 step = 0.1 name="lineaanchura" id="lineaanchura">
+        <input type="number" min=0 max=5 step = 0.1 required name="lineaanchura" id="lineaanchura">
     </div>
     <div>
         <label for="shp" class="h6 shapelabel">.shp</label>
-        <input type="file" name="shp" id="shp">
+        <input type="file" required name="shp" id="shp">
     </div>
     <div>
         <label for="shx" class="h6 shapelabel">.shx</label>
-        <input type="file" name="shx" id="shx">
+        <input type="file" required name="shx" id="shx">
     </div>
     <div>
         <label for="dbf" class="h6 shapelabel">.dbf</label>
-        <input type="file" name="dbf" id="dbf">
+        <input type="file" required name="dbf" id="dbf">
     </div>
     <div>
         <label for="prj" class="h6 shapelabel">.prj</label>
-        <input type="file" name="prj" id="prj">
+        <input type="file" required name="prj" id="prj">
     </div>
     
     

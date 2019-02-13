@@ -26,13 +26,14 @@ Route::get('/reset_1', 'PagesController@reset_1');
 Route::get('/reset_2', 'PagesController@reset_2');
 Route::get('/cargarshapes', 'PagesController@cargarshapes');
 Route::get('/cargarshapesadmin', 'PagesController@cargarshapesadmin');
-Route::get('/udpmapa', 'PagesController@udpmapa');
+//Route::get('/udpmapa', 'PagesController@udpmapa');
 Route::get('/descargarespecie', 'PagesController@descargarespecie');
-Route::get('/mostrarnormas/{idenudpraw}', function ($idenudpraw){
-  $idenudp=$idenudpraw;
-  return view('pages/mostrarnormas',['idenudp'=>$idenudp]);
-}  );
-
+Route::get('/mostrarnormas/{infotype}/{idenudpraw}', function ($infotype,$idenudpraw){
+  return view('pages/mostrarnormas',['infotype'=>$infotype,'idenudp'=>$idenudpraw]);
+});
+Route::get('/udpmapa/{infotype}/{shannon}', function ($idennum,$shannon){
+  return view('pages/udpmapa',['idennum'=>$idennum,'shannon'=>$shannon]);
+});
 
 
 
@@ -59,8 +60,8 @@ Route::get('getspecieslist/{lifeform}', function ($lifeform) {
     $finalfile= "C:\\Users\\fores\\Desktop\\sql\\{$targetob}.xml";
     
     if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
-        $rawfile= "/var/www/html/lsapp3/storage/csv/raw{$targetob}.xml";
-        $finalfile= "/var/www/html/lsapp3/storage/csv/{$targetob}.xml";
+      $rawfile= "/psotgres/raw{$targetob}.xml";
+      $finalfile= "/postgres/{$targetob}.xml";
     } 
 
     $transpunto='punto';

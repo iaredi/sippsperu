@@ -9,7 +9,7 @@ if (!session('email')){
 @include('inc/nav')
 
         <div class="container">
-            <h1 class="text-center">Mostrar Mapas</h1>
+            <h2 class="text-center">Mostrar Mapas</h2>
             <p></p>
         </div> <!--Container-->
         
