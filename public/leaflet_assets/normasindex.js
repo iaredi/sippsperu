@@ -45256,7 +45256,8 @@ var Normaapp = function (_React$Component) {
                   _react2.default.createElement(
                     "p",
                     null,
-                    idennum
+                    idennum,
+                    " "
                   )
                 )
               )

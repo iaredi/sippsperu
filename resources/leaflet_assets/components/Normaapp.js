@@ -288,7 +288,7 @@ class Normaapp extends React.Component {
                       value={this.state.udpButtonText}
                     />
                   </form>
-                  <p>{idennum}</p>
+                  <p>{idennum} </p>
                 </div>
               </div>
             </div>
