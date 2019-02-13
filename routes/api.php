@@ -266,36 +266,7 @@ Route::post('getboundingfeatures', function(Request $request) {
 
 
 
-Route::post('tester8', function(Request $request) {
-    $layer=[];
-    $table =  $request->table;
-    $obstype =  $request->obstype;
-    //$table="linea_mtp";
-    // If the Content-Type and Accept headers are set to 'application/json', 
-    // this will return a JSON structure. This will be cleaned up later.
-    $sql="SELECT iden, ST_AsGeoJSON(geom, 5) AS geojson FROM {$table}";
-    $result = DB::select($sql,[]);
-    $features=[];
-    foreach($result AS $row) {
-        unset($row->geom);
-        $geometry=$row->geojson=json_decode($row->geojson);
-        unset($row->geojson);
-        //$pointtable='punto_ave';
-        //$sql = "SELECT {$pointtable}.iden FROM ointtable} WHERE ST_Intersects({$pointtable}.geom,  ST_GeomFromText('POINT({$mylng} {$mylat})',4326))";
-        //$result = DB::select($sql, []);
 
-        $row->$obstype='oktest';
-        $feature=["type"=>"Feature", "geometry"=>$geometry, "properties"=>$row];
-        array_push($features, $feature);
-        
-    }
-    $featureCollection=["type"=>"FeatureCollection", "features"=>$features];
-    $layer['geom']=$featureCollection;
-    //$geojson= json_encode($featureCollection);
-    $geojson=json_encode($layer);
-    return $geojson;
-
-});
 
 
 Route::post('getudp', function(Request $request) {
@@ -388,6 +359,8 @@ Route::post('getspecies', function(Request $request) {
     if ($lifeform=="arbusto" || $lifeform=="arbol" ){
         $arbolarbustoextra="AVG((observacion_{$lifeform}.dn)::real)*count(especie_{$lifeform}.cientifico) as dominancia,
         sum((observacion_{$lifeform}.distancia)::real) as distancia,
+        AVG((observacion_{$lifeform}.dn)::real) as dn_raw,
+        AVG((observacion_{$lifeform}.altura)::real) as altura_raw,
         count (DISTINCT(observacion_{$lifeform}.iden_punto)) as sitios,";
     }
     $hierbaextra='';
@@ -427,12 +400,28 @@ Route::post('getspecies', function(Request $request) {
     where iden_{$idtype}={$idnumber} and observacion_{$lifeform}.iden_email like '%' and observacion_{$lifeform}.iden_especie!=1 
     GROUP BY observacion_{$lifeform}.iden_{$transpunto}
     ";
+
+
+    $distsum=0;
+    $numeroindiviudos=0;
+    foreach ($obresult as $row7){
+        $numeroindiviudos+=$row7->total_cientifico;
+    } 
+    foreach ($obresult as $row8){
+      $row8->abundancia=round(($row8->total_cientifico)/$numeroindiviudos,4);
+      $row8->abundancia_relativa=round(100*($row8->total_cientifico)/$numeroindiviudos,2).'%';
+  } 
+
     
 
     if ($lifeform=="arbusto" || $lifeform=="arbol" ){
         $distsum=0;
         $numeroindiviudos=0;
         foreach ($obresult as $row){
+          $row->dn= round(($row->dn_raw),4);
+          $row->altura= round(($row->altura_raw),4);
+
+
             $numeroindiviudos+=$row->total_cientifico;
             $distsum+=$row->total_cientifico*$row->distancia;
         } 
@@ -502,10 +491,8 @@ Route::post('getspecies', function(Request $request) {
         }else{
             $row4->ivi100='';
         } 
-        $row4->dn=0;
-        $row4->altura=0;
-        $row4->abundancia=0;
-        $row4->abundancia_relativa=0;
+        
+        
     }
     
     return json_encode($obresult);

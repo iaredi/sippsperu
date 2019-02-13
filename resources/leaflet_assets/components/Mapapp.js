@@ -22,9 +22,7 @@ class Normaapp extends React.Component {
       previous: 0,
       udp: 0,
       udpButton: false,
-      udpButtonText: "Fragmentación Ambiental de UDP",
-      normasButtonText: "Especies y Normas OSG de UDP",
-      aeButtonText: "Attributos Ecologicos de UDP",
+     
 
       markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
       mapSettings: {
@@ -120,25 +118,7 @@ class Normaapp extends React.Component {
     this.setState(() => ({
       udpButton: idtype == "udp" ? true : false
     }));
-    this.setState(() => ({
-      udpButtonText:
-        idtype == "udp"
-          ? "Fragmentación Ambiental de UDP  : " +
-            event.target.feature.properties.iden
-          : "Fragmentación Ambiental de UDP"
-    }));
-    this.setState(() => ({
-      normasButtonText:
-        idtype == "udp"
-          ? "Especies y Normas OSG  : " + event.target.feature.properties.iden
-          : "Especies y Normas OSG de UDP"
-    }));
-    this.setState(() => ({
-      aeButtonText:
-        idtype == "udp"
-          ? "Attributos Ecologicos  : " + event.target.feature.properties.iden
-          : "Attributos Ecologicos de UDP"
-    }));
+    
     this.setState(() => ({
       currentUdpId: event.target.feature.properties.iden
     }));

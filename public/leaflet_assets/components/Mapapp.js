@@ -24161,9 +24161,6 @@ var Normaapp = function (_React$Component) {
       previous: 0,
       udp: 0,
       udpButton: false,
-      udpButtonText: "Fragmentación Ambiental de UDP",
-      normasButtonText: "Especies y Normas OSG de UDP",
-      aeButtonText: "Attributos Ecologicos de UDP",
 
       markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
       mapSettings: {
@@ -24333,21 +24330,7 @@ var Normaapp = function (_React$Component) {
           udpButton: idtype == "udp" ? true : false
         };
       });
-      this.setState(function () {
-        return {
-          udpButtonText: idtype == "udp" ? "Fragmentación Ambiental de UDP  : " + event.target.feature.properties.iden : "Fragmentación Ambiental de UDP"
-        };
-      });
-      this.setState(function () {
-        return {
-          normasButtonText: idtype == "udp" ? "Especies y Normas OSG  : " + event.target.feature.properties.iden : "Especies y Normas OSG de UDP"
-        };
-      });
-      this.setState(function () {
-        return {
-          aeButtonText: idtype == "udp" ? "Attributos Ecologicos  : " + event.target.feature.properties.iden : "Attributos Ecologicos de UDP"
-        };
-      });
+
       this.setState(function () {
         return {
           currentUdpId: event.target.feature.properties.iden
