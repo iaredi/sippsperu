@@ -60,7 +60,7 @@ Route::get('getspecieslist/{lifeform}', function ($lifeform) {
     $finalfile= "C:\\Users\\fores\\Desktop\\sql\\{$targetob}.xml";
     
     if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
-      $rawfile= "/psotgres/raw{$targetob}.xml";
+      $rawfile= "/postgres/raw{$targetob}.xml";
       $finalfile= "/postgres/{$targetob}.xml";
     } 
 
