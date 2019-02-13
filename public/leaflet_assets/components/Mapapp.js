@@ -73,7 +73,7 @@
 if (false) {
   module.exports = require('./cjs/react.production.min.js');
 } else {
-  module.exports = __webpack_require__(25);
+  module.exports = __webpack_require__(27);
 }
 
 
@@ -337,8 +337,7 @@ var getRowByRowId = exports.getRowByRowId = function getRowByRowId(data, keyFiel
 };
 
 /***/ }),
-/* 7 */,
-/* 8 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -435,7 +434,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 9 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -451,7 +450,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 var printWarning = function() {};
 
 if (true) {
-  var ReactPropTypesSecret = __webpack_require__(13);
+  var ReactPropTypesSecret = __webpack_require__(12);
   var loggedTypeFailures = {};
 
   printWarning = function(text) {
@@ -533,7 +532,7 @@ module.exports = checkPropTypes;
 
 
 /***/ }),
-/* 10 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -559,7 +558,7 @@ var _const = __webpack_require__(3);
 
 var _const2 = _interopRequireDefault(_const);
 
-var _operators = __webpack_require__(11);
+var _operators = __webpack_require__(10);
 
 var _operators2 = _interopRequireDefault(_operators);
 
@@ -731,7 +730,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 11 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -768,7 +767,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 exports.default = _extends({}, rows, selection, expand, mutate, sort);
 
 /***/ }),
-/* 12 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -790,7 +789,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _operators = __webpack_require__(11);
+var _operators = __webpack_require__(10);
 
 var _operators2 = _interopRequireDefault(_operators);
 
@@ -928,7 +927,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 13 */
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -947,6 +946,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
+/* 13 */,
 /* 14 */
 /***/ (function(module, exports) {
 
@@ -1414,34 +1414,6 @@ exports.default = function (ExtendBase) {
 /* 19 */
 /***/ (function(module, exports) {
 
-module.exports = function(module) {
-	if(!module.webpackPolyfill) {
-		module.deprecate = function() {};
-		module.paths = [];
-		// module.parent = undefined by default
-		if(!module.children) module.children = [];
-		Object.defineProperty(module, "loaded", {
-			enumerable: true,
-			get: function() {
-				return module.l;
-			}
-		});
-		Object.defineProperty(module, "id", {
-			enumerable: true,
-			get: function() {
-				return module.i;
-			}
-		});
-		module.webpackPolyfill = 1;
-	}
-	return module;
-};
-
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports) {
-
 /*
 	MIT License http://www.opensource.org/licenses/mit-license.php
 	Author Tobias Koppers @sokra
@@ -1521,7 +1493,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 21 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -1880,14 +1852,96 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
+/* 21 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _bootstrapTable = __webpack_require__(31);
+
+var _bootstrapTable2 = _interopRequireDefault(_bootstrapTable);
+
+var _contexts = __webpack_require__(59);
+
+var _contexts2 = _interopRequireDefault(_contexts);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = (0, _contexts2.default)(_bootstrapTable2.default);
+
+/***/ }),
 /* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(23);
+// style-loader: Adds some css to the DOM by adding a <style> tag
 
+// load the styles
+var content = __webpack_require__(63);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(20)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../css-loader/index.js!./react-bootstrap-table2.min.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./react-bootstrap-table2.min.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
 
 /***/ }),
 /* 23 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+/* 24 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(25);
+
+
+/***/ }),
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1912,7 +1966,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(24);
+module.exports = __webpack_require__(26);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -1928,7 +1982,7 @@ if (hadRuntime) {
 
 
 /***/ }),
-/* 24 */
+/* 26 */
 /***/ (function(module, exports) {
 
 /**
@@ -2661,7 +2715,7 @@ if (hadRuntime) {
 
 
 /***/ }),
-/* 25 */
+/* 27 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -2682,8 +2736,8 @@ if (true) {
   (function() {
 'use strict';
 
-var _assign = __webpack_require__(8);
-var checkPropTypes = __webpack_require__(9);
+var _assign = __webpack_require__(7);
+var checkPropTypes = __webpack_require__(8);
 
 // TODO: this is special because it gets imported during build.
 
@@ -4408,7 +4462,7 @@ module.exports = react;
 
 
 /***/ }),
-/* 26 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* @preserve
@@ -18284,60 +18338,6 @@ window.L = exports;
 
 
 /***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _bootstrapTable = __webpack_require__(31);
-
-var _bootstrapTable2 = _interopRequireDefault(_bootstrapTable);
-
-var _contexts = __webpack_require__(59);
-
-var _contexts2 = _interopRequireDefault(_contexts);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = (0, _contexts2.default)(_bootstrapTable2.default);
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(63);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(21)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./react-bootstrap-table2.min.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./react-bootstrap-table2.min.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
 /* 29 */
 /***/ (function(module, exports) {
 
@@ -18449,7 +18449,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _leaflet = __webpack_require__(26);
+var _leaflet = __webpack_require__(28);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
@@ -18946,10 +18946,10 @@ exports.default = BootstrapTable;
 
 
 
-var assign = __webpack_require__(8);
+var assign = __webpack_require__(7);
 
-var ReactPropTypesSecret = __webpack_require__(13);
-var checkPropTypes = __webpack_require__(9);
+var ReactPropTypesSecret = __webpack_require__(12);
+var checkPropTypes = __webpack_require__(8);
 
 var printWarning = function() {};
 
@@ -21585,7 +21585,7 @@ exports.default = SortCaret;
   }
 }());
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(19)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(23)(module)))
 
 /***/ }),
 /* 38 */
@@ -21858,7 +21858,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _selectionContext = __webpack_require__(10);
+var _selectionContext = __webpack_require__(9);
 
 var _selectionContext2 = _interopRequireDefault(_selectionContext);
 
@@ -22053,7 +22053,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _rowExpandContext = __webpack_require__(12);
+var _rowExpandContext = __webpack_require__(11);
 
 var _rowExpandContext2 = _interopRequireDefault(_rowExpandContext);
 
@@ -23080,7 +23080,7 @@ var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _selectionContext = __webpack_require__(10);
+var _selectionContext = __webpack_require__(9);
 
 var _selectionContext2 = _interopRequireDefault(_selectionContext);
 
@@ -23155,7 +23155,7 @@ var _expandRow = __webpack_require__(56);
 
 var _expandRow2 = _interopRequireDefault(_expandRow);
 
-var _rowExpandContext = __webpack_require__(12);
+var _rowExpandContext = __webpack_require__(11);
 
 var _rowExpandContext2 = _interopRequireDefault(_rowExpandContext);
 
@@ -23382,11 +23382,11 @@ var _sortContext = __webpack_require__(61);
 
 var _sortContext2 = _interopRequireDefault(_sortContext);
 
-var _selectionContext = __webpack_require__(10);
+var _selectionContext = __webpack_require__(9);
 
 var _selectionContext2 = _interopRequireDefault(_selectionContext);
 
-var _rowExpandContext = __webpack_require__(12);
+var _rowExpandContext = __webpack_require__(11);
 
 var _rowExpandContext2 = _interopRequireDefault(_rowExpandContext);
 
@@ -23396,7 +23396,7 @@ var _remoteResolver3 = _interopRequireDefault(_remoteResolver2);
 
 var _bootstrap = __webpack_require__(4);
 
-var _operators = __webpack_require__(11);
+var _operators = __webpack_require__(10);
 
 var _operators2 = _interopRequireDefault(_operators);
 
@@ -24070,7 +24070,7 @@ exports.default = function (ExtendBase) {
 /* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(20)(false);
+exports = module.exports = __webpack_require__(19)(false);
 // imports
 
 
@@ -24081,436 +24081,7 @@ exports.push([module.i, ".react-bootstrap-table table{table-layout:fixed}.react-
 
 
 /***/ }),
-/* 64 */,
-/* 65 */,
-/* 66 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _regenerator = __webpack_require__(22);
-
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _Map = __webpack_require__(30);
-
-var _Map2 = _interopRequireDefault(_Map);
-
-var _MapControl = __webpack_require__(67);
-
-var _MapControl2 = _interopRequireDefault(_MapControl);
-
-var _FeatureInfoDisplay = __webpack_require__(68);
-
-var _FeatureInfoDisplay2 = _interopRequireDefault(_FeatureInfoDisplay);
-
-var _SpeciesDisplay = __webpack_require__(69);
-
-var _SpeciesDisplay2 = _interopRequireDefault(_SpeciesDisplay);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-//import BootstrapTable from 'react-bootstrap-table-next';
-
-var Mapapp = function (_React$Component) {
-  _inherits(Mapapp, _React$Component);
-
-  function Mapapp(props) {
-    _classCallCheck(this, Mapapp);
-
-    var _this = _possibleConstructorReturn(this, (Mapapp.__proto__ || Object.getPrototypeOf(Mapapp)).call(this, props));
-
-    _this.handleMapClick = _this.handleMapClick.bind(_this);
-    _this.handleSpeciesChange = _this.handleSpeciesChange.bind(_this);
-    _this.handleTotalDistinctChange = _this.handleTotalDistinctChange.bind(_this);
-    _this.handleOpacityChange = _this.handleOpacityChange.bind(_this);
-    _this.handleMaxChange = _this.handleMaxChange.bind(_this);
-    _this.handleFeatureClick = _this.handleFeatureClick.bind(_this);
-    _this.setDefaultMax = _this.setDefaultMax.bind(_this);
-    _this.state = {
-      speciesResult: [],
-      previous: 0,
-      udp: 0,
-      udpButton: false,
-      udpButtonText: "Fragmentación Ambiental de UDP",
-      markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
-      mapSettings: {
-        distinctOrTotal: "total_observaciones",
-        myObsType: "ave",
-        fillOpacity: 0.6,
-        maxValue: 99
-      },
-      featureInfo: {
-        properties: { message: "click somewhere", displayName: "none" }
-      },
-      table: [{ tableName: "udp_puebla_4326", color: "blue" }]
-    };
-    return _this;
-  }
-
-  _createClass(Mapapp, [{
-    key: "getOutline",
-    value: function getOutline(properties, cat) {
-      var email = document.getElementById("useremail").textContent;
-      var emailArray = [properties.ave_email, properties.arbol_email, properties.arbusto_email, properties.hierba_email, properties.herpetofauna_email, properties.mamifero_email];
-      if (cat == "color") {
-        return emailArray.includes(email) ? "purple" : emailArray.some(function (el) {
-          return el !== null;
-        }) ? "red" : "black";
-      } else {
-        return emailArray.includes(email) ? 3 : emailArray.some(function (el) {
-          return el !== null;
-        }) ? 3 : 0.3;
-      }
-    }
-  }, {
-    key: "handleMapClick",
-    value: function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(event) {
-        return _regenerator2.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                this.setState(function (prevState) {
-                  return {
-                    markerPosition: {
-                      lat: event.latlng.lat,
-                      lng: event.latlng.lng
-                    }
-                  };
-                });
-
-              case 1:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      function handleMapClick(_x) {
-        return _ref.apply(this, arguments);
-      }
-
-      return handleMapClick;
-    }()
-  }, {
-    key: "handleSpeciesChange",
-    value: function handleSpeciesChange(value) {
-      var max = defaultmax[this.state.mapSettings.distinctOrTotal + "_" + value];
-      max = max < 6 ? 6 : max;
-      this.setState(function (prevState) {
-        return {
-          mapSettings: {
-            distinctOrTotal: prevState.mapSettings.distinctOrTotal,
-            myObsType: value,
-            fillOpacity: prevState.mapSettings.fillOpacity,
-            maxValue: max
-          }
-        };
-      });
-    }
-  }, {
-    key: "handleTotalDistinctChange",
-    value: function handleTotalDistinctChange(value) {
-      var max = defaultmax[value + "_" + this.state.mapSettings.myObsType];
-      max = max < 6 ? 6 : max;
-      this.setState(function (prevState) {
-        return {
-          mapSettings: {
-            distinctOrTotal: value,
-            myObsType: prevState.mapSettings.myObsType,
-            fillOpacity: prevState.mapSettings.fillOpacity,
-            maxValue: max
-          }
-        };
-      });
-    }
-  }, {
-    key: "setDefaultMax",
-    value: function setDefaultMax(max) {
-      max = max < 6 ? 6 : max;
-      this.setState(function (prevState) {
-        return {
-          mapSettings: {
-            distinctOrTotal: prevState.mapSettings.distinctOrTotal,
-            myObsType: prevState.mapSettings.myObsType,
-            fillOpacity: prevState.mapSettings.fillOpacity,
-            maxValue: max
-          }
-        };
-      });
-    }
-  }, {
-    key: "handleFeatureClick",
-    value: function handleFeatureClick(event) {
-      var _this2 = this;
-
-      var getSpecies = function () {
-        var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee2(lifeform, idtype, idnumber) {
-          var myapi, rawResponse, dataResult;
-          return _regenerator2.default.wrap(function _callee2$(_context2) {
-            while (1) {
-              switch (_context2.prev = _context2.next) {
-                case 0:
-                  myapi = "https://biodiversidadpuebla.online/api/getspecies";
-
-                  if (window.location.host == "localhost:3000") myapi = "http://localhost:3000/api/getspecies";
-                  _context2.next = 4;
-                  return fetch(myapi, {
-                    method: "POST",
-                    headers: {
-                      Accept: "application/json",
-                      "Content-Type": "application/json;",
-                      mode: "cors"
-                    },
-                    body: JSON.stringify({
-                      lifeform: lifeform,
-                      idtype: idtype,
-                      idnumber: idnumber,
-                      useremail: document.getElementById("useremail").textContent
-                    })
-                  });
-
-                case 4:
-                  rawResponse = _context2.sent;
-                  _context2.next = 7;
-                  return rawResponse.json();
-
-                case 7:
-                  dataResult = _context2.sent;
-                  return _context2.abrupt("return", dataResult);
-
-                case 9:
-                case "end":
-                  return _context2.stop();
-              }
-            }
-          }, _callee2, this);
-        }));
-
-        return function getSpecies(_x2, _x3, _x4) {
-          return _ref2.apply(this, arguments);
-        };
-      }();
-
-      var lifeform = this.state.mapSettings.myObsType;
-      var idtype = event.target.feature.properties.name == "udp_puebla_4326" ? "udp" : "linea_mtp";
-      this.setState(function () {
-        return {
-          udpButton: idtype == "udp" ? true : false
-        };
-      });
-      this.setState(function () {
-        return {
-          udpButtonText: idtype == "udp" ? "Fragmentación Ambiental de UDP  : " + event.target.feature.properties.iden : "Fragmentación Ambiental de UDP"
-        };
-      });
-      var idnumber = event.target.feature.properties.iden;
-
-      if (event.target.feature.properties.name == "udp_puebla_4326" || event.target.feature.properties.name == "linea_mtp") {
-        getSpecies(lifeform, idtype, idnumber).then(function (myspeciesResult) {
-          _this2.setState(function (prevState) {
-            return {
-              speciesResult: myspeciesResult
-            };
-          });
-        });
-      }
-
-      /////////////////////////////////////////////////////////////////////////////////////////////
-      var myColor = "green";
-      var myWeight = 5;
-      var myOpacity = 5;
-
-      if (this.state.previous) {
-        something.forEach(function (thing) {
-          if (thing.tableName == _this2.state.previous.feature.properties.name) {
-            myColor = thing.color;
-            myWeight = thing.weight;
-            myOpacity = thing.opacity;
-          }
-        });
-
-        if (this.state.previous.feature.properties.name == "udp_puebla_4326") {
-          this.state.previous.setStyle({
-            weight: this.getOutline(this.state.previous.feature.properties, "weight"),
-            color: this.getOutline(this.state.previous.feature.properties, "color"),
-            opacity: myOpacity
-          });
-        } else {
-          this.state.previous.setStyle({
-            color: myColor,
-            weight: myWeight,
-            opacity: myOpacity
-          });
-        }
-      }
-      this.setState(function () {
-        return {
-          previous: event.target
-        };
-      });
-
-      var highlight = {
-        color: "yellow",
-        weight: 3,
-        opacity: 1
-      };
-      event.target.setStyle(highlight);
-
-      this.setState(function (prevState) {
-        return {
-          featureInfo: {
-            properties: event.target.feature.properties
-          }
-        };
-      });
-    }
-  }, {
-    key: "handleOpacityChange",
-    value: function handleOpacityChange(value) {
-      this.setState(function (prevState) {
-        return {
-          mapSettings: {
-            distinctOrTotal: prevState.mapSettings.distinctOrTotal,
-            myObsType: prevState.mapSettings.myObsType,
-            fillOpacity: value,
-            maxValue: prevState.mapSettings.maxValue
-          }
-        };
-      });
-    }
-  }, {
-    key: "handleMaxChange",
-    value: function handleMaxChange(value) {
-      this.setState(function (prevState) {
-        return {
-          mapSettings: {
-            distinctOrTotal: prevState.mapSettings.distinctOrTotal,
-            myObsType: prevState.mapSettings.myObsType,
-            fillOpacity: prevState.mapSettings.fillOpacity,
-            maxValue: value
-          }
-        };
-      });
-    }
-  }, {
-    key: "updateMarkers",
-    value: function updateMarkers(markersData) {
-      var _this3 = this;
-
-      this.layer.clearLayers();
-      markersData.forEach(function (marker) {
-        L.marker(marker.latLng, { title: marker.title }).addTo(_this3.layer);
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      console.log(this.state.featureInfo);
-      return _react2.default.createElement(
-        "div",
-        null,
-        _react2.default.createElement(
-          "div",
-          { className: "container mymapcontainer" },
-          _react2.default.createElement(
-            "div",
-            { className: "row justify-content-around align-items-center mapstat" },
-            _react2.default.createElement(
-              "div",
-              { className: "mymapdiv border border-dark" },
-              _react2.default.createElement(_Map2.default, {
-                getOutline: this.getOutline,
-                handleMapClick: this.handleMapClick,
-                handleFeatureClick: this.handleFeatureClick,
-                setDefaultMax: this.setDefaultMax,
-                mapSettings: this.state.mapSettings,
-                table: this.state.table
-              })
-            ),
-            _react2.default.createElement(
-              "div",
-              { className: "mystatdiv p-1" },
-              _react2.default.createElement(
-                "div",
-                { className: "withcontrol flex-column d-flex justify-content-between align-items-start" },
-                _react2.default.createElement(_FeatureInfoDisplay2.default, {
-                  markerPosition: this.state.markerPosition,
-                  featureInfo: this.state.featureInfo
-                }),
-                _react2.default.createElement(_MapControl2.default, {
-                  handleSpeciesChange: this.handleSpeciesChange,
-                  handleTotalDistinctChange: this.handleTotalDistinctChange,
-                  handleOpacityChange: this.handleOpacityChange,
-                  handleMaxChange: this.handleMaxChange,
-                  mapSettings: this.state.mapSettings
-                }),
-                _react2.default.createElement(
-                  "div",
-                  { className: "p-2 align-self-center" },
-                  _react2.default.createElement(
-                    "a",
-                    {
-                      className: "btn btn-primary m-2",
-                      href: "/cargarshapes",
-                      role: "button"
-                    },
-                    "Cargar Shapefile de Predio"
-                  ),
-                  _react2.default.createElement(
-                    "form",
-                    { action: "/udpmapa", method: "post" },
-                    _react2.default.createElement("input", { type: "hidden", name: "shannon", value: this.state.featureInfo.properties.shannon_arbol + "*" + this.state.featureInfo.properties.shannon_arbusto + "*" + this.state.featureInfo.properties.shannon_ave + "*" + this.state.featureInfo.properties.shannon_hierba + "*" + this.state.featureInfo.properties.shannon_herpetofauna + "*" + this.state.featureInfo.properties.shannon_mamifero }),
-                    _react2.default.createElement("input", {
-                      type: "submit",
-                      className: "btn btn-primary m-2",
-                      disabled: !this.state.udpButton,
-                      name: "udpbutton",
-                      value: this.state.udpButtonText
-                    })
-                  )
-                )
-              )
-            )
-          ),
-          _react2.default.createElement(
-            "div",
-            { className: "speciesdisplay" },
-            _react2.default.createElement(_SpeciesDisplay2.default, { speciesResult: this.state.speciesResult })
-          )
-        ),
-        _react2.default.createElement("div", null)
-      );
-    }
-  }]);
-
-  return Mapapp;
-}(_react2.default.Component);
-
-exports.default = Mapapp;
-
-/***/ }),
-/* 67 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24708,7 +24279,7 @@ var MapControl = function (_React$Component) {
 exports.default = MapControl;
 
 /***/ }),
-/* 68 */
+/* 65 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24724,11 +24295,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactBootstrapTableNext = __webpack_require__(27);
+var _reactBootstrapTableNext = __webpack_require__(21);
 
 var _reactBootstrapTableNext2 = _interopRequireDefault(_reactBootstrapTableNext);
 
-__webpack_require__(28);
+__webpack_require__(22);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -24885,7 +24456,7 @@ var FeatureInfoDisplay = function (_React$Component) {
 exports.default = FeatureInfoDisplay;
 
 /***/ }),
-/* 69 */
+/* 66 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24903,11 +24474,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactBootstrapTableNext = __webpack_require__(27);
+var _reactBootstrapTableNext = __webpack_require__(21);
 
 var _reactBootstrapTableNext2 = _interopRequireDefault(_reactBootstrapTableNext);
 
-__webpack_require__(28);
+__webpack_require__(22);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -25037,6 +24608,9 @@ var SpeciesDisplay = function (_React$Component) {
 exports.default = SpeciesDisplay;
 
 /***/ }),
+/* 67 */,
+/* 68 */,
+/* 69 */,
 /* 70 */,
 /* 71 */,
 /* 72 */,
@@ -25050,7 +24624,457 @@ exports.default = SpeciesDisplay;
 /* 80 */,
 /* 81 */,
 /* 82 */,
-/* 83 */,
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _regenerator = __webpack_require__(24);
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Map = __webpack_require__(30);
+
+var _Map2 = _interopRequireDefault(_Map);
+
+var _MapControl = __webpack_require__(64);
+
+var _MapControl2 = _interopRequireDefault(_MapControl);
+
+var _FeatureInfoDisplay = __webpack_require__(65);
+
+var _FeatureInfoDisplay2 = _interopRequireDefault(_FeatureInfoDisplay);
+
+var _SpeciesDisplay = __webpack_require__(66);
+
+var _SpeciesDisplay2 = _interopRequireDefault(_SpeciesDisplay);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+//import BootstrapTable from 'react-bootstrap-table-next';
+
+var Normaapp = function (_React$Component) {
+  _inherits(Normaapp, _React$Component);
+
+  function Normaapp(props) {
+    _classCallCheck(this, Normaapp);
+
+    var _this = _possibleConstructorReturn(this, (Normaapp.__proto__ || Object.getPrototypeOf(Normaapp)).call(this, props));
+
+    _this.handleMapClick = _this.handleMapClick.bind(_this);
+    _this.handleSpeciesChange = _this.handleSpeciesChange.bind(_this);
+    _this.handleTotalDistinctChange = _this.handleTotalDistinctChange.bind(_this);
+    _this.handleOpacityChange = _this.handleOpacityChange.bind(_this);
+    _this.handleMaxChange = _this.handleMaxChange.bind(_this);
+    _this.handleFeatureClick = _this.handleFeatureClick.bind(_this);
+    _this.setDefaultMax = _this.setDefaultMax.bind(_this);
+    _this.state = {
+      currentUdpId: -1,
+      speciesResult: [],
+      previous: 0,
+      udp: 0,
+      udpButton: false,
+      udpButtonText: "Fragmentación Ambiental de UDP",
+      normasButtonText: "Especies y Normas OSG",
+
+      markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
+      mapSettings: {
+        distinctOrTotal: "total_observaciones",
+        myObsType: "ave",
+        fillOpacity: 0.6,
+        maxValue: 99
+      },
+      featureInfo: {
+        properties: { message: "click somewhere", displayName: "none" }
+      },
+      table: [{ tableName: "udp_puebla_4326", color: "blue" }]
+    };
+    return _this;
+  }
+
+  _createClass(Normaapp, [{
+    key: "getOutline",
+    value: function getOutline(properties, cat) {
+      var email = document.getElementById("useremail").textContent;
+      var emailArray = [properties.ave_email, properties.arbol_email, properties.arbusto_email, properties.hierba_email, properties.herpetofauna_email, properties.mamifero_email];
+      if (cat == "color") {
+        return emailArray.includes(email) ? "purple" : emailArray.some(function (el) {
+          return el !== null;
+        }) ? "red" : "black";
+      } else {
+        return emailArray.includes(email) ? 3 : emailArray.some(function (el) {
+          return el !== null;
+        }) ? 3 : 0.3;
+      }
+    }
+  }, {
+    key: "handleMapClick",
+    value: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(event) {
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.setState(function (prevState) {
+                  return {
+                    markerPosition: {
+                      lat: event.latlng.lat,
+                      lng: event.latlng.lng
+                    }
+                  };
+                });
+
+              case 1:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function handleMapClick(_x) {
+        return _ref.apply(this, arguments);
+      }
+
+      return handleMapClick;
+    }()
+  }, {
+    key: "handleSpeciesChange",
+    value: function handleSpeciesChange(value) {
+      var max = defaultmax[this.state.mapSettings.distinctOrTotal + "_" + value];
+      max = max < 6 ? 6 : max;
+      this.setState(function (prevState) {
+        return {
+          mapSettings: {
+            distinctOrTotal: prevState.mapSettings.distinctOrTotal,
+            myObsType: value,
+            fillOpacity: prevState.mapSettings.fillOpacity,
+            maxValue: max
+          }
+        };
+      });
+    }
+  }, {
+    key: "handleTotalDistinctChange",
+    value: function handleTotalDistinctChange(value) {
+      var max = defaultmax[value + "_" + this.state.mapSettings.myObsType];
+      max = max < 6 ? 6 : max;
+      this.setState(function (prevState) {
+        return {
+          mapSettings: {
+            distinctOrTotal: value,
+            myObsType: prevState.mapSettings.myObsType,
+            fillOpacity: prevState.mapSettings.fillOpacity,
+            maxValue: max
+          }
+        };
+      });
+    }
+  }, {
+    key: "setDefaultMax",
+    value: function setDefaultMax(max) {
+      max = max < 6 ? 6 : max;
+      this.setState(function (prevState) {
+        return {
+          mapSettings: {
+            distinctOrTotal: prevState.mapSettings.distinctOrTotal,
+            myObsType: prevState.mapSettings.myObsType,
+            fillOpacity: prevState.mapSettings.fillOpacity,
+            maxValue: max
+          }
+        };
+      });
+    }
+  }, {
+    key: "handleFeatureClick",
+    value: function handleFeatureClick(event) {
+      var _this2 = this;
+
+      var getSpecies = function () {
+        var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee2(lifeform, idtype, idnumber) {
+          var myapi, rawResponse, dataResult;
+          return _regenerator2.default.wrap(function _callee2$(_context2) {
+            while (1) {
+              switch (_context2.prev = _context2.next) {
+                case 0:
+                  myapi = "https://biodiversidadpuebla.online/api/getspecies";
+
+                  if (window.location.host == "localhost:3000") myapi = "http://localhost:3000/api/getspecies";
+                  _context2.next = 4;
+                  return fetch(myapi, {
+                    method: "POST",
+                    headers: {
+                      Accept: "application/json",
+                      "Content-Type": "application/json;",
+                      mode: "cors"
+                    },
+                    body: JSON.stringify({
+                      lifeform: lifeform,
+                      idtype: idtype,
+                      idnumber: idnumber,
+                      useremail: document.getElementById("useremail").textContent
+                    })
+                  });
+
+                case 4:
+                  rawResponse = _context2.sent;
+                  _context2.next = 7;
+                  return rawResponse.json();
+
+                case 7:
+                  dataResult = _context2.sent;
+                  return _context2.abrupt("return", dataResult);
+
+                case 9:
+                case "end":
+                  return _context2.stop();
+              }
+            }
+          }, _callee2, this);
+        }));
+
+        return function getSpecies(_x2, _x3, _x4) {
+          return _ref2.apply(this, arguments);
+        };
+      }();
+
+      var lifeform = this.state.mapSettings.myObsType;
+      var idtype = event.target.feature.properties.name == "udp_puebla_4326" ? "udp" : "linea_mtp";
+      this.setState(function () {
+        return {
+          udpButton: idtype == "udp" ? true : false
+        };
+      });
+      this.setState(function () {
+        return {
+          udpButtonText: idtype == "udp" ? "Fragmentación Ambiental de UDP  : " + event.target.feature.properties.iden : "Fragmentación Ambiental de UDP"
+        };
+      });
+      this.setState(function () {
+        return {
+          normasButtonText: idtype == "udp" ? "Especies y Normas OSG  : " + event.target.feature.properties.iden : "Especies y Normas OSG de UDP"
+        };
+      });
+      this.setState(function () {
+        return {
+          currentUdpId: event.target.feature.properties.iden
+
+        };
+      });
+      var idnumber = event.target.feature.properties.iden;
+
+      if (event.target.feature.properties.name == "udp_puebla_4326" || event.target.feature.properties.name == "linea_mtp") {
+        getSpecies(lifeform, idtype, idnumber).then(function (myspeciesResult) {
+          _this2.setState(function (prevState) {
+            return {
+              speciesResult: myspeciesResult
+            };
+          });
+        });
+      }
+
+      /////////////////////////////////////////////////////////////////////////////////////////////
+      var myColor = "green";
+      var myWeight = 5;
+      var myOpacity = 5;
+
+      if (this.state.previous) {
+        something.forEach(function (thing) {
+          if (thing.tableName == _this2.state.previous.feature.properties.name) {
+            myColor = thing.color;
+            myWeight = thing.weight;
+            myOpacity = thing.opacity;
+          }
+        });
+
+        if (this.state.previous.feature.properties.name == "udp_puebla_4326") {
+          this.state.previous.setStyle({
+            weight: this.getOutline(this.state.previous.feature.properties, "weight"),
+            color: this.getOutline(this.state.previous.feature.properties, "color"),
+            opacity: myOpacity
+          });
+        } else {
+          this.state.previous.setStyle({
+            color: myColor,
+            weight: myWeight,
+            opacity: myOpacity
+          });
+        }
+      }
+      this.setState(function () {
+        return {
+          previous: event.target
+        };
+      });
+
+      var highlight = {
+        color: "yellow",
+        weight: 3,
+        opacity: 1
+      };
+      event.target.setStyle(highlight);
+
+      this.setState(function (prevState) {
+        return {
+          featureInfo: {
+            properties: event.target.feature.properties
+          }
+        };
+      });
+    }
+  }, {
+    key: "handleOpacityChange",
+    value: function handleOpacityChange(value) {
+      this.setState(function (prevState) {
+        return {
+          mapSettings: {
+            distinctOrTotal: prevState.mapSettings.distinctOrTotal,
+            myObsType: prevState.mapSettings.myObsType,
+            fillOpacity: value,
+            maxValue: prevState.mapSettings.maxValue
+          }
+        };
+      });
+    }
+  }, {
+    key: "handleMaxChange",
+    value: function handleMaxChange(value) {
+      this.setState(function (prevState) {
+        return {
+          mapSettings: {
+            distinctOrTotal: prevState.mapSettings.distinctOrTotal,
+            myObsType: prevState.mapSettings.myObsType,
+            fillOpacity: prevState.mapSettings.fillOpacity,
+            maxValue: value
+          }
+        };
+      });
+    }
+  }, {
+    key: "updateMarkers",
+    value: function updateMarkers(markersData) {
+      var _this3 = this;
+
+      this.layer.clearLayers();
+      markersData.forEach(function (marker) {
+        L.marker(marker.latLng, { title: marker.title }).addTo(_this3.layer);
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      console.log(this.state.featureInfo);
+      return _react2.default.createElement(
+        "div",
+        null,
+        _react2.default.createElement(
+          "div",
+          { className: "container mymapcontainer" },
+          _react2.default.createElement(
+            "div",
+            { className: "row justify-content-around align-items-center mapstat" },
+            _react2.default.createElement(
+              "div",
+              { className: "mymapdiv border border-dark" },
+              _react2.default.createElement(_Map2.default, {
+                getOutline: this.getOutline,
+                handleMapClick: this.handleMapClick,
+                handleFeatureClick: this.handleFeatureClick,
+                setDefaultMax: this.setDefaultMax,
+                mapSettings: this.state.mapSettings,
+                table: this.state.table
+              })
+            ),
+            _react2.default.createElement(
+              "div",
+              { className: "mystatdiv p-1" },
+              _react2.default.createElement(
+                "div",
+                { className: "withcontrol flex-column d-flex justify-content-between align-items-start" },
+                _react2.default.createElement(_FeatureInfoDisplay2.default, {
+                  markerPosition: this.state.markerPosition,
+                  featureInfo: this.state.featureInfo
+                }),
+                _react2.default.createElement(_MapControl2.default, {
+                  handleSpeciesChange: this.handleSpeciesChange,
+                  handleTotalDistinctChange: this.handleTotalDistinctChange,
+                  handleOpacityChange: this.handleOpacityChange,
+                  handleMaxChange: this.handleMaxChange,
+                  mapSettings: this.state.mapSettings
+                }),
+                _react2.default.createElement(
+                  "div",
+                  { className: "p-2 align-self-center" },
+                  _react2.default.createElement(
+                    "a",
+                    {
+                      className: "btn btn-primary m-2",
+                      href: "/cargarshapes",
+                      role: "button"
+                    },
+                    "Cargar Shapefile de Predio"
+                  ),
+                  _react2.default.createElement(
+                    "form",
+                    { action: "/udpmapa", method: "post" },
+                    _react2.default.createElement("input", { type: "hidden", name: "shannon", value: this.state.featureInfo.properties.shannon_arbol + "*" + this.state.featureInfo.properties.shannon_arbusto + "*" + this.state.featureInfo.properties.shannon_ave + "*" + this.state.featureInfo.properties.shannon_hierba + "*" + this.state.featureInfo.properties.shannon_herpetofauna + "*" + this.state.featureInfo.properties.shannon_mamifero }),
+                    _react2.default.createElement("input", {
+                      type: "submit",
+                      className: "btn btn-primary m-2",
+                      disabled: !this.state.udpButton,
+                      name: "udpbutton",
+                      value: this.state.udpButtonText
+                    })
+                  ),
+                  _react2.default.createElement(
+                    "form",
+                    { action: "/mostrarnormas/" + this.state.currentUdpId, method: "get" },
+                    _react2.default.createElement("input", {
+                      type: "submit",
+                      className: "btn btn-primary m-2",
+                      disabled: !this.state.udpButton,
+                      value: this.state.normasButtonText
+                    })
+                  )
+                )
+              )
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "speciesdisplay" },
+            _react2.default.createElement(_SpeciesDisplay2.default, { speciesResult: this.state.speciesResult })
+          )
+        ),
+        _react2.default.createElement("div", null)
+      );
+    }
+  }]);
+
+  return Normaapp;
+}(_react2.default.Component);
+
+exports.default = Normaapp;
+
+/***/ }),
 /* 84 */,
 /* 85 */,
 /* 86 */,
@@ -25091,7 +25115,7 @@ exports.default = SpeciesDisplay;
 /* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(66);
+module.exports = __webpack_require__(83);
 
 
 /***/ })

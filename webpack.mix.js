@@ -27,6 +27,8 @@ mix.js('resources/assets/js/app.js', 'public/js')
    .js('resources/leaflet_assets/components/Mapapp.js', 'public/leaflet_assets/components/Mapapp.js')
    .js('resources/leaflet_assets/index.js', 'public/leaflet_assets/index.js')
    .js('resources/leaflet_assets/udpindex.js', 'public/leaflet_assets/udpindex.js')
+   .js('resources/leaflet_assets/normasindex.js', 'public/leaflet_assets/normasindex.js')
+
    .copy('resources/leaflet_assets/index.html', 'public/leaflet_assets/index.html')
    .copy('resources/leaflet_assets/leaflet.css', 'public/leaflet_assets/leaflet.css');
    

@@ -17,6 +17,9 @@
       <li class="nav-item">
         <a class="nav-link" href="/ingresarexcel">Ingresar Excel</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/descargarespecie">Descargar Especie</a>
+      </li>
     </ul>
 
     <ul class="navbar-nav ml-auto">

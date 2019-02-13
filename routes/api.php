@@ -17,6 +17,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+
+
+
+
 Route::post('getboundingfeatures', function(Request $request) {
     $result="There was an error";
     $north =  $request->north;
@@ -351,7 +356,6 @@ Route::post('getudp', function(Request $request) {
     $finalresults=[$result,$obresult];
     return json_encode($finalresults);
 });
-
 
 
 Route::post('getspecies', function(Request $request) {

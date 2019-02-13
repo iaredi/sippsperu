@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 124);
+/******/ 	return __webpack_require__(__webpack_require__.s = 132);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -18433,7 +18433,233 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 30 */,
+/* 30 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _leaflet = __webpack_require__(28);
+
+var _leaflet2 = _interopRequireDefault(_leaflet);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var style = {
+    width: "100%",
+    height: "100%"
+};
+
+var Map = function (_React$Component) {
+    _inherits(Map, _React$Component);
+
+    function Map(props) {
+        _classCallCheck(this, Map);
+
+        var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this, props));
+
+        _this.getColor = _this.getColor.bind(_this);
+        return _this;
+    }
+
+    _createClass(Map, [{
+        key: "getColor",
+        value: function getColor(x) {
+            return x < this.props.mapSettings.maxValue * (1 / 6) ? '#edf8fb' : x < this.props.mapSettings.maxValue * (2 / 6) ? '#ccece6' : x < this.props.mapSettings.maxValue * (3 / 6) ? '#99d8c9' : x < this.props.mapSettings.maxValue * (4 / 6) ? '#66c2a4' : x < this.props.mapSettings.maxValue * (5 / 6) ? '#41ae76' : x < this.props.mapSettings.maxValue ? '#238b45' : '#005824';
+        }
+    }, {
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            this.props.setDefaultMax(defaultmax[this.props.mapSettings.distinctOrTotal + "_" + this.props.mapSettings.myObsType]);
+            // create map
+            this.map = _leaflet2.default.map("map", {
+                center: [18.69349, 360 - 98.16245],
+                zoom: 9,
+                layers: []
+            });
+
+            var streets = _leaflet2.default.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(this.map);
+
+            var imagery = _leaflet2.default.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: '&copy; <a href="http://www.esri.com/">Esri</a>i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+                maxZoom: 18
+            });
+
+            this.baseMaps = {
+                "Imagery": imagery,
+                "Streets": streets
+            };
+
+            var get_shp = function get_shp(item, mymap) {
+                ////
+                var geojsonMarkerOptions = {
+                    radius: 4,
+                    fillColor: "#ff7800",
+                    color: "#000",
+                    weight: 1,
+                    opacity: 1,
+                    fillOpacity: 0.8
+                };
+
+                var myStyle = {
+                    weight: item.weight,
+                    color: item.color,
+                    opacity: item.opacity,
+                    fillColor: item.fillColor,
+                    fillOpacity: item.fillOpacity
+                };
+
+                var onEachFeature = function onEachFeature(feature, layer) {
+                    var handleFeatureClick = function handleFeatureClick(event) {
+                        _this2.props.handleFeatureClick(event);
+                    };
+                    layer.on('click', handleFeatureClick);
+                };
+
+                var c2 = _leaflet2.default.geoJson(item.geom, {
+                    style: myStyle,
+                    onEachFeature: onEachFeature
+                });
+                if (item.geom && item.geom.features[0].geometry.type == 'Point') {
+                    c2 = _leaflet2.default.geoJSON(item.geom, {
+                        pointToLayer: function pointToLayer(feature, latlng) {
+                            return _leaflet2.default.circleMarker(latlng, geojsonMarkerOptions);
+                        },
+                        onEachFeature: onEachFeature,
+                        style: myStyle
+
+                    });
+                }
+                if (item.tableName == 'linea_mtp' || item.tableName == 'udp_puebla_4326') {
+                    c2.addTo(mymap);
+                }
+                return c2;
+            };
+
+            var processArray = function processArray(array, mymap, mybaseMaps, getColor, getOutline) {
+                var dynamicLayer = 'notset';
+                var overlayMaps = _this2.overlayMaps || {};
+                array.forEach(function (item) {
+                    var myLayer = get_shp(item, mymap, getColor, getOutline);
+                    if (item.tableName == 'udp_puebla_4326') {
+                        dynamicLayer = myLayer;
+                        mymap.fitBounds(myLayer.getBounds());
+                    }
+                    overlayMaps[item.displayName] = myLayer;
+                });
+                _leaflet2.default.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
+                return dynamicLayer;
+            };
+            this.dynamicLayer = processArray(something, this.map, this.baseMaps, this.getColor, this.getOutline);
+            this.map.on("click", this.props.handleMapClick);
+            this.map.scrollWheelZoom.disable();
+            ///////////LEGENDNEW////////////
+
+            var legend = _leaflet2.default.control({ position: 'bottomleft' });
+            this.makeDiv = function (map) {
+                grades = [];
+                labels = [];
+                var div = _leaflet2.default.DomUtil.create('div', 'info legend'),
+                    grades,
+                    labels = [];
+                _leaflet2.default.DomUtil.addClass(div, "colorLegend border border-secondary p-2");
+
+                div.innerHTML += '<i class="m-1" style="outline: 5px solid purple; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + 'Sus datos <br><br>';
+                div.innerHTML += '<i class="m-1" style="outline: 5px solid red; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + 'Datos de otros monitores<br><br>';
+                div.innerHTML += '<i class="m-1" style="outline: 5px solid yellow; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + 'Selección<br>';
+                return div;
+            };
+            legend.onAdd = this.makeDiv;
+            legend.addTo(this.map);
+            this.legend = legend;
+
+            ///////////LEGENDOLD////////////
+
+            var legend = _leaflet2.default.control({ position: 'bottomright' });
+
+            this.makeDiv = function (map) {
+                grades = [];
+                for (var i = 0; i <= 6; i++) {
+                    grades.push(_this2.props.mapSettings.maxValue * (i / 6)), labels = [];
+                }
+                var getColor = _this2.getColor;
+                var div = _leaflet2.default.DomUtil.create('div', 'info legend'),
+                    grades,
+                    labels = [];
+                _leaflet2.default.DomUtil.addClass(div, "colorLegend border border-secondary");
+                // loop through our density intervals and generate a label with a colored square for each interval
+                for (var i = 0; i < grades.length; i++) {
+                    div.innerHTML += '<i style="background:' + getColor(grades[i]) + '">&nbsp&nbsp&nbsp&nbsp</i> ' + Math.floor(grades[i]) + (grades[i + 1] ? '&ndash;' + Math.floor(grades[i + 1]) + '<br>' : '+');
+                }
+                return div;
+            };
+            legend.onAdd = this.makeDiv;
+            legend.addTo(this.map);
+            this.legend = legend;
+            /////////////////////////////////////////////////////
+        }
+    }, {
+        key: "componentDidUpdate",
+        value: function componentDidUpdate(_ref) {
+            var _this3 = this;
+
+            var mapSettings = _ref.mapSettings;
+
+            if (this.props.mapSettings !== mapSettings) {
+                this.map.removeControl(this.legend);
+                var legend = _leaflet2.default.control({ position: 'bottomright' });
+                legend.onAdd = this.makeDiv;
+                legend.addTo(this.map);
+                this.legend = legend;
+                var getColor = this.getColor;
+                var getOutline = this.props.getOutline;
+                var targetProperty = this.props.mapSettings.distinctOrTotal + "_" + this.props.mapSettings.myObsType;
+
+                var myStyle = function myStyle(feature, maxValue) {
+                    return {
+                        "fillColor": getColor(feature.properties[targetProperty]),
+                        "opacity": 1,
+                        "weight": getOutline(feature.properties, 'weight'),
+                        "color": getOutline(feature.properties, 'color'),
+                        "fillOpacity": _this3.props.mapSettings.fillOpacity
+                    };
+                };
+                this.dynamicLayer.setStyle(myStyle);
+            }
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement("div", { id: "map", style: style });
+        }
+    }]);
+
+    return Map;
+}(_react2.default.Component);
+
+exports.default = Map;
+
+/***/ }),
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -23855,9 +24081,533 @@ exports.push([module.i, ".react-bootstrap-table table{table-layout:fixed}.react-
 
 
 /***/ }),
-/* 64 */,
-/* 65 */,
-/* 66 */,
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var MapControl = function (_React$Component) {
+    _inherits(MapControl, _React$Component);
+
+    function MapControl(props) {
+        _classCallCheck(this, MapControl);
+
+        var _this = _possibleConstructorReturn(this, (MapControl.__proto__ || Object.getPrototypeOf(MapControl)).call(this, props));
+
+        _this.handleSpeciesChange = _this.handleSpeciesChange.bind(_this);
+        _this.handleTotalDistinctChange = _this.handleTotalDistinctChange.bind(_this);
+        _this.handleOpacityChange = _this.handleOpacityChange.bind(_this);
+        _this.handleMaxChange = _this.handleMaxChange.bind(_this);
+        return _this;
+    }
+
+    _createClass(MapControl, [{
+        key: "handleSpeciesChange",
+        value: function handleSpeciesChange(event) {
+            var error = this.props.handleSpeciesChange(event.target.value);
+        }
+    }, {
+        key: "handleTotalDistinctChange",
+        value: function handleTotalDistinctChange(event) {
+            this.props.handleTotalDistinctChange(event.target.value);
+        }
+    }, {
+        key: "handleOpacityChange",
+        value: function handleOpacityChange(event) {
+            this.props.handleOpacityChange(event.target.value);
+        }
+    }, {
+        key: "handleOpacityChange",
+        value: function handleOpacityChange(event) {
+            this.props.handleOpacityChange(event.target.value);
+        }
+    }, {
+        key: "handleMaxChange",
+        value: function handleMaxChange(event) {
+            this.props.handleMaxChange(event.target.value);
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                null,
+                _react2.default.createElement(
+                    "div",
+                    { className: "form-group row  justify-content-start align-items-center p-1 mx-3" },
+                    _react2.default.createElement(
+                        "div",
+                        { className: "p-3" },
+                        _react2.default.createElement(
+                            "label",
+                            { className: "table_option" },
+                            " Clase"
+                        ),
+                        _react2.default.createElement(
+                            "select",
+                            { name: "table_option", id: "table_option", onChange: this.handleSpeciesChange, className: "table_option form-control " },
+                            _react2.default.createElement(
+                                "option",
+                                { value: "ave" },
+                                "Ave"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "hierba" },
+                                "Hierba"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "herpetofauna" },
+                                "Herpetofauna"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "arbol" },
+                                "Arbol"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "arbusto" },
+                                "Arbusto"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "mamifero" },
+                                "Mamifero"
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        { className: "p-3" },
+                        _react2.default.createElement(
+                            "label",
+                            { className: "table_option" },
+                            "Especies"
+                        ),
+                        _react2.default.createElement(
+                            "select",
+                            { name: "table_option", id: "table_option", onChange: this.handleTotalDistinctChange, className: "table_option form-control " },
+                            _react2.default.createElement(
+                                "option",
+                                { value: "total_observaciones" },
+                                "Total"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "distinct_species" },
+                                "Distincto"
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        { className: "p-3" },
+                        _react2.default.createElement(
+                            "label",
+                            { className: "style_option" },
+                            "Max Numero por colores"
+                        ),
+                        _react2.default.createElement("input", { name: "maxNumber", type: "number", min: "6", value: this.props.mapSettings.maxValue, id: "table_optionOpacity", onChange: this.handleMaxChange, className: "table_option form-control " })
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        { className: "p-3" },
+                        _react2.default.createElement(
+                            "label",
+                            { className: "style_option" },
+                            "Opacidad"
+                        ),
+                        _react2.default.createElement(
+                            "select",
+                            { name: "table_option", id: "table_optionOpacity", defaultValue: "0.6", onChange: this.handleOpacityChange, className: "table_option form-control " },
+                            _react2.default.createElement(
+                                "option",
+                                { value: "1.0" },
+                                "1.0"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "0.8" },
+                                "0.8"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "0.6" },
+                                "0.6"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "0.4" },
+                                "0.4"
+                            ),
+                            _react2.default.createElement(
+                                "option",
+                                { value: "0.2" },
+                                "0.2"
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return MapControl;
+}(_react2.default.Component);
+
+exports.default = MapControl;
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrapTableNext = __webpack_require__(21);
+
+var _reactBootstrapTableNext2 = _interopRequireDefault(_reactBootstrapTableNext);
+
+__webpack_require__(22);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var FeatureInfoDisplay = function (_React$Component) {
+    _inherits(FeatureInfoDisplay, _React$Component);
+
+    function FeatureInfoDisplay(props) {
+        _classCallCheck(this, FeatureInfoDisplay);
+
+        return _possibleConstructorReturn(this, (FeatureInfoDisplay.__proto__ || Object.getPrototypeOf(FeatureInfoDisplay)).call(this, props));
+    }
+
+    _createClass(FeatureInfoDisplay, [{
+        key: 'render',
+        value: function render() {
+            var _this2 = this;
+
+            var allTableRows = [];
+            if (this.props.featureInfo.properties.displayName == 'Linea MTP' || this.props.featureInfo.properties.displayName == 'Unidad de Paisaje') {
+
+                var lifeForms = ['arbol', 'arbusto', 'hierba', 'ave', 'herpetofauna', 'mamifero', 'Dato acumulado'];
+                var mya2 = ['total_observaciones', 'distinct_species', 'dominancia', 'shannon', 'biodiversidad_verdadera'];
+                var myIcons = { 'ave': '🦅', 'arbol': '🌲', 'arbusto': '🌳', 'hierba': '🌱', 'herpetofauna': '🐍', 'mamifero': '🦌' };
+
+                lifeForms.map(function (life) {
+                    var oneTableRow = {};
+                    oneTableRow['name'] = life == 'herpetofauna' ? 'herpetofauna' : life;
+                    oneTableRow['name'] = life == 'Dato acumulado' ? oneTableRow['name'] : myIcons[life] + oneTableRow['name'];
+
+                    mya2.map(function (category, ind) {
+                        if (life == 'Dato acumulado') {
+                            var mysum = -999.99;
+                            if (category == 'biodiversidad_verdadera') {
+                                mysum = Math.exp(-_this2.props.featureInfo.properties['shannon_ave']) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties['shannon_ave']);
+                                mysum += Math.exp(-_this2.props.featureInfo.properties['shannon_hierba']) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties['shannon_hierba']);
+                                mysum += Math.exp(-_this2.props.featureInfo.properties['shannon_arbusto']) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties['shannon_arbusto']);
+                                mysum += Math.exp(-_this2.props.featureInfo.properties['shannon_arbol']) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties['shannon_arbol']);
+                                mysum += Math.exp(-_this2.props.featureInfo.properties['shannon_herpetofauna']) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties['shannon_herpetofauna']);
+                                mysum += Math.exp(-_this2.props.featureInfo.properties['shannon_mamifero']) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties['shannon_mamifero']);
+                            } else {
+                                mysum = +_this2.props.featureInfo.properties[category + '_ave'] + +_this2.props.featureInfo.properties[category + '_hierba'] + +_this2.props.featureInfo.properties[category + '_arbusto'] + +_this2.props.featureInfo.properties[category + '_arbol'] + +_this2.props.featureInfo.properties[category + '_herpetofauna'] + +_this2.props.featureInfo.properties[category + '_mamifero'];
+                            }
+                            if (ind > 1) mysum = (mysum / 6).toPrecision(4);
+                            oneTableRow[category] = mysum;
+                        } else {
+                            var newCat = category.replace('_' + life, '');
+                            var myValue = -999.99;
+                            if (newCat == 'biodiversidad_verdadera') {
+                                myValue = Math.exp(-oneTableRow['shannon']).toPrecision(4) == 1 ? 0 : Math.exp(-oneTableRow['shannon']).toPrecision(4);
+                            } else {
+                                myValue = ind > 1 ? (+_this2.props.featureInfo.properties[category + '_' + life]).toPrecision(4) : _this2.props.featureInfo.properties[category + '_' + life];
+                            }
+                            oneTableRow[newCat] = myValue;
+                        }
+                    });
+                    allTableRows.push(oneTableRow);
+                });
+            }
+            var columns = [{
+                dataField: 'name',
+                text: 'Nombre',
+                headerStyle: {
+                    width: '128px'
+                }
+            }, {
+                dataField: 'total_observaciones',
+                text: 'Individuos',
+                headerStyle: {
+                    width: '80px'
+                }
+            }, {
+                dataField: 'distinct_species',
+                text: 'Especies Distintas',
+                headerStyle: {
+                    width: '80px'
+                }
+            }, {
+                dataField: 'dominancia',
+                headerStyle: {
+                    width: '92px'
+                },
+                text: 'Dominancia',
+                classes: 'testme'
+            }, {
+                dataField: 'shannon',
+                headerStyle: {
+                    width: '62px'
+                },
+                text: 'Shannon'
+            }, {
+                dataField: 'biodiversidad_verdadera',
+                headerStyle: {
+                    width: '92px'
+                },
+                text: 'Biodiversidad Verdadera',
+                classes: 'testme'
+            }];
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'container' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'flex-column d-flex justify-content-around align-items-center p-3' },
+                        _react2.default.createElement(
+                            'div',
+                            null,
+                            'Ultimo Click:'
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            null,
+                            'lat: ',
+                            this.props.markerPosition.lat.toPrecision(7),
+                            ', lng: ',
+                            this.props.markerPosition.lng.toPrecision(7)
+                        ),
+                        _react2.default.createElement(
+                            'div',
+                            null,
+                            this.props.featureInfo.properties.displayName,
+                            ' = ',
+                            this.props.featureInfo.properties[this.props.featureInfo.properties.featureColumn]
+                        )
+                    )
+                ),
+                _react2.default.createElement(_reactBootstrapTableNext2.default, {
+                    keyField: 'name',
+                    data: allTableRows,
+                    columns: columns,
+                    bordered: true,
+                    classes: 'featureInfoTable',
+                    striped: true,
+                    hover: true,
+                    condensed: true,
+                    noDataIndication: 'No hay datos'
+                })
+            );
+        }
+    }]);
+
+    return FeatureInfoDisplay;
+}(_react2.default.Component);
+
+exports.default = FeatureInfoDisplay;
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrapTableNext = __webpack_require__(21);
+
+var _reactBootstrapTableNext2 = _interopRequireDefault(_reactBootstrapTableNext);
+
+__webpack_require__(22);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var SpeciesDisplay = function (_React$Component) {
+    _inherits(SpeciesDisplay, _React$Component);
+
+    function SpeciesDisplay(props) {
+        _classCallCheck(this, SpeciesDisplay);
+
+        return _possibleConstructorReturn(this, (SpeciesDisplay.__proto__ || Object.getPrototypeOf(SpeciesDisplay)).call(this, props));
+    }
+
+    _createClass(SpeciesDisplay, [{
+        key: 'render',
+        value: function render() {
+
+            var oldspeciesResult = this.props.speciesResult;
+            //ADD (2) to prevent duplicate keys 
+            var newA = {};
+            var speciesResult = oldspeciesResult.map(function (spec) {
+                var newObject = _extends({}, spec);
+                if (newA[spec.cientifico]) {
+                    if (newA[spec.cientifico] == 2) {
+                        newObject = _extends({}, spec, { cientifico: spec.cientifico + '(2)' });
+                    } else {
+                        newObject = _extends({}, spec, { cientifico: spec.cientifico.slice(0, -3) + '(' + String(newA[spec.cientifico]) + ')' });
+                    }
+                    newA[spec.cientifico]++;
+                } else {
+                    newA[spec.cientifico] = 2;
+                }
+                return newObject;
+            });
+
+            var speciesResultInvador = speciesResult.filter(function (item) {
+                return item.invasor == 'true';
+            });
+
+            var speciesResultNoInvador = speciesResult.filter(function (item) {
+                return item.invasor == 'false';
+            });
+
+            var columns = [{
+                dataField: 'comun',
+                text: 'Comun'
+            }, {
+                dataField: 'cientifico',
+                text: 'Cientifico'
+            }, {
+                dataField: 'total_cientifico',
+                text: 'Cantidad'
+            }, {
+                dataField: 'subespecie',
+                text: 'Subespecie Enlistada'
+            }, {
+                dataField: 'categoria',
+                text: 'Categoria '
+            }, {
+                dataField: 'distribution',
+                text: 'Distribution '
+            }, {
+                dataField: 'ivi100',
+                text: 'Valor de Importancia'
+            }, {
+                dataField: 'densidad',
+                text: 'Densidad '
+            }, {
+                dataField: 'dominancia',
+                text: 'Dominancia '
+            }, {
+                dataField: 'frequencia',
+                text: 'Frequencia '
+            }];
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'container' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'flex-column d-flex justify-content-around align-items-center p-3' },
+                        _react2.default.createElement(_reactBootstrapTableNext2.default, {
+                            keyField: 'cientifico',
+                            data: speciesResultNoInvador,
+                            columns: columns,
+                            bootstrap4: true,
+                            bordered: true,
+                            classes: 'speciesTable',
+                            striped: true,
+                            hover: true,
+                            condensed: true,
+                            noDataIndication: 'No hay datos'
+                        }),
+                        _react2.default.createElement(
+                            'h3',
+                            null,
+                            'Invasores'
+                        ),
+                        _react2.default.createElement(_reactBootstrapTableNext2.default, {
+                            keyField: 'cientifico',
+                            data: speciesResultInvador,
+                            columns: columns,
+                            bootstrap4: true,
+                            bordered: true,
+                            classes: 'speciesTable',
+                            striped: true,
+                            hover: true,
+                            condensed: true,
+                            noDataIndication: 'No hay datos'
+                        })
+                    )
+                )
+            );
+        }
+    }]);
+
+    return SpeciesDisplay;
+}(_react2.default.Component);
+
+exports.default = SpeciesDisplay;
+
+/***/ }),
 /* 67 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -44053,14 +44803,22 @@ module.exports = "/images/marker-icon-2x.png?314bb1697dc187df9e9abf35e7094197";
 /* 121 */,
 /* 122 */,
 /* 123 */,
-/* 124 */
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */,
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(125);
+module.exports = __webpack_require__(133);
 
 
 /***/ }),
-/* 125 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44074,9 +44832,9 @@ var _reactDom = __webpack_require__(67);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _udpMapapp = __webpack_require__(126);
+var _Normaapp = __webpack_require__(134);
 
-var _udpMapapp2 = _interopRequireDefault(_udpMapapp);
+var _Normaapp2 = _interopRequireDefault(_Normaapp);
 
 __webpack_require__(73);
 
@@ -44086,256 +44844,10 @@ __webpack_require__(80);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_reactDom2.default.render(_react2.default.createElement(_udpMapapp2.default, null), document.getElementById('app'));
+_reactDom2.default.render(_react2.default.createElement(_Normaapp2.default, null), document.getElementById('app'));
 
 /***/ }),
-/* 126 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _udpMapa = __webpack_require__(127);
-
-var _udpMapa2 = _interopRequireDefault(_udpMapa);
-
-var _Legend = __webpack_require__(128);
-
-var _Legend2 = _interopRequireDefault(_Legend);
-
-var _ParchesTable = __webpack_require__(129);
-
-var _ParchesTable2 = _interopRequireDefault(_ParchesTable);
-
-var _UdpTitle = __webpack_require__(130);
-
-var _UdpTitle2 = _interopRequireDefault(_UdpTitle);
-
-var _UdpDiversity = __webpack_require__(131);
-
-var _UdpDiversity2 = _interopRequireDefault(_UdpDiversity);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-//import BootstrapTable from 'react-bootstrap-table-next';
-
-var UDPMapapp = function (_React$Component) {
-  _inherits(UDPMapapp, _React$Component);
-
-  function UDPMapapp(props) {
-    _classCallCheck(this, UDPMapapp);
-
-    var _this = _possibleConstructorReturn(this, (UDPMapapp.__proto__ || Object.getPrototypeOf(UDPMapapp)).call(this, props));
-
-    _this.setSoils = _this.setSoils.bind(_this);
-    _this.setStateBounds = _this.setStateBounds.bind(_this);
-    _this.setText = _this.setText.bind(_this);
-
-    _this.state = {
-      mytext: "Cargando...",
-      speciesResult: [],
-      bounds: {
-        _northEast: { lat: 1, lng: 1 },
-        _southWest: { lat: 1, lng: 1 }
-      },
-      boundsobtained: false,
-      soils: [{ color: "rgb:000", descripcio: "Cargando..." }],
-      udpsoils: [{ color: "rgb:000", descripcio: "Cargando..." }],
-      previous: 0,
-      udp: 0,
-      markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
-      mapSettings: {
-        distinctOrTotal: "total_observaciones",
-        myObsType: "ave",
-        fillOpacity: 0.6,
-        maxValue: 99
-      },
-      featureInfo: {
-        properties: { message: "click somewhere", displayName: "Cargando..." }
-      },
-      table: [{ tableName: "udp_puebla_4326", color: "blue" }]
-    };
-    return _this;
-  }
-
-  _createClass(UDPMapapp, [{
-    key: "setText",
-    value: function setText(mytext) {
-      if (mytext != this.state.mytext) {
-        this.setState(function (prevState) {
-          return {
-            mytext: mytext
-          };
-        });
-      }
-    }
-  }, {
-    key: "setSoils",
-    value: function setSoils(soils, udpsoils) {
-      if (soils != this.state.soils) {
-        this.setState(function (prevState) {
-          return {
-            soils: soils
-          };
-        });
-      }
-      if (udpsoils != this.state.udpsoils) {
-        this.setState(function (prevState) {
-          return {
-            udpsoils: udpsoils
-          };
-        });
-      }
-      if (!this.state.boundsobtained) {
-        this.setState(function (prevState) {
-          return {
-            boundsobtained: true
-          };
-        });
-      }
-    }
-  }, {
-    key: "setStateBounds",
-    value: function setStateBounds(bounds) {
-      if (bounds != this.state.bounds) {
-        this.setState(function (prevState) {
-          return {
-            bounds: bounds
-          };
-        });
-      }
-    }
-  }, {
-    key: "updateMarkers",
-    value: function updateMarkers(markersData) {
-      var _this2 = this;
-
-      this.layer.clearLayers();
-      markersData.forEach(function (marker) {
-        L.marker(marker.latLng, { title: marker.title }).addTo(_this2.layer);
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-
-      var shannonbool = shannon.split("*")[0] > 0 || shannon.split("*")[1] > 0 || shannon.split("*")[2] > 0 || shannon.split("*")[3] > 0 || shannon.split("*")[4] > 0 || shannon.split("*")[5] > 0;
-      console.log(shannon);
-      var westernLongitude = this.state.bounds._southWest.lng.toPrecision(6);
-      var easternLongitude = this.state.bounds._northEast.lng.toPrecision(6);
-      var southernLatitude = this.state.bounds._southWest.lat.toPrecision(6);
-      var northernLatitude = this.state.bounds._northEast.lat.toPrecision(6);
-
-      return _react2.default.createElement(
-        "div",
-        null,
-        _react2.default.createElement(
-          "div",
-          { className: "udplayout" },
-          _react2.default.createElement(
-            "div",
-            { id: "bbtop" },
-            _react2.default.createElement(
-              "span",
-              { className: "top left" },
-              northernLatitude + ", " + westernLongitude
-            ),
-            _react2.default.createElement(
-              "span",
-              { className: "top right" },
-              northernLatitude + ", " + easternLongitude
-            )
-          ),
-          _react2.default.createElement(
-            "div",
-            { id: "udpmapdiv", className: "border border-dark" },
-            _react2.default.createElement(_udpMapa2.default, {
-              setStateBounds: this.setStateBounds,
-              setSoils: this.setSoils
-            })
-          ),
-          _react2.default.createElement(
-            "div",
-            { id: "bbbottom" },
-            _react2.default.createElement(
-              "span",
-              { className: "bottom left" },
-              southernLatitude + ", " + westernLongitude
-            ),
-            _react2.default.createElement(
-              "span",
-              { className: "bottom right" },
-              southernLatitude + ", " + easternLongitude
-            )
-          ),
-          _react2.default.createElement(
-            "div",
-            { id: "legenddiv" },
-            _react2.default.createElement(_Legend2.default, { soils: this.state.soils })
-          ),
-          _react2.default.createElement(
-            "div",
-            { id: "descriptiondiv" },
-            _react2.default.createElement(
-              "h6",
-              { id: "descripcionheader" },
-              "DESCRIPCI\xD3N "
-            ),
-            _react2.default.createElement(
-              "p",
-              { id: "descripciontext" },
-              this.state.mytext
-            )
-          ),
-          _react2.default.createElement(
-            "div",
-            { id: "parchestable" },
-            this.state.boundsobtained ? _react2.default.createElement(_UdpTitle2.default, { udpsoils: this.state.udpsoils }) : _react2.default.createElement(
-              "p",
-              null,
-              "Cargando..."
-            ),
-            this.state.boundsobtained ? _react2.default.createElement(_ParchesTable2.default, {
-              udpsoils: this.state.udpsoils,
-              setText: this.setText
-            }) : _react2.default.createElement(
-              "p",
-              null,
-              "Cargando..."
-            )
-          ),
-          shannonbool && _react2.default.createElement(
-            "div",
-            { id: "biodivreport" },
-            _react2.default.createElement(_UdpDiversity2.default, null)
-          )
-        )
-      );
-    }
-  }]);
-
-  return UDPMapapp;
-}(_react2.default.Component);
-
-exports.default = UDPMapapp;
-
-/***/ }),
-/* 127 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -44355,9 +44867,21 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _leaflet = __webpack_require__(28);
+var _Map = __webpack_require__(30);
 
-var _leaflet2 = _interopRequireDefault(_leaflet);
+var _Map2 = _interopRequireDefault(_Map);
+
+var _MapControl = __webpack_require__(64);
+
+var _MapControl2 = _interopRequireDefault(_MapControl);
+
+var _FeatureInfoDisplay = __webpack_require__(65);
+
+var _FeatureInfoDisplay2 = _interopRequireDefault(_FeatureInfoDisplay);
+
+var _SpeciesDisplay = __webpack_require__(66);
+
+var _SpeciesDisplay2 = _interopRequireDefault(_SpeciesDisplay);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44368,733 +44892,391 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+//import BootstrapTable from 'react-bootstrap-table-next';
 
-var style = {
-  width: "98%",
-  height: "100%"
-};
+var Normaapp = function (_React$Component) {
+  _inherits(Normaapp, _React$Component);
 
-var UDPMapa = function (_React$Component) {
-  _inherits(UDPMapa, _React$Component);
+  function Normaapp(props) {
+    _classCallCheck(this, Normaapp);
 
-  function UDPMapa(props) {
-    _classCallCheck(this, UDPMapa);
+    var _this = _possibleConstructorReturn(this, (Normaapp.__proto__ || Object.getPrototypeOf(Normaapp)).call(this, props));
 
-    var _this = _possibleConstructorReturn(this, (UDPMapa.__proto__ || Object.getPrototypeOf(UDPMapa)).call(this, props));
-
-    _this.setStateBounds = _this.setStateBounds.bind(_this);
-    _this.setSoils = _this.setSoils.bind(_this);
-    return _this;
-  }
-
-  _createClass(UDPMapa, [{
-    key: "setStateBounds",
-    value: function setStateBounds(bounds) {
-      this.props.setStateBounds(bounds);
-    }
-  }, {
-    key: "setSoils",
-    value: function setSoils(soils, udpsoils) {
-      this.props.setSoils(soils, udpsoils);
-    }
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var _this2 = this;
-
-      // create map
-      this.map = _leaflet2.default.map("map", {
-        center: [18.69349, 360 - 98.16245],
-        zoom: 10,
-        layers: [],
-        zoomControl: false
-      });
-
-      // const streets = L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-      //   attribution:
-      //     '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-      // }).addTo(this.map);
-
-      // const imagery = L.tileLayer(
-      // 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      // attribution: '&copy; <a href="http://www.esri.com/">Esri</a>i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-      // maxZoom: 18,
-      // });
-
-      // this.baseMaps = {
-      //   "Imagery":imagery,
-      //   "Streets": streets
-      // };
-      var get_shp = function get_shp(item, mymap) {
-        var myStyle = function myStyle(feature) {
-          return {
-            fillColor: item.fillColor,
-            opacity: item.opacity,
-            weight: item.weight,
-            color: item.color,
-            fillOpacity: item.fillOpacity
-          };
-        };
-        if (item.tableName == "usos_de_suelo4") {
-          myStyle = function myStyle(feature) {
-            return {
-              fillColor: feature.properties["color"],
-              opacity: item.opacity,
-              weight: item.weight,
-              color: item.color,
-              fillOpacity: item.fillOpacity
-            };
-          };
-        }
-
-        var c2 = _leaflet2.default.geoJson(item.geom, {
-          style: myStyle
-        });
-
-        c2.addTo(mymap);
-        return c2;
-      };
-
-      var processArray = function processArray(array, mymap, setStateBounds, setSoils) {
-
-        var overlayMaps = _this2.overlayMaps || {};
-        var bounds = "none";
-        var udpiden = "none";
-        array.forEach(function (item) {
-          if (item.tableName !== "usos_de_suelo4") {
-            var myLayer = get_shp(item, mymap);
-            overlayMaps[item.displayName] = myLayer;
-            //L.control.layers(overlayMaps).addTo(mymap);
-            if (item.tableName == "udp_puebla_4326") {
-              mymap.fitBounds(myLayer.getBounds());
-              bounds = mymap.getBounds();
-              setStateBounds(mymap.getBounds());
-              udpiden = item.sql.split("'")[1];
-            }
-          } else {
-            ////ASYNC HERE
-            //ask the api what layers are in frame so they can be colored and list
-            //later we will get the metrics of soils in our udp square.
-
-            var getBoundingFeatures = function () {
-              var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(bounds, udpiden) {
-                var myapi, rawResponse, dataResult;
-                return _regenerator2.default.wrap(function _callee$(_context) {
-                  while (1) {
-                    switch (_context.prev = _context.next) {
-                      case 0:
-                        myapi = "https://biodiversidadpuebla.online/api/getboundingfeatures";
-
-                        if (window.location.host == "localhost:3000") myapi = "http://localhost:3000/api/getboundingfeatures";
-                        _context.next = 4;
-                        return fetch(myapi, {
-                          method: "POST",
-                          headers: {
-                            Accept: "application/json",
-                            "Content-Type": "application/json;",
-                            mode: "cors"
-                          },
-                          body: JSON.stringify({
-                            north: bounds._northEast.lat,
-                            east: bounds._northEast.lng,
-                            south: bounds._southWest.lat,
-                            west: bounds._southWest.lng,
-                            udpiden: udpiden
-                          })
-                        });
-
-                      case 4:
-                        rawResponse = _context.sent;
-                        _context.next = 7;
-                        return rawResponse.json();
-
-                      case 7:
-                        dataResult = _context.sent;
-                        return _context.abrupt("return", dataResult);
-
-                      case 9:
-                      case "end":
-                        return _context.stop();
-                    }
-                  }
-                }, _callee, this);
-              }));
-
-              return function getBoundingFeatures(_x, _x2) {
-                return _ref.apply(this, arguments);
-              };
-            }();
-
-            getBoundingFeatures(bounds, udpiden).then(function (soils) {
-
-              setSoils(JSON.parse(soils[0]), JSON.parse(soils[1]));
-              var myLayer = get_shp(item, mymap);
-              overlayMaps[item.displayName] = myLayer;
-
-              [JSON.parse(soils[2]), JSON.parse(soils[3]), JSON.parse(soils[4])].forEach(function (item) {
-                if (item.geom) {
-                  var myLayeragua_lineas = get_shp(item, mymap);
-                  //overlayMaps[agua_lineas.displayName] = myLayeragua_lineas;
-                }
-              });
-            });
-          }
-        });
-      };
-      processArray(udpsomething, this.map, this.setStateBounds, this.setSoils);
-      this.map.scrollWheelZoom.disable();
-      _leaflet2.default.control.scale({ imperial: false }).addTo(this.map);
-
-      //Make map static
-      var lyrcont = document.getElementsByClassName("leaflet-control-attribution")[0];
-      // var lyratt = document.getElementsByClassName(
-      //   "leaflet-control-attribution"
-      // )[0];
-      // var lyrtop = document.getElementsByClassName("leaflet-top")[0];
-      lyrcont.style.visibility = "hidden";
-      // lyratt.style.visibility = "hidden";
-      // lyrtop.style.visibility = "hidden";
-      var north = _leaflet2.default.control({ position: "topright" });
-      north.onAdd = function (map) {
-        var div = _leaflet2.default.DomUtil.create("div", "info legend");
-        div.innerHTML = '<img id="northarrow" src="img/north.png">';
-        return div;
-      };
-      north.addTo(this.map);
-      this.map.dragging.disable();
-      this.map.doubleClickZoom.disable();
-      /////////////////////////////////////////////////////
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(_ref2) {
-      var mapSettings = _ref2.mapSettings;
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      return _react2.default.createElement("div", { id: "map", style: style });
-    }
-  }]);
-
-  return UDPMapa;
-}(_react2.default.Component);
-
-exports.default = UDPMapa;
-
-/***/ }),
-/* 128 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function Alist(props) {
-  return _react2.default.createElement(
-    "div",
-    null,
-    _react2.default.createElement("div", {
-      className: "legendColorBox",
-      style: { backgroundColor: props.color }
-    }),
-    _react2.default.createElement(
-      "p",
-      { className: "legendp" },
-      props.descripcio
-    )
-  );
-}
-
-function Blist(props) {
-  return _react2.default.createElement(
-    "div",
-    null,
-    _react2.default.createElement("img", {
-      src: "/img/" + props.descripcio + '.png',
-      id: props.descripcio
-    }),
-    _react2.default.createElement(
-      "p",
-      { className: "legendp" },
-      props.descripcio
-    )
-  );
-}
-
-function Legend(props) {
-
-  var listItems = props.soils.map(function (soil) {
-    return _react2.default.createElement(Alist, {
-      key: soil.descripcio + "both",
-      color: soil.color,
-      descripcio: soil.descripcio
-    });
-  });
-
-  var finalItems = ["MANANTIAL", "CORRIENTE_DE_AGUA"].map(function (name) {
-    return _react2.default.createElement(Blist, {
-      key: name,
-      descripcio: name
-    });
-  });
-
-  return _react2.default.createElement(
-    "ul",
-    null,
-    listItems,
-    finalItems
-  );
-}
-
-exports.default = Legend;
-
-/***/ }),
-/* 129 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactBootstrapTableNext = __webpack_require__(21);
-
-var _reactBootstrapTableNext2 = _interopRequireDefault(_reactBootstrapTableNext);
-
-__webpack_require__(22);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var ParchesTable = function (_React$Component) {
-  _inherits(ParchesTable, _React$Component);
-
-  function ParchesTable(props) {
-    _classCallCheck(this, ParchesTable);
-
-    var _this = _possibleConstructorReturn(this, (ParchesTable.__proto__ || Object.getPrototypeOf(ParchesTable)).call(this, props));
-
+    _this.handleMapClick = _this.handleMapClick.bind(_this);
+    _this.handleSpeciesChange = _this.handleSpeciesChange.bind(_this);
+    _this.handleTotalDistinctChange = _this.handleTotalDistinctChange.bind(_this);
+    _this.handleOpacityChange = _this.handleOpacityChange.bind(_this);
+    _this.handleMaxChange = _this.handleMaxChange.bind(_this);
+    _this.handleFeatureClick = _this.handleFeatureClick.bind(_this);
+    _this.setDefaultMax = _this.setDefaultMax.bind(_this);
     _this.state = {
-      columns1: [{ dataField: "gid", text: "Tipo de Parche1" }],
-      allParches: [{ area: "test1" }],
-      columnsSum: [{ dataField: "name", text: "Tipo de Parche2" }],
-      allParchesSum: [{ name: "test2" }],
-      columnsAguaLinea: [{ dataField: "elemento", text: "Tipo de Parche3" }],
-      dataAguaLinea: [{ elemento: "test3" }]
-
+      speciesResult: [],
+      previous: 0,
+      udp: 0,
+      udpButton: false,
+      udpButtonText: "Fragmentación Ambiental de UDP",
+      markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
+      mapSettings: {
+        distinctOrTotal: "total_observaciones",
+        myObsType: "ave",
+        fillOpacity: 0.6,
+        maxValue: 99
+      },
+      featureInfo: {
+        properties: { message: "click somewhere", displayName: "none" }
+      },
+      table: [{ tableName: "udp_puebla_4326", color: "blue" }]
     };
-    _this.setText = _this.setText.bind(_this);
-
     return _this;
   }
 
-  _createClass(ParchesTable, [{
-    key: "setText",
-    value: function setText(text) {
-      this.props.setText(text);
+  _createClass(Normaapp, [{
+    key: "getOutline",
+    value: function getOutline(properties, cat) {
+      var email = document.getElementById("useremail").textContent;
+      var emailArray = [properties.ave_email, properties.arbol_email, properties.arbusto_email, properties.hierba_email, properties.herpetofauna_email, properties.mamifero_email];
+      if (cat == "color") {
+        return emailArray.includes(email) ? "purple" : emailArray.some(function (el) {
+          return el !== null;
+        }) ? "red" : "black";
+      } else {
+        return emailArray.includes(email) ? 3 : emailArray.some(function (el) {
+          return el !== null;
+        }) ? 3 : 0.3;
+      }
     }
   }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var descripcioSet = new Set();
-      var continuoList = [];
-      var maxarea = 0.0;
-      var parchetotal = {};
-      var largestTypeArea = 0;
-      var largestTypeName = '';
-      var largestTypeCobertura = 0;
-      var maxname = '';
-      var listofareas = {};
-      var allParches = this.props.udpsoils.map(function (parche) {
-        parche.continuidad = parche.aislado ? "Aislado" : "Continuo";
-        parche.cobertura = (100 * parseFloat(parche.area) / parche.totalarea).toPrecision(4).toString() + "%";
-        parche.area = parseFloat((parseFloat(parche.area) * (2500 / 0.00218206963154496)).toPrecision(4));
+    key: "handleMapClick",
+    value: function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(event) {
+        return _regenerator2.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.setState(function (prevState) {
+                  return {
+                    markerPosition: {
+                      lat: event.latlng.lat,
+                      lng: event.latlng.lng
+                    }
+                  };
+                });
 
-        descripcioSet.add(parche.descripcio);
-        if (parche.area > maxarea) {
-          maxarea = parche.area;
-          maxname = parche.descripcio;
-        }
-        // maxarea = (parche.area>maxarea)?parche.area:maxarea
-        // maxname = parche.area>maxarea?parche.descripcio:maxname
-        console.log(parche.descripcio);
-        console.log(maxarea);
-        console.log(parche.area);
-        console.log('maxname is ' + maxname);
-        if (parchetotal[parche.descripcio]) {
-          parchetotal[parche.descripcio] = parseFloat(parche.area) + parchetotal[parche.descripcio];
-        } else {
-          parchetotal[parche.descripcio] = parseFloat(parche.area);
-        }
+              case 1:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
 
-        if (listofareas[parche.descripcio]) {
-          listofareas[parche.descripcio].push(parche.area.toString() + " hectáreas ");
-        } else {
-          listofareas[parche.descripcio] = [parche.area.toString()];
-        }
-        if (parchetotal[parche.descripcio] > largestTypeArea) {
-          largestTypeName = parche.descripcio;
-          largestTypeArea = parchetotal[parche.descripcio];
-          largestTypeCobertura = largestTypeArea / 25;
-        }
-        // largestTypeName = parchetotal[parche.descripcio]>largestTypeArea?parche.descripcio:largestTypeName
-        // largestTypeCobertura = parchetotal[parche.descripcio]>largestTypeArea?(largestTypeArea/25):largestTypeCobertura
-        // largestTypeArea = parchetotal[parche.descripcio]>largestTypeArea? parchetotal[parche.descripcio]:largestTypeArea
-        if (!parche.aislado) continuoList.push(parche.descripcio);
-        return parche;
-      });
-
-      function compare(a, b) {
-        if (a.descripcio < b.descripcio) return -1;
-        if (a.descripcio > b.descripcio) return 1;
-        return 0;
+      function handleMapClick(_x) {
+        return _ref.apply(this, arguments);
       }
 
-      allParches.sort(compare);
+      return handleMapClick;
+    }()
+  }, {
+    key: "handleSpeciesChange",
+    value: function handleSpeciesChange(value) {
+      var max = defaultmax[this.state.mapSettings.distinctOrTotal + "_" + value];
+      max = max < 6 ? 6 : max;
       this.setState(function (prevState) {
         return {
-          allParches: allParches
+          mapSettings: {
+            distinctOrTotal: prevState.mapSettings.distinctOrTotal,
+            myObsType: value,
+            fillOpacity: prevState.mapSettings.fillOpacity,
+            maxValue: max
+          }
+        };
+      });
+    }
+  }, {
+    key: "handleTotalDistinctChange",
+    value: function handleTotalDistinctChange(value) {
+      var max = defaultmax[value + "_" + this.state.mapSettings.myObsType];
+      max = max < 6 ? 6 : max;
+      this.setState(function (prevState) {
+        return {
+          mapSettings: {
+            distinctOrTotal: value,
+            myObsType: prevState.mapSettings.myObsType,
+            fillOpacity: prevState.mapSettings.fillOpacity,
+            maxValue: max
+          }
+        };
+      });
+    }
+  }, {
+    key: "setDefaultMax",
+    value: function setDefaultMax(max) {
+      max = max < 6 ? 6 : max;
+      this.setState(function (prevState) {
+        return {
+          mapSettings: {
+            distinctOrTotal: prevState.mapSettings.distinctOrTotal,
+            myObsType: prevState.mapSettings.myObsType,
+            fillOpacity: prevState.mapSettings.fillOpacity,
+            maxValue: max
+          }
+        };
+      });
+    }
+  }, {
+    key: "handleFeatureClick",
+    value: function handleFeatureClick(event) {
+      var _this2 = this;
+
+      var getSpecies = function () {
+        var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee2(lifeform, idtype, idnumber) {
+          var myapi, rawResponse, dataResult;
+          return _regenerator2.default.wrap(function _callee2$(_context2) {
+            while (1) {
+              switch (_context2.prev = _context2.next) {
+                case 0:
+                  myapi = "https://biodiversidadpuebla.online/api/getspecies";
+
+                  if (window.location.host == "localhost:3000") myapi = "http://localhost:3000/api/getspecies";
+                  _context2.next = 4;
+                  return fetch(myapi, {
+                    method: "POST",
+                    headers: {
+                      Accept: "application/json",
+                      "Content-Type": "application/json;",
+                      mode: "cors"
+                    },
+                    body: JSON.stringify({
+                      lifeform: lifeform,
+                      idtype: idtype,
+                      idnumber: idnumber,
+                      useremail: document.getElementById("useremail").textContent
+                    })
+                  });
+
+                case 4:
+                  rawResponse = _context2.sent;
+                  _context2.next = 7;
+                  return rawResponse.json();
+
+                case 7:
+                  dataResult = _context2.sent;
+                  return _context2.abrupt("return", dataResult);
+
+                case 9:
+                case "end":
+                  return _context2.stop();
+              }
+            }
+          }, _callee2, this);
+        }));
+
+        return function getSpecies(_x2, _x3, _x4) {
+          return _ref2.apply(this, arguments);
+        };
+      }();
+
+      var lifeform = this.state.mapSettings.myObsType;
+      var idtype = event.target.feature.properties.name == "udp_puebla_4326" ? "udp" : "linea_mtp";
+      this.setState(function () {
+        return {
+          udpButton: idtype == "udp" ? true : false
+        };
+      });
+      this.setState(function () {
+        return {
+          udpButtonText: idtype == "udp" ? "Fragmentación Ambiental de UDP  : " + event.target.feature.properties.iden : "Fragmentación Ambiental de UDP"
+        };
+      });
+      var idnumber = event.target.feature.properties.iden;
+
+      if (event.target.feature.properties.name == "udp_puebla_4326" || event.target.feature.properties.name == "linea_mtp") {
+        getSpecies(lifeform, idtype, idnumber).then(function (myspeciesResult) {
+          _this2.setState(function (prevState) {
+            return {
+              speciesResult: myspeciesResult
+            };
+          });
+        });
+      }
+
+      /////////////////////////////////////////////////////////////////////////////////////////////
+      var myColor = "green";
+      var myWeight = 5;
+      var myOpacity = 5;
+
+      if (this.state.previous) {
+        something.forEach(function (thing) {
+          if (thing.tableName == _this2.state.previous.feature.properties.name) {
+            myColor = thing.color;
+            myWeight = thing.weight;
+            myOpacity = thing.opacity;
+          }
+        });
+
+        if (this.state.previous.feature.properties.name == "udp_puebla_4326") {
+          this.state.previous.setStyle({
+            weight: this.getOutline(this.state.previous.feature.properties, "weight"),
+            color: this.getOutline(this.state.previous.feature.properties, "color"),
+            opacity: myOpacity
+          });
+        } else {
+          this.state.previous.setStyle({
+            color: myColor,
+            weight: myWeight,
+            opacity: myOpacity
+          });
+        }
+      }
+      this.setState(function () {
+        return {
+          previous: event.target
         };
       });
 
-      var columns1 = [{
-        dataField: "descripcio",
-        text: "Parche"
-      }, {
-        dataField: "cobertura",
-        text: "Cobertura"
-      }, {
-        dataField: "continuidad",
-        text: "Continuidad"
-      }, {
-        dataField: "area",
-        text: "Area (h)"
-      }];
-      this.setState(function (prevState) {
-        return {
-          columns1: columns1
-        };
-      });
+      var highlight = {
+        color: "yellow",
+        weight: 3,
+        opacity: 1
+      };
+      event.target.setStyle(highlight);
 
-      var allParchesSum = [{ name: "REQUEZA DE TIPOS DE PARCHE", number: descripcioSet.size, nombre: "-" }, { name: "ABUNDANCIA DE PARCHES", number: allParches.length, nombre: "-" }, { name: "PARCHES CONTINUOS", number: continuoList.length, nombre: "-" }, { name: "RAZON DE CONTINUIDAD DE PARCHES", number: (continuoList.length / allParches.length).toPrecision(4), nombre: "-" }, { name: "DOMINANCIA ENTRE TAMANOS DE PARCHE", number: (maxarea / 2500).toPrecision(4), nombre: maxname }, { name: "DOMINANCIA ENTRE TIPOS DE PARCHE", number: (largestTypeArea / 2500).toPrecision(4), nombre: largestTypeName }];
       this.setState(function (prevState) {
         return {
-          allParchesSum: allParchesSum
+          featureInfo: {
+            properties: event.target.feature.properties
+          }
         };
       });
-      var columnsSum = [{
-        dataField: "name",
-        text: " "
-      }, {
-        dataField: "number",
-        text: " "
-      }, {
-        dataField: "nombre",
-        text: " "
-      }];
+    }
+  }, {
+    key: "handleOpacityChange",
+    value: function handleOpacityChange(value) {
       this.setState(function (prevState) {
         return {
-          columnsSum: columnsSum
+          mapSettings: {
+            distinctOrTotal: prevState.mapSettings.distinctOrTotal,
+            myObsType: prevState.mapSettings.myObsType,
+            fillOpacity: value,
+            maxValue: prevState.mapSettings.maxValue
+          }
         };
       });
-      var agualength = (allParches[0].agualength * (2000 / 0.186914851250046)).toPrecision(4);
-      var aguacount = allParches[0].aguacount;
-      var aguaarea = (allParches[0].aguaarea * (2500 / 0.00218206963154496)).toPrecision(4);
+    }
+  }, {
+    key: "handleMaxChange",
+    value: function handleMaxChange(value) {
+      this.setState(function (prevState) {
+        return {
+          mapSettings: {
+            distinctOrTotal: prevState.mapSettings.distinctOrTotal,
+            myObsType: prevState.mapSettings.myObsType,
+            fillOpacity: prevState.mapSettings.fillOpacity,
+            maxValue: value
+          }
+        };
+      });
+    }
+  }, {
+    key: "updateMarkers",
+    value: function updateMarkers(markersData) {
+      var _this3 = this;
 
-      var dataAguaLinea = [{ elemento: "Corriente  de agua", longitud: agualength, area: "-", densidad: "-" }, { elemento: "Cuerpo de agua", longitud: "-", area: aguaarea, densidad: "-" }, { elemento: "Manantial", longitud: "-", area: "-", densidad: aguacount }, { elemento: "TOTAL", longitud: agualength, area: aguaarea, densidad: aguacount }];
-      this.setState(function (prevState) {
-        return {
-          dataAguaLinea: dataAguaLinea
-        };
+      this.layer.clearLayers();
+      markersData.forEach(function (marker) {
+        L.marker(marker.latLng, { title: marker.title }).addTo(_this3.layer);
       });
-      var columnsAguaLinea = [{
-        dataField: "elemento",
-        text: "ELEMENTO"
-      }, {
-        dataField: "longitud",
-        text: "LONGITUD (km)"
-      }, {
-        dataField: "area",
-        text: "AREA (h^2)"
-      }, {
-        dataField: "densidad",
-        text: "DENSIDAD (unidades)"
-      }];
-      this.setState(function (prevState) {
-        return {
-          columnsAguaLinea: columnsAguaLinea
-        };
-      });
-      console.log(allParches);
-      var mystring = "La Unidad de Paisaje " + idennum + "       (UP) " + idennum + "  presenta una riqueza de parches igual a " + descripcioSet.size + " y una abundancia de parches       igual a " + allParches.length + ". De estos parches, " + continuoList.length + " son continuos presentando       una raz\xF3n de continuidad de" + (continuoList.length / allParches.length).toPrecision(4) + ". Dentro de los aproximadamente 2500 hecatares que       conforman la UP , el Uso de Suelo y Vegetaci\xF3n (USV) m\xE1s dominante es " + largestTypeName + " que representa el " + largestTypeCobertura.toPrecision(4) + "%  \n      del \xE1rea total de la unidad y est\xE1 dividido en       " + listofareas[largestTypeName].length + " parches de " + listofareas[largestTypeName] + " hect\xE1reas respectivamente. El parche de mayor       tama\xF1o corresponde al USV de " + maxname + " con un \xE1rea de      aproximadamente " + maxarea + " hect\xE1reas. La dominancia entre tama\xF1os de parche dentro de esta UP es       de " + (maxarea / 2500).toPrecision(4) + ", mientras que la dominancia entre tipos de parche es igual       a " + (largestTypeArea / 2500).toPrecision(4) + ". Esta UP presenta adem\xE1s una raz\xF3n de dispersi\xF3n h\xEDdrica de 0.00096       con corrientes de agua que cubren un total de " + agualength + " kilometros lineales; as\xED        como una densidad de cuerpos de agua de " + (aguaarea / 2500).toPrecision(4) + " y un \xE1rea de " + aguaarea + " hect\xE1reas.";
-
-      this.setText(mystring);
     }
   }, {
     key: "render",
     value: function render() {
+      console.log(this.state.featureInfo);
       return _react2.default.createElement(
         "div",
         null,
         _react2.default.createElement(
           "div",
-          { className: "container" },
+          { className: "container mymapcontainer" },
           _react2.default.createElement(
             "div",
-            { className: "flex-column d-flex justify-content-around align-items-center p-3" },
-            _react2.default.createElement(_reactBootstrapTableNext2.default, {
-              keyField: "area",
-              data: this.state.allParches,
-              columns: this.state.columns1,
-              bootstrap4: false,
-              bordered: true,
-              classes: "bsparchtable",
-              striped: true,
-              hover: true,
-              condensed: true,
-              noDataIndication: "Cargando..."
-            })
+            { className: "row justify-content-around align-items-center mapstat" },
+            _react2.default.createElement(
+              "div",
+              { className: "mymapdiv border border-dark" },
+              _react2.default.createElement(_Map2.default, {
+                getOutline: this.getOutline,
+                handleMapClick: this.handleMapClick,
+                handleFeatureClick: this.handleFeatureClick,
+                setDefaultMax: this.setDefaultMax,
+                mapSettings: this.state.mapSettings,
+                table: this.state.table
+              })
+            ),
+            _react2.default.createElement(
+              "div",
+              { className: "mystatdiv p-1" },
+              _react2.default.createElement(
+                "div",
+                { className: "withcontrol flex-column d-flex justify-content-between align-items-start" },
+                _react2.default.createElement(_FeatureInfoDisplay2.default, {
+                  markerPosition: this.state.markerPosition,
+                  featureInfo: this.state.featureInfo
+                }),
+                _react2.default.createElement(_MapControl2.default, {
+                  handleSpeciesChange: this.handleSpeciesChange,
+                  handleTotalDistinctChange: this.handleTotalDistinctChange,
+                  handleOpacityChange: this.handleOpacityChange,
+                  handleMaxChange: this.handleMaxChange,
+                  mapSettings: this.state.mapSettings
+                }),
+                _react2.default.createElement(
+                  "div",
+                  { className: "p-2 align-self-center" },
+                  _react2.default.createElement(
+                    "a",
+                    {
+                      className: "btn btn-primary m-2",
+                      href: "/cargarshapes",
+                      role: "button"
+                    },
+                    "Cargar Shapefile de Predio"
+                  ),
+                  _react2.default.createElement(
+                    "form",
+                    { action: "/udpmapa", method: "post" },
+                    _react2.default.createElement("input", { type: "hidden", name: "shannon", value: this.state.featureInfo.properties.shannon_arbol + "*" + this.state.featureInfo.properties.shannon_arbusto + "*" + this.state.featureInfo.properties.shannon_ave + "*" + this.state.featureInfo.properties.shannon_hierba + "*" + this.state.featureInfo.properties.shannon_herpetofauna + "*" + this.state.featureInfo.properties.shannon_mamifero }),
+                    _react2.default.createElement("input", {
+                      type: "submit",
+                      className: "btn btn-primary m-2",
+                      disabled: !this.state.udpButton,
+                      name: "udpbutton",
+                      value: this.state.udpButtonText
+                    })
+                  ),
+                  _react2.default.createElement(
+                    "p",
+                    null,
+                    idennum
+                  )
+                )
+              )
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "speciesdisplay" },
+            _react2.default.createElement(_SpeciesDisplay2.default, { speciesResult: this.state.speciesResult })
           )
         ),
-        _react2.default.createElement(
-          "div",
-          { className: "container" },
-          _react2.default.createElement(
-            "div",
-            { className: "flex-column d-flex justify-content-around align-items-center p-3" },
-            _react2.default.createElement(_reactBootstrapTableNext2.default, {
-              keyField: "name",
-              data: this.state.allParchesSum,
-              columns: this.state.columnsSum,
-              bootstrap4: false,
-              bordered: true,
-              classes: "bsparchtable",
-              striped: true,
-              hover: true,
-              condensed: true,
-              noDataIndication: "No hay datos"
-            })
-          )
-        ),
-        _react2.default.createElement(
-          "div",
-          { className: "container" },
-          _react2.default.createElement(
-            "div",
-            { className: "flex-column d-flex justify-content-around align-items-center p-3" },
-            _react2.default.createElement(_reactBootstrapTableNext2.default, {
-              keyField: "elemento",
-              data: this.state.dataAguaLinea,
-              columns: this.state.columnsAguaLinea,
-              bootstrap4: false,
-              bordered: true,
-              classes: "bsparchtable",
-              striped: true,
-              hover: true,
-              condensed: true,
-              noDataIndication: "No hay datos"
-            })
-          )
-        )
+        _react2.default.createElement("div", null)
       );
     }
   }]);
 
-  return ParchesTable;
+  return Normaapp;
 }(_react2.default.Component);
 
-exports.default = ParchesTable;
-
-/***/ }),
-/* 130 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function UdpTitle(props) {
-  console.log(props.udpsoils);
-  var munilist = props.udpsoils[0].munilist.map(function (item) {
-    return item.nomgeo.toUpperCase() + ", ";
-  });
-
-  return _react2.default.createElement(
-    "div",
-    null,
-    _react2.default.createElement(
-      "h6",
-      { id: "updtitle" },
-      " PROPUESTA DE MONITOREO ARTICULADO DE LA BIODIVERSIDAD (MTP + SMC): SECTOR FORESTAL"
-    ),
-    _react2.default.createElement(
-      "div",
-      { id: "updmunititle" },
-      _react2.default.createElement(
-        "h6",
-        { id: "framentation" },
-        " MAPA DE FRAGMENTACI\xD3N AMBIENTAL"
-      ),
-      _react2.default.createElement(
-        "h6",
-        { id: "muniudp" },
-        " MUNICIPIO DE ",
-        munilist,
-        " PUEBLA, UNIDAD DE PAISAJE ",
-        idennum
-      )
-    )
-  );
-}
-
-exports.default = UdpTitle;
-
-/***/ }),
-/* 131 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function Alist(props) {
-  return _react2.default.createElement(
-    "span",
-    {
-      className: "biodivcontainer",
-      id: props.type + "span",
-      style: { float: "left", paddingLeft: "20px" }
-    },
-    _react2.default.createElement(
-      "p",
-      { className: "shannonp" },
-      props.shannon
-    ),
-    _react2.default.createElement(
-      "p",
-      { className: "iconp" },
-      props.icon
-    )
-  );
-}
-function UdpDiversity(props) {
-  var bigArray = [{ type: "arbol", icon: "🌲", shannon: shannon.split("*")[0] }, { type: "arbusto", icon: "🌳", shannon: shannon.split("*")[1] }, { type: "ave", icon: "🦅", shannon: shannon.split("*")[2] }, { type: "hierba", icon: "🌱", shannon: shannon.split("*")[3] }, { type: "herpetofauna", icon: "🐍", shannon: shannon.split("*")[4] }, { type: "mamifero", icon: "🦌", shannon: shannon.split("*")[5] }];
-  function compare(a, b) {
-    if (a.shannon < b.shannon) return -1;
-    if (a.shannon > b.shannon) return 1;
-    return 0;
-  }
-
-  bigArray.sort(compare);
-
-  var listItems = bigArray.map(function (animal, ind) {
-    if (animal.shannon > 0) {
-      return _react2.default.createElement(Alist, {
-        key: animal.type,
-        icon: animal.icon,
-        shannon: animal.shannon,
-        type: animal.type,
-        index: ind
-      });
-    }
-  });
-  var previousAnimal = -1;
-
-  var svgLines = bigArray.map(function (animal, ind) {
-    if (animal.shannon > 0) {
-      previousAnimal++;
-      var x1my = 43 + previousAnimal * 64;
-      var x2my = 44.0 + +animal.shannon * 2.68;
-      return _react2.default.createElement("line", { x1: x1my, y1: "3", x2: x2my, y2: "58", style: { stroke: "rgb(255,0,0)" } });
-    }
-  });
-
-  return _react2.default.createElement(
-    "div",
-    { id: "biodivContainer" },
-    _react2.default.createElement(
-      "h5",
-      { id: "shannonTitle" },
-      "Biodiversidad : Indice de Shannon"
-    ),
-    listItems,
-    _react2.default.createElement(
-      "svg",
-      { height: "60", width: "100%" },
-      svgLines
-    ),
-    _react2.default.createElement(
-      "div",
-      { id: "udpDiversity" },
-      _react2.default.createElement(
-        "div",
-        { id: "startScale" },
-        _react2.default.createElement(
-          "p",
-          null,
-          "0"
-        )
-      ),
-      _react2.default.createElement(
-        "div",
-        { id: "pngScale" },
-        _react2.default.createElement("img", { id: "scaleImage", src: "/img/scale.png" })
-      ),
-      _react2.default.createElement(
-        "div",
-        { id: "endScale" },
-        _react2.default.createElement(
-          "p",
-          null,
-          "100"
-        )
-      )
-    )
-  );
-}
-
-exports.default = UdpDiversity;
+exports.default = Normaapp;
 
 /***/ })
 /******/ ]);

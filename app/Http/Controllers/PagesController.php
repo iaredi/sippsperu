@@ -9,7 +9,6 @@ class PagesController extends Controller
     public function index(){
         return view('pages/index');
     }
-
     public function login(){
         return view('pages/login');
     }
@@ -28,6 +27,9 @@ class PagesController extends Controller
     public function descargar(){
         return view('pages/descargar');
     }
+    public function descargarespecie(){
+      return view('pages/descargarespecie');
+    }
     public function cargarshapesadmin(){
         return view('pages/cargarshapesadmin');
     }
@@ -37,6 +39,9 @@ class PagesController extends Controller
     public function ingresarexcel(){
         return view('pages/ingresarexcel');
     }
+    public function mostrarnormas(){
+      return view('pages/mostrarnormas');
+  }
     public function mostrarmapas(){
         return view('pages/mostrarmapas');
     }
@@ -51,7 +56,6 @@ class PagesController extends Controller
     }
     public function cargarshapes(){
         return view('pages/cargarshapes');
-    }
-   
+    }  
 }
 

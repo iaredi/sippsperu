@@ -1,60 +1,16 @@
-<?php
+@include('inc/php_functions')
+<?php 
+if (!session('email')){
+    return redirect()->to('/login')->send();
+}
+session(['speciesabsent' => 'false']);
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Route::get('/index', 'PagesController@index');
-Route::get('/ingresardatos', 'PagesController@ingresardatos');
-Route::get('/login', 'PagesController@login');
-Route::get('/logout', 'PagesController@logout');
-Route::get('/register', 'PagesController@register');
-Route::get('/ingresarexcel', 'PagesController@ingresarexcel');
-Route::get('/descargar', 'PagesController@descargar');
-Route::get('/mostrarmapas', 'PagesController@mostrarmapas');
-Route::get('/admin', 'PagesController@admin');
-Route::get('/', 'PagesController@login');
-Route::get('/thanks', 'PagesController@thanks');
-Route::get('/reset_1', 'PagesController@reset_1');
-Route::get('/reset_2', 'PagesController@reset_2');
-Route::get('/cargarshapes', 'PagesController@cargarshapes');
-Route::get('/cargarshapesadmin', 'PagesController@cargarshapesadmin');
-Route::get('/udpmapa', 'PagesController@udpmapa');
-Route::get('/descargarespecie', 'PagesController@descargarespecie');
-Route::get('/mostrarnormas/{idenudpraw}', function ($idenudpraw){
-  $idenudp=$idenudpraw;
-  return view('pages/mostrarnormas',['idenudp'=>$idenudp]);
-}  );
-
-
-
-
-Route::post('/', 'PagesController@login');
-Route::post('/admin', 'PagesController@admin');
-Route::post('/descargar', 'PagesController@descargar');
-Route::post('/login', 'PagesController@login');
-Route::post('/register', 'PagesController@register');
-Route::post('/ingresardatos', 'PagesController@ingresardatos');
-Route::post('/reset_1', 'PagesController@reset_1');
-Route::post('/reset_2', 'PagesController@reset_2');
-Route::post('/cargarshapes', 'PagesController@cargarshapes');
-Route::post('/cargarshapesadmin', 'PagesController@cargarshapesadmin');
-Route::post('/udpmapa', 'PagesController@udpmapa');
-Route::post('/ingresarexcel', 'PagesController@ingresarexcel');
-Route::post('/descargarespecie', 'PagesController@descargarespecie');
-Route::post('/mostrarnormas', 'PagesController@mostrarnormas');
-
-
-Route::get('getspecieslist/{lifeform}', function ($lifeform) {
+if ($_SERVER['REQUEST_METHOD']=="POST"){
+ 
+    $lifeform= $_POST['dl_option'];
     $targetob='especie_'.$lifeform;
-  
+    $email = session('email');
+    $name=  explode("@" , $email)[0];
     $rawfile= "C:\\Users\\fores\\Desktop\\sql\\raw{$targetob}.xml";
     $finalfile= "C:\\Users\\fores\\Desktop\\sql\\{$targetob}.xml";
     
@@ -64,7 +20,7 @@ Route::get('getspecieslist/{lifeform}', function ($lifeform) {
     } 
 
     $transpunto='punto';
-    if ($lifeform=='hierba' || $lifeform=='herpetofauna'){
+    if ($_POST['dl_option']=='hierba' || $_POST['dl_option']=='herpetofauna'){
         $transpunto='transecto';
     }
     
@@ -118,7 +74,7 @@ if($size>0){
   $text = fread($file, $size); 
   fclose($file); 
   $myfile = fopen($finalfile, "w") or die("Unable to open file!");
-  $txt = '<?xml version="1.0" encoding="UTF-8"?><LOOKUPTABLES>'.$text.'</LOOKUPTABLES>';
+  $txt = '<?xml version="1.0" encoding="UTF-8"?><LOOKUPTABLES>'.$text."</LOOKUPTABLES>";
   fwrite($myfile, $txt);
   fclose($myfile);
   if (file_exists($finalfile)) {
@@ -132,17 +88,60 @@ if($size>0){
         readfile($finalfile);
         exit;
     }
- 
-
-  //return response()->download($finalfile);
-
 }else{
-  echo "No hay especies para {$lifeform}";
+  $nospecies = "No hay especies para {$lifeform}";
+  session(['speciesabsent' => 'true']);
 }
 
 
     
 
+}
 
 
-});
+?>
+
+@include('inc/header')
+@include('inc/nav')
+
+
+
+   
+   <img src="{{ asset('img/popo.jpg') }}"  alt="Italian Trulli" style="height:250px; width:380px;">
+   <div>
+        
+
+        <div class="wrapper2" id="startMenuDiv">
+    
+
+    <form id="measurementform" method="post">
+            {{ csrf_field() }}
+
+        <h3 id="measurement3">Descargar lista de especies</h3>
+        
+        <input type="radio" name="dl_option" value="ave"> ave<br>
+        <input type="radio" name="dl_option" value="arbol"> arbol<br>
+        <input type="radio" name="dl_option" value="arbusto"> arbusto<br>
+        <input type="radio" name="dl_option" value="herpetofauna"> herpetofauna<br>
+        <input type="radio" name="dl_option" value="hierba"> hierba<br>
+        <input type="radio" name="dl_option" value="mamifero"> mamifero<br>
+        <input type="submit" id="measurementlinea_mtpSubmit" class="mySubmit">
+
+    </form>
+
+    
+
+
+</div >
+
+@include('inc/footer') 
+
+
+<?php
+
+
+
+  if (session('speciesabsent')=='true') {
+    echo $nospecies;
+  }
+?>

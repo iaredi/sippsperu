@@ -18,14 +18,11 @@ class Normaapp extends React.Component {
     this.handleFeatureClick = this.handleFeatureClick.bind(this);
     this.setDefaultMax = this.setDefaultMax.bind(this);
     this.state = {
-      currentUdpId:-1,
       speciesResult: [],
       previous: 0,
       udp: 0,
       udpButton: false,
       udpButtonText: "Fragmentación Ambiental de UDP",
-      normasButtonText: "Especies y Normas OSG",
-
       markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
       mapSettings: {
         distinctOrTotal: "total_observaciones",
@@ -125,16 +122,6 @@ class Normaapp extends React.Component {
         idtype == "udp"
           ? "Fragmentación Ambiental de UDP  : " + event.target.feature.properties.iden
           : "Fragmentación Ambiental de UDP"
-    }));
-    this.setState(() => ({
-      normasButtonText:
-        idtype == "udp"
-          ? "Especies y Normas OSG  : " + event.target.feature.properties.iden
-          : "Especies y Normas OSG de UDP"
-    }));
-    this.setState(() => ({
-      currentUdpId:event.target.feature.properties.iden
-      
     }));
     const idnumber = event.target.feature.properties.iden;
 
@@ -290,7 +277,9 @@ class Normaapp extends React.Component {
                     Cargar Shapefile de Predio
                   </a>
                   <form action="/udpmapa" method="post">
+
                   <input type = "hidden" name = "shannon" value = {`${this.state.featureInfo.properties.shannon_arbol}*${this.state.featureInfo.properties.shannon_arbusto}*${this.state.featureInfo.properties.shannon_ave}*${this.state.featureInfo.properties.shannon_hierba}*${this.state.featureInfo.properties.shannon_herpetofauna}*${this.state.featureInfo.properties.shannon_mamifero}`} />
+                    
                   <input
                       type="submit"
                       className="btn btn-primary m-2"
@@ -299,14 +288,7 @@ class Normaapp extends React.Component {
                       value={this.state.udpButtonText}
                     />
                   </form>
-                  <form action={"/mostrarnormas/"+this.state.currentUdpId} method="get">
-                  <input
-                      type="submit"
-                      className="btn btn-primary m-2"
-                      disabled={!this.state.udpButton}
-                      value={this.state.normasButtonText}
-                    />
-                  </form>
+                  <p>{idennum}</p>
                 </div>
               </div>
             </div>
