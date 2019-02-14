@@ -77,7 +77,8 @@ class SpeciesDisplay extends React.Component {
                 text: 'Frequencia '
               },
             )
-            if(this.props.lifeform=='hierba'){
+            //This could be combined with the part below
+            if(this.props.lifeform=='hierba'||this.props.lifeform=='arbol'||this.props.lifeform=='arbusto'){
               columns.push(
                 {
                   dataField: 'ivi100',
