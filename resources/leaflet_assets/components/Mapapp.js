@@ -284,7 +284,7 @@ class Normaapp extends React.Component {
                   <a className="btn btn-primary m-2 btn-sm mapInfoButton"
                     href={"/mostrarnormas/normas/" + this.state.currentUdpId}
                     role="button"
-                  > Especies y Normas 059 </a>
+                  > Especies y Normas 059</a>
 
                   <a className="btn btn-primary m-2 btn-sm mapInfoButton"
                   href={"/mostrarnormas/ae/" + this.state.currentUdpId}
