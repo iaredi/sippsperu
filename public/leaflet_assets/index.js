@@ -44637,7 +44637,7 @@ var Normaapp = function (_React$Component) {
                       href: "/mostrarnormas/normas/" + this.state.currentUdpId,
                       role: "button"
                     },
-                    " Especies y Normas OSG "
+                    " Especies y Normas 059"
                   ),
                   _react2.default.createElement(
                     "a",
