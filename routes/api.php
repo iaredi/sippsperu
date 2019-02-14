@@ -408,7 +408,7 @@ Route::post('getspecies', function(Request $request) {
         $numeroindiviudos+=$row7->total_cientifico;
     } 
     foreach ($obresult as $row8){
-      $row8->abundancia=round(($row8->total_cientifico)/$numeroindiviudos,4);
+      $row8->abundancia=$row8->total_cientifico;
       $row8->abundancia_relativa=round(100*($row8->total_cientifico)/$numeroindiviudos,2).'%';
   } 
 

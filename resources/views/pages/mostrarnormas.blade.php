@@ -7,7 +7,7 @@ if (!session('email')){
 $geojsonidennum=json_encode($idenudp);
 $geojsoninfotype=json_encode($infotype);
 
-$myheader= 'Especies y Normas OSG de UDP '.$idenudp;
+$myheader= 'Especies y Normas 059 de UDP '.$idenudp;
 if ($infotype=='ea'){
   $myheader= 'Attributos Ecologicos de UDP '.$idenudp;
 
