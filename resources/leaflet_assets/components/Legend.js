@@ -15,17 +15,13 @@ function Alist(props) {
 function Blist(props) {
   return (
     <div>
-      <img
-        src={"/img/"+props.descripcio+'.png'}
-        id = {props.descripcio}
-      />
+      <img src={"/img/" + props.descripcio + ".png"} id={props.descripcio} />
       <p className="legendp">{props.descripcio}</p>
     </div>
   );
 }
 
 function Legend(props) {
-
   const listItems = props.soils.map(soil => (
     <Alist
       key={soil.descripcio + "both"}
@@ -34,18 +30,16 @@ function Legend(props) {
     />
   ));
 
-  const finalItems = ["MANANTIAL","CORRIENTE_DE_AGUA"].map(name => (
-    <Blist
-      key={name}
-      descripcio={name}
-    />
+  const finalItems = ["MANANTIAL", "CORRIENTE_DE_AGUA"].map(name => (
+    <Blist key={name} descripcio={name} />
   ));
 
-  return ( <ul>
-    {listItems}
-    {finalItems}
-  </ul>
-  )
+  return (
+    <ul>
+      {listItems}
+      {finalItems}
+    </ul>
+  );
 }
 
 export default Legend;

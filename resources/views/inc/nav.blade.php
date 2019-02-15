@@ -1,14 +1,16 @@
 <nav class="mynavbar navbar navbar-expand-lg" style="background-color: rgb(66, 214, 96);">
   <a class="navbar-brand" href="/mostrarmapas">MTP Biodiversidad</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
+    aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarText">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" href="ingresardatos">Ingresar Datos</a>
+        <a class="nav-link" href="/ingresardatos">Ingresar Datos</a>
       </li>
-      {{-- <li class="nav-item">
+      {{--
+      <li class="nav-item">
         <a class="nav-link" href="/descargar">Descargar</a>
       </li> --}}
       <li class="nav-item">
@@ -23,7 +25,7 @@
     </ul>
 
     <ul class="navbar-nav ml-auto">
-        <?php
+      <?php
             $root_directory = "testdir";
                 if (session('email')) {
                     $useremail=session('email');
@@ -44,4 +46,4 @@
     </ul>
   </div>
 </nav>
- <div class='bodycontainer'>
+<div class='bodycontainer'>

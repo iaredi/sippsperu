@@ -44147,27 +44147,13 @@ var UDPMapapp = function (_React$Component) {
 
     _this.state = {
       mytext: "Cargando...",
-      speciesResult: [],
       bounds: {
         _northEast: { lat: 1, lng: 1 },
         _southWest: { lat: 1, lng: 1 }
       },
       boundsobtained: false,
       soils: [{ color: "rgb:000", descripcio: "Cargando..." }],
-      udpsoils: [{ color: "rgb:000", descripcio: "Cargando..." }],
-      previous: 0,
-      udp: 0,
-      markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
-      mapSettings: {
-        distinctOrTotal: "total_observaciones",
-        myObsType: "ave",
-        fillOpacity: 0.6,
-        maxValue: 99
-      },
-      featureInfo: {
-        properties: { message: "click somewhere", displayName: "Cargando..." }
-      },
-      table: [{ tableName: "udp_puebla_4326", color: "blue" }]
+      udpsoils: [{ color: "rgb:000", descripcio: "Cargando..." }]
     };
     return _this;
   }
@@ -44220,21 +44206,9 @@ var UDPMapapp = function (_React$Component) {
       }
     }
   }, {
-    key: "updateMarkers",
-    value: function updateMarkers(markersData) {
-      var _this2 = this;
-
-      this.layer.clearLayers();
-      markersData.forEach(function (marker) {
-        L.marker(marker.latLng, { title: marker.title }).addTo(_this2.layer);
-      });
-    }
-  }, {
     key: "render",
     value: function render() {
-
-      var shannonbool = shannon.split("*")[0] > 0 || shannon.split("*")[1] > 0 || shannon.split("*")[2] > 0 || shannon.split("*")[3] > 0 || shannon.split("*")[4] > 0 || shannon.split("*")[5] > 0;
-      console.log(shannon);
+      var shannonBoolean = shannon.split("*")[0] > 0 || shannon.split("*")[1] > 0 || shannon.split("*")[2] > 0 || shannon.split("*")[3] > 0 || shannon.split("*")[4] > 0 || shannon.split("*")[5] > 0;
       var westernLongitude = this.state.bounds._southWest.lng.toPrecision(6);
       var easternLongitude = this.state.bounds._northEast.lng.toPrecision(6);
       var southernLatitude = this.state.bounds._southWest.lat.toPrecision(6);
@@ -44318,7 +44292,7 @@ var UDPMapapp = function (_React$Component) {
               "Cargando..."
             )
           ),
-          shannonbool && _react2.default.createElement(
+          shannonBoolean && _react2.default.createElement(
             "div",
             { id: "biodivreport" },
             _react2.default.createElement(_UdpDiversity2.default, null)
@@ -44409,21 +44383,6 @@ var UDPMapa = function (_React$Component) {
         zoomControl: false
       });
 
-      // const streets = L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-      //   attribution:
-      //     '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-      // }).addTo(this.map);
-
-      // const imagery = L.tileLayer(
-      // 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-      // attribution: '&copy; <a href="http://www.esri.com/">Esri</a>i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-      // maxZoom: 18,
-      // });
-
-      // this.baseMaps = {
-      //   "Imagery":imagery,
-      //   "Streets": streets
-      // };
       var get_shp = function get_shp(item, mymap) {
         var myStyle = function myStyle(feature) {
           return {
@@ -44455,7 +44414,6 @@ var UDPMapa = function (_React$Component) {
       };
 
       var processArray = function processArray(array, mymap, setStateBounds, setSoils) {
-
         var overlayMaps = _this2.overlayMaps || {};
         var bounds = "none";
         var udpiden = "none";
@@ -44463,7 +44421,6 @@ var UDPMapa = function (_React$Component) {
           if (item.tableName !== "usos_de_suelo4") {
             var myLayer = get_shp(item, mymap);
             overlayMaps[item.displayName] = myLayer;
-            //L.control.layers(overlayMaps).addTo(mymap);
             if (item.tableName == "udp_puebla_4326") {
               mymap.fitBounds(myLayer.getBounds());
               bounds = mymap.getBounds();
@@ -44471,10 +44428,6 @@ var UDPMapa = function (_React$Component) {
               udpiden = item.sql.split("'")[1];
             }
           } else {
-            ////ASYNC HERE
-            //ask the api what layers are in frame so they can be colored and list
-            //later we will get the metrics of soils in our udp square.
-
             var getBoundingFeatures = function () {
               var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(bounds, udpiden) {
                 var myapi, rawResponse, dataResult;
@@ -44525,49 +44478,39 @@ var UDPMapa = function (_React$Component) {
             }();
 
             getBoundingFeatures(bounds, udpiden).then(function (soils) {
-
               setSoils(JSON.parse(soils[0]), JSON.parse(soils[1]));
               var myLayer = get_shp(item, mymap);
               overlayMaps[item.displayName] = myLayer;
 
               [JSON.parse(soils[2]), JSON.parse(soils[3]), JSON.parse(soils[4])].forEach(function (item) {
                 if (item.geom) {
-                  var myLayeragua_lineas = get_shp(item, mymap);
-                  //overlayMaps[agua_lineas.displayName] = myLayeragua_lineas;
+                  get_shp(item, mymap);
                 }
               });
             });
           }
         });
       };
+
       processArray(udpsomething, this.map, this.setStateBounds, this.setSoils);
       this.map.scrollWheelZoom.disable();
       _leaflet2.default.control.scale({ imperial: false }).addTo(this.map);
 
       //Make map static
       var lyrcont = document.getElementsByClassName("leaflet-control-attribution")[0];
-      // var lyratt = document.getElementsByClassName(
-      //   "leaflet-control-attribution"
-      // )[0];
-      // var lyrtop = document.getElementsByClassName("leaflet-top")[0];
+
       lyrcont.style.visibility = "hidden";
-      // lyratt.style.visibility = "hidden";
-      // lyrtop.style.visibility = "hidden";
+
       var north = _leaflet2.default.control({ position: "topright" });
       north.onAdd = function (map) {
         var div = _leaflet2.default.DomUtil.create("div", "info legend");
-        div.innerHTML = '<img id="northarrow" src="img/north.png">';
+        div.innerHTML = '<img id="northarrow" src="/img/north.png">';
         return div;
       };
       north.addTo(this.map);
       this.map.dragging.disable();
       this.map.doubleClickZoom.disable();
       /////////////////////////////////////////////////////
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(_ref2) {
-      var mapSettings = _ref2.mapSettings;
     }
   }, {
     key: "render",
@@ -44618,10 +44561,7 @@ function Blist(props) {
   return _react2.default.createElement(
     "div",
     null,
-    _react2.default.createElement("img", {
-      src: "/img/" + props.descripcio + '.png',
-      id: props.descripcio
-    }),
+    _react2.default.createElement("img", { src: "/img/" + props.descripcio + ".png", id: props.descripcio }),
     _react2.default.createElement(
       "p",
       { className: "legendp" },
@@ -44631,7 +44571,6 @@ function Blist(props) {
 }
 
 function Legend(props) {
-
   var listItems = props.soils.map(function (soil) {
     return _react2.default.createElement(Alist, {
       key: soil.descripcio + "both",
@@ -44641,10 +44580,7 @@ function Legend(props) {
   });
 
   var finalItems = ["MANANTIAL", "CORRIENTE_DE_AGUA"].map(function (name) {
-    return _react2.default.createElement(Blist, {
-      key: name,
-      descripcio: name
-    });
+    return _react2.default.createElement(Blist, { key: name, descripcio: name });
   });
 
   return _react2.default.createElement(
@@ -44703,10 +44639,8 @@ var ParchesTable = function (_React$Component) {
       allParchesSum: [{ name: "test2" }],
       columnsAguaLinea: [{ dataField: "elemento", text: "Tipo de Parche3" }],
       dataAguaLinea: [{ elemento: "test3" }]
-
     };
     _this.setText = _this.setText.bind(_this);
-
     return _this;
   }
 
@@ -44723,9 +44657,9 @@ var ParchesTable = function (_React$Component) {
       var maxarea = 0.0;
       var parchetotal = {};
       var largestTypeArea = 0;
-      var largestTypeName = '';
+      var largestTypeName = "";
       var largestTypeCobertura = 0;
-      var maxname = '';
+      var maxname = "";
       var listofareas = {};
       var allParches = this.props.udpsoils.map(function (parche) {
         parche.continuidad = parche.aislado ? "Aislado" : "Continuo";
@@ -44737,12 +44671,7 @@ var ParchesTable = function (_React$Component) {
           maxarea = parche.area;
           maxname = parche.descripcio;
         }
-        // maxarea = (parche.area>maxarea)?parche.area:maxarea
-        // maxname = parche.area>maxarea?parche.descripcio:maxname
-        console.log(parche.descripcio);
-        console.log(maxarea);
-        console.log(parche.area);
-        console.log('maxname is ' + maxname);
+
         if (parchetotal[parche.descripcio]) {
           parchetotal[parche.descripcio] = parseFloat(parche.area) + parchetotal[parche.descripcio];
         } else {
@@ -44759,9 +44688,6 @@ var ParchesTable = function (_React$Component) {
           largestTypeArea = parchetotal[parche.descripcio];
           largestTypeCobertura = largestTypeArea / 25;
         }
-        // largestTypeName = parchetotal[parche.descripcio]>largestTypeArea?parche.descripcio:largestTypeName
-        // largestTypeCobertura = parchetotal[parche.descripcio]>largestTypeArea?(largestTypeArea/25):largestTypeCobertura
-        // largestTypeArea = parchetotal[parche.descripcio]>largestTypeArea? parchetotal[parche.descripcio]:largestTypeArea
         if (!parche.aislado) continuoList.push(parche.descripcio);
         return parche;
       });
@@ -44798,7 +44724,23 @@ var ParchesTable = function (_React$Component) {
         };
       });
 
-      var allParchesSum = [{ name: "REQUEZA DE TIPOS DE PARCHE", number: descripcioSet.size, nombre: "-" }, { name: "ABUNDANCIA DE PARCHES", number: allParches.length, nombre: "-" }, { name: "PARCHES CONTINUOS", number: continuoList.length, nombre: "-" }, { name: "RAZON DE CONTINUIDAD DE PARCHES", number: (continuoList.length / allParches.length).toPrecision(4), nombre: "-" }, { name: "DOMINANCIA ENTRE TAMANOS DE PARCHE", number: (maxarea / 2500).toPrecision(4), nombre: maxname }, { name: "DOMINANCIA ENTRE TIPOS DE PARCHE", number: (largestTypeArea / 2500).toPrecision(4), nombre: largestTypeName }];
+      var allParchesSum = [{
+        name: "REQUEZA DE TIPOS DE PARCHE",
+        number: descripcioSet.size,
+        nombre: "-"
+      }, { name: "ABUNDANCIA DE PARCHES", number: allParches.length, nombre: "-" }, { name: "PARCHES CONTINUOS", number: continuoList.length, nombre: "-" }, {
+        name: "RAZON DE CONTINUIDAD DE PARCHES",
+        number: (continuoList.length / allParches.length).toPrecision(4),
+        nombre: "-"
+      }, {
+        name: "DOMINANCIA ENTRE TAMANOS DE PARCHE",
+        number: (maxarea / 2500).toPrecision(4),
+        nombre: maxname
+      }, {
+        name: "DOMINANCIA ENTRE TIPOS DE PARCHE",
+        number: (largestTypeArea / 2500).toPrecision(4),
+        nombre: largestTypeName
+      }];
       this.setState(function (prevState) {
         return {
           allParchesSum: allParchesSum
@@ -44823,12 +44765,29 @@ var ParchesTable = function (_React$Component) {
       var aguacount = allParches[0].aguacount;
       var aguaarea = (allParches[0].aguaarea * (2500 / 0.00218206963154496)).toPrecision(4);
 
-      var dataAguaLinea = [{ elemento: "Corriente  de agua", longitud: agualength, area: "-", densidad: "-" }, { elemento: "Cuerpo de agua", longitud: "-", area: aguaarea, densidad: "-" }, { elemento: "Manantial", longitud: "-", area: "-", densidad: aguacount }, { elemento: "TOTAL", longitud: agualength, area: aguaarea, densidad: aguacount }];
+      var dataAguaLinea = [{
+        elemento: "Corriente  de agua",
+        longitud: agualength,
+        area: "-",
+        densidad: "-"
+      }, {
+        elemento: "Cuerpo de agua",
+        longitud: "-",
+        area: aguaarea,
+        densidad: "-"
+      }, { elemento: "Manantial", longitud: "-", area: "-", densidad: aguacount }, {
+        elemento: "TOTAL",
+        longitud: agualength,
+        area: aguaarea,
+        densidad: aguacount
+      }];
+
       this.setState(function (prevState) {
         return {
           dataAguaLinea: dataAguaLinea
         };
       });
+
       var columnsAguaLinea = [{
         dataField: "elemento",
         text: "ELEMENTO"
@@ -44842,15 +44801,16 @@ var ParchesTable = function (_React$Component) {
         dataField: "densidad",
         text: "DENSIDAD (unidades)"
       }];
+
       this.setState(function (prevState) {
         return {
           columnsAguaLinea: columnsAguaLinea
         };
       });
-      console.log(allParches);
-      var mystring = "La Unidad de Paisaje " + idennum + "       (UP) " + idennum + "  presenta una riqueza de parches igual a " + descripcioSet.size + " y una abundancia de parches       igual a " + allParches.length + ". De estos parches, " + continuoList.length + " son continuos presentando       una raz\xF3n de continuidad de" + (continuoList.length / allParches.length).toPrecision(4) + ". Dentro de los aproximadamente 2500 hecatares que       conforman la UP , el Uso de Suelo y Vegetaci\xF3n (USV) m\xE1s dominante es " + largestTypeName + " que representa el " + largestTypeCobertura.toPrecision(4) + "%  \n      del \xE1rea total de la unidad y est\xE1 dividido en       " + listofareas[largestTypeName].length + " parches de " + listofareas[largestTypeName] + " hect\xE1reas respectivamente. El parche de mayor       tama\xF1o corresponde al USV de " + maxname + " con un \xE1rea de      aproximadamente " + maxarea + " hect\xE1reas. La dominancia entre tama\xF1os de parche dentro de esta UP es       de " + (maxarea / 2500).toPrecision(4) + ", mientras que la dominancia entre tipos de parche es igual       a " + (largestTypeArea / 2500).toPrecision(4) + ". Esta UP presenta adem\xE1s una raz\xF3n de dispersi\xF3n h\xEDdrica de 0.00096       con corrientes de agua que cubren un total de " + agualength + " kilometros lineales; as\xED        como una densidad de cuerpos de agua de " + (aguaarea / 2500).toPrecision(4) + " y un \xE1rea de " + aguaarea + " hect\xE1reas.";
 
-      this.setText(mystring);
+      var descriptionString = "La Unidad de Paisaje " + idennum + "       (UP) " + idennum + "  presenta una riqueza de parches igual a " + descripcioSet.size + " y una abundancia de parches       igual a " + allParches.length + ". De estos parches, " + continuoList.length + " son continuos presentando       una raz\xF3n de continuidad de" + (continuoList.length / allParches.length).toPrecision(4) + ". Dentro de los aproximadamente 2500 hecatares que       conforman la UP , el Uso de Suelo y Vegetaci\xF3n (USV) m\xE1s dominante es " + largestTypeName + " que representa el " + largestTypeCobertura.toPrecision(4) + "%  \n      del \xE1rea total de la unidad y est\xE1 dividido en       " + listofareas[largestTypeName].length + " parches de " + listofareas[largestTypeName] + " hect\xE1reas respectivamente. El parche de mayor       tama\xF1o corresponde al USV de " + maxname + " con un \xE1rea de      aproximadamente " + maxarea + " hect\xE1reas. La dominancia entre tama\xF1os de parche dentro de esta UP es       de " + (maxarea / 2500).toPrecision(4) + ", mientras que la dominancia entre tipos de parche es igual       a " + (largestTypeArea / 2500).toPrecision(4) + ". Esta UP presenta adem\xE1s una raz\xF3n de dispersi\xF3n h\xEDdrica de 0.00096       con corrientes de agua que cubren un total de " + agualength + " kilometros lineales; as\xED        como una densidad de cuerpos de agua de " + (aguaarea / 2500).toPrecision(4) + " y un \xE1rea de " + aguaarea + " hect\xE1reas.";
+
+      this.setText(descriptionString);
     }
   }, {
     key: "render",
@@ -44945,7 +44905,6 @@ var _react2 = _interopRequireDefault(_react);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function UdpTitle(props) {
-  console.log(props.udpsoils);
   var munilist = props.udpsoils[0].munilist.map(function (item) {
     return item.nomgeo.toUpperCase() + ", ";
   });
@@ -44956,7 +44915,8 @@ function UdpTitle(props) {
     _react2.default.createElement(
       "h6",
       { id: "updtitle" },
-      " PROPUESTA DE MONITOREO ARTICULADO DE LA BIODIVERSIDAD (MTP + SMC): SECTOR FORESTAL"
+      " ",
+      "PROPUESTA DE MONITOREO ARTICULADO DE LA BIODIVERSIDAD (MTP + SMC): SECTOR FORESTAL"
     ),
     _react2.default.createElement(
       "div",
@@ -44969,7 +44929,8 @@ function UdpTitle(props) {
       _react2.default.createElement(
         "h6",
         { id: "muniudp" },
-        " MUNICIPIO DE ",
+        " ",
+        "MUNICIPIO DE ",
         munilist,
         " PUEBLA, UNIDAD DE PAISAJE ",
         idennum
@@ -45045,7 +45006,14 @@ function UdpDiversity(props) {
       previousAnimal++;
       var x1my = 43 + previousAnimal * 64;
       var x2my = 44.0 + +animal.shannon * 2.68;
-      return _react2.default.createElement("line", { x1: x1my, y1: "3", x2: x2my, y2: "58", style: { stroke: "rgb(255,0,0)" } });
+      return _react2.default.createElement("line", {
+        key: animal.type,
+        x1: x1my,
+        y1: "3",
+        x2: x2my,
+        y2: "58",
+        style: { stroke: "rgb(255,0,0)" }
+      });
     }
   });
 

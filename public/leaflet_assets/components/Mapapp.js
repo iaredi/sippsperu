@@ -24138,7 +24138,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-//import BootstrapTable from 'react-bootstrap-table-next';
 
 var Normaapp = function (_React$Component) {
   _inherits(Normaapp, _React$Component);
@@ -24161,8 +24160,7 @@ var Normaapp = function (_React$Component) {
       previous: 0,
       udp: 0,
       udpButton: false,
-
-      markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
+      clickLocation: { lat: 18.69349, lng: 360 - 98.16245 },
       mapSettings: {
         distinctOrTotal: "total_observaciones",
         myObsType: "ave",
@@ -24202,7 +24200,7 @@ var Normaapp = function (_React$Component) {
               case 0:
                 this.setState(function (prevState) {
                   return {
-                    markerPosition: {
+                    clickLocation: {
                       lat: event.latlng.lat,
                       lng: event.latlng.lng
                     }
@@ -24426,19 +24424,8 @@ var Normaapp = function (_React$Component) {
       });
     }
   }, {
-    key: "updateMarkers",
-    value: function updateMarkers(markersData) {
-      var _this3 = this;
-
-      this.layer.clearLayers();
-      markersData.forEach(function (marker) {
-        L.marker(marker.latLng, { title: marker.title }).addTo(_this3.layer);
-      });
-    }
-  }, {
     key: "render",
     value: function render() {
-      console.log(this.state.featureInfo);
       return _react2.default.createElement(
         "div",
         null,
@@ -24467,7 +24454,7 @@ var Normaapp = function (_React$Component) {
                 "div",
                 { className: "withcontrol flex-column d-flex justify-content-between align-items-start" },
                 _react2.default.createElement(_FeatureInfoDisplay2.default, {
-                  markerPosition: this.state.markerPosition,
+                  clickLocation: this.state.clickLocation,
                   featureInfo: this.state.featureInfo
                 }),
                 _react2.default.createElement(_MapControl2.default, {
@@ -24495,27 +24482,35 @@ var Normaapp = function (_React$Component) {
                   { id: "buttonContainer" },
                   _react2.default.createElement(
                     "a",
-                    { className: "btn btn-primary m-2 btn-sm mapInfoButton",
+                    {
+                      className: "btn btn-primary m-2 btn-sm mapInfoButton",
                       href: "/mostrarnormas/normas/" + this.state.currentUdpId,
                       role: "button"
                     },
-                    " Especies y Normas 059"
+                    " ",
+                    "Especies y Normas 059"
                   ),
                   _react2.default.createElement(
                     "a",
-                    { className: "btn btn-primary m-2 btn-sm mapInfoButton",
+                    {
+                      className: "btn btn-primary m-2 btn-sm mapInfoButton",
                       href: "/mostrarnormas/ae/" + this.state.currentUdpId,
                       role: "button"
                     },
-                    " Attributos Ecologicos "
+                    " ",
+                    "Attributos Ecologicos",
+                    " "
                   ),
                   _react2.default.createElement(
                     "a",
-                    { className: "btn btn-primary m-2 btn-sm mapInfoButton",
+                    {
+                      className: "btn btn-primary m-2 btn-sm mapInfoButton",
                       href: "/udpmapa/" + this.state.currentUdpId + "/" + (this.state.featureInfo.properties.shannon_arbol + "*" + this.state.featureInfo.properties.shannon_arbusto + "*" + this.state.featureInfo.properties.shannon_ave + "*" + this.state.featureInfo.properties.shannon_hierba + "*" + this.state.featureInfo.properties.shannon_herpetofauna + "*" + this.state.featureInfo.properties.shannon_mamifero),
                       role: "button"
                     },
-                    " Fragmentaci\xF3n Ambiental "
+                    " ",
+                    "Fragmentaci\xF3n Ambiental",
+                    " "
                   )
                 )
               )
@@ -24737,7 +24732,7 @@ exports.default = MapControl;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -24761,147 +24756,155 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var FeatureInfoDisplay = function (_React$Component) {
-    _inherits(FeatureInfoDisplay, _React$Component);
+  _inherits(FeatureInfoDisplay, _React$Component);
 
-    function FeatureInfoDisplay(props) {
-        _classCallCheck(this, FeatureInfoDisplay);
+  function FeatureInfoDisplay(props) {
+    _classCallCheck(this, FeatureInfoDisplay);
 
-        return _possibleConstructorReturn(this, (FeatureInfoDisplay.__proto__ || Object.getPrototypeOf(FeatureInfoDisplay)).call(this, props));
-    }
+    return _possibleConstructorReturn(this, (FeatureInfoDisplay.__proto__ || Object.getPrototypeOf(FeatureInfoDisplay)).call(this, props));
+  }
 
-    _createClass(FeatureInfoDisplay, [{
-        key: 'render',
-        value: function render() {
-            var _this2 = this;
+  _createClass(FeatureInfoDisplay, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
 
-            var allTableRows = [];
-            if (this.props.featureInfo.properties.displayName == 'Linea MTP' || this.props.featureInfo.properties.displayName == 'Unidad de Paisaje') {
+      var allTableRows = [];
+      if (this.props.featureInfo.properties.displayName == "Linea MTP" || this.props.featureInfo.properties.displayName == "Unidad de Paisaje") {
+        var lifeForms = ["arbol", "arbusto", "hierba", "ave", "herpetofauna", "mamifero", "Dato acumulado"];
+        var categoryList = ["total_observaciones", "distinct_species", "dominancia", "shannon", "biodiversidad_verdadera"];
+        var myIcons = {
+          ave: "🦅",
+          arbol: "🌲",
+          arbusto: "🌳",
+          hierba: "🌱",
+          herpetofauna: "🐍",
+          mamifero: "🦌"
+        };
 
-                var lifeForms = ['arbol', 'arbusto', 'hierba', 'ave', 'herpetofauna', 'mamifero', 'Dato acumulado'];
-                var mya2 = ['total_observaciones', 'distinct_species', 'dominancia', 'shannon', 'biodiversidad_verdadera'];
-                var myIcons = { 'ave': '🦅', 'arbol': '🌲', 'arbusto': '🌳', 'hierba': '🌱', 'herpetofauna': '🐍', 'mamifero': '🦌' };
+        lifeForms.map(function (life) {
+          var oneTableRow = {};
+          oneTableRow["name"] = life == "herpetofauna" ? "herpetofauna" : life;
+          oneTableRow["name"] = life == "Dato acumulado" ? oneTableRow["name"] : myIcons[life] + oneTableRow["name"];
 
-                lifeForms.map(function (life) {
-                    var oneTableRow = {};
-                    oneTableRow['name'] = life == 'herpetofauna' ? 'herpetofauna' : life;
-                    oneTableRow['name'] = life == 'Dato acumulado' ? oneTableRow['name'] : myIcons[life] + oneTableRow['name'];
-
-                    mya2.map(function (category, ind) {
-                        if (life == 'Dato acumulado') {
-                            var mysum = -999.99;
-                            if (category == 'biodiversidad_verdadera') {
-                                mysum = Math.exp(-_this2.props.featureInfo.properties['shannon_ave']) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties['shannon_ave']);
-                                mysum += Math.exp(-_this2.props.featureInfo.properties['shannon_hierba']) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties['shannon_hierba']);
-                                mysum += Math.exp(-_this2.props.featureInfo.properties['shannon_arbusto']) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties['shannon_arbusto']);
-                                mysum += Math.exp(-_this2.props.featureInfo.properties['shannon_arbol']) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties['shannon_arbol']);
-                                mysum += Math.exp(-_this2.props.featureInfo.properties['shannon_herpetofauna']) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties['shannon_herpetofauna']);
-                                mysum += Math.exp(-_this2.props.featureInfo.properties['shannon_mamifero']) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties['shannon_mamifero']);
-                            } else {
-                                mysum = +_this2.props.featureInfo.properties[category + '_ave'] + +_this2.props.featureInfo.properties[category + '_hierba'] + +_this2.props.featureInfo.properties[category + '_arbusto'] + +_this2.props.featureInfo.properties[category + '_arbol'] + +_this2.props.featureInfo.properties[category + '_herpetofauna'] + +_this2.props.featureInfo.properties[category + '_mamifero'];
-                            }
-                            if (ind > 1) mysum = (mysum / 6).toPrecision(4);
-                            oneTableRow[category] = mysum;
-                        } else {
-                            var newCat = category.replace('_' + life, '');
-                            var myValue = -999.99;
-                            if (newCat == 'biodiversidad_verdadera') {
-                                myValue = Math.exp(-oneTableRow['shannon']).toPrecision(4) == 1 ? 0 : Math.exp(-oneTableRow['shannon']).toPrecision(4);
-                            } else {
-                                myValue = ind > 1 ? (+_this2.props.featureInfo.properties[category + '_' + life]).toPrecision(4) : _this2.props.featureInfo.properties[category + '_' + life];
-                            }
-                            oneTableRow[newCat] = myValue;
-                        }
-                    });
-                    allTableRows.push(oneTableRow);
-                });
+          categoryList.map(function (category, index) {
+            if (life == "Dato acumulado") {
+              var mysum = -999.99;
+              if (category == "biodiversidad_verdadera") {
+                mysum = Math.exp(-_this2.props.featureInfo.properties["shannon_ave"]) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties["shannon_ave"]);
+                mysum += Math.exp(-_this2.props.featureInfo.properties["shannon_hierba"]) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties["shannon_hierba"]);
+                mysum += Math.exp(-_this2.props.featureInfo.properties["shannon_arbusto"]) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties["shannon_arbusto"]);
+                mysum += Math.exp(-_this2.props.featureInfo.properties["shannon_arbol"]) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties["shannon_arbol"]);
+                mysum += Math.exp(-_this2.props.featureInfo.properties["shannon_herpetofauna"]) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties["shannon_herpetofauna"]);
+                mysum += Math.exp(-_this2.props.featureInfo.properties["shannon_mamifero"]) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties["shannon_mamifero"]);
+              } else {
+                mysum = +_this2.props.featureInfo.properties[category + "_ave"] + +_this2.props.featureInfo.properties[category + "_hierba"] + +_this2.props.featureInfo.properties[category + "_arbusto"] + +_this2.props.featureInfo.properties[category + "_arbol"] + +_this2.props.featureInfo.properties[category + "_herpetofauna"] + +_this2.props.featureInfo.properties[category + "_mamifero"];
+              }
+              if (index > 1) mysum = (mysum / 6).toPrecision(4);
+              oneTableRow[category] = mysum;
+            } else {
+              var newCat = category.replace("_" + life, "");
+              var myValue = -999.99;
+              if (newCat == "biodiversidad_verdadera") {
+                myValue = Math.exp(-oneTableRow["shannon"]).toPrecision(4) == 1 ? 0 : Math.exp(-oneTableRow["shannon"]).toPrecision(4);
+              } else {
+                myValue = index > 1 ? (+_this2.props.featureInfo.properties[category + "_" + life]).toPrecision(4) : _this2.props.featureInfo.properties[category + "_" + life];
+              }
+              oneTableRow[newCat] = myValue;
             }
-            var columns = [{
-                dataField: 'name',
-                text: 'Nombre',
-                headerStyle: {
-                    width: '128px'
-                }
-            }, {
-                dataField: 'total_observaciones',
-                text: 'Individuos',
-                headerStyle: {
-                    width: '80px'
-                }
-            }, {
-                dataField: 'distinct_species',
-                text: 'Especies Distintas',
-                headerStyle: {
-                    width: '80px'
-                }
-            }, {
-                dataField: 'dominancia',
-                headerStyle: {
-                    width: '92px'
-                },
-                text: 'Dominancia',
-                classes: 'testme'
-            }, {
-                dataField: 'shannon',
-                headerStyle: {
-                    width: '62px'
-                },
-                text: 'Shannon'
-            }, {
-                dataField: 'biodiversidad_verdadera',
-                headerStyle: {
-                    width: '92px'
-                },
-                text: 'Biodiversidad Verdadera',
-                classes: 'testme'
-            }];
-
-            return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'div',
-                    { className: 'container' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'flex-column d-flex justify-content-around align-items-center p-3' },
-                        _react2.default.createElement(
-                            'div',
-                            null,
-                            'Ultimo Click:'
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            null,
-                            'lat: ',
-                            this.props.markerPosition.lat.toPrecision(7),
-                            ', lng: ',
-                            this.props.markerPosition.lng.toPrecision(7)
-                        ),
-                        _react2.default.createElement(
-                            'div',
-                            null,
-                            this.props.featureInfo.properties.displayName,
-                            ' = ',
-                            this.props.featureInfo.properties[this.props.featureInfo.properties.featureColumn]
-                        )
-                    )
-                ),
-                _react2.default.createElement(_reactBootstrapTableNext2.default, {
-                    keyField: 'name',
-                    data: allTableRows,
-                    columns: columns,
-                    bordered: true,
-                    classes: 'featureInfoTable',
-                    striped: true,
-                    hover: true,
-                    condensed: true,
-                    noDataIndication: 'No hay datos'
-                })
-            );
+          });
+          allTableRows.push(oneTableRow);
+        });
+      }
+      var columns = [{
+        dataField: "name",
+        text: "Nombre",
+        headerStyle: {
+          width: "128px"
         }
-    }]);
+      }, {
+        dataField: "total_observaciones",
+        text: "Individuos",
+        headerStyle: {
+          width: "80px"
+        }
+      }, {
+        dataField: "distinct_species",
+        text: "Especies Distintas",
+        headerStyle: {
+          width: "80px"
+        }
+      }, {
+        dataField: "dominancia",
+        headerStyle: {
+          width: "92px"
+        },
+        text: "Dominancia",
+        classes: "testme"
+      }, {
+        dataField: "shannon",
+        headerStyle: {
+          width: "62px"
+        },
+        text: "Shannon"
+      }, {
+        dataField: "biodiversidad_verdadera",
+        headerStyle: {
+          width: "92px"
+        },
+        text: "Biodiversidad Verdadera",
+        classes: "testme"
+      }];
 
-    return FeatureInfoDisplay;
+      return _react2.default.createElement(
+        "div",
+        null,
+        _react2.default.createElement(
+          "div",
+          { className: "container" },
+          _react2.default.createElement(
+            "div",
+            { className: "flex-column d-flex justify-content-around align-items-center p-3" },
+            _react2.default.createElement(
+              "div",
+              null,
+              "Ultimo Click:"
+            ),
+            _react2.default.createElement(
+              "div",
+              null,
+              "lat: ",
+              this.props.clickLocation.lat.toPrecision(7),
+              ", lng:",
+              " ",
+              this.props.clickLocation.lng.toPrecision(7)
+            ),
+            _react2.default.createElement(
+              "div",
+              null,
+              this.props.featureInfo.properties.displayName,
+              " =",
+              " ",
+              this.props.featureInfo.properties[this.props.featureInfo.properties.featureColumn]
+            )
+          )
+        ),
+        _react2.default.createElement(_reactBootstrapTableNext2.default, {
+          keyField: "name",
+          data: allTableRows,
+          columns: columns,
+          bordered: true,
+          classes: "featureInfoTable",
+          striped: true,
+          hover: true,
+          condensed: true,
+          noDataIndication: "No hay datos"
+        })
+      );
+    }
+  }]);
+
+  return FeatureInfoDisplay;
 }(_react2.default.Component);
 
 exports.default = FeatureInfoDisplay;

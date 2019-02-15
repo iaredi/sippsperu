@@ -1,6 +1,4 @@
 import React from "react";
-//import BootstrapTable from 'react-bootstrap-table-next';
-
 import Map from "./Map";
 import MapControl from "./MapControl";
 import FeatureInfoDisplay from "./FeatureInfoDisplay";
@@ -8,7 +6,6 @@ import FeatureInfoDisplay from "./FeatureInfoDisplay";
 class Normaapp extends React.Component {
   constructor(props) {
     super(props);
-
     this.handleMapClick = this.handleMapClick.bind(this);
     this.handleSpeciesChange = this.handleSpeciesChange.bind(this);
     this.handleTotalDistinctChange = this.handleTotalDistinctChange.bind(this);
@@ -22,9 +19,7 @@ class Normaapp extends React.Component {
       previous: 0,
       udp: 0,
       udpButton: false,
-     
-
-      markerPosition: { lat: 18.69349, lng: 360 - 98.16245 },
+      clickLocation: { lat: 18.69349, lng: 360 - 98.16245 },
       mapSettings: {
         distinctOrTotal: "total_observaciones",
         myObsType: "ave",
@@ -62,9 +57,10 @@ class Normaapp extends React.Component {
         : 0.3;
     }
   }
+
   async handleMapClick(event) {
     this.setState(prevState => ({
-      markerPosition: {
+      clickLocation: {
         lat: event.latlng.lat,
         lng: event.latlng.lng
       }
@@ -118,7 +114,7 @@ class Normaapp extends React.Component {
     this.setState(() => ({
       udpButton: idtype == "udp" ? true : false
     }));
-    
+
     this.setState(() => ({
       currentUdpId: event.target.feature.properties.iden
     }));
@@ -230,15 +226,7 @@ class Normaapp extends React.Component {
     }));
   }
 
-  updateMarkers(markersData) {
-    this.layer.clearLayers();
-    markersData.forEach(marker => {
-      L.marker(marker.latLng, { title: marker.title }).addTo(this.layer);
-    });
-  }
-
   render() {
-    console.log(this.state.featureInfo);
     return (
       <div>
         <div className="container mymapcontainer">
@@ -257,7 +245,7 @@ class Normaapp extends React.Component {
             <div className="mystatdiv p-1">
               <div className="withcontrol flex-column d-flex justify-content-between align-items-start">
                 <FeatureInfoDisplay
-                  markerPosition={this.state.markerPosition}
+                  clickLocation={this.state.clickLocation}
                   featureInfo={this.state.featureInfo}
                 />
                 <MapControl
@@ -277,42 +265,50 @@ class Normaapp extends React.Component {
                   </a>
                 </div>
 
-                {this.state.udpButton &&
-                  
-                
-                <div id="buttonContainer">
-                  <a className="btn btn-primary m-2 btn-sm mapInfoButton"
-                    href={"/mostrarnormas/normas/" + this.state.currentUdpId}
-                    role="button"
-                  > Especies y Normas 059</a>
+                {this.state.udpButton && (
+                  <div id="buttonContainer">
+                    <a
+                      className="btn btn-primary m-2 btn-sm mapInfoButton"
+                      href={"/mostrarnormas/normas/" + this.state.currentUdpId}
+                      role="button"
+                    >
+                      {" "}
+                      Especies y Normas 059
+                    </a>
 
-                  <a className="btn btn-primary m-2 btn-sm mapInfoButton"
-                  href={"/mostrarnormas/ae/" + this.state.currentUdpId}
-                  role="button"
-                > Attributos Ecologicos </a>
+                    <a
+                      className="btn btn-primary m-2 btn-sm mapInfoButton"
+                      href={"/mostrarnormas/ae/" + this.state.currentUdpId}
+                      role="button"
+                    >
+                      {" "}
+                      Attributos Ecologicos{" "}
+                    </a>
 
-               
-                <a className="btn btn-primary m-2 btn-sm mapInfoButton"
-                href={"/udpmapa/" + this.state.currentUdpId+ "/"+
-                  `${this.state.featureInfo.properties.shannon_arbol}*${
-                    this.state.featureInfo.properties.shannon_arbusto
-                  }*${this.state.featureInfo.properties.shannon_ave}*${
-                    this.state.featureInfo.properties.shannon_hierba
-                  }*${this.state.featureInfo.properties.shannon_herpetofauna}*${
-                    this.state.featureInfo.properties.shannon_mamifero
-                  }`
-                }
-                role="button"
-              > Fragmentación Ambiental </a>
-              </div>
-            }
-
+                    <a
+                      className="btn btn-primary m-2 btn-sm mapInfoButton"
+                      href={
+                        "/udpmapa/" +
+                        this.state.currentUdpId +
+                        "/" +
+                        `${this.state.featureInfo.properties.shannon_arbol}*${
+                          this.state.featureInfo.properties.shannon_arbusto
+                        }*${this.state.featureInfo.properties.shannon_ave}*${
+                          this.state.featureInfo.properties.shannon_hierba
+                        }*${
+                          this.state.featureInfo.properties.shannon_herpetofauna
+                        }*${this.state.featureInfo.properties.shannon_mamifero}`
+                      }
+                      role="button"
+                    >
+                      {" "}
+                      Fragmentación Ambiental{" "}
+                    </a>
+                  </div>
+                )}
               </div>
             </div>
           </div>
-        
-
-       
         </div>
       </div>
     );

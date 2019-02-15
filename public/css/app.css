@@ -10506,16 +10506,6 @@ body {
   padding: 10px;
 }
 
-#cargarbutton {
-  -webkit-appearance: button;
-  -moz-appearance: button;
-  appearance: button;
-  background: #449eff;
-  padding: 3px;
-  text-decoration: none;
-  color: initial;
-}
-
 .bg-danger2 {
   background-color: #ff6a6a;
 }
@@ -10635,10 +10625,6 @@ input#mode {
   width: 170px;
 }
 
-/* td.formcolumnlabels {
-    text-align: center;
-} */
-
 td.cuadrante {
   text-align: center;
 }
@@ -10685,10 +10671,6 @@ p.spec::after {
   white-space: pre;
 }
 
-/* .hideme{
-    display:none;
-} */
-
 .mytable {
   empty-cells: show;
 }
@@ -10698,14 +10680,6 @@ p.spec::after {
   margin-bottom: 20px;
 }
 
-/* a:visited {
-    color:saddlebrown;
-} */
-
-/* a:link {
-    color:rgb(255, 247, 228);
-} */
-
 a:hover {
   color: #391e00;
 }
@@ -10714,14 +10688,6 @@ a:hover {
   color: saddlebrown;
   background-color: antiquewhite;
 }
-
-/* nav a:visited {
-    color:beige;
-} */
-
-/* nav a:link {
-    color:rgb(0, 35, 66);
-} */
 
 a {
   color: #000000;

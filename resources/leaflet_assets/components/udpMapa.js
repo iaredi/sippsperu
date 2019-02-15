@@ -12,13 +12,14 @@ class UDPMapa extends React.Component {
     this.setStateBounds = this.setStateBounds.bind(this);
     this.setSoils = this.setSoils.bind(this);
   }
+
   setStateBounds(bounds) {
     this.props.setStateBounds(bounds);
   }
-  setSoils(soils,udpsoils) {
-    this.props.setSoils(soils,udpsoils);
+
+  setSoils(soils, udpsoils) {
+    this.props.setSoils(soils, udpsoils);
   }
-  
 
   componentDidMount() {
     // create map
@@ -29,21 +30,6 @@ class UDPMapa extends React.Component {
       zoomControl: false
     });
 
-    // const streets = L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-    //   attribution:
-    //     '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    // }).addTo(this.map);
-
-    // const imagery = L.tileLayer(
-    // 'http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-    // attribution: '&copy; <a href="http://www.esri.com/">Esri</a>i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-    // maxZoom: 18,
-    // });
-
-    // this.baseMaps = {
-    //   "Imagery":imagery,
-    //   "Streets": streets
-    // };
     const get_shp = (item, mymap) => {
       let myStyle = feature => {
         return {
@@ -75,7 +61,6 @@ class UDPMapa extends React.Component {
     };
 
     const processArray = (array, mymap, setStateBounds, setSoils) => {
-    
       const overlayMaps = this.overlayMaps || {};
       var bounds = "none";
       var udpiden = "none";
@@ -83,19 +68,14 @@ class UDPMapa extends React.Component {
         if (item.tableName !== "usos_de_suelo4") {
           let myLayer = get_shp(item, mymap);
           overlayMaps[item.displayName] = myLayer;
-          //L.control.layers(overlayMaps).addTo(mymap);
           if (item.tableName == "udp_puebla_4326") {
             mymap.fitBounds(myLayer.getBounds());
             bounds = mymap.getBounds();
             setStateBounds(mymap.getBounds());
-            udpiden = item.sql.split("'")[1]
+            udpiden = item.sql.split("'")[1];
           }
         } else {
-          ////ASYNC HERE
-          //ask the api what layers are in frame so they can be colored and list
-          //later we will get the metrics of soils in our udp square.
-          
-          async function getBoundingFeatures(bounds,udpiden) {
+          async function getBoundingFeatures(bounds, udpiden) {
             let myapi =
               "https://biodiversidadpuebla.online/api/getboundingfeatures";
             if (window.location.host == "localhost:3000")
@@ -118,55 +98,46 @@ class UDPMapa extends React.Component {
             let dataResult = await rawResponse.json();
             return dataResult;
           }
-          getBoundingFeatures(bounds,udpiden).then(soils => {
-            
+          getBoundingFeatures(bounds, udpiden).then(soils => {
             setSoils(JSON.parse(soils[0]), JSON.parse(soils[1]));
             let myLayer = get_shp(item, mymap);
             overlayMaps[item.displayName] = myLayer;
 
-            [ JSON.parse(soils[2]), JSON.parse(soils[3]), JSON.parse(soils[4]) ].forEach((item) => {
-              if (item.geom){
-                var myLayeragua_lineas = get_shp(item, mymap);
-                //overlayMaps[agua_lineas.displayName] = myLayeragua_lineas;
+            [
+              JSON.parse(soils[2]),
+              JSON.parse(soils[3]),
+              JSON.parse(soils[4])
+            ].forEach(item => {
+              if (item.geom) {
+                get_shp(item, mymap);
               }
-            })
-           
+            });
           });
         }
       });
     };
-    processArray(
-      udpsomething,
-      this.map,
-      this.setStateBounds,
-      this.setSoils
-    );
+
+    processArray(udpsomething, this.map, this.setStateBounds, this.setSoils);
     this.map.scrollWheelZoom.disable();
-    L.control.scale({imperial: false}).addTo(this.map);  
-   
+    L.control.scale({ imperial: false }).addTo(this.map);
 
     //Make map static
-    var lyrcont = document.getElementsByClassName("leaflet-control-attribution")[0];
-    // var lyratt = document.getElementsByClassName(
-    //   "leaflet-control-attribution"
-    // )[0];
-    // var lyrtop = document.getElementsByClassName("leaflet-top")[0];
+    var lyrcont = document.getElementsByClassName( "leaflet-control-attribution")[0];
+   
     lyrcont.style.visibility = "hidden";
-    // lyratt.style.visibility = "hidden";
-    // lyrtop.style.visibility = "hidden";
-    var north = L.control({position: "topright"});
+ 
+    var north = L.control({ position: "topright" });
     north.onAdd = function(map) {
-        var div = L.DomUtil.create("div", "info legend");
-        div.innerHTML = '<img id="northarrow" src="img/north.png">';
-        return div;
-    }
+      var div = L.DomUtil.create("div", "info legend");
+      div.innerHTML = '<img id="northarrow" src="/img/north.png">';
+      return div;
+    };
     north.addTo(this.map);
     this.map.dragging.disable();
     this.map.doubleClickZoom.disable();
     /////////////////////////////////////////////////////
   }
 
-  componentDidUpdate({ mapSettings }) {}
   render() {
     return <div id="map" style={style} />;
   }

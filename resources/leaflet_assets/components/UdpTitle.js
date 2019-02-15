@@ -1,27 +1,27 @@
 import React from "react";
 
-
 function UdpTitle(props) {
-  console.log(props.udpsoils)
-  const munilist = props.udpsoils[0].munilist.map((item) => {
-    return `${(item.nomgeo).toUpperCase()}, `
+  const munilist = props.udpsoils[0].munilist.map(item => {
+    return `${item.nomgeo.toUpperCase()}, `;
+  });
 
-  })
- 
-  return ( 
+  return (
     <div>
-      
-        <h6 id="updtitle"> PROPUESTA DE MONITOREO ARTICULADO DE LA BIODIVERSIDAD (MTP + SMC): SECTOR FORESTAL
-        </h6>
-      
+      <h6 id="updtitle">
+        {" "}
+        PROPUESTA DE MONITOREO ARTICULADO DE LA BIODIVERSIDAD (MTP + SMC):
+        SECTOR FORESTAL
+      </h6>
+
       <div id="updmunititle">
-        <h6 id="framentation"> MAPA DE FRAGMENTACIÓN AMBIENTAL
+        <h6 id="framentation"> MAPA DE FRAGMENTACIÓN AMBIENTAL</h6>
+        <h6 id="muniudp">
+          {" "}
+          MUNICIPIO DE {munilist} PUEBLA, UNIDAD DE PAISAJE {idennum}
         </h6>
-        <h6 id='muniudp'> MUNICIPIO DE {munilist} PUEBLA, UNIDAD DE PAISAJE {idennum}
-        </h6>
+      </div>
     </div>
-  </div>
-  )
+  );
 }
 
 export default UdpTitle;

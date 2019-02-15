@@ -10,8 +10,6 @@ function Alist(props) {
       <p className="shannonp">{props.shannon}</p>
       <p className="iconp">{props.icon}</p>
     </span>
-      
-   
   );
 }
 function UdpDiversity(props) {
@@ -44,27 +42,32 @@ function UdpDiversity(props) {
       );
     }
   });
-  var previousAnimal = -1
+  var previousAnimal = -1;
 
   const svgLines = bigArray.map((animal, ind) => {
     if (animal.shannon > 0) {
-      previousAnimal++
-      const x1my = 43+ previousAnimal*64
-      const x2my = 44.0 + (+animal.shannon)*2.68
+      previousAnimal++;
+      const x1my = 43 + previousAnimal * 64;
+      const x2my = 44.0 + +animal.shannon * 2.68;
       return (
-        <line x1={x1my} y1="3" x2={x2my} y2="58" style={{stroke:"rgb(255,0,0)"}} />
+        <line
+          key={animal.type}
+          x1={x1my}
+          y1="3"
+          x2={x2my}
+          y2="58"
+          style={{ stroke: "rgb(255,0,0)" }}
+        />
       );
     }
   });
 
-  
-
   return (
     <div id="biodivContainer">
-    <h5 id="shannonTitle">Biodiversidad : Indice de Shannon</h5>
+      <h5 id="shannonTitle">Biodiversidad : Indice de Shannon</h5>
       {listItems}
       <svg height="60" width="100%">
-      {svgLines}
+        {svgLines}
       </svg>
       <div id="udpDiversity">
         <div id="startScale">

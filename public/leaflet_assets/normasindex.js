@@ -30254,7 +30254,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-//import BootstrapTable from 'react-bootstrap-table-next';
 
 var Normaapp = function (_React$Component) {
   _inherits(Normaapp, _React$Component);
@@ -30337,10 +30336,9 @@ var Normaapp = function (_React$Component) {
               switch (_context2.prev = _context2.next) {
                 case 0:
                   _loop = function _loop(item) {
-                    getSpecies(item.toLowerCase(), 'udp', idennum).then(function (myspeciesResult) {
-                      console.log(myspeciesResult);
+                    getSpecies(item.toLowerCase(), "udp", idennum).then(function (myspeciesResult) {
                       var newObject = {};
-                      newObject['speciesResult' + item] = myspeciesResult;
+                      newObject["speciesResult" + item] = myspeciesResult;
                       _this2.setState(function (prevState) {
                         return newObject;
                       });
@@ -30402,45 +30400,11 @@ var Normaapp = function (_React$Component) {
           return _ref2.apply(this, arguments);
         };
       }();
-
-      processArray(['Ave', 'Arbol', 'Arbusto', 'Herpetofauna', 'Hierba', 'Mamifero']);
-
-      // getSpecies('ave','udp', idennum).then(myspeciesResult => {
-      //   this.setState(prevState => ({
-      //     speciesResultAve: myspeciesResult
-      //   }));
-      // });
-      // getSpecies('arbol','udp', idennum).then(myspeciesResult => {
-      //   this.setState(prevState => ({
-      //     speciesResultArbol: myspeciesResult
-      //   }));
-      // });
-      // getSpecies('arbusto','udp', idennum).then(myspeciesResult => {
-      //   this.setState(prevState => ({
-      //     speciesResultArbusto: myspeciesResult
-      //   }));
-      // });
-      // getSpecies('mamifero','udp', idennum).then(myspeciesResult => {
-      //   this.setState(prevState => ({
-      //     speciesResultMamifero: myspeciesResult
-      //   }));
-      // });
-      // getSpecies('hierba','udp', idennum).then(myspeciesResult => {
-      //   this.setState(prevState => ({
-      //     speciesResultHierba: myspeciesResult
-      //   }));
-      // });
-      // getSpecies('herpetofauna','udp', idennum).then(myspeciesResult => {
-      //   this.setState(prevState => ({
-      //     speciesResultHerpetofauna: myspeciesResult
-      //   }));
-      // });
+      processArray(["Ave", "Arbol", "Arbusto", "Herpetofauna", "Hierba", "Mamifero"]);
     }
   }, {
     key: "render",
     value: function render() {
-      console.log(this.state);
-
       return _react2.default.createElement(
         "div",
         null,
@@ -30452,37 +30416,10 @@ var Normaapp = function (_React$Component) {
             { className: "normaTitles" },
             "Ave"
           ),
-          _react2.default.createElement(_SpeciesDisplay2.default, { speciesResult: this.state.speciesResultAve, lifeform: "ave" })
-        ),
-        _react2.default.createElement(
-          "div",
-          { className: "speciesdisplay" },
-          _react2.default.createElement(
-            "h4",
-            { className: "normaTitles" },
-            "Arbol"
-          ),
-          _react2.default.createElement(_SpeciesDisplay2.default, { speciesResult: this.state.speciesResultArbol, lifeform: "arbol" })
-        ),
-        _react2.default.createElement(
-          "div",
-          { className: "speciesdisplay" },
-          _react2.default.createElement(
-            "h4",
-            { className: "normaTitles" },
-            "Arbusto"
-          ),
-          _react2.default.createElement(_SpeciesDisplay2.default, { speciesResult: this.state.speciesResultArbusto, lifeform: "arbusto" })
-        ),
-        _react2.default.createElement(
-          "div",
-          { className: "speciesdisplay" },
-          _react2.default.createElement(
-            "h4",
-            { className: "normaTitles" },
-            "Hierba"
-          ),
-          _react2.default.createElement(_SpeciesDisplay2.default, { speciesResult: this.state.speciesResultHierba, lifeform: "hierba" })
+          _react2.default.createElement(_SpeciesDisplay2.default, {
+            speciesResult: this.state.speciesResultAve,
+            lifeform: "ave"
+          })
         ),
         _react2.default.createElement(
           "div",
@@ -30492,7 +30429,10 @@ var Normaapp = function (_React$Component) {
             { className: "normaTitles" },
             "Mamifero"
           ),
-          _react2.default.createElement(_SpeciesDisplay2.default, { speciesResult: this.state.speciesResultMamifero, lifeform: "mamifero" })
+          _react2.default.createElement(_SpeciesDisplay2.default, {
+            speciesResult: this.state.speciesResultMamifero,
+            lifeform: "mamifero"
+          })
         ),
         _react2.default.createElement(
           "div",
@@ -30502,7 +30442,49 @@ var Normaapp = function (_React$Component) {
             { className: "normaTitles" },
             "Herpetofauna"
           ),
-          _react2.default.createElement(_SpeciesDisplay2.default, { speciesResult: this.state.speciesResultHerpetofauna, lifeform: "herpetofauna" })
+          _react2.default.createElement(_SpeciesDisplay2.default, {
+            speciesResult: this.state.speciesResultHerpetofauna,
+            lifeform: "herpetofauna"
+          })
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "speciesdisplay" },
+          _react2.default.createElement(
+            "h4",
+            { className: "normaTitles" },
+            "Arbol"
+          ),
+          _react2.default.createElement(_SpeciesDisplay2.default, {
+            speciesResult: this.state.speciesResultArbol,
+            lifeform: "arbol"
+          })
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "speciesdisplay" },
+          _react2.default.createElement(
+            "h4",
+            { className: "normaTitles" },
+            "Arbusto"
+          ),
+          _react2.default.createElement(_SpeciesDisplay2.default, {
+            speciesResult: this.state.speciesResultArbusto,
+            lifeform: "arbusto"
+          })
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "speciesdisplay" },
+          _react2.default.createElement(
+            "h4",
+            { className: "normaTitles" },
+            "Hierba"
+          ),
+          _react2.default.createElement(_SpeciesDisplay2.default, {
+            speciesResult: this.state.speciesResultHierba,
+            lifeform: "hierba"
+          })
         )
       );
     }

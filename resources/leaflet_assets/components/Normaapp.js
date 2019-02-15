@@ -1,22 +1,18 @@
 import React from "react";
-//import BootstrapTable from 'react-bootstrap-table-next';
-
 import SpeciesDisplay from "./SpeciesDisplay";
 
 class Normaapp extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       speciesResultAve: [],
       speciesResultHierba: [],
       speciesResultArbol: [],
       speciesResultArbusto: [],
       speciesResultHerpetofauna: [],
-      speciesResultMamifero: [],
+      speciesResultMamifero: []
     };
   }
-
 
   componentDidMount() {
     async function getSpecies(lifeform, idtype, idnumber) {
@@ -40,90 +36,72 @@ class Normaapp extends React.Component {
       let dataResult = await rawResponse.json();
       return dataResult;
     }
-    
-    const processArray=async(array) =>{
+
+    const processArray = async array => {
       for (const item of array) {
-        getSpecies(item.toLowerCase(),'udp', idennum).then(myspeciesResult => {
-          console.log(myspeciesResult)
-          const newObject={}
-          newObject['speciesResult'+item]=myspeciesResult
-          this.setState(prevState => (
-            newObject
-          ));
+        getSpecies(item.toLowerCase(), "udp", idennum).then(myspeciesResult => {
+          const newObject = {};
+          newObject["speciesResult" + item] = myspeciesResult;
+          this.setState(prevState => newObject);
         });
       }
-    }
-    
-
-
-    processArray(['Ave','Arbol','Arbusto','Herpetofauna','Hierba','Mamifero'])
-    
-      // getSpecies('ave','udp', idennum).then(myspeciesResult => {
-      //   this.setState(prevState => ({
-      //     speciesResultAve: myspeciesResult
-      //   }));
-      // });
-      // getSpecies('arbol','udp', idennum).then(myspeciesResult => {
-      //   this.setState(prevState => ({
-      //     speciesResultArbol: myspeciesResult
-      //   }));
-      // });
-      // getSpecies('arbusto','udp', idennum).then(myspeciesResult => {
-      //   this.setState(prevState => ({
-      //     speciesResultArbusto: myspeciesResult
-      //   }));
-      // });
-      // getSpecies('mamifero','udp', idennum).then(myspeciesResult => {
-      //   this.setState(prevState => ({
-      //     speciesResultMamifero: myspeciesResult
-      //   }));
-      // });
-      // getSpecies('hierba','udp', idennum).then(myspeciesResult => {
-      //   this.setState(prevState => ({
-      //     speciesResultHierba: myspeciesResult
-      //   }));
-      // });
-      // getSpecies('herpetofauna','udp', idennum).then(myspeciesResult => {
-      //   this.setState(prevState => ({
-      //     speciesResultHerpetofauna: myspeciesResult
-      //   }));
-      // });
+    };
+    processArray([
+      "Ave",
+      "Arbol",
+      "Arbusto",
+      "Herpetofauna",
+      "Hierba",
+      "Mamifero"
+    ]);
   }
 
   render() {
-    console.log(this.state)
-
     return (
       <div>
-       
-          <div className="speciesdisplay">
-          <h4 className='normaTitles'>Ave</h4>
-            <SpeciesDisplay speciesResult={this.state.speciesResultAve} lifeform='ave' />
-          </div>
-          <div className="speciesdisplay">
-          <h4 className='normaTitles'>Arbol</h4>
-            <SpeciesDisplay speciesResult={this.state.speciesResultArbol} lifeform='arbol' />
-          </div>
-          <div className="speciesdisplay">
-          <h4 className='normaTitles'>Arbusto</h4>
-            <SpeciesDisplay speciesResult={this.state.speciesResultArbusto} lifeform='arbusto' />
-          </div>
-          <div className="speciesdisplay">
-          <h4 className='normaTitles'>Hierba</h4>
-            <SpeciesDisplay speciesResult={this.state.speciesResultHierba} lifeform='hierba' />
-          </div>
-          <div className="speciesdisplay">
-          <h4 className='normaTitles'>Mamifero</h4>
-            <SpeciesDisplay speciesResult={this.state.speciesResultMamifero} lifeform='mamifero' />
-          </div>
-          <div className="speciesdisplay">
-          <h4 className='normaTitles'>Herpetofauna</h4>
-            <SpeciesDisplay speciesResult={this.state.speciesResultHerpetofauna} lifeform='herpetofauna' />
-          </div>
-          
+        <div className="speciesdisplay">
+          <h4 className="normaTitles">Ave</h4>
+          <SpeciesDisplay
+            speciesResult={this.state.speciesResultAve}
+            lifeform="ave"
+          />
         </div>
-
-    
+        <div className="speciesdisplay">
+          <h4 className="normaTitles">Mamifero</h4>
+          <SpeciesDisplay
+            speciesResult={this.state.speciesResultMamifero}
+            lifeform="mamifero"
+          />
+        </div>
+        <div className="speciesdisplay">
+          <h4 className="normaTitles">Herpetofauna</h4>
+          <SpeciesDisplay
+            speciesResult={this.state.speciesResultHerpetofauna}
+            lifeform="herpetofauna"
+          />
+        </div>
+        <div className="speciesdisplay">
+          <h4 className="normaTitles">Arbol</h4>
+          <SpeciesDisplay
+            speciesResult={this.state.speciesResultArbol}
+            lifeform="arbol"
+          />
+        </div>
+        <div className="speciesdisplay">
+          <h4 className="normaTitles">Arbusto</h4>
+          <SpeciesDisplay
+            speciesResult={this.state.speciesResultArbusto}
+            lifeform="arbusto"
+          />
+        </div>
+        <div className="speciesdisplay">
+          <h4 className="normaTitles">Hierba</h4>
+          <SpeciesDisplay
+            speciesResult={this.state.speciesResultHierba}
+            lifeform="hierba"
+          />
+        </div>
+      </div>
     );
   }
 }
