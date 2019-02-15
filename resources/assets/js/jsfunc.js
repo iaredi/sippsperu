@@ -935,7 +935,7 @@ if(window.location.href.substr(-5)==='admin'){
     addOnChangeAdminTable()
 }else if(window.location.href.substr(-5)==='excel'){
     buildDropdowns( "linea_mtp", "measurement", "Select" );
-    selectOptionsCreate( "linea_mtp", "measurement", true,  "Select" );
+    selectOptionsCreate( "linea_mtp", "measurement", true, "Select", [], false, false);
 }else{
     buildDropdowns( "linea_mtp", "measurement", "Select" );
     selectOptionsCreate( "linea_mtp", "measurement", true,  "Select" );

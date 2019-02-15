@@ -1,10 +1,10 @@
 
 <?php
 
-function savedata($newpost,$useremail){
+function savedata($newpost,$useremail, $fromexcel=false){
 
   $resultofquery=[];
-  if ($_SERVER['REQUEST_METHOD']=="POST"&& sizeof(session('error'))==0 && (!session('visitante'))  ){
+  if ($_SERVER['REQUEST_METHOD']=="POST" && sizeof(session('error'))==0 && (!session('visitante'))){
       $mtpchoice =$newpost['selectlinea_mtp'];    
       if ($mtpchoice=="Nuevo") {
           //Save New Estado Data
@@ -61,7 +61,7 @@ function savedata($newpost,$useremail){
                   $linea_mtppredioname=$newpost['selectpredio'];
               }
               //Save New Linea_MTP Data
-              for($i=0; $i<countrows("linea_mtp"); $i++) {
+              for($i=0; $i<countrows($newpost,"linea_mtp"); $i++) {
                   $comienzo_latitud = round(floatval($newpost["row{$i}*linea_mtp*comienzo_latitud"]),6);
                   $comienzo_longitud = round(floatval($newpost["row{$i}*linea_mtp*comienzo_longitud"]),6);
                   $punto_2_latitud = round(floatval($newpost["row{$i}*linea_mtp*punto_2_latitud"]),6);
@@ -101,13 +101,13 @@ function savedata($newpost,$useremail){
 
     } else {
           $medicionchoice = $newpost['selectmedicion'];
-          session(['my_linea_mtp' => $newpost['selectlinea_mtp']]);
+          session(['my_linea_mtp' => $mtpchoice]);
           if ($medicionchoice=="Nuevo") {
           //Save Medicion Data  
 
-              $medicionfkey=askforkey("linea_mtp", "iden", "nombre_iden", $newpost['selectlinea_mtp']);
+              $medicionfkey=askforkey("linea_mtp", "iden", "nombre_iden", $mtpchoice);
 
-              $linea_mtpclave_predio=askforkey("linea_mtp", "iden_predio", "nombre_iden", $newpost['selectlinea_mtp']);
+              $linea_mtpclave_predio=askforkey("linea_mtp", "iden_predio", "nombre_iden", $mtpchoice);
               $predioname=askforkey("predio", "nombre", "iden", $linea_mtpclave_predio);
               $medicioncolumns=array(
                   "iden_linea_mtp"=>$medicionfkey,
@@ -116,11 +116,12 @@ function savedata($newpost,$useremail){
               );
               $resultofquery[]= savenewentry("medicion", $medicioncolumns);
               $max_medicion = getserialmax( "medicion");
+              session(['testvar' => $newpost['row0*medicion*fecha']]);
 
 
               //Save New People and Brigada Data  
               $max_medicion = getserialmax( "medicion");
-              for($i=0; $i<rowmax("personas"); $i++) {
+              for($i=0; $i<rowmax($newpost,"personas"); $i++) {
                   if(isset($newpost["row{$i}*personas*nombre"])){
                       $personascolumns=array(
                               "nombre"=> $newpost["row{$i}*personas*nombre"],
@@ -136,7 +137,7 @@ function savedata($newpost,$useremail){
                   }
               }
               //Save GPS Data  
-              for($i=0; $i<rowmax("gps"); $i++) {
+              for($i=0; $i<rowmax($newpost,"gps"); $i++) {
                   if(isset($newpost["row{$i}*gps*anio"])){
                       $gpscolumns=array(
                           "anio"=> $newpost["row{$i}*gps*anio"],
@@ -154,7 +155,7 @@ function savedata($newpost,$useremail){
                   }
               }
               //Save Camara Data  
-              for($i=0; $i<rowmax("camara"); $i++) {
+              for($i=0; $i<rowmax($newpost,"camara"); $i++) {
                   if(isset($newpost["row{$i}*camara*anio"])){
                       $camaracolumns=array(
                           "anio"=> $newpost["row{$i}*camara*anio"],
@@ -171,15 +172,18 @@ function savedata($newpost,$useremail){
                           $resultofquery[] = savenewentry("camara_medicion", $camara_medicion_array);
                   }
               }
+              if($fromexcel){
+                return $predioname."*".$newpost['row0*medicion*fecha'];
+              }
 
               
           }else{
-              session(['my_medicion' => $newpost['selectmedicion']]);
+              session(['my_medicion' => $medicionchoice]);
               //Existing Medicion
-              $medicionkey=askforkey("medicion", "iden", "iden_nombre", $newpost['selectmedicion']);
-              $obstype= 'observacion_'.$newpost['selectobservaciones'];
-              $speciestype=  explode("_" , $obstype)[1];
-              $speciestable="especie_".$speciestype;
+              $medicionkey = askforkey("medicion", "iden", "iden_nombre", $medicionchoice);
+              $obstype = 'observacion_'.$newpost['selectobservaciones'];
+              $speciestype = explode("_" , $obstype)[1];
+              $speciestable = "especie_".$speciestype;
               
 
 
@@ -212,7 +216,7 @@ function savedata($newpost,$useremail){
                   $result= $stmnt = DB::select($sql, []);
                   
 
-                  $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
+                  $unitcolumns=buildcolumnsarray($newpost,"{$unitlower}_{$speciestype}", "row0");
                   $unitcolumns["iden_sampling_unit"]= $unitnum;
                   $unitcolumns["iden_medicion"]= $medicionkey;
                   if (sizeof($result)>0){
@@ -221,9 +225,10 @@ function savedata($newpost,$useremail){
                   $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
                   //Handle ave Species
                   $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
-                  for($i=0; $i<countrows($obstype); $i++){
+
+                  for($i=0; $i<countrows($newpost,$obstype); $i++){
                       //Handle fotos
-                      $iden_foto=uploadfoto("row{$i}", $obstype);
+                      $iden_foto=uploadfoto($newpost,"row{$i}", $obstype, $fromexcel);
                       //$iden_foto='0000';
                       //Handle Species
                       $especiechoice= $newpost["row{$i}*{$obstype}*species"];
@@ -233,12 +238,13 @@ function savedata($newpost,$useremail){
                           $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
                       }
                       
-                      $obscolumns=buildcolumnsarray($obstype, "row{$i}");
+                      $obscolumns=buildcolumnsarray($newpost,$obstype, "row{$i}");
                       $obscolumns["iden_especie"]= $iden_especie;
                       $obscolumns["iden_foto"]= $iden_foto;
                       $obscolumns["iden_{$unitlower}"]= $unitmax;
 
                       $resultofquery[] = savenewentry($obstype, $obscolumns);
+
                   }
               }
 
@@ -255,7 +261,7 @@ function savedata($newpost,$useremail){
                   $sql="SELECT udp_puebla_4326.iden FROM udp_puebla_4326 WHERE ST_Intersects(udp_puebla_4326.geom, ST_GeomFromText('POINT({$mylong} {$mylat})',4326))";
                   $result= $stmnt = DB::select($sql, []);
 
-                      $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
+                      $unitcolumns=buildcolumnsarray($newpost,"{$unitlower}_{$speciestype}", "row0");
                       $unitcolumns["iden_sampling_unit"]= $unitnum;
                       $unitcolumns["iden_medicion"]= $medicionkey;
                       if (sizeof($result)>0){
@@ -264,9 +270,9 @@ function savedata($newpost,$useremail){
                   $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
 
                   $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
-                  for($i=0; $i<countrows($obstype); $i++) {
+                  for($i=0; $i<countrows($newpost,$obstype); $i++) {
                       //Handle fotos
-                      $iden_foto=uploadfoto("row{$i}", $obstype);
+                      $iden_foto=uploadfoto($newpost,"row{$i}", $obstype, $fromexcel);
                       //Handle Species
                       $especiechoice= $newpost["row{$i}*{$obstype}*species"];
                       if ($especiechoice=="Nuevo") {
@@ -275,7 +281,7 @@ function savedata($newpost,$useremail){
                           $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
                       }
                     
-                      $obscolumns=buildcolumnsarray($obstype, "row{$i}");
+                      $obscolumns=buildcolumnsarray($newpost,$obstype, "row{$i}");
                       $obscolumns["iden_especie"]= $iden_especie;
                       $obscolumns["iden_foto"]= $iden_foto;
                       $obscolumns["iden_{$unitlower}"]= $unitmax;
@@ -297,7 +303,7 @@ function savedata($newpost,$useremail){
                   $result= $stmnt = DB::select($sql, []);
                   
                   
-                  $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
+                  $unitcolumns=buildcolumnsarray($newpost,"{$unitlower}_{$speciestype}", "row0");
                   $unitcolumns["iden_sampling_unit"]= $unitnum;
                   $unitcolumns["iden_numero_punto62"]= $newpost["selectPunto"];
                   $unitcolumns["iden_medicion"]= $medicionkey;
@@ -308,9 +314,9 @@ function savedata($newpost,$useremail){
                   $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
 
                   $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
-                  for($i=0; $i<countrows($obstype); $i++) {
+                  for($i=0; $i<countrows($newpost,$obstype); $i++) {
                       //Handle fotos
-                      $iden_foto=uploadfoto("row{$i}", $obstype);
+                      $iden_foto=uploadfoto($newpost,"row{$i}", $obstype, $fromexcel);
                       //Handle Species
                       $especiechoice= $newpost["row{$i}*{$obstype}*species"];
                       if ($especiechoice=="Nuevo") {
@@ -320,7 +326,7 @@ function savedata($newpost,$useremail){
                       }
                       
       
-                      $obscolumns=buildcolumnsarray($obstype, "row{$i}");
+                      $obscolumns=buildcolumnsarray($newpost,$obstype, "row{$i}");
                       $obscolumns["iden_especie"]= $iden_especie;
                       $obscolumns["iden_foto"]= $iden_foto;
                       $obscolumns["iden_cuadrante"]= $newpost["row{$i}*{$obstype}*cuadrante"];
@@ -344,7 +350,7 @@ function savedata($newpost,$useremail){
                   $sql="SELECT udp_puebla_4326.iden FROM udp_puebla_4326 WHERE ST_Intersects(udp_puebla_4326.geom, ST_GeomFromText('POINT({$mylong} {$mylat})',4326))";
                   $result= $stmnt = DB::select($sql, []);
 
-                  $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
+                  $unitcolumns=buildcolumnsarray($newpost,"{$unitlower}_{$speciestype}", "row0");
                   $unitcolumns["iden_sampling_unit"]= $unitnum;
                   $unitcolumns["iden_medicion"]= $medicionkey;
                   if (sizeof($result)>0){
@@ -355,9 +361,9 @@ function savedata($newpost,$useremail){
                   $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
 
                   $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
-                  for($i=0; $i<countrows($obstype); $i++) {
+                  for($i=0; $i<countrows($newpost,$obstype); $i++) {
                       //Handle fotos
-                      $iden_foto=uploadfoto("row{$i}", $obstype);
+                      $iden_foto=uploadfoto($newpost,"row{$i}", $obstype, $fromexcel);
                       //Handle Species
                       $especiechoice= $newpost["row{$i}*{$obstype}*species"];
                       if ($especiechoice=="Nuevo") {
@@ -366,7 +372,7 @@ function savedata($newpost,$useremail){
                           $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
                       }
                   
-                      $obscolumns=buildcolumnsarray($obstype, "row{$i}");
+                      $obscolumns=buildcolumnsarray($newpost,$obstype, "row{$i}");
                       $obscolumns["iden_especie"]= $iden_especie;
                       $obscolumns["iden_foto"]= $iden_foto;
                       $obscolumns["iden_{$unitlower}"]= $unitmax;
@@ -389,7 +395,7 @@ function savedata($newpost,$useremail){
                       $result= $stmnt = DB::select($sql, []);
                       
 
-                  $unitcolumns=buildcolumnsarray("{$unitlower}_{$speciestype}", "row0");
+                  $unitcolumns=buildcolumnsarray($newpost,"{$unitlower}_{$speciestype}", "row0");
                   $unitcolumns["iden_sampling_unit"]= $unitnum;
                   $unitcolumns["iden_medicion"]= $medicionkey;
                   
@@ -402,9 +408,9 @@ function savedata($newpost,$useremail){
                   $resultofquery[] = savenewentry("{$unitlower}_{$speciestype}", $unitcolumns);
                   //Handle Species
                   $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
-                  for($i=0; $i<countrows($obstype); $i++) {
+                  for($i=0; $i<countrows($newpost,$obstype); $i++) {
                       //Handle fotos
-                      $iden_foto=uploadfoto("row{$i}", $obstype);
+                      $iden_foto=uploadfoto($newpost,"row{$i}", $obstype, $fromexcel);
                       //Handle Species
                       $especiechoice= $newpost["row{$i}*{$obstype}*species"];
 
@@ -414,7 +420,7 @@ function savedata($newpost,$useremail){
                           $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
                       }
                       
-                      $obscolumns=buildcolumnsarray($obstype, "row{$i}");
+                      $obscolumns=buildcolumnsarray($newpost,$obstype, "row{$i}");
                       $obscolumns["iden_especie"]= $iden_especie;
                       $obscolumns["iden_foto"]= $iden_foto;
                       $obscolumns["iden_{$unitlower}"]= $unitmax;
@@ -439,12 +445,16 @@ function savedata($newpost,$useremail){
           }
       }
       if(!$failed && $saved>0){
-          //echo 'would redirect';
+        //echo 'would redirect';
+        if ($fromexcel){
+          echo 'would redirect';
+        }else{
           return redirect()->to('/thanks')->send();
-          
+        }
       }else{
-          //$myerror=['Sus datos no fueron guardados.'];
-          session(['error' => $errorarray]);
+        //$myerror=['Sus datos no fueron guardados.'];
+        echo var_dump($errorarray);
+        session(['error' => $errorarray]);
       }
   }
 }

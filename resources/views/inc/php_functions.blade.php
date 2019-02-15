@@ -88,9 +88,9 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
    
 
 
-    function countrows($tablename){
+    function countrows($newpost,$tablename){
         $rownumlist=[];
-        foreach($_POST as $key => $value) {
+        foreach($newpost as $key => $value) {
             if (substr_count($key, '*')==2){
                 $expoldekey=explode("*" , $key );
                 if ($expoldekey[1]==$tablename){
@@ -103,9 +103,9 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
     return(sizeof($rownumlist));
     } 
 
-    function rowmax($tablename){
+    function rowmax($newpost,$tablename){
         $myrowmax=0;
-        foreach($_POST as $key => $value) {
+        foreach($newpost as $key => $value) {
             if (substr_count($key, '*')==2 && strpos($key, $tablename) !== false ){
                 $expoldekey=explode("*" , $key );
                 $num=explode("row" , $expoldekey[0] );
@@ -118,7 +118,7 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
     } 
 
 
-    function buildcolumnsarray($tablename, $rowandnum){
+    function buildcolumnsarray($newpost,$tablename, $rowandnum){
         try {
             $sql="SELECT column_name FROM information_schema.columns WHERE table_schema = 'public' AND table_name   = :tablename";
             $result= DB::select($sql,[':tablename'=>$tablename]);
@@ -130,7 +130,7 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 
                     $col=$colobj->column_name;
                     if (substr($col,0,4)!='iden'){
-                        $colarray[$col]=$_POST["{$rowandnum}*{$tablename}*{$col}"];
+                        $colarray[$col]=$newpost["{$rowandnum}*{$tablename}*{$col}"];
                     }
                 }
             return $colarray;
@@ -145,17 +145,34 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 
 
     
-    function uploadfoto($myRow, $obstype){
-        $fotoerror='';
-        $fotoinputid="{$myRow}*{$obstype}*foto";
-        if (strlen($_FILES[$fotoinputid]["name"])){
+    function uploadfoto($newpost,$myRow, $obstype, $fromexcel=false){
+        $numberofphotos=1;
+        if ($fromexcel){
+          $numberofphotos= sizeof($_FILES['photosFromUser']["name"]);
+          echo "number of fotos==={$numberofphotos}";
+        }
+          $i = explode("w" , $myRow )[1];
+          if ($fromexcel){
+            $fotoinputid="photosFromUser";
+            $filesname = $_FILES[$fotoinputid]["name"][$i];
+            $filestmpname = $_FILES[$fotoinputid]["tmp_name"][$i];
+            $filessize = $_FILES[$fotoinputid]["size"][$i];
+          }else{
+            $fotoinputid="{$myRow}*{$obstype}*foto";
+            $filesname = $_FILES[$fotoinputid]["name"];
+            $filestmpname = $_FILES[$fotoinputid]["tmp_name"];
+            $filessize = $_FILES[$fotoinputid]["size"];
+          }
+          if (isset($filesname)){
+            echo "!!{$myRow}!!";
+
             $target_dir = "../storage/img/";
-            $target_file = $target_dir . $obstype . basename($_FILES[$fotoinputid]["name"]);
+            $target_file = $target_dir . $obstype . basename($filesname);
             $uploadOk = 1;
             $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
             // Check if image file is a actual image or fake image
-            if(isset($_POST["submit"])) {
-                $check = getimagesize($_FILES[$fotoinputid]["tmp_name"]);
+            if(isset($newpost["submit"])) {
+                $check = getimagesize($filestmpname);
                 if($check !== false) {
                     echo "File is an image - " . $check["mime"] . ".";
                     $uploadOk = 1;
@@ -170,7 +187,7 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
                 $uploadOk = 0;
             }
             // Check file size
-            if ($_FILES[$fotoinputid]["size"] > 5000000000) {
+            if ($filessize > 5000000000) {
                 return "El tamano de su foto es demasiado grande";
                 $uploadOk = 0;
             }
@@ -187,9 +204,9 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
             } else {
 
            
-                if (move_uploaded_file($_FILES[$fotoinputid]["tmp_name"], $target_file)) {
+                if (move_uploaded_file($filestmpname, $target_file)) {
                     echo "The file  has been uploaded.";
-                    return $obstype . basename($_FILES[$fotoinputid]["name"]);
+                    return $obstype . basename($filesname);
                 } else {
                     return "Hubo un problema con el cargo de su foto (2)";
                 }
@@ -198,6 +215,7 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
         }
     
         return ('No Presentado');
+      
     }
 
     function uploadshape($shpname){

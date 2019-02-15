@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
                   'comienezo_longitud'=>'4','comienzo_latitud'=>'4',
                   'fin_longitud'=>'4','fin_latitud'=>'4',
                   'anio_de_camara'=>'0', 'numero_de_photos_totales'=>'0', 
-                  'portcentaje_de_bateria'=>'0',
+                  'portcentaje_de_bateria'=>'0', 'anio'=>'0'
                 );
                 foreach ($listnumcol as $numcol=>$precision) {
                   if ($columnname == $numcol) {
