@@ -146,26 +146,15 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 
     
     function uploadfoto($newpost,$myRow, $obstype, $fromexcel=false){
-        $numberofphotos=1;
         if ($fromexcel){
-          $numberofphotos= sizeof($_FILES['photosFromUser']["name"]);
-          echo "number of fotos==={$numberofphotos}";
+          return $newpost["{$myRow}*{$obstype}*foto"];
         }
-          $i = explode("w" , $myRow )[1];
-          if ($fromexcel){
-            $fotoinputid="photosFromUser";
-            $filesname = $_FILES[$fotoinputid]["name"][$i];
-            $filestmpname = $_FILES[$fotoinputid]["tmp_name"][$i];
-            $filessize = $_FILES[$fotoinputid]["size"][$i];
-          }else{
             $fotoinputid="{$myRow}*{$obstype}*foto";
             $filesname = $_FILES[$fotoinputid]["name"];
             $filestmpname = $_FILES[$fotoinputid]["tmp_name"];
             $filessize = $_FILES[$fotoinputid]["size"];
-          }
+          
           if (isset($filesname)){
-            echo "!!{$myRow}!!";
-
             $target_dir = "../storage/img/";
             $target_file = $target_dir . $obstype . basename($filesname);
             $uploadOk = 1;

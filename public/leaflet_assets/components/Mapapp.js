@@ -24534,7 +24534,7 @@ exports.default = Normaapp;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -24552,174 +24552,193 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var MapControl = function (_React$Component) {
-    _inherits(MapControl, _React$Component);
+  _inherits(MapControl, _React$Component);
 
-    function MapControl(props) {
-        _classCallCheck(this, MapControl);
+  function MapControl(props) {
+    _classCallCheck(this, MapControl);
 
-        var _this = _possibleConstructorReturn(this, (MapControl.__proto__ || Object.getPrototypeOf(MapControl)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (MapControl.__proto__ || Object.getPrototypeOf(MapControl)).call(this, props));
 
-        _this.handleSpeciesChange = _this.handleSpeciesChange.bind(_this);
-        _this.handleTotalDistinctChange = _this.handleTotalDistinctChange.bind(_this);
-        _this.handleOpacityChange = _this.handleOpacityChange.bind(_this);
-        _this.handleMaxChange = _this.handleMaxChange.bind(_this);
-        return _this;
+    _this.handleSpeciesChange = _this.handleSpeciesChange.bind(_this);
+    _this.handleTotalDistinctChange = _this.handleTotalDistinctChange.bind(_this);
+    _this.handleOpacityChange = _this.handleOpacityChange.bind(_this);
+    _this.handleMaxChange = _this.handleMaxChange.bind(_this);
+    return _this;
+  }
+
+  _createClass(MapControl, [{
+    key: "handleSpeciesChange",
+    value: function handleSpeciesChange(event) {
+      var error = this.props.handleSpeciesChange(event.target.value);
     }
+  }, {
+    key: "handleTotalDistinctChange",
+    value: function handleTotalDistinctChange(event) {
+      this.props.handleTotalDistinctChange(event.target.value);
+    }
+  }, {
+    key: "handleOpacityChange",
+    value: function handleOpacityChange(event) {
+      this.props.handleOpacityChange(event.target.value);
+    }
+  }, {
+    key: "handleMaxChange",
+    value: function handleMaxChange(event) {
+      this.props.handleMaxChange(event.target.value);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react2.default.createElement(
+        "div",
+        null,
+        _react2.default.createElement(
+          "div",
+          { className: "form-group row  justify-content-start align-items-center p-1 mx-3" },
+          _react2.default.createElement(
+            "div",
+            { className: "p-3" },
+            _react2.default.createElement(
+              "label",
+              { className: "table_option" },
+              " Clase"
+            ),
+            _react2.default.createElement(
+              "select",
+              {
+                name: "table_option",
+                id: "table_option",
+                onChange: this.handleSpeciesChange,
+                className: "table_option form-control "
+              },
+              _react2.default.createElement(
+                "option",
+                { value: "ave" },
+                "Ave"
+              ),
+              _react2.default.createElement(
+                "option",
+                { value: "hierba" },
+                "Hierba"
+              ),
+              _react2.default.createElement(
+                "option",
+                { value: "herpetofauna" },
+                "Herpetofauna"
+              ),
+              _react2.default.createElement(
+                "option",
+                { value: "arbol" },
+                "Arbol"
+              ),
+              _react2.default.createElement(
+                "option",
+                { value: "arbusto" },
+                "Arbusto"
+              ),
+              _react2.default.createElement(
+                "option",
+                { value: "mamifero" },
+                "Mamifero"
+              )
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "p-3" },
+            _react2.default.createElement(
+              "label",
+              { className: "table_option" },
+              "Especies"
+            ),
+            _react2.default.createElement(
+              "select",
+              {
+                name: "table_option",
+                id: "table_option",
+                onChange: this.handleTotalDistinctChange,
+                className: "table_option form-control "
+              },
+              _react2.default.createElement(
+                "option",
+                { value: "total_observaciones" },
+                "Total"
+              ),
+              _react2.default.createElement(
+                "option",
+                { value: "distinct_species" },
+                "Distincto"
+              )
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "p-3" },
+            _react2.default.createElement(
+              "label",
+              { className: "style_option" },
+              "Max Numero por colores"
+            ),
+            _react2.default.createElement("input", {
+              name: "maxNumber",
+              type: "number",
+              min: "6",
+              value: this.props.mapSettings.maxValue,
+              id: "table_optionOpacity",
+              onChange: this.handleMaxChange,
+              className: "table_option form-control "
+            })
+          ),
+          _react2.default.createElement(
+            "div",
+            { className: "p-3" },
+            _react2.default.createElement(
+              "label",
+              { className: "style_option" },
+              "Opacidad"
+            ),
+            _react2.default.createElement(
+              "select",
+              {
+                name: "table_option",
+                id: "table_optionOpacity",
+                defaultValue: "0.6",
+                onChange: this.handleOpacityChange,
+                className: "table_option form-control "
+              },
+              _react2.default.createElement(
+                "option",
+                { value: "1.0" },
+                "1.0"
+              ),
+              _react2.default.createElement(
+                "option",
+                { value: "0.8" },
+                "0.8"
+              ),
+              _react2.default.createElement(
+                "option",
+                { value: "0.6" },
+                "0.6"
+              ),
+              _react2.default.createElement(
+                "option",
+                { value: "0.4" },
+                "0.4"
+              ),
+              _react2.default.createElement(
+                "option",
+                { value: "0.2" },
+                "0.2"
+              )
+            )
+          )
+        )
+      );
+    }
+  }]);
 
-    _createClass(MapControl, [{
-        key: "handleSpeciesChange",
-        value: function handleSpeciesChange(event) {
-            var error = this.props.handleSpeciesChange(event.target.value);
-        }
-    }, {
-        key: "handleTotalDistinctChange",
-        value: function handleTotalDistinctChange(event) {
-            this.props.handleTotalDistinctChange(event.target.value);
-        }
-    }, {
-        key: "handleOpacityChange",
-        value: function handleOpacityChange(event) {
-            this.props.handleOpacityChange(event.target.value);
-        }
-    }, {
-        key: "handleOpacityChange",
-        value: function handleOpacityChange(event) {
-            this.props.handleOpacityChange(event.target.value);
-        }
-    }, {
-        key: "handleMaxChange",
-        value: function handleMaxChange(event) {
-            this.props.handleMaxChange(event.target.value);
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            return _react2.default.createElement(
-                "div",
-                null,
-                _react2.default.createElement(
-                    "div",
-                    { className: "form-group row  justify-content-start align-items-center p-1 mx-3" },
-                    _react2.default.createElement(
-                        "div",
-                        { className: "p-3" },
-                        _react2.default.createElement(
-                            "label",
-                            { className: "table_option" },
-                            " Clase"
-                        ),
-                        _react2.default.createElement(
-                            "select",
-                            { name: "table_option", id: "table_option", onChange: this.handleSpeciesChange, className: "table_option form-control " },
-                            _react2.default.createElement(
-                                "option",
-                                { value: "ave" },
-                                "Ave"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "hierba" },
-                                "Hierba"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "herpetofauna" },
-                                "Herpetofauna"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "arbol" },
-                                "Arbol"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "arbusto" },
-                                "Arbusto"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "mamifero" },
-                                "Mamifero"
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        "div",
-                        { className: "p-3" },
-                        _react2.default.createElement(
-                            "label",
-                            { className: "table_option" },
-                            "Especies"
-                        ),
-                        _react2.default.createElement(
-                            "select",
-                            { name: "table_option", id: "table_option", onChange: this.handleTotalDistinctChange, className: "table_option form-control " },
-                            _react2.default.createElement(
-                                "option",
-                                { value: "total_observaciones" },
-                                "Total"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "distinct_species" },
-                                "Distincto"
-                            )
-                        )
-                    ),
-                    _react2.default.createElement(
-                        "div",
-                        { className: "p-3" },
-                        _react2.default.createElement(
-                            "label",
-                            { className: "style_option" },
-                            "Max Numero por colores"
-                        ),
-                        _react2.default.createElement("input", { name: "maxNumber", type: "number", min: "6", value: this.props.mapSettings.maxValue, id: "table_optionOpacity", onChange: this.handleMaxChange, className: "table_option form-control " })
-                    ),
-                    _react2.default.createElement(
-                        "div",
-                        { className: "p-3" },
-                        _react2.default.createElement(
-                            "label",
-                            { className: "style_option" },
-                            "Opacidad"
-                        ),
-                        _react2.default.createElement(
-                            "select",
-                            { name: "table_option", id: "table_optionOpacity", defaultValue: "0.6", onChange: this.handleOpacityChange, className: "table_option form-control " },
-                            _react2.default.createElement(
-                                "option",
-                                { value: "1.0" },
-                                "1.0"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "0.8" },
-                                "0.8"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "0.6" },
-                                "0.6"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "0.4" },
-                                "0.4"
-                            ),
-                            _react2.default.createElement(
-                                "option",
-                                { value: "0.2" },
-                                "0.2"
-                            )
-                        )
-                    )
-                )
-            );
-        }
-    }]);
-
-    return MapControl;
+  return MapControl;
 }(_react2.default.Component);
 
 exports.default = MapControl;

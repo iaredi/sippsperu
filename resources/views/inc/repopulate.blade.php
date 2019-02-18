@@ -62,7 +62,7 @@
                 }
 
                 if (!$alreadyhasrows){
-                    for ($x = 1; $x < countrows($tablename); $x++){
+                    for ($x = 1; $x < countrows($_POST, $tablename); $x++){
                         echo "<script>document.getElementById('addElementRow'+".json_encode($tablename).").onclick()</script>";
                         
                     }

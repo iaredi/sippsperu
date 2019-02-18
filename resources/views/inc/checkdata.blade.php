@@ -98,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
         }
     }
   }
-    for($i=0; $i<countrows('observacion_ave'); $i++){
+    for($i=0; $i<countrows($_POST,'observacion_ave'); $i++){
       $micrototal=
         $_POST["row{$i}*observacion_ave*fo_arbol"] + 
         $_POST["row{$i}*observacion_ave*fo_arbusto"] +

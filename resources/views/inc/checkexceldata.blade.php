@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
             $newobspost["row{$true_row}*observacion_{$lifeform}*su"] = $spreadsheet->getSheetByName($sheetobs)->getCell("M{$row_number}")->getValue();
             $newobspost["row{$true_row}*observacion_{$lifeform}*notas"] = $spreadsheet->getSheetByName($sheetobs)->getCell("M{$row_number}")->getValue();
 
-            $newobspost["row{$true_row}*observacion_{$lifeform}*iden_foto"] = $spreadsheet->getSheetByName($sheetobs)->getCell("O{$row_number}")->getValue();
+            $newobspost["row{$true_row}*observacion_{$lifeform}*foto"] = $spreadsheet->getSheetByName($sheetobs)->getCell("O{$row_number}")->getValue();
           }
           $row_number++;
           if ($row_number>100){

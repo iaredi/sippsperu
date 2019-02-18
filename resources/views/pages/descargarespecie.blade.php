@@ -6,21 +6,41 @@ if (!session('email')){
 session(['speciesabsent' => 'false']);
 
 if ($_SERVER['REQUEST_METHOD']=="POST"){
- 
-    $lifeform= $_POST['dl_option'];
+  $lifeform= $_POST['dl_option'];
+  $orignallifeform = $_POST['dl_option'];
+  $originaltargetob='especie_'. $_POST['dl_option'];
+ ////
+    $extra='';
+    if ($lifeform =='reptil'){
+      $lifeform ='herpetofauna';
+      $extra="and especie_{$lifeform}.iden_amfibio='0'";
+    }
+    if ($lifeform =='amfibio'){
+      $lifeform ='herpetofauna';
+      $extra="and especie_{$lifeform}.iden_amfibio='1'";
+    }
+    if ($lifeform =='cactus'){
+      $lifeform ='arbol';
+      $extra="and especie_{$lifeform}.iden_cactus='1'";
+    }
+    if ($lifeform =='arbol'){
+      $extra="and especie_{$lifeform}.iden_cactus='0'";
+    }
+    ////
+    
     $targetob='especie_'.$lifeform;
     $email = session('email');
     $name=  explode("@" , $email)[0];
-    $rawfile= "C:\\Users\\fores\\Desktop\\sql\\raw{$targetob}.xml";
-    $finalfile= "C:\\Users\\fores\\Desktop\\sql\\{$targetob}.xml";
+    $rawfile= "C:\\Users\\fores\\Desktop\\sql\\raw{$originaltargetob}.xml";
+    $finalfile= "C:\\Users\\fores\\Desktop\\sql\\{$originaltargetob}.xml";
     
     if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
-        $rawfile= "/postgres/raw{$targetob}.xml";
-        $finalfile= "/postgres/{$targetob}.xml";
+        $rawfile= "/postgres/raw{$originaltargetob}.xml";
+        $finalfile= "/postgres/{$originaltargetob}.xml";
     } 
 
     $transpunto='punto';
-    if ($_POST['dl_option']=='hierba' || $_POST['dl_option']=='herpetofauna'){
+    if ($lifeform=='hierba' || $lifeform=='herpetofauna'){
         $transpunto='transecto';
     }
     
@@ -30,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
                   XMLELEMENT(name quadrant, 
                                   XMLATTRIBUTES(udp_id as id),
                     XMLELEMENT(name LOOKUPTABLE,
-                        XMLATTRIBUTES('especie_{$lifeform}' as NAME ),
+                        XMLATTRIBUTES('especie_{$orignallifeform}' as NAME ),
                       XMLAGG({$lifeform}_group))
                           )
                 FROM (
@@ -51,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
                           left JOIN
                             especie_{$lifeform} ON observacion_{$lifeform}.iden_especie = especie_{$lifeform}.iden
                       
-                            where especie_{$lifeform}.cientifico!='0000' and especie_{$lifeform}.cientifico!='000' and especie_{$lifeform}.cientifico!='00'
+                            where especie_{$lifeform}.cientifico!='0000' and especie_{$lifeform}.cientifico!='000' and especie_{$lifeform}.cientifico!='00' {$extra}
                             GROUP BY udp_puebla_4326.iden, especie_{$lifeform}.cientifico)p
                                 GROUP BY p.newespecie, p.newudp
                             )t								
@@ -89,7 +109,7 @@ if($size>0){
         exit;
     }
 }else{
-  $nospecies = "No hay especies para {$lifeform}";
+  $nospecies = "No hay especies para {$orignallifeform}";
   session(['speciesabsent' => 'true']);
 }
 
@@ -122,7 +142,9 @@ if($size>0){
         <input type="radio" name="dl_option" value="ave"> ave<br>
         <input type="radio" name="dl_option" value="arbol"> arbol<br>
         <input type="radio" name="dl_option" value="arbusto"> arbusto<br>
-        <input type="radio" name="dl_option" value="herpetofauna"> herpetofauna<br>
+        <input type="radio" name="dl_option" value="cactus"> cactus<br>
+        <input type="radio" name="dl_option" value="reptil"> reptil<br>
+        <input type="radio" name="dl_option" value="amfibio"> amfibio<br>
         <input type="radio" name="dl_option" value="hierba"> hierba<br>
         <input type="radio" name="dl_option" value="mamifero"> mamifero<br>
         <input type="submit" id="measurementlinea_mtpSubmit" class="mySubmit">

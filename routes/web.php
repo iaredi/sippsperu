@@ -54,14 +54,35 @@ Route::post('/mostrarnormas', 'PagesController@mostrarnormas');
 
 
 Route::get('getspecieslist/{lifeform}', function ($lifeform) {
-    $targetob='especie_'.$lifeform;
+  $orignallifeform = $lifeform;
+  $originaltargetob='especie_'. $lifeform;
   
-    $rawfile= "C:\\Users\\fores\\Desktop\\sql\\raw{$targetob}.xml";
-    $finalfile= "C:\\Users\\fores\\Desktop\\sql\\{$targetob}.xml";
+    ////
+    $extra='';
+    if ($lifeform =='reptil'){
+      $lifeform ='herpetofauna';
+      $extra="and especie_{$lifeform}.iden_amfibio='0'";
+    }
+    if ($lifeform =='amfibio'){
+      $lifeform ='herpetofauna';
+      $extra="and especie_{$lifeform}.iden_amfibio='1'";
+    }
+    if ($lifeform =='cactus'){
+      $lifeform ='arbol';
+      $extra="and especie_{$lifeform}.iden_cactus='1'";
+    }
+    if ($lifeform =='arbol'){
+      $extra="and especie_{$lifeform}.iden_cactus='0'";
+    }
+    ////
+
+    $targetob='especie_'.$lifeform;
+    $rawfile= "C:\\Users\\fores\\Desktop\\sql\\raw{$originaltargetob}.xml";
+    $finalfile= "C:\\Users\\fores\\Desktop\\sql\\{$originaltargetob}.xml";
     
     if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
-      $rawfile= "/postgres/raw{$targetob}.xml";
-      $finalfile= "/postgres/{$targetob}.xml";
+      $rawfile= "/postgres/raw{$originaltargetob}.xml";
+      $finalfile= "/postgres/{$originaltargetob}.xml";
     } 
 
     $transpunto='punto';
@@ -75,7 +96,7 @@ Route::get('getspecieslist/{lifeform}', function ($lifeform) {
                   XMLELEMENT(name quadrant, 
                                   XMLATTRIBUTES(udp_id as id),
                     XMLELEMENT(name LOOKUPTABLE,
-                        XMLATTRIBUTES('especie_{$lifeform}' as NAME ),
+                        XMLATTRIBUTES('especie_{$orignallifeform}' as NAME ),
                       XMLAGG({$lifeform}_group))
                           )
                 FROM (
@@ -96,7 +117,7 @@ Route::get('getspecieslist/{lifeform}', function ($lifeform) {
                           left JOIN
                             especie_{$lifeform} ON observacion_{$lifeform}.iden_especie = especie_{$lifeform}.iden
                       
-                            where especie_{$lifeform}.cientifico!='0000' and especie_{$lifeform}.cientifico!='000' and especie_{$lifeform}.cientifico!='00'
+                            where especie_{$lifeform}.cientifico!='0000' and especie_{$lifeform}.cientifico!='000' and especie_{$lifeform}.cientifico!='00' {$extra}
                             GROUP BY udp_puebla_4326.iden, especie_{$lifeform}.cientifico)p
                                 GROUP BY p.newespecie, p.newudp
                             )t								
@@ -138,7 +159,7 @@ if($size>0){
   //return response()->download($finalfile);
 
 }else{
-  echo "No hay especies para {$lifeform}";
+  echo "No hay especies para {$orignallifeform}";
 }
 
 

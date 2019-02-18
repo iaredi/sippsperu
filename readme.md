@@ -5,7 +5,7 @@ This project aims to provide a web platform to capture, analyze, and display bio
 
 ### User Interface
 
-The user interface was custom built to be intuitieve and user friendly. Existing data is autmoatically retieved to be editable. Extensive data verification is done automatically.
+The user interface was custom built to be intuitive and user friendly. Existing data is autmoatically retrieved to be editable. Extensive data verification is done automatically.
 This section is under the 'Ingresar Datos' heading.
 
 
@@ -14,7 +14,7 @@ Spatial data mapping was done using Leaflet. This page also uses React to provid
 
 ### Database
 
-All data is stored in a relationa database using postgreSQL. Spatial data is handled using the POSTGIS extension.  
+All data is stored in a relationa database using PostgreSQL. Spatial data is handled using the POSTGIS extension.  
 
 ### Development and Framework
 
@@ -23,7 +23,7 @@ Laravel was used to scaffold the views using Blade and PHP.
 
 ### Server
 
-The website runs on a Debian 9 (Stretch) droplet from Digial Ocean. Encryption is done using LetsEncrypt and Certbot. Apache serves the site to the web. 
+The website runs on a Debian 9 (Stretch) droplet from Digial Ocean. Encryption is done using LetsEncrypt and Certbot. Apache2 serves the site to the web. 
 
 
 
