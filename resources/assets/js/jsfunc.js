@@ -357,7 +357,21 @@ function createRows (tableName,menu,myCols, myNumRow, obs=false,customList=[]){
         invadorLabel.textContent="Invasor";
         invadorLabel.className="formcolumnlabels"
         columnRowOld.appendChild(invadorLabel);
-        
+        //Cactus Label
+        if (tableName=='observacion_arbol'){
+          const cactusLabel = document.createElement("td");
+          cactusLabel.textContent="Cactus";
+          cactusLabel.className="formcolumnlabels"
+          columnRowOld.appendChild(cactusLabel);
+        }
+        //amfibio Label
+        if (tableName=='observacion_herpetofauna'){
+          const amfibioLabel = document.createElement("td");
+          amfibioLabel.textContent="amfibio";
+          amfibioLabel.className="formcolumnlabels"
+          columnRowOld.appendChild(amfibioLabel);
+        }
+          
         //Species comun Label
         const speciesLabelComun = document.createElement("td");
         speciesLabelComun.textContent="Nuevo Nombre Comun";
@@ -374,7 +388,7 @@ function createRows (tableName,menu,myCols, myNumRow, obs=false,customList=[]){
         const invadorCheck = document.createElement("INPUT");
         invadorCheck.setAttribute("type", "checkbox");
         invadorCheck.classList.add("row"+myNumRow+"disableme")
-        invadorCheck.classList.add('invadorCheck');
+        invadorCheck.classList.add('bigCheck');
         invadorCheck.disabled=true;
         invadorCheck.value='true'
         invadorCheck.name = "row"+myNumRow+"*"+tableName+ "*"+"invasor";
@@ -382,6 +396,36 @@ function createRows (tableName,menu,myCols, myNumRow, obs=false,customList=[]){
         boxContainerInvador.className="centerInTd"
         boxContainerInvador.appendChild(invadorCheck)
         firstDataRow.appendChild(boxContainerInvador);
+
+        //Cactus Checkbox
+        if (tableName=='observacion_arbol'){
+          const cactusCheck = document.createElement("INPUT");
+          cactusCheck.setAttribute("type", "checkbox");
+          cactusCheck.classList.add("row"+myNumRow+"disableme")
+          cactusCheck.classList.add('bigCheck');
+          cactusCheck.disabled=true;
+          cactusCheck.value='true'
+          cactusCheck.name = "row"+myNumRow+"*"+tableName+ "*"+"cactus";
+          const boxContainercactus = document.createElement("td");
+          boxContainercactus.className="centerInTd"
+          boxContainercactus.appendChild(cactusCheck)
+          firstDataRow.appendChild(boxContainercactus);
+        }
+
+        //anfibio Checkbox
+        if (tableName=='observacion_herpetofauna'){
+          const anfibioCheck = document.createElement("INPUT");
+          anfibioCheck.setAttribute("type", "checkbox");
+          anfibioCheck.classList.add("row"+myNumRow+"disableme")
+          anfibioCheck.classList.add('bigCheck');
+          anfibioCheck.disabled=true;
+          anfibioCheck.value='true'
+          anfibioCheck.name = "row"+myNumRow+"*"+tableName+ "*"+"anfibio";
+          const boxContaineranfibio = document.createElement("td");
+          boxContaineranfibio.className="centerInTd"
+          boxContaineranfibio.appendChild(anfibioCheck)
+          firstDataRow.appendChild(boxContaineranfibio);
+        }
 
         //Species comun inputbox
         const speciesBoxComun = document.createElement("INPUT");
@@ -457,7 +501,7 @@ function createRows (tableName,menu,myCols, myNumRow, obs=false,customList=[]){
     if(obs){
         const fotoInput = document.createElement("INPUT");
         fotoInput.setAttribute("type", "file");
-        fotoInput.name = ("row"+myNumRow+"*"+tableName+ "*"+'foto').toLowerCase();
+        fotoInput.name = ("row"+myNumRow+"*"+tableName+ "*"+'iden_foto').toLowerCase();
         fotoInput.id = tableName+'foto';
         const fotoInputBox = document.createElement("td");
         fotoInputBox.appendChild(fotoInput);
@@ -817,17 +861,18 @@ function selectSpeciesOnChange(tableName, menu, numRows){
     const currentFunction2= function(tableName,numRows){
         const myChoice = document.getElementById("row"+numRows+tableName+"Form").value;
         const allMyRows= document.getElementsByClassName("row"+numRows+"*"+tableName)
-        const colRow = document.getElementsByClassName("row"+numRows+"disableme");
+        const colRows = document.getElementsByClassName("row"+numRows+"disableme");
+
         if (myChoice==="Nuevo"){
-            colRow[0].disabled= false  
-            colRow[1].disabled= false
-            colRow[2].disabled= false
+          for (let index = 0; index < colRows.length; index++) {
+            colRows[index].disabled= false ;
+          }
         }else{
-            colRow[0].disabled= true 
-            colRow[1].disabled= true 
-            colRow[2].disabled= true 
-            colRow[1].value=""
-            colRow[2].value=""     
+          for (let index = 0; index < colRows.length; index++) {
+            colRows[index].disabled= true ;
+          }
+          colRows[colRows.length-1].value="";
+          colRows[colRows.length-2].value="";  
         }
         if (myChoice==="0000"){
             for(let  i=0;i<allMyRows.length;i++){

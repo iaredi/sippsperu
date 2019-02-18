@@ -61,18 +61,18 @@ Route::get('getspecieslist/{lifeform}', function ($lifeform) {
     $extra='';
     if ($lifeform =='reptil'){
       $lifeform ='herpetofauna';
-      $extra="and especie_{$lifeform}.iden_amfibio='0'";
+      $extra="and especie_{$lifeform}.iden_anfibio='false'";
     }
-    if ($lifeform =='amfibio'){
+    if ($lifeform =='anfibio'){
       $lifeform ='herpetofauna';
-      $extra="and especie_{$lifeform}.iden_amfibio='1'";
+      $extra="and especie_{$lifeform}.iden_anfibio='true'";
     }
     if ($lifeform =='cactus'){
       $lifeform ='arbol';
-      $extra="and especie_{$lifeform}.iden_cactus='1'";
+      $extra="and especie_{$lifeform}.iden_cactus='true'";
     }
     if ($lifeform =='arbol'){
-      $extra="and especie_{$lifeform}.iden_cactus='0'";
+      $extra="and especie_{$lifeform}.iden_cactus='false'";
     }
     ////
 

@@ -39,13 +39,9 @@
 
 function askforkey($mytable, $myprimary, $myfield,  $myvalue){
        try {
-            $sql="SELECT {$myprimary} as {$myprimary} FROM {$mytable} WHERE {$myfield}=:value";
+            $sql="SELECT {$myprimary} FROM {$mytable} WHERE {$myfield}=:value";
             $stmnt= DB::select($sql,[':value'=>$myvalue]);
-            if(is_array($stmnt)){
-                return $stmnt[0]->$myprimary;
-            }else{
-               return $stmnt->$myprimary; 
-            }
+            return $stmnt[0]->$myprimary; 
        } catch(PDOException $e) {
             return $e->getMessage();
        }
@@ -62,20 +58,32 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
     }
 
 
-    function savenewspecies($table,$comun,$cientifico, $invador ){
-        $invador='false';
-        if ($invador){
-            $invador='true';
+    function savenewspecies($table,$comun,$cientifico, $invasor, $extra = false ){
+        $invasorstring='false';
+        if ($invasor){
+            $invasorstring='true';
+        }
+        $extrastring='false';
+        if ($extra){
+            $extrastring='true';
         }   
+        
         $newspecies=array(
             "comun"=> $comun,
             "cientifico"=> $cientifico,
             "comun_cientifico"=> $comun."*".$cientifico,
-            "invasor"=> $invador
+            "invasor"=> $invasorstring
                 );
-                $namesmatching = DB::select("SELECT cientifico FROM {$table} WHERE cientifico=:value", [':value'=>$cientifico]);
+        if ($table=='especie_arbol'){
+          $newspecies["iden_cactus"] = $extrastring;
+        }
+        if ($table=='especie_herpetofauna'){
+          $newspecies["iden_anfibio"] = $extrastring;
+        }
+        
 
-                if (sizeof($namesmatching)==1){
+        $namesmatching = DB::select("SELECT cientifico FROM {$table} WHERE cientifico=:value", [':value'=>$cientifico]);
+        if (sizeof($namesmatching)==1){
             return askforkey($table, 'iden', "cientifico",  $cientifico);
         }else{
             $resultofquery = savenewentry($table, $newspecies);
@@ -140,16 +148,11 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
        }
   }
 
-
-
-
-
-    
     function uploadfoto($newpost,$myRow, $obstype, $fromexcel=false){
         if ($fromexcel){
-          return $newpost["{$myRow}*{$obstype}*foto"];
+          return $newpost["{$myRow}*{$obstype}*iden_foto"];
         }
-            $fotoinputid="{$myRow}*{$obstype}*foto";
+            $fotoinputid="{$myRow}*{$obstype}*iden_foto";
             $filesname = $_FILES[$fotoinputid]["name"];
             $filestmpname = $_FILES[$fotoinputid]["tmp_name"];
             $filessize = $_FILES[$fotoinputid]["size"];

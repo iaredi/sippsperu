@@ -13,18 +13,18 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
     $extra='';
     if ($lifeform =='reptil'){
       $lifeform ='herpetofauna';
-      $extra="and especie_{$lifeform}.iden_amfibio='0'";
+      $extra="and especie_{$lifeform}.iden_anfibio='false'";
     }
-    if ($lifeform =='amfibio'){
+    if ($lifeform =='anfibio'){
       $lifeform ='herpetofauna';
-      $extra="and especie_{$lifeform}.iden_amfibio='1'";
+      $extra="and especie_{$lifeform}.iden_anfibio='true'";
     }
     if ($lifeform =='cactus'){
       $lifeform ='arbol';
-      $extra="and especie_{$lifeform}.iden_cactus='1'";
+      $extra="and especie_{$lifeform}.iden_cactus='true'";
     }
     if ($lifeform =='arbol'){
-      $extra="and especie_{$lifeform}.iden_cactus='0'";
+      $extra="and especie_{$lifeform}.iden_cactus='false'";
     }
     ////
     
@@ -144,7 +144,7 @@ if($size>0){
         <input type="radio" name="dl_option" value="arbusto"> arbusto<br>
         <input type="radio" name="dl_option" value="cactus"> cactus<br>
         <input type="radio" name="dl_option" value="reptil"> reptil<br>
-        <input type="radio" name="dl_option" value="amfibio"> amfibio<br>
+        <input type="radio" name="dl_option" value="anfibio"> anfibio<br>
         <input type="radio" name="dl_option" value="hierba"> hierba<br>
         <input type="radio" name="dl_option" value="mamifero"> mamifero<br>
         <input type="submit" id="measurementlinea_mtpSubmit" class="mySubmit">

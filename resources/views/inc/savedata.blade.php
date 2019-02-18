@@ -108,6 +108,7 @@ function savedata($newpost,$useremail, $fromexcel=false){
               $medicionfkey=askforkey("linea_mtp", "iden", "nombre_iden", $mtpchoice);
 
               $linea_mtpclave_predio=askforkey("linea_mtp", "iden_predio", "nombre_iden", $mtpchoice);
+              echo "HI{$mtpchoice}";
               $predioname=askforkey("predio", "nombre", "iden", $linea_mtpclave_predio);
               $medicioncolumns=array(
                   "iden_linea_mtp"=>$medicionfkey,
@@ -232,10 +233,13 @@ function savedata($newpost,$useremail, $fromexcel=false){
                       //$iden_foto='0000';
                       //Handle Species
                       $especiechoice= $newpost["row{$i}*{$obstype}*species"];
+                      if(sizeof(explode("*" , $especiechoice))==2){
+                        $especiechoice=explode("*" , $especiechoice)[1];
+                      }
                       if ($especiechoice=="Nuevo") {
                           $iden_especie=savenewspecies( $speciestable,$newpost["row{$i}*{$obstype}*comun"],$newpost["row{$i}*{$obstype}*cientifico"],isset($newpost["row{$i}*{$obstype}*invasor"]) );
                       }else{
-                          $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
+                        $iden_especie=askforkey( $speciestable, "iden", "cientifico", $especiechoice);
                       }
                       
                       $obscolumns=buildcolumnsarray($newpost,$obstype, "row{$i}");
@@ -275,10 +279,13 @@ function savedata($newpost,$useremail, $fromexcel=false){
                       $iden_foto=uploadfoto($newpost,"row{$i}", $obstype, $fromexcel);
                       //Handle Species
                       $especiechoice= $newpost["row{$i}*{$obstype}*species"];
+                      if(sizeof(explode("*" , $especiechoice))==2){
+                        $especiechoice=explode("*" , $especiechoice)[1];
+                      }
                       if ($especiechoice=="Nuevo") {
                           $iden_especie=savenewspecies( $speciestable,$newpost["row{$i}*{$obstype}*comun"],$newpost["row{$i}*{$obstype}*cientifico"],isset($newpost["row{$i}*{$obstype}*invasor"]) );
                       }else{
-                          $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
+                        $iden_especie=askforkey( $speciestable, "iden", "cientifico", $especiechoice);
                       }
                     
                       $obscolumns=buildcolumnsarray($newpost,$obstype, "row{$i}");
@@ -305,7 +312,7 @@ function savedata($newpost,$useremail, $fromexcel=false){
                   
                   $unitcolumns=buildcolumnsarray($newpost,"{$unitlower}_{$speciestype}", "row0");
                   $unitcolumns["iden_sampling_unit"]= $unitnum;
-                  $unitcolumns["iden_numero_punto62"]= $newpost["selectPunto"];
+                  $unitcolumns["iden_numero_punto62"]= $unitnum;
                   $unitcolumns["iden_medicion"]= $medicionkey;
                   if (sizeof($result)>0){
                       $unitcolumns["iden_udp"]= $result[0]->iden;
@@ -319,10 +326,13 @@ function savedata($newpost,$useremail, $fromexcel=false){
                       $iden_foto=uploadfoto($newpost,"row{$i}", $obstype, $fromexcel);
                       //Handle Species
                       $especiechoice= $newpost["row{$i}*{$obstype}*species"];
+                      if(sizeof(explode("*" , $especiechoice))==2){
+                        $especiechoice=explode("*" , $especiechoice)[1];
+                      }
                       if ($especiechoice=="Nuevo") {
-                          $iden_especie=savenewspecies( $speciestable,$newpost["row{$i}*{$obstype}*comun"],$newpost["row{$i}*{$obstype}*cientifico"],isset($newpost["row{$i}*{$obstype}*invasor"]) );
+                          $iden_especie=savenewspecies( $speciestable,$newpost["row{$i}*{$obstype}*comun"],$newpost["row{$i}*{$obstype}*cientifico"],isset($newpost["row{$i}*{$obstype}*invasor"]),isset($newpost["row{$i}*{$obstype}*cactus"]) );
                       }else{
-                          $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
+                        $iden_especie=askforkey( $speciestable, "iden", "cientifico", $especiechoice);
                       }
                       
       
@@ -366,10 +376,13 @@ function savedata($newpost,$useremail, $fromexcel=false){
                       $iden_foto=uploadfoto($newpost,"row{$i}", $obstype, $fromexcel);
                       //Handle Species
                       $especiechoice= $newpost["row{$i}*{$obstype}*species"];
+                      if(sizeof(explode("*" , $especiechoice))==2){
+                        $especiechoice=explode("*" , $especiechoice)[1];
+                      }
                       if ($especiechoice=="Nuevo") {
-                          $iden_especie=savenewspecies( $speciestable,$newpost["row{$i}*{$obstype}*comun"],$newpost["row{$i}*{$obstype}*cientifico"],isset($newpost["row{$i}*{$obstype}*invasor"]) );
+                          $iden_especie=savenewspecies( $speciestable,$newpost["row{$i}*{$obstype}*comun"],$newpost["row{$i}*{$obstype}*cientifico"],isset($newpost["row{$i}*{$obstype}*invasor"]),isset($newpost["row{$i}*{$obstype}*anfibio"]) );
                       }else{
-                          $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
+                        $iden_especie=askforkey( $speciestable, "iden", "cientifico", $especiechoice);
                       }
                   
                       $obscolumns=buildcolumnsarray($newpost,$obstype, "row{$i}");
@@ -413,11 +426,13 @@ function savedata($newpost,$useremail, $fromexcel=false){
                       $iden_foto=uploadfoto($newpost,"row{$i}", $obstype, $fromexcel);
                       //Handle Species
                       $especiechoice= $newpost["row{$i}*{$obstype}*species"];
-
+                      if(sizeof(explode("*" , $especiechoice))==2){
+                        $especiechoice=explode("*" , $especiechoice)[1];
+                      }
                       if ($especiechoice=="Nuevo") {
                           $iden_especie=savenewspecies( $speciestable,$newpost["row{$i}*{$obstype}*comun"],$newpost["row{$i}*{$obstype}*cientifico"],isset($newpost["row{$i}*{$obstype}*invasor"]) );
                       }else{
-                          $iden_especie=askforkey( $speciestable, "iden", "comun_cientifico", $especiechoice);
+                        $iden_especie=askforkey($speciestable, "iden", "cientifico", $especiechoice);
                       }
                       
                       $obscolumns=buildcolumnsarray($newpost,$obstype, "row{$i}");
