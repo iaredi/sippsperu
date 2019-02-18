@@ -454,6 +454,7 @@ function createRows(tableName, menu, myCols, myNumRow) {
         invadorLabel.textContent = "Invasor";
         invadorLabel.className = "formcolumnlabels";
         columnRowOld.appendChild(invadorLabel);
+
         //Species comun Label
         var speciesLabelComun = document.createElement("td");
         speciesLabelComun.textContent = "Nuevo Nombre Comun";
