@@ -2,7 +2,6 @@
   use PhpOffice\PhpSpreadsheet\IOFactory;
   $errorlist=[];
   if ($_SERVER['REQUEST_METHOD']=="POST") {
-    //echo var_dump($_FILES);
       if ($_FILES['excelFromUser']['name']=='') {
         $errorlist[]= "No hay excel";
       }
@@ -76,18 +75,18 @@
           }
           $camararownumber++;
         }
-
-        echo var_dump($medicionpost); 
         $newmedicion = savedata($medicionpost,$useremail,true);
+
+
 
         //Begin saving observations
         foreach ($worksheetNames as $sheet) {
-          $basepost = array('selectlinea_mtp' => $_POST['selectlinea_mtp']);
-          $basepost['selectmedicion'] = $newmedicion;
-          $basepost['mode']='Datos Nuevos';
-          $basepost['submit']='submit';
+          $obspost = array('selectlinea_mtp' => $_POST['selectlinea_mtp']);
+          $obspost['selectmedicion'] = $newmedicion;
+          $obspost['mode']='Datos Nuevos';
+          $obspost['submit']='submit';
           //LOC
-          if (strpos($sheet, 'AVE_LOC') !== false){
+          if (strpos($sheet, 'MAMI_LOC') !== false){
             $lifeformraw = explode("_" , $sheet)[0];
             if ($lifeformraw=="AVE") $lifeform='ave';
             if ($lifeformraw=="ARBO") $lifeform='arbol';
@@ -101,23 +100,26 @@
               $transpunto="transecto";
             }
             $transpuntoup=ucfirst($transpunto);
-            $basepost['selectobservaciones'] = $lifeform;
-            $given_number = explode("_" , $sheet)[2]
+            $obspost['selectobservaciones'] = $lifeform;
+            $given_number = explode("_" , $sheet)[2];
             if ($lifeform=='arbol'||$lifeform=='arbusto'){
-              $basepost["selectTransecto"] =   ceil($given_number/8))
-              $basepost["select{$transpuntoup}"]=$given_number - 8*(($basepost["selectTransecto"]-1)
+              $obspost["selectTransecto"] = ceil($given_number/8);
+              $obspost["select{$transpuntoup}"]=$given_number - 8*($obspost["selectTransecto"]-1);
+            }else{
+              $obspost["select{$transpuntoup}"] = $given_number;
             }
-
-            $basepost["select{$transpuntoup}"] = explode("_" , $sheet)[2];
 
             //get loc values
             $letter = 'A';
             while(true){
-              $value = $spreadsheet->getSheetByName($sheet)->getCell("{$letter}1")->getValue();
+              $value = trim($spreadsheet->getSheetByName($sheet)->getCell("{$letter}1")->getValue());
               if ($value==NULL){
                 break;
               }else{
-                $basepost["row0*{$transpunto}_{$lifeform}*{$value}"] = $spreadsheet->getSheetByName($sheet)->getCell("{$letter}2")->getValue();
+                $locvalue = trim($spreadsheet->getSheetByName($sheet)->getCell("{$letter}2")->getValue());
+                
+                $obspost["row0*{$transpunto}_{$lifeform}*{$value}"] = $locvalue;
+                
                 $letter = ++$letter;
               }
             }
@@ -131,7 +133,7 @@
               if ($value2 == NULL){
                 break;
               }else{
-                $obscolumnarray[] = $value2;
+                $obscolumnarray[] = trim($value2);
                 $letter = ++$letter;
               }
             }
@@ -147,27 +149,36 @@
                 foreach ($obscolumnarray as $obscolumn) {
                   if($obscolumn=='cientifico'){
                     $cientifico = $spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}{$row_number}")->getValue();
-                    $basepost["row{$true_row}*observacion_{$lifeform}*species"]="Nuevo";
+                    $obspost["row{$true_row}*observacion_{$lifeform}*species"]="Nuevo";
                     if(sizeof(DB::select("SELECT cientifico FROM especie_{$lifeform} WHERE cientifico=:value", [':value'=>$cientifico]))>0){
-                      $basepost["row{$true_row}*observacion_{$lifeform}*species"]=$cientifico;
+                      $obspost["row{$true_row}*observacion_{$lifeform}*species"]=$cientifico;
                     }
                   }
-                  
-                  $basepost["row{$true_row}*observacion_{$lifeform}*{$obscolumn}"] = $spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}{$row_number}")->getValue();
+                  $obsvalue = trim($spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}{$row_number}")->getValue());
+
+                if (strpos($obscolumn, 'iden_foto') !== false){
+                  if($obsvalue==NULL){
+                    $obsvalue = "No Presentado";
+                  }else{
+                    $obsvalue="observacion_{$lifeform}_{$obsvalue}";
+                  }
+                }
+                
+                  $obspost["row{$true_row}*observacion_{$lifeform}*{$obscolumn}"] = $obsvalue;
                   $letter = ++$letter;
                 }//end scan across columns
             
                 $row_number=$row_number+1;
-                echo $row_number;
                 if ($row_number>10000){
                   break;
                   echo 'failed';
                   }
                 }
             }//end scan rows of observacions
-            echo var_dump($basepost);
+            echo var_dump($obspost);
 
-            savedata($basepost,$useremail,true);
+            savedata($obspost,$useremail,true);
+            echo var_dump(session('resultofquery'));
         }//end if LOC
       }//end looping through sheets
   }//end if no errors
