@@ -9,7 +9,10 @@
     }
     $useremail=json_encode(session('email'));
     if ($_SERVER['REQUEST_METHOD']=="POST"){
-      savedata($_POST,$useremail);
+      $saveworked = savedata($_POST,$useremail);
+      if($saveworked=="true"){
+        redirect()->to('/thanks')->send();
+      }
     }
 ?>
 

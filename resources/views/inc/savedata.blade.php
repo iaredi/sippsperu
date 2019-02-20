@@ -1,7 +1,7 @@
 
 <?php
 
-function savedata($newpost,$useremail, $fromexcel=false){
+function savedata($newpost, $useremail, $fromexcel=false){
 
   $resultofquery=[];
   if ($_SERVER['REQUEST_METHOD']=="POST" && sizeof(session('error'))==0 && (!session('visitante'))){
@@ -108,7 +108,6 @@ function savedata($newpost,$useremail, $fromexcel=false){
               $medicionfkey=askforkey("linea_mtp", "iden", "nombre_iden", $mtpchoice);
 
               $linea_mtpclave_predio=askforkey("linea_mtp", "iden_predio", "nombre_iden", $mtpchoice);
-              echo "HI{$mtpchoice}";
               $predioname=askforkey("predio", "nombre", "iden", $linea_mtpclave_predio);
               $medicioncolumns=array(
                   "iden_linea_mtp"=>$medicionfkey,
@@ -229,7 +228,13 @@ function savedata($newpost,$useremail, $fromexcel=false){
 
                   for($i=0; $i<countrows($newpost,$obstype); $i++){
                       //Handle fotos
-                      $iden_foto=uploadfoto($newpost,"row{$i}", $obstype, $fromexcel);
+                      $postid = "row{$i}*{$obstype}*iden_foto";
+                      if ($fromexcel){
+                         $iden_foto = $newpost[$postid];
+                      }else{
+                        $iden_foto = $_FILES[$postid];
+                        $iden_foto = uploadfoto($newpost,$_FILES[$postid]["name"], $_FILES[$postid]["tmp_name"], $_FILES[$postid]["size"], $obstype);
+                      }
                       //$iden_foto='0000';
                       //Handle Species
                       $especiechoice= $newpost["row{$i}*{$obstype}*species"];
@@ -276,7 +281,13 @@ function savedata($newpost,$useremail, $fromexcel=false){
                   $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
                   for($i=0; $i<countrows($newpost,$obstype); $i++) {
                       //Handle fotos
-                      $iden_foto=uploadfoto($newpost,"row{$i}", $obstype, $fromexcel);
+                      $postid = "row{$i}*{$obstype}*iden_foto";
+                      if ($fromexcel){
+                         $iden_foto = $newpost[$postid];
+                      }else{
+                        $iden_foto = $_FILES[$postid];
+                        $iden_foto = uploadfoto($newpost,$_FILES[$postid]["name"], $_FILES[$postid]["tmp_name"], $_FILES[$postid]["size"], $obstype);
+                      }
                       //Handle Species
                       $especiechoice= $newpost["row{$i}*{$obstype}*species"];
                       if(sizeof(explode("*" , $especiechoice))==2){
@@ -302,7 +313,7 @@ function savedata($newpost,$useremail, $fromexcel=false){
                   $unit='Punto';
                   $unitlower=strtolower($unit);
                   $unitnum= $newpost["select{$unit}"];  
-
+                  $transectonum = $newpost["selectTransecto"];
                   //Save UDP
                   $mylong = $newpost["row0*{$unitlower}_{$speciestype}*longitud_gps"];
                   $mylat = $newpost["row0*{$unitlower}_{$speciestype}*latitud_gps"];
@@ -311,7 +322,7 @@ function savedata($newpost,$useremail, $fromexcel=false){
                   
                   
                   $unitcolumns=buildcolumnsarray($newpost,"{$unitlower}_{$speciestype}", "row0");
-                  $unitcolumns["iden_sampling_unit"]= $unitnum;
+                  $unitcolumns["iden_sampling_unit"]= $transectonum;
                   $unitcolumns["iden_numero_punto62"]= $unitnum;
                   $unitcolumns["iden_medicion"]= $medicionkey;
                   if (sizeof($result)>0){
@@ -323,7 +334,13 @@ function savedata($newpost,$useremail, $fromexcel=false){
                   $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
                   for($i=0; $i<countrows($newpost,$obstype); $i++) {
                       //Handle fotos
-                      $iden_foto=uploadfoto($newpost,"row{$i}", $obstype, $fromexcel);
+                      $postid = "row{$i}*{$obstype}*iden_foto";
+                      if ($fromexcel){
+                         $iden_foto = $newpost[$postid];
+                      }else{
+                        $iden_foto = $_FILES[$postid];
+                        $iden_foto = uploadfoto($newpost,$_FILES[$postid]["name"], $_FILES[$postid]["tmp_name"], $_FILES[$postid]["size"], $obstype);
+                      }
                       //Handle Species
                       $especiechoice= $newpost["row{$i}*{$obstype}*species"];
                       if(sizeof(explode("*" , $especiechoice))==2){
@@ -373,7 +390,13 @@ function savedata($newpost,$useremail, $fromexcel=false){
                   $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
                   for($i=0; $i<countrows($newpost,$obstype); $i++) {
                       //Handle fotos
-                      $iden_foto=uploadfoto($newpost,"row{$i}", $obstype, $fromexcel);
+                      $postid = "row{$i}*{$obstype}*iden_foto";
+                      if ($fromexcel){
+                         $iden_foto = $newpost[$postid];
+                      }else{
+                        $iden_foto = $_FILES[$postid];
+                        $iden_foto = uploadfoto($newpost,$_FILES[$postid]["name"], $_FILES[$postid]["tmp_name"], $_FILES[$postid]["size"], $obstype);
+                      }
                       //Handle Species
                       $especiechoice= $newpost["row{$i}*{$obstype}*species"];
                       if(sizeof(explode("*" , $especiechoice))==2){
@@ -423,8 +446,14 @@ function savedata($newpost,$useremail, $fromexcel=false){
                   $unitmax=getserialmax( "{$unitlower}_{$speciestype}");
                   for($i=0; $i<countrows($newpost,$obstype); $i++) {
                       //Handle fotos
-                      $iden_foto=uploadfoto($newpost,"row{$i}", $obstype, $fromexcel);
-                      //Handle Species
+                      $postid = "row{$i}*{$obstype}*iden_foto";
+                      if ($fromexcel){
+                         $iden_foto = $newpost[$postid];
+                      }else{
+                        $iden_foto = $_FILES[$postid];
+                        $iden_foto = uploadfoto($newpost,$_FILES[$postid]["name"], $_FILES[$postid]["tmp_name"], $_FILES[$postid]["size"], $obstype);
+                      }
+                     //Handle Species
                       $especiechoice= $newpost["row{$i}*{$obstype}*species"];
                       if(sizeof(explode("*" , $especiechoice))==2){
                         $especiechoice=explode("*" , $especiechoice)[1];
@@ -461,15 +490,12 @@ function savedata($newpost,$useremail, $fromexcel=false){
       }
       if(!$failed && $saved>0){
         //echo 'would redirect';
-        if ($fromexcel){
-          echo 'would redirect';
-        }else{
-          return redirect()->to('/thanks')->send();
-        }
+        return "true";
       }else{
         //$myerror=['Sus datos no fueron guardados.'];
         echo var_dump($errorarray);
         session(['error' => $errorarray]);
+        return "false";
       }
   }
 }

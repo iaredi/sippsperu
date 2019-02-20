@@ -8,6 +8,10 @@
       if ($_POST['selectlinea_mtp']=='notselected') {
         $errorlist[]= "Los menus desplegables no deben estar vacios";
       }
+      //Upload fotos
+
+      
+
       if(sizeof($errorlist)==0){
         $target_dir = "../storage/shp/";
         $target_file = $target_dir . basename($_FILES['excelFromUser']["name"]);
@@ -75,18 +79,17 @@
           }
           $camararownumber++;
         }
-        $newmedicion = savedata($medicionpost,$useremail,true);
 
 
-
+        $obspostarray = [];
+        $uploadfotoarray = [];
         //Begin saving observations
         foreach ($worksheetNames as $sheet) {
-          $obspost = array('selectlinea_mtp' => $_POST['selectlinea_mtp']);
-          $obspost['selectmedicion'] = $newmedicion;
-          $obspost['mode']='Datos Nuevos';
-          $obspost['submit']='submit';
           //LOC
-          if (strpos($sheet, 'MAMI_LOC') !== false){
+          if (strpos($sheet, 'LOC') !== false){
+            $obspost = array('selectlinea_mtp' => $_POST['selectlinea_mtp']);
+            $obspost['mode']='Datos Nuevos';
+            $obspost['submit']='submit';
             $lifeformraw = explode("_" , $sheet)[0];
             if ($lifeformraw=="AVE") $lifeform='ave';
             if ($lifeformraw=="ARBO") $lifeform='arbol';
@@ -99,6 +102,7 @@
             if ($lifeform=='hierba' || $lifeform=='herpetofauna'){
               $transpunto="transecto";
             }
+
             $transpuntoup=ucfirst($transpunto);
             $obspost['selectobservaciones'] = $lifeform;
             $given_number = explode("_" , $sheet)[2];
@@ -112,13 +116,13 @@
             //get loc values
             $letter = 'A';
             while(true){
-              $value = trim($spreadsheet->getSheetByName($sheet)->getCell("{$letter}1")->getValue());
-              if ($value==NULL){
+              $loccolvalue = strtolower(trim($spreadsheet->getSheetByName($sheet)->getCell("{$letter}1")->getValue()));
+              if ($loccolvalue==NULL){
                 break;
               }else{
                 $locvalue = trim($spreadsheet->getSheetByName($sheet)->getCell("{$letter}2")->getValue());
                 
-                $obspost["row0*{$transpunto}_{$lifeform}*{$value}"] = $locvalue;
+                $obspost["row0*{$transpunto}_{$lifeform}*{$loccolvalue}"] = $locvalue;
                 
                 $letter = ++$letter;
               }
@@ -133,7 +137,7 @@
               if ($value2 == NULL){
                 break;
               }else{
-                $obscolumnarray[] = trim($value2);
+                $obscolumnarray[] = strtolower(trim($value2));
                 $letter = ++$letter;
               }
             }
@@ -147,41 +151,77 @@
                 $letter = 'A';
                 //scan across columns
                 foreach ($obscolumnarray as $obscolumn) {
-                  if($obscolumn=='cientifico'){
-                    $cientifico = $spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}{$row_number}")->getValue();
-                    $obspost["row{$true_row}*observacion_{$lifeform}*species"]="Nuevo";
-                    if(sizeof(DB::select("SELECT cientifico FROM especie_{$lifeform} WHERE cientifico=:value", [':value'=>$cientifico]))>0){
-                      $obspost["row{$true_row}*observacion_{$lifeform}*species"]=$cientifico;
-                    }
-                  }
                   $obsvalue = trim($spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}{$row_number}")->getValue());
 
-                if (strpos($obscolumn, 'iden_foto') !== false){
-                  if($obsvalue==NULL){
-                    $obsvalue = "No Presentado";
-                  }else{
-                    $obsvalue="observacion_{$lifeform}_{$obsvalue}";
+                  if (strpos($obscolumn, 'iden_foto') !== false){
+                    if($obsvalue==NULL){
+                      $obsvalue = "No Presentado";
+                    }else{
+                      $uploadfotoarray[$obsvalue]="observacion_{$lifeform}";
+                      $obsvalue="observacion_{$lifeform}_{$obsvalue}";
+                      
+                    }
                   }
-                }
-                
+
+                  if($obscolumn=='cientifico'){
+                    if ($obsvalue==NULL){
+                      break;
+                    }else{
+                      $cientifico = $spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}{$row_number}")->getValue();
+                      $obspost["row{$true_row}*observacion_{$lifeform}*species"]="Nuevo";
+                      if(sizeof(DB::select("SELECT cientifico FROM especie_{$lifeform} WHERE cientifico=:value", [':value'=>$cientifico]))>0){
+                        $obspost["row{$true_row}*observacion_{$lifeform}*species"]=$cientifico;
+                      }
+                    }
+                  }
+                  
                   $obspost["row{$true_row}*observacion_{$lifeform}*{$obscolumn}"] = $obsvalue;
                   $letter = ++$letter;
                 }//end scan across columns
-            
                 $row_number=$row_number+1;
-                if ($row_number>10000){
-                  break;
-                  echo 'failed';
-                  }
                 }
             }//end scan rows of observacions
-            echo var_dump($obspost);
-
-            savedata($obspost,$useremail,true);
-            echo var_dump(session('resultofquery'));
+            $obspostarray[]=$obspost;
         }//end if LOC
       }//end looping through sheets
+
+      //look at fotos
+      $newpost=["submit"=>"true"];
+
+      foreach ($uploadfotoarray as $fotonameexcel => $fotolifeform) {
+        $foundfoto=false;
+        $fotonum=0;
+        foreach ($_FILES['photosFromUser']["name"] as $fotonamefile) {
+          if ($fotonameexcel==$fotonamefile){
+            $foundfoto=true;
+            $iden_foto_result = uploadfoto($newpost,$fotonamefile, $_FILES["photosFromUser"]["tmp_name"][$fotonum], $_FILES["photosFromUser"]["size"][$fotonum], $fotolifeform);
+            if ($iden_foto_result != $fotolifeform ."_". $fotonamefile){
+              $errorlist[]=$iden_foto_result;
+            }
+          }
+        $fotonum++;
+        }
+        if (!$foundfoto){
+          $errorlist[]="{$fotonameexcel} no fue encontrado. Hay que subir fotos con los mismos nombres de los que estan en excel";
+        }
+      }
+      
+      //save all if no errors
+      echo var_dump($errorlist);
+      if(sizeof($errorlist)==0){
+        $newmedicion = savedata($medicionpost,$_FILES, $useremail,true);
+        foreach ($obspostarray as $currentobspost) {
+          $currentobspost['selectmedicion'] = $newmedicion;
+          $saveworked = savedata($currentobspost,$useremail,true);
+          if ($saveworked=="false"){
+            $errorlist[]="Hubo una problema guandando datos";
+          }
+        }
+      }
   }//end if no errors
+  if(sizeof($errorlist)==0){
+    redirect()->to('/thanks')->send();
+  }
 }//end if post
   session(['error' => $errorlist]);
 ?>

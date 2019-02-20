@@ -148,18 +148,10 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
        }
   }
 
-    function uploadfoto($newpost,$myRow, $obstype, $fromexcel=false){
-        if ($fromexcel){
-          return $newpost["{$myRow}*{$obstype}*iden_foto"];
-        }
-            $fotoinputid="{$myRow}*{$obstype}*iden_foto";
-            $filesname = $_FILES[$fotoinputid]["name"];
-            $filestmpname = $_FILES[$fotoinputid]["tmp_name"];
-            $filessize = $_FILES[$fotoinputid]["size"];
-          
+    function uploadfoto($newpost,$filesname,$filestmpname,$filessize, $obstype){
           if (isset($filesname)){
             $target_dir = "../storage/img/";
-            $target_file = $target_dir . $obstype . basename($filesname);
+            $target_file = $target_dir . $obstype ."_". basename($filesname);
             $uploadOk = 1;
             $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
             // Check if image file is a actual image or fake image
@@ -198,16 +190,14 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
            
                 if (move_uploaded_file($filestmpname, $target_file)) {
                     echo "The file  has been uploaded.";
-                    return $obstype . basename($filesname);
+                    return  $obstype ."_". basename($filesname);
                 } else {
                     return "Hubo un problema con el cargo de su foto (2)";
                 }
             }
             return "Hubo un problema con el cargo de su foto (3)";
         }
-    
         return ('No Presentado');
-      
     }
 
     function uploadshape($shpname){
