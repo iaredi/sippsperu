@@ -145,19 +145,28 @@ class FeatureInfoDisplay extends React.Component {
       <div>
         <div className="container">
           <div className="flex-column d-flex justify-content-around align-items-center p-3">
-            <div>Ultimo Click:</div>
-            <div>
-              lat: {this.props.clickLocation.lat.toPrecision(7)}, lng:{" "}
-              {this.props.clickLocation.lng.toPrecision(7)}
-            </div>
-            <div>
-              {this.props.featureInfo.properties.displayName} ={" "}
-              {
-                this.props.featureInfo.properties[
-                  this.props.featureInfo.properties.featureColumn
-                ]
-              }
-            </div>
+             
+             {this.props.clicked && (
+               <div>
+                <div className="font-weight-bold">
+                  {this.props.featureInfo.properties.displayName+" : "}
+                  
+                    {this.props.featureInfo.properties[
+                      this.props.featureInfo.properties.featureColumn
+                    ]
+                    }
+                  
+                </div>
+                <div>
+                  lat : {this.props.clickLocation.lat.toPrecision(6)}, 
+                  lng : {this.props.clickLocation.lng.toPrecision(6)}
+                  </div>
+                </div>
+
+                )
+            }
+            
+           
           </div>
         </div>
 

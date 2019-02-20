@@ -2,7 +2,6 @@ import React from "react";
 import L from "leaflet";
 
 const style = {
-  width: "100%",
   height: "100%"
 };
 

@@ -7,12 +7,6 @@ if (!session('email')){
 @include('inc/loadlayers')
 @include('inc/header')
 @include('inc/nav')
-
-        <div class="container">
-            <h2 class="text-center">Mostrar Mapas</h2>
-            <p></p>
-        </div> <!--Container-->
-        
     
         <div id="app"></div>
         <link rel="stylesheet" href="leaflet_assets/leaflet.css"> 

@@ -207,7 +207,6 @@
       }
       
       //save all if no errors
-      echo var_dump($errorlist);
       if(sizeof($errorlist)==0){
         $newmedicion = savedata($medicionpost,$_FILES, $useremail,true);
         foreach ($obspostarray as $currentobspost) {

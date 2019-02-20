@@ -137,8 +137,8 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
                     //};
 
                     $col=$colobj->column_name;
-                    if (substr($col,0,4)!='iden'){
-                        $colarray[$col]=$newpost["{$rowandnum}*{$tablename}*{$col}"];
+                    if (substr($col,0,4) != 'iden'){
+                        $colarray[$col]=trim($newpost["{$rowandnum}*{$tablename}*{$col}"]);
                     }
                 }
             return $colarray;

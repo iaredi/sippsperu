@@ -19,7 +19,7 @@ class Normaapp extends React.Component {
       previous: 0,
       udp: 0,
       udpButton: false,
-      clickLocation: { lat: 18.69349, lng: 360 - 98.16245 },
+      clickLocation: { lat: 99.9, lng: 99.9 },
       mapSettings: {
         distinctOrTotal: "total_observaciones",
         myObsType: "ave",
@@ -27,7 +27,7 @@ class Normaapp extends React.Component {
         maxValue: 99
       },
       featureInfo: {
-        properties: { message: "click somewhere", displayName: "none" }
+        properties: { message: "click somewhere", displayName: " " }
       },
       table: [{ tableName: "udp_puebla_4326", color: "blue" }]
     };
@@ -229,9 +229,8 @@ class Normaapp extends React.Component {
   render() {
     return (
       <div>
-        <div className="container mymapcontainer">
-          <div className="row justify-content-around align-items-center mapstat">
-            <div className="mymapdiv border border-dark">
+          <div id="pagecontainer">
+            <div id="mapdiv" className="border border-dark">
               <Map
                 getOutline={this.getOutline}
                 handleMapClick={this.handleMapClick}
@@ -242,20 +241,27 @@ class Normaapp extends React.Component {
               />
             </div>
 
-            <div className="mystatdiv p-1">
-              <div className="withcontrol flex-column d-flex justify-content-between align-items-start">
-                <FeatureInfoDisplay
-                  clickLocation={this.state.clickLocation}
-                  featureInfo={this.state.featureInfo}
-                />
-                <MapControl
-                  handleSpeciesChange={this.handleSpeciesChange}
-                  handleTotalDistinctChange={this.handleTotalDistinctChange}
-                  handleOpacityChange={this.handleOpacityChange}
-                  handleMaxChange={this.handleMaxChange}
-                  mapSettings={this.state.mapSettings}
-                />
-                <div className="p-2 align-self-center">
+            <div id="mapinfodisplay">
+              <FeatureInfoDisplay
+                clickLocation={this.state.clickLocation}
+                featureInfo={this.state.featureInfo}
+                clicked={this.state.clickLocation.lat != 99.9}
+              />
+              </div>
+            <div id="mapcontrol">
+
+              <MapControl
+                handleSpeciesChange={this.handleSpeciesChange}
+                handleTotalDistinctChange={this.handleTotalDistinctChange}
+                handleOpacityChange={this.handleOpacityChange}
+                handleMaxChange={this.handleMaxChange}
+                mapSettings={this.state.mapSettings}
+              />
+            </div>
+
+
+
+                <div id="buttons">
                   <a
                     className="btn btn-info btn-sm m-2"
                     href="/cargarshapes"
@@ -263,7 +269,7 @@ class Normaapp extends React.Component {
                   >
                     Cargar Shapefile de Predio
                   </a>
-                </div>
+                
 
                 {this.state.udpButton && (
                   <div id="buttonContainer">
@@ -306,10 +312,9 @@ class Normaapp extends React.Component {
                     </a>
                   </div>
                 )}
-              </div>
             </div>
+
           </div>
-        </div>
       </div>
     );
   }

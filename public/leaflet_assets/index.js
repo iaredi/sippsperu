@@ -23883,7 +23883,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var style = {
-    width: "100%",
     height: "100%"
 };
 
@@ -44298,7 +44297,7 @@ var Normaapp = function (_React$Component) {
       previous: 0,
       udp: 0,
       udpButton: false,
-      clickLocation: { lat: 18.69349, lng: 360 - 98.16245 },
+      clickLocation: { lat: 99.9, lng: 99.9 },
       mapSettings: {
         distinctOrTotal: "total_observaciones",
         myObsType: "ave",
@@ -44306,7 +44305,7 @@ var Normaapp = function (_React$Component) {
         maxValue: 99
       },
       featureInfo: {
-        properties: { message: "click somewhere", displayName: "none" }
+        properties: { message: "click somewhere", displayName: " " }
       },
       table: [{ tableName: "udp_puebla_4326", color: "blue" }]
     };
@@ -44569,88 +44568,85 @@ var Normaapp = function (_React$Component) {
         null,
         _react2.default.createElement(
           "div",
-          { className: "container mymapcontainer" },
+          { id: "pagecontainer" },
           _react2.default.createElement(
             "div",
-            { className: "row justify-content-around align-items-center mapstat" },
+            { id: "mapdiv", className: "border border-dark" },
+            _react2.default.createElement(_Map2.default, {
+              getOutline: this.getOutline,
+              handleMapClick: this.handleMapClick,
+              handleFeatureClick: this.handleFeatureClick,
+              setDefaultMax: this.setDefaultMax,
+              mapSettings: this.state.mapSettings,
+              table: this.state.table
+            })
+          ),
+          _react2.default.createElement(
+            "div",
+            { id: "mapinfodisplay" },
+            _react2.default.createElement(_FeatureInfoDisplay2.default, {
+              clickLocation: this.state.clickLocation,
+              featureInfo: this.state.featureInfo,
+              clicked: this.state.clickLocation.lat != 99.9
+            })
+          ),
+          _react2.default.createElement(
+            "div",
+            { id: "mapcontrol" },
+            _react2.default.createElement(_MapControl2.default, {
+              handleSpeciesChange: this.handleSpeciesChange,
+              handleTotalDistinctChange: this.handleTotalDistinctChange,
+              handleOpacityChange: this.handleOpacityChange,
+              handleMaxChange: this.handleMaxChange,
+              mapSettings: this.state.mapSettings
+            })
+          ),
+          _react2.default.createElement(
+            "div",
+            { id: "buttons" },
             _react2.default.createElement(
-              "div",
-              { className: "mymapdiv border border-dark" },
-              _react2.default.createElement(_Map2.default, {
-                getOutline: this.getOutline,
-                handleMapClick: this.handleMapClick,
-                handleFeatureClick: this.handleFeatureClick,
-                setDefaultMax: this.setDefaultMax,
-                mapSettings: this.state.mapSettings,
-                table: this.state.table
-              })
+              "a",
+              {
+                className: "btn btn-info btn-sm m-2",
+                href: "/cargarshapes",
+                role: "button"
+              },
+              "Cargar Shapefile de Predio"
             ),
-            _react2.default.createElement(
+            this.state.udpButton && _react2.default.createElement(
               "div",
-              { className: "mystatdiv p-1" },
+              { id: "buttonContainer" },
               _react2.default.createElement(
-                "div",
-                { className: "withcontrol flex-column d-flex justify-content-between align-items-start" },
-                _react2.default.createElement(_FeatureInfoDisplay2.default, {
-                  clickLocation: this.state.clickLocation,
-                  featureInfo: this.state.featureInfo
-                }),
-                _react2.default.createElement(_MapControl2.default, {
-                  handleSpeciesChange: this.handleSpeciesChange,
-                  handleTotalDistinctChange: this.handleTotalDistinctChange,
-                  handleOpacityChange: this.handleOpacityChange,
-                  handleMaxChange: this.handleMaxChange,
-                  mapSettings: this.state.mapSettings
-                }),
-                _react2.default.createElement(
-                  "div",
-                  { className: "p-2 align-self-center" },
-                  _react2.default.createElement(
-                    "a",
-                    {
-                      className: "btn btn-info btn-sm m-2",
-                      href: "/cargarshapes",
-                      role: "button"
-                    },
-                    "Cargar Shapefile de Predio"
-                  )
-                ),
-                this.state.udpButton && _react2.default.createElement(
-                  "div",
-                  { id: "buttonContainer" },
-                  _react2.default.createElement(
-                    "a",
-                    {
-                      className: "btn btn-primary m-2 btn-sm mapInfoButton",
-                      href: "/mostrarnormas/normas/" + this.state.currentUdpId,
-                      role: "button"
-                    },
-                    " ",
-                    "Especies y Normas 059"
-                  ),
-                  _react2.default.createElement(
-                    "a",
-                    {
-                      className: "btn btn-primary m-2 btn-sm mapInfoButton",
-                      href: "/mostrarnormas/ae/" + this.state.currentUdpId,
-                      role: "button"
-                    },
-                    " ",
-                    "Attributos Ecologicos",
-                    " "
-                  ),
-                  _react2.default.createElement(
-                    "a",
-                    {
-                      className: "btn btn-primary m-2 btn-sm mapInfoButton",
-                      href: "/udpmapa/" + this.state.currentUdpId + "/" + (this.state.featureInfo.properties.shannon_arbol + "*" + this.state.featureInfo.properties.shannon_arbusto + "*" + this.state.featureInfo.properties.shannon_ave + "*" + this.state.featureInfo.properties.shannon_hierba + "*" + this.state.featureInfo.properties.shannon_herpetofauna + "*" + this.state.featureInfo.properties.shannon_mamifero),
-                      role: "button"
-                    },
-                    " ",
-                    "Fragmentaci\xF3n Ambiental",
-                    " "
-                  )
-                )
+                "a",
+                {
+                  className: "btn btn-primary m-2 btn-sm mapInfoButton",
+                  href: "/mostrarnormas/normas/" + this.state.currentUdpId,
+                  role: "button"
+                },
+                " ",
+                "Especies y Normas 059"
+              ),
+              _react2.default.createElement(
+                "a",
+                {
+                  className: "btn btn-primary m-2 btn-sm mapInfoButton",
+                  href: "/mostrarnormas/ae/" + this.state.currentUdpId,
+                  role: "button"
+                },
+                " ",
+                "Attributos Ecologicos",
+                " "
+              ),
+              _react2.default.createElement(
+                "a",
+                {
+                  className: "btn btn-primary m-2 btn-sm mapInfoButton",
+                  href: "/udpmapa/" + this.state.currentUdpId + "/" + (this.state.featureInfo.properties.shannon_arbol + "*" + this.state.featureInfo.properties.shannon_arbusto + "*" + this.state.featureInfo.properties.shannon_ave + "*" + this.state.featureInfo.properties.shannon_hierba + "*" + this.state.featureInfo.properties.shannon_herpetofauna + "*" + this.state.featureInfo.properties.shannon_mamifero),
+                  role: "button"
+                },
+                " ",
+                "Fragmentaci\xF3n Ambiental",
+                " "
               )
             )
           )
@@ -45022,27 +45018,23 @@ var FeatureInfoDisplay = function (_React$Component) {
           _react2.default.createElement(
             "div",
             { className: "flex-column d-flex justify-content-around align-items-center p-3" },
-            _react2.default.createElement(
+            this.props.clicked && _react2.default.createElement(
               "div",
               null,
-              "Ultimo Click:"
-            ),
-            _react2.default.createElement(
-              "div",
-              null,
-              "lat: ",
-              this.props.clickLocation.lat.toPrecision(7),
-              ", lng:",
-              " ",
-              this.props.clickLocation.lng.toPrecision(7)
-            ),
-            _react2.default.createElement(
-              "div",
-              null,
-              this.props.featureInfo.properties.displayName,
-              " =",
-              " ",
-              this.props.featureInfo.properties[this.props.featureInfo.properties.featureColumn]
+              _react2.default.createElement(
+                "div",
+                { className: "font-weight-bold" },
+                this.props.featureInfo.properties.displayName + " : ",
+                this.props.featureInfo.properties[this.props.featureInfo.properties.featureColumn]
+              ),
+              _react2.default.createElement(
+                "div",
+                null,
+                "lat : ",
+                this.props.clickLocation.lat.toPrecision(6),
+                ", lng : ",
+                this.props.clickLocation.lng.toPrecision(6)
+              )
             )
           )
         ),

@@ -47,8 +47,11 @@ body {
 }
 
 .bodycontainer {
-  padding: 20px;
-  height: 90vh;
+  padding: 15px;
+  padding-bottom:0px;
+  padding-right:0px;
+
+  height: 100vh;
 }
 
 tbody tr td:first-child {
@@ -95,9 +98,6 @@ tbody#measurementTBodyForm {
   flex-wrap: nowrap;
 }
 
-.mymapdiv {
-  min-width: 900px;
-}
 
 .udplayout {
   display: grid;
@@ -208,6 +208,7 @@ p.spec::after {
 a:hover {
   color: rgb(57, 30, 0);
 }
+
 .btn-custom {
   color: saddlebrown;
   background-color: antiquewhite;
@@ -264,9 +265,43 @@ img {
 
 #buttonContainer {
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
+
 }
 
 .mapInfoButton {
   height: 30.8px;
+}
+
+
+
+#mapdiv {
+  grid-area: mapdiv;
+  margin:5px;
+  height:100%;
+}
+#mapinfodisplay {
+  grid-area: mapinfodisplay;
+  height:100%;
+
+}
+#mapcontol {
+  grid-area: mapcontol;
+  height:100%;
+}
+#buttons {
+  grid-area: buttons;
+  height:100%;
+  text-align: center;
+
+}
+
+#pagecontainer{
+  display: grid;
+  grid-template-columns: auto 550px;
+  grid-template-rows: 470px 100px 40px;
+  grid-template-areas: 
+    "mapdiv mapinfodisplay"
+    "mapdiv mapcontol"
+    "buttons mapcontol";
 }
