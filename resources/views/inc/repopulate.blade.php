@@ -73,6 +73,16 @@
                 if ($columnname=="species"){
                     echo "<script>document.getElementsByName(".json_encode($postkey2).")[0].onchange()</script>";
                 }
+
+                if ($columnname=="invasor" && $postval2=="true"){
+                    echo "<script>document.getElementsByName(".json_encode($postkey2).")[0].checked=true</script>";
+                }
+                if ($columnname=="cactus" && $postval2=="true"){
+                    echo "<script>document.getElementsByName(".json_encode($postkey2).")[0].checked=true</script>";
+                }
+                if ($columnname=="anfibio" && $postval2=="true"){
+                    echo "<script>document.getElementsByName(".json_encode($postkey2).")[0].checked=true</script>";
+                }
             }
         }
     }

@@ -19,6 +19,7 @@ mix.autoload({
 mix.js('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css')
     .copy('resources/assets/css/print.css', 'public/css')
+    .copy('resources/assets/excel/ingresarexcel.xlsx', 'public/storage')
 
    .copyDirectory('resources/img', 'public/img')
    .js('resources/assets/js/jsfunc.js', 'public/js')

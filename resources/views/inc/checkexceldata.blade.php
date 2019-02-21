@@ -1,7 +1,9 @@
 <?php
+
   use PhpOffice\PhpSpreadsheet\IOFactory;
   $errorlist=[];
-  if ($_SERVER['REQUEST_METHOD']=="POST") {
+
+  if ($_SERVER['REQUEST_METHOD']=="POST" && isset($_POST['ingresarexcel'])) {
       if ($_FILES['excelFromUser']['name']=='') {
         $errorlist[]= "No hay excel";
       }
@@ -221,6 +223,9 @@
   if(sizeof($errorlist)==0){
     redirect()->to('/thanks')->send();
   }
-}//end if post
+
+}
+
+
   session(['error' => $errorlist]);
 ?>

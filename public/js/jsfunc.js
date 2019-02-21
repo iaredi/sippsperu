@@ -906,6 +906,7 @@ function clickReadyButton(e) {
         getData().then(function (dataResult) {
             clearForm(menu, "Form");
             if (dataResult[0].length > 0) {
+
                 var myTBody = document.getElementById(menu + "TBody" + 'Form');
                 var hiddenLocation = document.createElement('input');
                 hiddenLocation.setAttribute("type", "hidden");
@@ -935,8 +936,16 @@ function clickReadyButton(e) {
                         var val = _ref3[1];
 
                         var myElem = document.getElementById(formtranspunto + "_" + lifeForm + cat);
+                        var newValue = val;
+
+                        if (cat.includes('latitud') || cat.includes('longitud')) {
+                            var stringsSplitDecimal = val.toString().split(".");
+                            var missing = 4 - stringsSplitDecimal[0].length;
+                            var newDecimal = stringsSplitDecimal[0] + "0".repeat(missing);
+                            newValue = stringsSplitDecimal[0] + "." + newDecimal;
+                        }
                         if (myElem) {
-                            myElem.value = val;
+                            myElem.value = newValue;
                         }
                     }
                 } catch (err) {
@@ -978,10 +987,14 @@ function clickReadyButton(e) {
 
                             if (_cat == 'comun_cientifico') {
                                 var myElemSpecies = document.getElementsByName("row" + ind + "*" + myChoice + "*species");
+                                if (myElemSpecies.length == 0) {
+                                    myElemSpecies = document.getElementsByName("row" + (ind + 1) + "*" + myChoice + "*species");
+                                }
                                 myElemSpecies[0].value = _val;
                             }
                             var myElem = document.getElementsByName("row" + ind + "*" + myChoice + "*" + _cat);
-                            if (myElem[0]) {
+                            if (myElem[0] && !_cat.includes('foto')) {
+
                                 myElem[0].value = _val;
 
                                 if (_cat == 'invasor' && myElem[0].value == "true") {

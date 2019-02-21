@@ -149,7 +149,9 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
   }
 
     function uploadfoto($newpost,$filesname,$filestmpname,$filessize, $obstype){
-          if (isset($filesname)){
+      
+          if (isset($filesname) && ($filesname)!=""){
+            
             $target_dir = "../storage/img/";
             $target_file = $target_dir . $obstype ."_". basename($filesname);
             $uploadOk = 1;

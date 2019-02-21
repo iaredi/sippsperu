@@ -784,6 +784,7 @@ function clickReadyButton(e){
         getData().then(dataResult =>{
             clearForm(menu,"Form")
             if (dataResult[0].length>0){
+              
                 const myTBody = document.getElementById(menu+"TBody"+'Form')
                 const hiddenLocation = document.createElement('input')
                 hiddenLocation.setAttribute("type", "hidden");
@@ -801,8 +802,16 @@ function clickReadyButton(e){
                 const puntoEntries=Object.entries(dataResult[0][0])
                 for (const [cat, val] of puntoEntries){
                     let myElem=document.getElementById(`${formtranspunto}_${lifeForm}${cat}`)
+                    let newValue=val;
+
+                    if (cat.includes('latitud') || cat.includes('longitud') ){
+                      let stringsSplitDecimal = val.toString().split(".");
+                      let missing = 4-(stringsSplitDecimal[0]).length;
+                      let newDecimal = stringsSplitDecimal[0] + "0".repeat(missing);
+                      newValue= stringsSplitDecimal[0]+"."+newDecimal; 
+                    }
                     if (myElem){
-                        myElem.value=val
+                        myElem.value=newValue
                     }
                 }
                 dataResult[1].forEach((row,ind) => {
@@ -817,11 +826,17 @@ function clickReadyButton(e){
                     for (const [cat, val] of obsEntries){
                         if (cat=='comun_cientifico'){
                             let myElemSpecies=document.getElementsByName("row"+ind+"*"+myChoice +"*species")
-                            myElemSpecies[0].value=val;
+                            if (myElemSpecies.length==0){
+                              myElemSpecies=document.getElementsByName("row"+(ind+1)+"*"+myChoice +"*species")
+                            }
+                               myElemSpecies[0].value=val;
+                            
                         }
                         let myElem=document.getElementsByName("row"+ind+"*"+myChoice +"*"+cat)
-                        if (myElem[0]){
-                            myElem[0].value=val
+                        if (myElem[0] && !cat.includes('foto')){
+
+                          myElem[0].value=val 
+
                             
                             if (cat=='invasor' && myElem[0].value=="true"){
                                 myElem[0].disabled = false

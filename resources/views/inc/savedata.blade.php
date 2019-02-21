@@ -1,5 +1,6 @@
 <?php
   function savedata($newpost, $useremail, $fromexcel=false){
+    $errorarray=[];
     $resultofquery=[];
     if ($_SERVER['REQUEST_METHOD']=="POST" && sizeof(session('error'))==0 && (!session('visitante'))){
       $mtpchoice =$newpost['selectlinea_mtp'];    
@@ -218,8 +219,8 @@
                     $unitcolumns["iden_udp"]= $udpresult[0]->iden;
                 } 
                 $unitcolumns["iden_medicion"]= $medicionkey;
-                $resultofquery[] = savenewentry("{$transpunto}_{$speciestype}", $unitcolumns); 
             //Handle observaciones
+                $obscolumnarray=[];
                 for($i=0; $i<countrows($newpost,$obstype); $i++){
                   //Handle fotos
                   $postid = "row{$i}*{$obstype}*iden_foto";
@@ -243,15 +244,24 @@
                   $obscolumns=buildcolumnsarray($newpost,$obstype, "row{$i}");
                   $obscolumns["iden_especie"]= $iden_especie;
                   $obscolumns["iden_foto"]= $iden_foto;
-                  $unitmax=getserialmax( "{$transpunto}_{$speciestype}");
-                  $obscolumns["iden_{$transpunto}"]= $unitmax;
-
+                  
+                  
                   if($iden_foto=='No Presentado' || explode("_" , $iden_foto)[0]=='observacion'){
-                    $resultofquery[] = savenewentry( $obstype, $obscolumns);
+                    echo "HELLO";
+                    $obscolumnarray[]=$obscolumns;
                   }else{ 
                     $resultofquery[] = $iden_foto;
                   }
                 } 
+                if (sizeof($resultofquery)==0){
+                  echo var_dump($obscolumnarray);
+                  $resultofquery[] = savenewentry("{$transpunto}_{$speciestype}", $unitcolumns);
+                  $unitmax=getserialmax("{$transpunto}_{$speciestype}"); 
+                  foreach ($obscolumnarray as $obscolumn) {
+                    $obscolumn["iden_{$transpunto}"]= $unitmax;
+                    $resultofquery[] = savenewentry( $obstype, $obscolumn); 
+                  }
+                }
             }
       }
       session(['resultofquery' => $resultofquery]);
