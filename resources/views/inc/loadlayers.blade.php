@@ -79,12 +79,13 @@ foreach($addlayers as $singlerow) {
     $checkfeaturesql= "SELECT * 
       FROM information_schema.columns 
       WHERE table_name='{$lowername}' and column_name='{$lowercolumn}'";
-    if (sizeof(DB::select($checkfeaturesql,[]))>0){
+    if (sizeof(DB::select($checkfeaturesql,[]))>0 || $templayer->tableName == 'suelo_geometries_simplified' ){
       $layersArray[]=$templayer;
     }
 }
 
 foreach ($layersArray as $layer) {
+
     $features=[];
     $dslist=[];
     $tolist=[];
@@ -95,8 +96,6 @@ foreach ($layersArray as $layer) {
         $layer->sql = "SELECT nombre, ST_AsGeoJSON(geom, 5) AS geojson FROM usershapes";
     }
     
-    
-
       $result = DB::select($layer->sql,[]);
 
           $categorylist=['ave','arbol', 'arbusto', 'mamifero', 'herpetofauna', 'hierba'];

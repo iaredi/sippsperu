@@ -28,9 +28,9 @@ $layersArray = array($layer1);
 $addlayers = DB::select("SELECT * FROM additional_layers",[]);
 
 foreach($addlayers as $singlerow) {
-    if ($singlerow->tablename=='usos_de_suelo4'){
+    if ($singlerow->tablename=='suelo_geometries_simplified'){
         $templayer = new layer();
-        $templayer->tableName = $singlerow->tablename;
+        $templayer->tableName = "usos_de_suelo4";
         $templayer->displayName = $singlerow->displayname;
         $templayer->featureColumn = $singlerow->featurecolumn;
         $templayer->color = $singlerow->color;
@@ -38,7 +38,7 @@ foreach($addlayers as $singlerow) {
         $templayer->opacity =$singlerow->opacity;
         $templayer->weight =$singlerow->weight;
         $templayer->fillOpacity = $singlerow->fillopacity;
-        $templayer->sql = "SELECT color, {$singlerow->featurecolumn}, ST_AsGeoJSON(geom, 5) AS geojson FROM {$singlerow->tablename}";
+        $templayer->sql = "SELECT color, {$singlerow->featurecolumn}, ST_AsGeoJSON(geom, 5) AS geojson FROM usos_de_suelo4";
         $layersArray[]=$templayer;
     }
 }
