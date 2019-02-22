@@ -10734,6 +10734,7 @@ img {
 
 .normaTitles {
   text-align: center;
+  text-decoration: underline;
 }
 
 #buttonContainer {
@@ -10765,16 +10766,31 @@ img {
   height: 100%;
 }
 
-#buttons {
-  grid-area: buttons;
+#buttons1 {
+  grid-area: buttons1;
+  height: 100%;
+  text-align: center;
+}
+
+#buttons2 {
+  grid-area: buttons2;
   height: 100%;
   text-align: center;
 }
 
 #pagecontainer {
+  height: 90%;
   display: grid;
   grid-template-columns: auto 550px;
-  grid-template-rows: 470px 100px 40px;
-  grid-template-areas: "mapdiv mapinfodisplay" "mapdiv mapcontol" "buttons mapcontol";
+  grid-template-rows: auto 100px 45px 45px;
+  grid-template-areas: "mapdiv mapinfodisplay" "mapdiv mapcontol" "buttons1 mapcontol" "buttons2 mapcontol";
+}
+
+#app {
+  height: 100%;
+}
+
+#mappagediv {
+  height: 100%;
 }
 

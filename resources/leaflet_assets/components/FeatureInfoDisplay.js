@@ -49,18 +49,18 @@ class FeatureInfoDisplay extends React.Component {
           if (life == "Dato acumulado") {
             let mysum = -999.99;
             if (category == "biodiversidad_verdadera") {
-              mysum = Math.exp(-this.props.featureInfo.properties[`shannon_ave`]) == 1 ? 0
-                  : Math.exp(-this.props.featureInfo.properties[`shannon_ave`]);
-              mysum += Math.exp( -this.props.featureInfo.properties[`shannon_hierba`] ) == 1 ? 0
-                  : Math.exp( -this.props.featureInfo.properties[`shannon_hierba`] );
-              mysum += Math.exp( -this.props.featureInfo.properties[`shannon_arbusto`] ) == 1 ? 0
-                  : Math.exp( -this.props.featureInfo.properties[`shannon_arbusto`] );
-              mysum += Math.exp(-this.props.featureInfo.properties[`shannon_arbol`]) == 1 ? 0
-                  : Math.exp( -this.props.featureInfo.properties[`shannon_arbol`] );
-              mysum += Math.exp( -this.props.featureInfo.properties[`shannon_herpetofauna`] ) == 1 ? 0
-                  : Math.exp( -this.props.featureInfo.properties[`shannon_herpetofauna`] );
-              mysum += Math.exp( -this.props.featureInfo.properties[`shannon_mamifero`] ) == 1 ? 0
-                  : Math.exp( -this.props.featureInfo.properties[`shannon_mamifero`] );
+              mysum = Math.exp(this.props.featureInfo.properties[`shannon_ave`]) == 1 ? 0
+                  : Math.exp(this.props.featureInfo.properties[`shannon_ave`]);
+              mysum += Math.exp( this.props.featureInfo.properties[`shannon_hierba`] ) == 1 ? 0
+                  : Math.exp( this.props.featureInfo.properties[`shannon_hierba`] );
+              mysum += Math.exp( this.props.featureInfo.properties[`shannon_arbusto`] ) == 1 ? 0
+                  : Math.exp( this.props.featureInfo.properties[`shannon_arbusto`] );
+              mysum += Math.exp(this.props.featureInfo.properties[`shannon_arbol`]) == 1 ? 0
+                  : Math.exp( this.props.featureInfo.properties[`shannon_arbol`] );
+              mysum += Math.exp( this.props.featureInfo.properties[`shannon_herpetofauna`] ) == 1 ? 0
+                  : Math.exp( this.props.featureInfo.properties[`shannon_herpetofauna`] );
+              mysum += Math.exp( this.props.featureInfo.properties[`shannon_mamifero`] ) == 1 ? 0
+                  : Math.exp( this.props.featureInfo.properties[`shannon_mamifero`] );
             } else {
               mysum =
                 +this.props.featureInfo.properties[`${category}_ave`] +
@@ -77,9 +77,9 @@ class FeatureInfoDisplay extends React.Component {
             let myValue = -999.99;
             if (newCat == "biodiversidad_verdadera") {
               myValue =
-                Math.exp(-oneTableRow["shannon"]).toPrecision(4) == 1
+                Math.exp(oneTableRow["shannon"]).toPrecision(4) == 1
                   ? 0
-                  : Math.exp(-oneTableRow["shannon"]).toPrecision(4);
+                  : Math.exp(oneTableRow["shannon"]).toPrecision(4);
             } else {
               myValue =
                 index > 1

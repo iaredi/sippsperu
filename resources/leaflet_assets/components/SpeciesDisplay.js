@@ -9,6 +9,8 @@ class SpeciesDisplay extends React.Component {
     render(){
 
         const oldspeciesResult=this.props.speciesResult
+        console.log(oldspeciesResult)
+
         //ADD (2) to prevent duplicate keys 
         const newA={}
         const speciesResult = oldspeciesResult.map((spec) => {
@@ -66,10 +68,7 @@ class SpeciesDisplay extends React.Component {
               }, {
                 dataField: 'abundancia_relativa',
                 text: 'Abundancia Relativa'
-              }, {
-                dataField: 'densidad',
-                text: 'Densidad '
-              }, {
+              },  {
                 dataField: 'dominancia',
                 text: 'Dominancia '
               }, {
@@ -84,6 +83,10 @@ class SpeciesDisplay extends React.Component {
                   dataField: 'ivi100',
                   text: 'Valor de Importancia'
                 },
+                {
+                  dataField: 'densidad',
+                  text: 'Densidad '
+                }
                 )
             }
             if(this.props.lifeform=='arbol'||this.props.lifeform=='arbusto'){

@@ -9,10 +9,9 @@
       <li class="nav-item">
         <a class="nav-link" href="/ingresardatos">Ingresar Datos</a>
       </li>
-      {{--
       <li class="nav-item">
-        <a class="nav-link" href="/descargar">Descargar</a>
-      </li> --}}
+        <a class="nav-link" href="/descargar">Descargar Datos</a>
+      </li> 
       <li class="nav-item">
         <a class="nav-link" href="/mostrarmapas">Mostrar Mapas</a>
       </li>

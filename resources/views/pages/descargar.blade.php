@@ -1,6 +1,5 @@
 @include('inc/php_functions')
 <?php 
-return redirect()->to('/login')->send();
 if (!session('email')){
     return redirect()->to('/login')->send();
 }

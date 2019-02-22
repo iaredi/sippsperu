@@ -24427,7 +24427,7 @@ var Normaapp = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         "div",
-        null,
+        { id: "mappagediv" },
         _react2.default.createElement(
           "div",
           { id: "pagecontainer" },
@@ -24465,16 +24465,7 @@ var Normaapp = function (_React$Component) {
           ),
           _react2.default.createElement(
             "div",
-            { id: "buttons" },
-            _react2.default.createElement(
-              "a",
-              {
-                className: "btn btn-info btn-sm m-2",
-                href: "/cargarshapes",
-                role: "button"
-              },
-              "Cargar Shapefile de Predio"
-            ),
+            { id: "buttons1" },
             this.state.udpButton && _react2.default.createElement(
               "div",
               { id: "buttonContainer" },
@@ -24510,6 +24501,19 @@ var Normaapp = function (_React$Component) {
                 "Fragmentaci\xF3n Ambiental",
                 " "
               )
+            )
+          ),
+          _react2.default.createElement(
+            "div",
+            { id: "buttons2" },
+            _react2.default.createElement(
+              "a",
+              {
+                className: "btn btn-info btn-sm m-2",
+                href: "/cargarshapes",
+                role: "button"
+              },
+              "Cargar Shapefile de Predio"
             )
           )
         )
@@ -24806,12 +24810,12 @@ var FeatureInfoDisplay = function (_React$Component) {
             if (life == "Dato acumulado") {
               var mysum = -999.99;
               if (category == "biodiversidad_verdadera") {
-                mysum = Math.exp(-_this2.props.featureInfo.properties["shannon_ave"]) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties["shannon_ave"]);
-                mysum += Math.exp(-_this2.props.featureInfo.properties["shannon_hierba"]) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties["shannon_hierba"]);
-                mysum += Math.exp(-_this2.props.featureInfo.properties["shannon_arbusto"]) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties["shannon_arbusto"]);
-                mysum += Math.exp(-_this2.props.featureInfo.properties["shannon_arbol"]) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties["shannon_arbol"]);
-                mysum += Math.exp(-_this2.props.featureInfo.properties["shannon_herpetofauna"]) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties["shannon_herpetofauna"]);
-                mysum += Math.exp(-_this2.props.featureInfo.properties["shannon_mamifero"]) == 1 ? 0 : Math.exp(-_this2.props.featureInfo.properties["shannon_mamifero"]);
+                mysum = Math.exp(_this2.props.featureInfo.properties["shannon_ave"]) == 1 ? 0 : Math.exp(_this2.props.featureInfo.properties["shannon_ave"]);
+                mysum += Math.exp(_this2.props.featureInfo.properties["shannon_hierba"]) == 1 ? 0 : Math.exp(_this2.props.featureInfo.properties["shannon_hierba"]);
+                mysum += Math.exp(_this2.props.featureInfo.properties["shannon_arbusto"]) == 1 ? 0 : Math.exp(_this2.props.featureInfo.properties["shannon_arbusto"]);
+                mysum += Math.exp(_this2.props.featureInfo.properties["shannon_arbol"]) == 1 ? 0 : Math.exp(_this2.props.featureInfo.properties["shannon_arbol"]);
+                mysum += Math.exp(_this2.props.featureInfo.properties["shannon_herpetofauna"]) == 1 ? 0 : Math.exp(_this2.props.featureInfo.properties["shannon_herpetofauna"]);
+                mysum += Math.exp(_this2.props.featureInfo.properties["shannon_mamifero"]) == 1 ? 0 : Math.exp(_this2.props.featureInfo.properties["shannon_mamifero"]);
               } else {
                 mysum = +_this2.props.featureInfo.properties[category + "_ave"] + +_this2.props.featureInfo.properties[category + "_hierba"] + +_this2.props.featureInfo.properties[category + "_arbusto"] + +_this2.props.featureInfo.properties[category + "_arbol"] + +_this2.props.featureInfo.properties[category + "_herpetofauna"] + +_this2.props.featureInfo.properties[category + "_mamifero"];
               }
@@ -24821,7 +24825,7 @@ var FeatureInfoDisplay = function (_React$Component) {
               var newCat = category.replace("_" + life, "");
               var myValue = -999.99;
               if (newCat == "biodiversidad_verdadera") {
-                myValue = Math.exp(-oneTableRow["shannon"]).toPrecision(4) == 1 ? 0 : Math.exp(-oneTableRow["shannon"]).toPrecision(4);
+                myValue = Math.exp(oneTableRow["shannon"]).toPrecision(4) == 1 ? 0 : Math.exp(oneTableRow["shannon"]).toPrecision(4);
               } else {
                 myValue = index > 1 ? (+_this2.props.featureInfo.properties[category + "_" + life]).toPrecision(4) : _this2.props.featureInfo.properties[category + "_" + life];
               }

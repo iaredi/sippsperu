@@ -5,15 +5,15 @@ if (!session('email')){
 $geojsonidennum=json_encode($idenudp);
 $geojsoninfotype=json_encode($infotype);
 $myheader= 'Especies y Normas 059 de UDP '.$idenudp;
-if ($infotype=='ea'){
+if ($infotype=='ae'){
   $myheader= 'Attributos Ecologicos de UDP '.$idenudp;
 } 
 ?>
   <script>
     var idennum = {!! $geojsonidennum !!};
     var infotype = {!! $geojsoninfotype !!};
-
   </script>
+
   @include('inc/header')
   @include('inc/nav')
 

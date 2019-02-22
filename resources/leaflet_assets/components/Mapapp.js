@@ -228,7 +228,7 @@ class Normaapp extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="mappagediv">
           <div id="pagecontainer">
             <div id="mapdiv" className="border border-dark">
               <Map
@@ -261,14 +261,8 @@ class Normaapp extends React.Component {
 
 
 
-                <div id="buttons">
-                  <a
-                    className="btn btn-info btn-sm m-2"
-                    href="/cargarshapes"
-                    role="button"
-                  >
-                    Cargar Shapefile de Predio
-                  </a>
+                <div id="buttons1">
+                  
                 
 
                 {this.state.udpButton && (
@@ -312,8 +306,17 @@ class Normaapp extends React.Component {
                     </a>
                   </div>
                 )}
+                
             </div>
-
+            <div id="buttons2">
+              <a
+            className="btn btn-info btn-sm m-2"
+            href="/cargarshapes"
+            role="button"
+              >
+                Cargar Shapefile de Predio
+              </a>
+          </div>
           </div>
       </div>
     );

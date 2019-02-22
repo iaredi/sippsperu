@@ -361,7 +361,7 @@ Route::post('getspecies', function(Request $request) {
         sum((observacion_{$lifeform}.distancia)::real) as distancia,
         AVG((observacion_{$lifeform}.dn)::real) as dn_raw,
         AVG((observacion_{$lifeform}.altura)::real) as altura_raw,
-        count (DISTINCT(observacion_{$lifeform}.iden_punto)) as sitios,";
+        ";
     }
     $hierbaextra='';
     if ($lifeform=="hierba"){
@@ -375,6 +375,7 @@ Route::post('getspecies', function(Request $request) {
         riesgo_{$lifeform_riesgo}.categoria,
         riesgo_{$lifeform_riesgo}.distribution,
         riesgo_{$lifeform_riesgo}.subespecie,
+        count(DISTINCT(observacion_{$lifeform}.iden_{$transpunto})) as sitios,
         {$arbolarbustoextra}
         {$hierbaextra}
         count(especie_{$lifeform}.cientifico) AS total_cientifico
@@ -410,6 +411,11 @@ Route::post('getspecies', function(Request $request) {
     foreach ($obresult as $row8){
       $row8->abundancia=$row8->total_cientifico;
       $row8->abundancia_relativa=round(100*($row8->total_cientifico)/$numeroindiviudos,2).'%';
+      $transpuntoresult = DB::select($transpuntosql, []);
+      $pointtotal = sizeof($transpuntoresult);
+      $row8->frequencia= ($row8->sitios)/$pointtotal;
+      $row8->dominancia= round(pow(($row8->total_cientifico)/$numeroindiviudos,2),4);
+
   } 
 
     
@@ -420,17 +426,14 @@ Route::post('getspecies', function(Request $request) {
         foreach ($obresult as $row){
           $row->dn= round(($row->dn_raw),4);
           $row->altura= round(($row->altura_raw),4);
-
-
-            $numeroindiviudos+=$row->total_cientifico;
-            $distsum+=$row->total_cientifico*$row->distancia;
+          $distsum+=$row->total_cientifico*$row->distancia;
+          $numeroindiviudos+=$row->total_cientifico;
         } 
         if ($numeroindiviudos>0){
             $sumivi=0;
             $distanciamedia=$distsum/$numeroindiviudos;
             
-            $transpuntoresult = DB::select($transpuntosql, []);
-            $pointtotal = sizeof($transpuntoresult);
+            
             $sumdensidad=0;
             $sumfrequencia=0;
             $sumdominancia=0;

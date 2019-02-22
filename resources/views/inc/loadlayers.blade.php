@@ -10,7 +10,7 @@ class layer
     public $fillOpacity;
 }
 $email=session('email');
-
+$dbemail = session('admin') == 1 ? "%" : $email;
 $layer1 = new layer();
 $layer1->tableName = 'udp_puebla_4326';
 $layer1->displayName = 'Unidad de Paisaje';
@@ -31,7 +31,7 @@ $layer2->fillColor = 'black';
 $layer2->opacity = 1;
 $layer2->weight = 5;
 $layer2->fillOpacity = 1;
-$layer2->sql = "SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6_linea";
+$layer2->sql = "SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6_linea where iden_email like '{$dbemail}'";
 
 $layer3 = new layer();
 $layer3->tableName = 'usershapes';
@@ -42,7 +42,7 @@ $layer3->fillColor = 'orange';
 $layer3->opacity = 0.5;
 $layer3->weight = 1;
 $layer3->fillOpacity = 0.5;
-$layer3->sql = "SELECT nombre, ST_AsGeoJSON(geom, 5) AS geojson FROM usershapes where iden_email='{$email}'";
+$layer3->sql = "SELECT nombre, ST_AsGeoJSON(geom, 5) AS geojson FROM usershapes where iden_email like '{$dbemail}'";
 
 $layer4 = new layer();
 $layer4->tableName = 'municipio_puebla_4326';

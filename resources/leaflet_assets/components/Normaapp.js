@@ -41,6 +41,7 @@ class Normaapp extends React.Component {
       for (const item of array) {
         getSpecies(item.toLowerCase(), "udp", idennum).then(myspeciesResult => {
           const newObject = {};
+          console.log('what',myspeciesResult)
           newObject["speciesResult" + item] = myspeciesResult;
           this.setState(prevState => newObject);
         });

@@ -30338,6 +30338,7 @@ var Normaapp = function (_React$Component) {
                   _loop = function _loop(item) {
                     getSpecies(item.toLowerCase(), "udp", idennum).then(function (myspeciesResult) {
                       var newObject = {};
+                      console.log('what', myspeciesResult);
                       newObject["speciesResult" + item] = myspeciesResult;
                       _this2.setState(function (prevState) {
                         return newObject;
@@ -30542,6 +30543,8 @@ var SpeciesDisplay = function (_React$Component) {
     value: function render() {
 
       var oldspeciesResult = this.props.speciesResult;
+      console.log(oldspeciesResult);
+
       //ADD (2) to prevent duplicate keys 
       var newA = {};
       var speciesResult = oldspeciesResult.map(function (spec) {
@@ -30596,9 +30599,6 @@ var SpeciesDisplay = function (_React$Component) {
           dataField: 'abundancia_relativa',
           text: 'Abundancia Relativa'
         }, {
-          dataField: 'densidad',
-          text: 'Densidad '
-        }, {
           dataField: 'dominancia',
           text: 'Dominancia '
         }, {
@@ -30610,6 +30610,9 @@ var SpeciesDisplay = function (_React$Component) {
           columns.push({
             dataField: 'ivi100',
             text: 'Valor de Importancia'
+          }, {
+            dataField: 'densidad',
+            text: 'Densidad '
           });
         }
         if (this.props.lifeform == 'arbol' || this.props.lifeform == 'arbusto') {
