@@ -805,10 +805,15 @@ function clickReadyButton(e){
                     let newValue=val;
 
                     if (cat.includes('latitud') || cat.includes('longitud') ){
-                      let stringsSplitDecimal = val.toString().split(".");
-                      let missing = 4-(stringsSplitDecimal[0]).length;
-                      let newDecimal = stringsSplitDecimal[1] + "0".repeat(missing);
-                      newValue= stringsSplitDecimal[0]+"."+newDecimal; 
+                      if(val.toString().includes(".")){
+                       let stringsSplitDecimal = val.toString().split(".");
+                        let missing = 4-(stringsSplitDecimal[1]).length;
+                        let newDecimal = stringsSplitDecimal[1] + "0".repeat(missing);
+                        newValue= stringsSplitDecimal[0]+"."+newDecimal;  
+                      }else{
+                        newValue = val.toString() + "0000";
+                      }
+                      
                     }
                     if (myElem){
                         myElem.value=newValue

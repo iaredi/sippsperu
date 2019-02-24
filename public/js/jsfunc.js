@@ -939,10 +939,14 @@ function clickReadyButton(e) {
                         var newValue = val;
 
                         if (cat.includes('latitud') || cat.includes('longitud')) {
-                            var stringsSplitDecimal = val.toString().split(".");
-                            var missing = 4 - stringsSplitDecimal[0].length;
-                            var newDecimal = stringsSplitDecimal[1] + "0".repeat(missing);
-                            newValue = stringsSplitDecimal[0] + "." + newDecimal;
+                            if (val.toString().includes(".")) {
+                                var stringsSplitDecimal = val.toString().split(".");
+                                var missing = 4 - stringsSplitDecimal[1].length;
+                                var newDecimal = stringsSplitDecimal[1] + "0".repeat(missing);
+                                newValue = stringsSplitDecimal[0] + "." + newDecimal;
+                            } else {
+                                newValue = val.toString() + "0000";
+                            }
                         }
                         if (myElem) {
                             myElem.value = newValue;
