@@ -1,10 +1,9 @@
 <?php
-  if ($_SERVER['REQUEST_METHOD']=="GET"){
     if (!session('email')){
         return redirect()->to('/login')->send();
       }
       $useremail=json_encode(session('email'));
-  }
+  
  
 
   if ($_SERVER['REQUEST_METHOD']=="POST" && isset($_POST['descargarexcel'])) {

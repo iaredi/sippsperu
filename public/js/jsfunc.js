@@ -941,7 +941,7 @@ function clickReadyButton(e) {
                         if (cat.includes('latitud') || cat.includes('longitud')) {
                             var stringsSplitDecimal = val.toString().split(".");
                             var missing = 4 - stringsSplitDecimal[0].length;
-                            var newDecimal = stringsSplitDecimal[0] + "0".repeat(missing);
+                            var newDecimal = stringsSplitDecimal[1] + "0".repeat(missing);
                             newValue = stringsSplitDecimal[0] + "." + newDecimal;
                         }
                         if (myElem) {

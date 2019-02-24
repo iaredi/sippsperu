@@ -807,7 +807,7 @@ function clickReadyButton(e){
                     if (cat.includes('latitud') || cat.includes('longitud') ){
                       let stringsSplitDecimal = val.toString().split(".");
                       let missing = 4-(stringsSplitDecimal[0]).length;
-                      let newDecimal = stringsSplitDecimal[0] + "0".repeat(missing);
+                      let newDecimal = stringsSplitDecimal[1] + "0".repeat(missing);
                       newValue= stringsSplitDecimal[0]+"."+newDecimal; 
                     }
                     if (myElem){

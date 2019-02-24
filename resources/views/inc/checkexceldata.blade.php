@@ -145,41 +145,53 @@
             }
             //scan rows of observacions
             $row_number=2;
+            $true_row=0;
+
             while (true){
               if ($spreadsheet->getSheetByName($sheetobs)->getCell("B{$row_number}")->getValue()==NULL){
                 break;
               }else{
-                $true_row=$row_number-2;
-                $letter = 'A';
-                //scan across columns
-                foreach ($obscolumnarray as $obscolumn) {
-                  $obsvalue = trim($spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}{$row_number}")->getValue());
-
-                  if (strpos($obscolumn, 'iden_foto') !== false){
-                    if($obsvalue==NULL){
-                      $obsvalue = "No Presentado";
-                    }else{
-                      $uploadfotoarray[$obsvalue]="observacion_{$lifeform}";
-                      $obsvalue="observacion_{$lifeform}_{$obsvalue}";
-                      
+                $numero=1;
+                if($lifeform=='ave'){
+                  $numero_letter = 'A';
+                  foreach ($obscolumnarray as $obscolumn) { 
+                    if (strpos($obscolumn, 'numero') !== false){
+                      $numero=trim($spreadsheet->getSheetByName($sheetobs)->getCell("{$numero_letter}{$row_number}")->getValue());
                     }
+                    $numero_letter = ++$numero_letter; 
                   }
+                }
 
-                  if($obscolumn=='cientifico'){
-                    if ($obsvalue==NULL){
-                      break;
-                    }else{
-                      $cientifico = $spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}{$row_number}")->getValue();
-                      $obspost["row{$true_row}*observacion_{$lifeform}*species"]="Nuevo";
-                      if(sizeof(DB::select("SELECT cientifico FROM especie_{$lifeform} WHERE cientifico=:value", [':value'=>$cientifico]))>0){
-                        $obspost["row{$true_row}*observacion_{$lifeform}*species"]=$cientifico;
+                for ($i=0; $i <$numero ; $i++) { 
+                  $letter = 'A';
+                  //scan across columns
+                  foreach ($obscolumnarray as $obscolumn) {
+                    $obsvalue = trim($spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}{$row_number}")->getValue());
+                    if (strpos($obscolumn, 'iden_foto') !== false){
+                      if($obsvalue==NULL){
+                        $obsvalue = "No Presentado";
+                      }else{
+                        $uploadfotoarray[$obsvalue]="observacion_{$lifeform}";
+                        $obsvalue="observacion_{$lifeform}_{$obsvalue}";
                       }
                     }
+                    if($obscolumn=='cientifico'){
+                      if ($obsvalue==NULL){
+                        break;
+                      }else{
+                        $cientifico = $spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}{$row_number}")->getValue();
+                        $obspost["row{$true_row}*observacion_{$lifeform}*species"]="Nuevo";
+                        if(sizeof(DB::select("SELECT cientifico FROM especie_{$lifeform} WHERE cientifico=:value", [':value'=>$cientifico]))>0){
+                          $obspost["row{$true_row}*observacion_{$lifeform}*species"]=$cientifico;
+                        }
+                      }
+                    }
+                    $obspost["row{$true_row}*observacion_{$lifeform}*{$obscolumn}"] = $obsvalue;
+                    
+                    $letter = ++$letter;
                   }
-                  
-                  $obspost["row{$true_row}*observacion_{$lifeform}*{$obscolumn}"] = $obsvalue;
-                  $letter = ++$letter;
-                }//end scan across columns
+                  $true_row=$true_row+1;
+                }
                 $row_number=$row_number+1;
                 }
             }//end scan rows of observacions
@@ -215,7 +227,7 @@
           $currentobspost['selectmedicion'] = $newmedicion;
           $saveworked = savedata($currentobspost,$useremail,true);
           if ($saveworked=="false"){
-            $errorlist[]="Hubo una problema guandando datos";
+            $errorlist[]="Hubo una problema guardando datos";
           }
         }
       }

@@ -247,14 +247,12 @@
                   
                   
                   if($iden_foto=='No Presentado' || explode("_" , $iden_foto)[0]=='observacion'){
-                    echo "HELLO";
                     $obscolumnarray[]=$obscolumns;
                   }else{ 
                     $resultofquery[] = $iden_foto;
                   }
                 } 
                 if (sizeof($resultofquery)==0){
-                  echo var_dump($obscolumnarray);
                   $resultofquery[] = savenewentry("{$transpunto}_{$speciestype}", $unitcolumns);
                   $unitmax=getserialmax("{$transpunto}_{$speciestype}"); 
                   foreach ($obscolumnarray as $obscolumn) {
