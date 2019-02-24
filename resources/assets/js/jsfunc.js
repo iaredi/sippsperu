@@ -811,7 +811,7 @@ function clickReadyButton(e){
                         let newDecimal = stringsSplitDecimal[1] + "0".repeat(missing);
                         newValue= stringsSplitDecimal[0]+"."+newDecimal;  
                       }else{
-                        newValue = val.toString() + "0000";
+                        newValue = val.toString() + ".0000";
                       }
                       
                     }
