@@ -244,15 +244,24 @@
                   $obscolumns=buildcolumnsarray($newpost,$obstype, "row{$i}");
                   $obscolumns["iden_especie"]= $iden_especie;
                   $obscolumns["iden_foto"]= $iden_foto;
+                  echo $i;
                   
                   
                   if($iden_foto=='No Presentado' || explode("_" , $iden_foto)[0]=='observacion'){
-                    $obscolumnarray[]=$obscolumns;
+                    $numero=1;
+                    if (isset($newpost["row{$i}*{$obstype}*cantidad"])){
+                      $numero=$newpost["row{$i}*{$obstype}*cantidad"];
+                    }
+                    for ($i2=0; $i2 <$numero; $i2++) { 
+                      $obscolumnarray[]=$obscolumns;
+                    }
+
                   }else{ 
                     $resultofquery[] = $iden_foto;
                   }
                 } 
                 if (sizeof($resultofquery)==0){
+
                   $resultofquery[] = savenewentry("{$transpunto}_{$speciestype}", $unitcolumns);
                   $unitmax=getserialmax("{$transpunto}_{$speciestype}"); 
                   foreach ($obscolumnarray as $obscolumn) {

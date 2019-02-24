@@ -151,18 +151,7 @@
               if ($spreadsheet->getSheetByName($sheetobs)->getCell("B{$row_number}")->getValue()==NULL){
                 break;
               }else{
-                $numero=1;
-                if($lifeform=='ave'){
-                  $numero_letter = 'A';
-                  foreach ($obscolumnarray as $obscolumn) { 
-                    if (strpos($obscolumn, 'numero') !== false){
-                      $numero=trim($spreadsheet->getSheetByName($sheetobs)->getCell("{$numero_letter}{$row_number}")->getValue());
-                    }
-                    $numero_letter = ++$numero_letter; 
-                  }
-                }
 
-                for ($i=0; $i <$numero ; $i++) { 
                   $letter = 'A';
                   //scan across columns
                   foreach ($obscolumnarray as $obscolumn) {
@@ -191,7 +180,7 @@
                     $letter = ++$letter;
                   }
                   $true_row=$true_row+1;
-                }
+                
                 $row_number=$row_number+1;
                 }
             }//end scan rows of observacions
