@@ -98,19 +98,19 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
         }
     }
   }
-    for($i=0; $i<countrows($_POST,'observacion_ave'); $i++){
-      $micrototal=
-        $_POST["row{$i}*observacion_ave*fo_arbol"] + 
-        $_POST["row{$i}*observacion_ave*fo_arbusto"] +
-        $_POST["row{$i}*observacion_ave*tr_arbol"] +
-        $_POST["row{$i}*observacion_ave*tr_arbusto"] +
-        $_POST["row{$i}*observacion_ave*ro"] +
-        $_POST["row{$i}*observacion_ave*su"];
-      if ($micrototal != 0 && $micrototal != 1){
-        $realrow=$i+1;
-        $errorlist[]= "Hay error en observacion {$realrow}, hay que entrar 1 para solo un lugar, en 0 por los demas";
-      } 
-    }
+    // for($i=0; $i<countrows($_POST,'observacion_ave'); $i++){
+    //   $micrototal=
+    //     $_POST["row{$i}*observacion_ave*fo_arbol"] + 
+    //     $_POST["row{$i}*observacion_ave*fo_arbusto"] +
+    //     $_POST["row{$i}*observacion_ave*tr_arbol"] +
+    //     $_POST["row{$i}*observacion_ave*tr_arbusto"] +
+    //     $_POST["row{$i}*observacion_ave*ro"] +
+    //     $_POST["row{$i}*observacion_ave*su"];
+    //   if ($micrototal != 0 && $micrototal != 1){
+    //     $realrow=$i+1;
+    //     $errorlist[]= "Hay error en observacion {$realrow}, hay que entrar 1 para solo un lugar, en 0 por los demas";
+    //   } 
+    // }
 
 
 
