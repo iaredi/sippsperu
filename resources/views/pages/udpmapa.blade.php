@@ -4,11 +4,15 @@ if (!session('email')){
 }
 $geojsonidennum=json_encode($idennum);
 $geojsonshannon=json_encode($shannon);
+$geojsonmaptype=json_encode($maptype);
+
 ?>
 
 <script>
   var idennum = {!! $geojsonidennum !!};
   var shannon = {!! $geojsonshannon !!};
+  var maptype = {!! $geojsonmaptype !!};
+
 </script>
 
 @include('inc/udploadlayers')

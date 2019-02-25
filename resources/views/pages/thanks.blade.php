@@ -22,5 +22,6 @@
     echo '<script>console.log('.json_encode(session('testvar')).')</script>';
   }
   echo '<script>console.log('.json_encode(session('resultofquery')).')</script>';
-  session(['resultofquery' => '']);
+  $emptyarray=[];
+  session(['resultofquery' => $emptyarray]);
 ?>

@@ -29,8 +29,8 @@ Route::get('/cargarshapesadmin', 'PagesController@cargarshapesadmin');
 Route::get('/mostrarnormas/{infotype}/{idenudpraw}', function ($infotype,$idenudpraw){
   return view('pages/mostrarnormas',['infotype'=>$infotype,'idenudp'=>$idenudpraw]);
 });
-Route::get('/udpmapa/{infotype}/{shannon}', function ($idennum,$shannon){
-  return view('pages/udpmapa',['idennum'=>$idennum,'shannon'=>$shannon]);
+Route::get('/udpmapa/{maptype}/{idennum}/{shannon}', function ($maptype,$idennum,$shannon){
+  return view('pages/udpmapa',['maptype'=>$maptype,'idennum'=>$idennum,'shannon'=>$shannon]);
 });
 
 

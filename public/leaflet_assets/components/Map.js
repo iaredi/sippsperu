@@ -15740,7 +15740,7 @@ window.L = exports;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -15762,198 +15762,198 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var style = {
-    height: "100%"
+  height: "100%"
 };
 
 var Map = function (_React$Component) {
-    _inherits(Map, _React$Component);
+  _inherits(Map, _React$Component);
 
-    function Map(props) {
-        _classCallCheck(this, Map);
+  function Map(props) {
+    _classCallCheck(this, Map);
 
-        var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this, props));
 
-        _this.getColor = _this.getColor.bind(_this);
-        return _this;
+    _this.getColor = _this.getColor.bind(_this);
+    return _this;
+  }
+
+  _createClass(Map, [{
+    key: "getColor",
+    value: function getColor(x) {
+      return x < this.props.mapSettings.maxValue * (1 / 6) ? '#edf8fb' : x < this.props.mapSettings.maxValue * (2 / 6) ? '#ccece6' : x < this.props.mapSettings.maxValue * (3 / 6) ? '#99d8c9' : x < this.props.mapSettings.maxValue * (4 / 6) ? '#66c2a4' : x < this.props.mapSettings.maxValue * (5 / 6) ? '#41ae76' : x < this.props.mapSettings.maxValue ? '#238b45' : '#005824';
     }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
 
-    _createClass(Map, [{
-        key: "getColor",
-        value: function getColor(x) {
-            return x < this.props.mapSettings.maxValue * (1 / 6) ? '#edf8fb' : x < this.props.mapSettings.maxValue * (2 / 6) ? '#ccece6' : x < this.props.mapSettings.maxValue * (3 / 6) ? '#99d8c9' : x < this.props.mapSettings.maxValue * (4 / 6) ? '#66c2a4' : x < this.props.mapSettings.maxValue * (5 / 6) ? '#41ae76' : x < this.props.mapSettings.maxValue ? '#238b45' : '#005824';
+      this.props.setDefaultMax(defaultmax[this.props.mapSettings.distinctOrTotal + "_" + this.props.mapSettings.myObsType]);
+      // create map
+      this.map = _leaflet2.default.map("map", {
+        center: [18.69349, 360 - 98.16245],
+        zoom: 9,
+        layers: []
+      });
+
+      var streets = _leaflet2.default.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      }).addTo(this.map);
+
+      var imagery = _leaflet2.default.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: '&copy; <a href="http://www.esri.com/">Esri</a>i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+        maxZoom: 18
+      });
+
+      this.baseMaps = {
+        "Imagery": imagery,
+        "Streets": streets
+      };
+
+      var get_shp = function get_shp(item, mymap) {
+        ////
+        var geojsonMarkerOptions = {
+          radius: 4,
+          fillColor: item.fillColor,
+          color: item.color,
+          weight: item.weight,
+          opacity: item.opacity,
+          fillOpacity: item.fillOpacity
+        };
+
+        var myStyle = {
+          weight: item.weight,
+          color: item.color,
+          opacity: item.opacity,
+          fillColor: item.fillColor,
+          fillOpacity: item.fillOpacity
+        };
+
+        var onEachFeature = function onEachFeature(feature, layer) {
+          var handleFeatureClick = function handleFeatureClick(event) {
+            _this2.props.handleFeatureClick(event);
+          };
+          layer.on('click', handleFeatureClick);
+        };
+
+        var c2 = _leaflet2.default.geoJson(item.geom, {
+          style: myStyle,
+          onEachFeature: onEachFeature
+        });
+        if (item.geom && item.geom.features[0].geometry.type == 'Point') {
+          c2 = _leaflet2.default.geoJSON(item.geom, {
+            pointToLayer: function pointToLayer(feature, latlng) {
+              return _leaflet2.default.circleMarker(latlng, geojsonMarkerOptions);
+            },
+            onEachFeature: onEachFeature,
+            style: myStyle
+
+          });
         }
-    }, {
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            var _this2 = this;
-
-            this.props.setDefaultMax(defaultmax[this.props.mapSettings.distinctOrTotal + "_" + this.props.mapSettings.myObsType]);
-            // create map
-            this.map = _leaflet2.default.map("map", {
-                center: [18.69349, 360 - 98.16245],
-                zoom: 9,
-                layers: []
-            });
-
-            var streets = _leaflet2.default.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(this.map);
-
-            var imagery = _leaflet2.default.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                attribution: '&copy; <a href="http://www.esri.com/">Esri</a>i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-                maxZoom: 18
-            });
-
-            this.baseMaps = {
-                "Imagery": imagery,
-                "Streets": streets
-            };
-
-            var get_shp = function get_shp(item, mymap) {
-                ////
-                var geojsonMarkerOptions = {
-                    radius: 4,
-                    fillColor: "#ff7800",
-                    color: "#000",
-                    weight: 1,
-                    opacity: 1,
-                    fillOpacity: 0.8
-                };
-
-                var myStyle = {
-                    weight: item.weight,
-                    color: item.color,
-                    opacity: item.opacity,
-                    fillColor: item.fillColor,
-                    fillOpacity: item.fillOpacity
-                };
-
-                var onEachFeature = function onEachFeature(feature, layer) {
-                    var handleFeatureClick = function handleFeatureClick(event) {
-                        _this2.props.handleFeatureClick(event);
-                    };
-                    layer.on('click', handleFeatureClick);
-                };
-
-                var c2 = _leaflet2.default.geoJson(item.geom, {
-                    style: myStyle,
-                    onEachFeature: onEachFeature
-                });
-                if (item.geom && item.geom.features[0].geometry.type == 'Point') {
-                    c2 = _leaflet2.default.geoJSON(item.geom, {
-                        pointToLayer: function pointToLayer(feature, latlng) {
-                            return _leaflet2.default.circleMarker(latlng, geojsonMarkerOptions);
-                        },
-                        onEachFeature: onEachFeature,
-                        style: myStyle
-
-                    });
-                }
-                if (item.tableName == 'linea_mtp' || item.tableName == 'udp_puebla_4326') {
-                    c2.addTo(mymap);
-                }
-                return c2;
-            };
-
-            var processArray = function processArray(array, mymap, mybaseMaps, getColor, getOutline) {
-                var dynamicLayer = 'notset';
-                var overlayMaps = _this2.overlayMaps || {};
-                array.forEach(function (item) {
-                    var myLayer = get_shp(item, mymap, getColor, getOutline);
-                    if (item.tableName == 'udp_puebla_4326') {
-                        dynamicLayer = myLayer;
-                        mymap.fitBounds(myLayer.getBounds());
-                    }
-                    overlayMaps[item.displayName] = myLayer;
-                });
-                _leaflet2.default.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
-                return dynamicLayer;
-            };
-            this.dynamicLayer = processArray(something, this.map, this.baseMaps, this.getColor, this.getOutline);
-            this.map.on("click", this.props.handleMapClick);
-            this.map.scrollWheelZoom.disable();
-            ///////////LEGENDNEW////////////
-
-            var legend = _leaflet2.default.control({ position: 'bottomleft' });
-            this.makeDiv = function (map) {
-                grades = [];
-                labels = [];
-                var div = _leaflet2.default.DomUtil.create('div', 'info legend'),
-                    grades,
-                    labels = [];
-                _leaflet2.default.DomUtil.addClass(div, "colorLegend border border-secondary p-2");
-
-                div.innerHTML += '<i class="m-1" style="outline: 5px solid purple; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + 'Sus datos <br><br>';
-                div.innerHTML += '<i class="m-1" style="outline: 5px solid red; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + 'Datos de otros monitores<br><br>';
-                div.innerHTML += '<i class="m-1" style="outline: 5px solid yellow; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + 'Selección<br>';
-                return div;
-            };
-            legend.onAdd = this.makeDiv;
-            legend.addTo(this.map);
-            this.legend = legend;
-
-            ///////////LEGENDOLD////////////
-
-            var legend = _leaflet2.default.control({ position: 'bottomright' });
-
-            this.makeDiv = function (map) {
-                grades = [];
-                for (var i = 0; i <= 6; i++) {
-                    grades.push(_this2.props.mapSettings.maxValue * (i / 6)), labels = [];
-                }
-                var getColor = _this2.getColor;
-                var div = _leaflet2.default.DomUtil.create('div', 'info legend'),
-                    grades,
-                    labels = [];
-                _leaflet2.default.DomUtil.addClass(div, "colorLegend border border-secondary");
-                // loop through our density intervals and generate a label with a colored square for each interval
-                for (var i = 0; i < grades.length; i++) {
-                    div.innerHTML += '<i style="background:' + getColor(grades[i]) + '">&nbsp&nbsp&nbsp&nbsp</i> ' + Math.floor(grades[i]) + (grades[i + 1] ? '&ndash;' + Math.floor(grades[i + 1]) + '<br>' : '+');
-                }
-                return div;
-            };
-            legend.onAdd = this.makeDiv;
-            legend.addTo(this.map);
-            this.legend = legend;
-            /////////////////////////////////////////////////////
+        if (item.tableName == 'linea_mtp' || item.tableName == 'udp_puebla_4326') {
+          c2.addTo(mymap);
         }
-    }, {
-        key: "componentDidUpdate",
-        value: function componentDidUpdate(_ref) {
-            var _this3 = this;
+        return c2;
+      };
 
-            var mapSettings = _ref.mapSettings;
+      var processArray = function processArray(array, mymap, mybaseMaps, getColor, getOutline) {
+        var dynamicLayer = 'notset';
+        var overlayMaps = _this2.overlayMaps || {};
+        array.forEach(function (item) {
+          var myLayer = get_shp(item, mymap, getColor, getOutline);
+          if (item.tableName == 'udp_puebla_4326') {
+            dynamicLayer = myLayer;
+            mymap.fitBounds(myLayer.getBounds());
+          }
+          overlayMaps[item.displayName] = myLayer;
+        });
+        _leaflet2.default.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
+        return dynamicLayer;
+      };
+      this.dynamicLayer = processArray(something, this.map, this.baseMaps, this.getColor, this.getOutline);
+      this.map.on("click", this.props.handleMapClick);
+      this.map.scrollWheelZoom.disable();
+      ///////////LEGENDNEW////////////
 
-            if (this.props.mapSettings !== mapSettings) {
-                this.map.removeControl(this.legend);
-                var legend = _leaflet2.default.control({ position: 'bottomright' });
-                legend.onAdd = this.makeDiv;
-                legend.addTo(this.map);
-                this.legend = legend;
-                var getColor = this.getColor;
-                var getOutline = this.props.getOutline;
-                var targetProperty = this.props.mapSettings.distinctOrTotal + "_" + this.props.mapSettings.myObsType;
+      var legend = _leaflet2.default.control({ position: 'bottomleft' });
+      this.makeDiv = function (map) {
+        grades = [];
+        labels = [];
+        var div = _leaflet2.default.DomUtil.create('div', 'info legend'),
+            grades,
+            labels = [];
+        _leaflet2.default.DomUtil.addClass(div, "colorLegend border border-secondary p-2");
 
-                var myStyle = function myStyle(feature, maxValue) {
-                    return {
-                        "fillColor": getColor(feature.properties[targetProperty]),
-                        "opacity": 1,
-                        "weight": getOutline(feature.properties, 'weight'),
-                        "color": getOutline(feature.properties, 'color'),
-                        "fillOpacity": _this3.props.mapSettings.fillOpacity
-                    };
-                };
-                this.dynamicLayer.setStyle(myStyle);
-            }
+        div.innerHTML += '<i class="m-1" style="outline: 5px solid purple; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + 'Sus datos <br><br>';
+        div.innerHTML += '<i class="m-1" style="outline: 5px solid red; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + 'Datos de otros monitores<br><br>';
+        div.innerHTML += '<i class="m-1" style="outline: 5px solid yellow; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + 'Selección<br>';
+        return div;
+      };
+      legend.onAdd = this.makeDiv;
+      legend.addTo(this.map);
+      this.legend = legend;
+
+      ///////////LEGENDOLD////////////
+
+      var legend = _leaflet2.default.control({ position: 'bottomright' });
+
+      this.makeDiv = function (map) {
+        grades = [];
+        for (var i = 0; i <= 6; i++) {
+          grades.push(_this2.props.mapSettings.maxValue * (i / 6)), labels = [];
         }
-    }, {
-        key: "render",
-        value: function render() {
-            return _react2.default.createElement("div", { id: "map", style: style });
+        var getColor = _this2.getColor;
+        var div = _leaflet2.default.DomUtil.create('div', 'info legend'),
+            grades,
+            labels = [];
+        _leaflet2.default.DomUtil.addClass(div, "colorLegend border border-secondary");
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+          div.innerHTML += '<i style="background:' + getColor(grades[i]) + '">&nbsp&nbsp&nbsp&nbsp</i> ' + Math.floor(grades[i]) + (grades[i + 1] ? '&ndash;' + Math.floor(grades[i + 1]) + '<br>' : '+');
         }
-    }]);
+        return div;
+      };
+      legend.onAdd = this.makeDiv;
+      legend.addTo(this.map);
+      this.legend = legend;
+      /////////////////////////////////////////////////////
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(_ref) {
+      var _this3 = this;
 
-    return Map;
+      var mapSettings = _ref.mapSettings;
+
+      if (this.props.mapSettings !== mapSettings) {
+        this.map.removeControl(this.legend);
+        var legend = _leaflet2.default.control({ position: 'bottomright' });
+        legend.onAdd = this.makeDiv;
+        legend.addTo(this.map);
+        this.legend = legend;
+        var getColor = this.getColor;
+        var getOutline = this.props.getOutline;
+        var targetProperty = this.props.mapSettings.distinctOrTotal + "_" + this.props.mapSettings.myObsType;
+
+        var myStyle = function myStyle(feature, maxValue) {
+          return {
+            "fillColor": getColor(feature.properties[targetProperty]),
+            "opacity": 1,
+            "weight": getOutline(feature.properties, 'weight'),
+            "color": getOutline(feature.properties, 'color'),
+            "fillOpacity": _this3.props.mapSettings.fillOpacity
+          };
+        };
+        this.dynamicLayer.setStyle(myStyle);
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react2.default.createElement("div", { id: "map", style: style });
+    }
+  }]);
+
+  return Map;
 }(_react2.default.Component);
 
 exports.default = Map;

@@ -50,31 +50,31 @@ class Map extends React.Component {
       ////
       let geojsonMarkerOptions = {
         radius: 4,
-        fillColor: "#ff7800",
-        color: "#000",
-        weight: 1,
-        opacity: 1,
-        fillOpacity: 0.8
+        fillColor: item.fillColor,
+        color: item.color,
+        weight: item.weight,
+        opacity: item.opacity,
+        fillOpacity: item.fillOpacity
     };
     
-        let myStyle={
-            weight: item.weight,
-            color: item.color,
-            opacity: item.opacity,
-            fillColor: item.fillColor,
-            fillOpacity: item.fillOpacity
-        } 
+      let myStyle={
+        weight: item.weight,
+        color: item.color,
+        opacity: item.opacity,
+        fillColor: item.fillColor,
+        fillOpacity: item.fillOpacity
+      } 
         
-        const onEachFeature =(feature, layer)=> {
-            const handleFeatureClick=(event)=> {
-                this.props.handleFeatureClick(event);
-            }
-            layer.on('click',handleFeatureClick)
+      const onEachFeature =(feature, layer)=> {
+        const handleFeatureClick=(event)=> {
+          this.props.handleFeatureClick(event);
         }
-        
+        layer.on('click',handleFeatureClick)
+      }
+      
         let c2 = L.geoJson(item.geom, {
-            style: myStyle,
-            onEachFeature: onEachFeature
+          style: myStyle,
+          onEachFeature: onEachFeature
         })
         if (item.geom && item.geom.features[0].geometry.type=='Point'){
           c2 = L.geoJSON(item.geom, {

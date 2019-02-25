@@ -22,7 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 
-Route::post('getboundingfeatures', function(Request $request) {
+Route::post('getsuelofeatures', function(Request $request) {
     $result="There was an error";
     $north =  $request->north;
     $east =  $request->east;
@@ -82,8 +82,6 @@ Route::post('getboundingfeatures', function(Request $request) {
     $resultudppoliagua = DB::select($sqludppoliagua,[]);
     $resultudpmuni = DB::select($sqludpmuni,[]);
 
-    
-
     //Get length of water lines
     $agualength =0;
     foreach($resultudplineaagua AS $row2) {
@@ -132,14 +130,7 @@ Route::post('getboundingfeatures', function(Request $request) {
         $newrow->totalarea=$row->totalarea;
         $newrow->color=$row->color;
         $newrow->aislado=$row->aislado;
-        //Aisilado for smallest subdivsions 
-        // $withinsql2 ="SELECT ST_Within(?, (select geom from udp_puebla_4326 where iden=?))";
-        // $withinresult2 = DB::select($withinsql2,[$patchrow->geom,$udpiden]);
-        // if ($withinresult2[0]->st_within){
-        //   $newrow->aislado=1;
-        // }else{
-        //   $newrow->aislado=0;
-        // }
+      
 
         //Data that free-rides on resultudp
         $newrow->agualength=$agualength;
@@ -148,19 +139,6 @@ Route::post('getboundingfeatures', function(Request $request) {
         $newrow->munilist=$resultudpmuni;
         $newrows[]=$newrow;
       }
-      //get area of usos de suelo
-      // $areasql ="SELECT ST_Area(ST_INTERSECTION(usos_de_suelo4.geom, (select geom from udp_puebla_4326 where iden=?))) from usos_de_suelo4 where gid = ?";
-      // $arearesult = DB::select($areasql,[$udpiden,$gid]);
-      // $row->area=(float)($arearesult[0]->st_area);
-      
-     
-      //Data that free-rides on resultudp
-      // $row->agualength=$agualength;
-      // $row->aguacount=sizeof($resultudppuntoagua)/2;
-      // $row->aguaarea=$aguaarea;
-      // $row->munilist=$resultudpmuni;
-
-
     }
     
     

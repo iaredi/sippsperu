@@ -221,8 +221,10 @@
         }
       }
   }//end if no errors
-  if(sizeof($errorlist)==0){
+  if(sizeof($errorlist)==0 && sizeof(session('resultofquery'))>0){
     redirect()->to('/thanks')->send();
+  }else{
+    $errorlist[]="Hubo una problema guardando datos";
   }
 
 }

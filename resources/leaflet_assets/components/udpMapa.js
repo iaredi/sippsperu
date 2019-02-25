@@ -31,15 +31,23 @@ class UDPMapa extends React.Component {
     });
 
     const get_shp = (item, mymap) => {
-      let myStyle = feature => {
-        return {
-          fillColor: item.fillColor,
-          opacity: item.opacity,
-          weight: item.weight,
-          color: item.color,
-          fillOpacity: item.fillOpacity
-        };
-      };
+      let geojsonMarkerOptions = {
+        radius: 4,
+        fillColor: item.fillColor,
+        color: item.color,
+        weight: item.weight,
+        opacity: item.opacity,
+        fillOpacity: item.fillOpacity
+    };
+
+    let myStyle={
+      weight: item.weight,
+      color: item.color,
+      opacity: item.opacity,
+      fillColor: item.fillColor,
+      fillOpacity: item.fillOpacity
+    } 
+
       if (item.tableName == "usos_de_suelo4") {
         myStyle = feature => {
           return {
@@ -52,9 +60,21 @@ class UDPMapa extends React.Component {
         };
       }
 
-      let c2 = L.geoJson(item.geom, {
-        style: myStyle
-      });
+      let c2;
+      if (item.geom && item.geom.features[0].geometry.type=='Point'){
+        c2 = L.geoJSON(item.geom, {
+          pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, geojsonMarkerOptions);
+          },
+          style: myStyle,
+        })
+      }else{
+        c2 = L.geoJson(item.geom, {
+          style: myStyle
+        });
+      }
+
+      
 
       c2.addTo(mymap);
       return c2;
@@ -75,11 +95,11 @@ class UDPMapa extends React.Component {
             udpiden = item.sql.split("'")[1];
           }
         } else {
-          async function getBoundingFeatures(bounds, udpiden) {
+          async function getSueloFeatures(bounds, udpiden) {
             let myapi =
-              "https://biodiversidadpuebla.online/api/getboundingfeatures";
+              "https://biodiversidadpuebla.online/api/getsuelofeatures";
             if (window.location.host == "localhost:3000")
-              myapi = "http://localhost:3000/api/getboundingfeatures";
+              myapi = "http://localhost:3000/api/getsuelofeatures";
             const rawResponse = await fetch(myapi, {
               method: "POST",
               headers: {
@@ -98,7 +118,7 @@ class UDPMapa extends React.Component {
             let dataResult = await rawResponse.json();
             return dataResult;
           }
-          getBoundingFeatures(bounds, udpiden).then(soils => {
+          getSueloFeatures(bounds, udpiden).then(soils => {
             setSoils(JSON.parse(soils[0]), JSON.parse(soils[1]));
             let myLayer = get_shp(item, mymap);
             overlayMaps[item.displayName] = myLayer;

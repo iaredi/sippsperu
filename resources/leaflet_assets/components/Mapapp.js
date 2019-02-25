@@ -259,11 +259,7 @@ class Normaapp extends React.Component {
               />
             </div>
 
-
-
                 <div id="buttons1">
-                  
-                
 
                 {this.state.udpButton && (
                   <div id="buttonContainer">
@@ -288,7 +284,7 @@ class Normaapp extends React.Component {
                     <a
                       className="btn btn-primary m-2 btn-sm mapInfoButton"
                       href={
-                        "/udpmapa/" +
+                        "/udpmapa/sue/" +
                         this.state.currentUdpId +
                         "/" +
                         `${this.state.featureInfo.properties.shannon_arbol}*${
@@ -303,6 +299,25 @@ class Normaapp extends React.Component {
                     >
                       {" "}
                       Fragmentación Ambiental{" "}
+                    </a>
+                    <a
+                      className="btn btn-primary m-2 btn-sm mapInfoButton"
+                      href={
+                        "/udpmapa/inf/" +
+                        this.state.currentUdpId +
+                        "/" +
+                        `${this.state.featureInfo.properties.shannon_arbol}*${
+                          this.state.featureInfo.properties.shannon_arbusto
+                        }*${this.state.featureInfo.properties.shannon_ave}*${
+                          this.state.featureInfo.properties.shannon_hierba
+                        }*${
+                          this.state.featureInfo.properties.shannon_herpetofauna
+                        }*${this.state.featureInfo.properties.shannon_mamifero}`
+                      }
+                      role="button"
+                    >
+                      {" "}
+                      Infrastructura{" "}
                     </a>
                   </div>
                 )}

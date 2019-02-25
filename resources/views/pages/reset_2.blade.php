@@ -79,10 +79,10 @@ $resultofusuariosquery =[];
                                             <input type="text" name="token" id="token" tabindex="4" class="form-control" placeholder="codigo" value="" required >
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" name="password" id="password" tabindex="5" class="form-control" placeholder="Contraseña" value = "<?php echo $pword ?>" required>
+                                            <input type="password" name="password" id="password" tabindex="5" class="form-control" placeholder="Contraseña Nueva" value = "<?php echo $pword ?>" required>
                                         </div>
                                         <div class="form-group">
-                                            <input type="password" name="password_confirm" id="confirm-password" tabindex="6" class="form-control" placeholder="Confirma Contraseña" value = "<?php echo $pword_conf ?>" required>
+                                            <input type="password" name="password_confirm" id="confirm-password" tabindex="6" class="form-control" placeholder="Confirma Contraseña Nueva" value = "<?php echo $pword_conf ?>" required>
                                         </div>
                                        
                                 

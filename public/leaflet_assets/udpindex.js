@@ -44384,15 +44384,23 @@ var UDPMapa = function (_React$Component) {
       });
 
       var get_shp = function get_shp(item, mymap) {
-        var myStyle = function myStyle(feature) {
-          return {
-            fillColor: item.fillColor,
-            opacity: item.opacity,
-            weight: item.weight,
-            color: item.color,
-            fillOpacity: item.fillOpacity
-          };
+        var geojsonMarkerOptions = {
+          radius: 4,
+          fillColor: item.fillColor,
+          color: item.color,
+          weight: item.weight,
+          opacity: item.opacity,
+          fillOpacity: item.fillOpacity
         };
+
+        var myStyle = {
+          weight: item.weight,
+          color: item.color,
+          opacity: item.opacity,
+          fillColor: item.fillColor,
+          fillOpacity: item.fillOpacity
+        };
+
         if (item.tableName == "usos_de_suelo4") {
           myStyle = function myStyle(feature) {
             return {
@@ -44405,9 +44413,19 @@ var UDPMapa = function (_React$Component) {
           };
         }
 
-        var c2 = _leaflet2.default.geoJson(item.geom, {
-          style: myStyle
-        });
+        var c2 = void 0;
+        if (item.geom && item.geom.features[0].geometry.type == 'Point') {
+          c2 = _leaflet2.default.geoJSON(item.geom, {
+            pointToLayer: function pointToLayer(feature, latlng) {
+              return _leaflet2.default.circleMarker(latlng, geojsonMarkerOptions);
+            },
+            style: myStyle
+          });
+        } else {
+          c2 = _leaflet2.default.geoJson(item.geom, {
+            style: myStyle
+          });
+        }
 
         c2.addTo(mymap);
         return c2;
@@ -44428,16 +44446,16 @@ var UDPMapa = function (_React$Component) {
               udpiden = item.sql.split("'")[1];
             }
           } else {
-            var getBoundingFeatures = function () {
+            var getSueloFeatures = function () {
               var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(bounds, udpiden) {
                 var myapi, rawResponse, dataResult;
                 return _regenerator2.default.wrap(function _callee$(_context) {
                   while (1) {
                     switch (_context.prev = _context.next) {
                       case 0:
-                        myapi = "https://biodiversidadpuebla.online/api/getboundingfeatures";
+                        myapi = "https://biodiversidadpuebla.online/api/getsuelofeatures";
 
-                        if (window.location.host == "localhost:3000") myapi = "http://localhost:3000/api/getboundingfeatures";
+                        if (window.location.host == "localhost:3000") myapi = "http://localhost:3000/api/getsuelofeatures";
                         _context.next = 4;
                         return fetch(myapi, {
                           method: "POST",
@@ -44472,12 +44490,12 @@ var UDPMapa = function (_React$Component) {
                 }, _callee, this);
               }));
 
-              return function getBoundingFeatures(_x, _x2) {
+              return function getSueloFeatures(_x, _x2) {
                 return _ref.apply(this, arguments);
               };
             }();
 
-            getBoundingFeatures(bounds, udpiden).then(function (soils) {
+            getSueloFeatures(bounds, udpiden).then(function (soils) {
               setSoils(JSON.parse(soils[0]), JSON.parse(soils[1]));
               var myLayer = get_shp(item, mymap);
               overlayMaps[item.displayName] = myLayer;
@@ -44559,9 +44577,9 @@ function Alist(props) {
 
 function Blist(props) {
   return _react2.default.createElement(
-    "div",
-    null,
-    _react2.default.createElement("img", { src: "/img/" + props.descripcio + ".png", id: props.descripcio }),
+    "li",
+    { className: "legendEntryDiv" },
+    _react2.default.createElement("div", { className: "legendlines", id: props.descripcio }),
     _react2.default.createElement(
       "p",
       { className: "legendp" },
@@ -44578,15 +44596,17 @@ function Legend(props) {
       descripcio: soil.descripcio
     });
   });
+  var finalItemsList = [];
+  finalItemsList = maptype == 'sue' ? ["MANANTIAL", "CORRIENTE_DE_AGUA"] : maptype == 'inf' ? ["CARRETERA", "CALLE", "CAMINO", "LINEA_DE_TRANSMISION", "BORDO"] : null;
 
-  var finalItems = ["MANANTIAL", "CORRIENTE_DE_AGUA"].map(function (name) {
+  var finalItems = finalItemsList.map(function (name) {
     return _react2.default.createElement(Blist, { key: name, descripcio: name });
   });
 
   return _react2.default.createElement(
     "ul",
     null,
-    listItems,
+    maptype == 'sue' && listItems,
     finalItems
   );
 }

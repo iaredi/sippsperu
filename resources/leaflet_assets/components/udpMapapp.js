@@ -101,7 +101,8 @@ class UDPMapapp extends React.Component {
           </div>
 
           <div id="legenddiv">
-            <Legend soils={this.state.soils} />
+          <Legend soils={this.state.soils}/>
+            
           </div>
 
           <div id="descriptiondiv">

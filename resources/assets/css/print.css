@@ -127,14 +127,7 @@ div#map {
   margin-top: 0px;
   margin-right: 5px;
 }
-.legendp {
-  display: inline-block;
 
-  margin-top: 0px;
-  margin-bottom: 0px;
-  font-size: 9px;
-  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
-}
 
 .bsparchtable {
   font-size: 9px;
@@ -176,9 +169,40 @@ tr:nth-child(odd) {
   padding-right: 5px;
 }
 
-#CORRIENTE_DE_AGUA {
-  width: 15px;
+#CARRETERA{
+  border-top: 6px solid black; 
+}
+
+#CALLE {
+  border-top: 3px solid black; 
+}
+
+#CAMINO {
+  border-top: 3px dashed black; 
+}
+#LINEA_DE_TRANSMISION {
+  border-top: 3px dashed orange; 
+}
+#BORDO {
+  border-top: 3px solid red; 
+}
+
+.legendlines{
   padding-right: 5px;
+  width: 15px;
+  height: 5px;
+}
+
+.legendEntryDiv{
+  height: 15px;
+  display: inline;
+}
+
+.legendp {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  font-size: 9px;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
 
 #updtitle {
