@@ -14,12 +14,16 @@ function Alist(props) {
 
 function Blist(props) {
   return (
-    <li className="legendEntryDiv">
-      <div className='legendlines' id={props.descripcio}></div>
+    <div className='legendEntryDiv'>
+    {props.descripcio=="MANANTIAL"?
+      :
+    <div className='legendlines' id={props.descripcio}></div>}
+      
       <p className="legendp">{props.descripcio}</p>
-    </li>
+    </div>
   );
 }
+
 
 function Legend(props) {
   const listItems = props.soils.map(soil => (
@@ -31,7 +35,7 @@ function Legend(props) {
   ));
   let finalItemsList=[];
   finalItemsList = 
-  maptype=='sue' ? ["MANANTIAL", "CORRIENTE_DE_AGUA"]:
+  maptype=='sue' ? ["CORRIENTE_DE_AGUA", "MANANTIAL"]:
   maptype=='inf' ? ["CARRETERA", "CALLE","CAMINO", "LINEA_DE_TRANSMISION", "BORDO"]:
   null
     

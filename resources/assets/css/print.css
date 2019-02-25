@@ -187,23 +187,29 @@ tr:nth-child(odd) {
   border-top: 3px solid red; 
 }
 
+#CORRIENTE_DE_AGUA {
+  border-top: 3px solid blue; 
+}
+
 .legendlines{
-  padding-right: 5px;
-  width: 15px;
-  height: 5px;
+  margin-right: 5px;
+  width: 20px;
+  display:inline-block;
 }
 
 .legendEntryDiv{
-  height: 15px;
-  display: inline;
+  padding-bottom: 2px;
 }
 
+
 .legendp {
+  display: inline-block;
   margin-top: 0px;
   margin-bottom: 0px;
   font-size: 9px;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
+
 
 #updtitle {
   text-align: center;

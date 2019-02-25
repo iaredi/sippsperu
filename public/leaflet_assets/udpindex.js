@@ -44577,7 +44577,7 @@ function Alist(props) {
 
 function Blist(props) {
   return _react2.default.createElement(
-    "li",
+    "div",
     { className: "legendEntryDiv" },
     _react2.default.createElement("div", { className: "legendlines", id: props.descripcio }),
     _react2.default.createElement(
