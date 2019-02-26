@@ -17,18 +17,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('getinffeatures', function(Request $request) {
-  $newrow = new stdClass();
-    $newrow->infLength=5;
-    $newrow->infCount=6;
-    $munilist=['muni1inf'];
-    return [
-      json_encode($newrow),
-      json_encode($munilist)
-    ];
-});
 
-Route::post('getinffeatures2', function(Request $request) {
+
+Route::post('getinffeatures', function(Request $request) {
   $result="There was an error";
   $north =  $request->north;
   $east =  $request->east;
@@ -36,7 +27,7 @@ Route::post('getinffeatures2', function(Request $request) {
   $west =  $request->west;
   $udpiden = $request->udpiden;
 
-  //udp and infra lines 
+
   $sqludplineainf =   
     "SELECT gid, nombre 
     FROM infra_linea 
@@ -48,8 +39,6 @@ Route::post('getinffeatures2', function(Request $request) {
     FROM infra_punto 
     where ST_Intersects(infra_punto.geom,
     (select geom from udp_puebla_4326 where iden={$udpiden}))";
-
-  //which munis interect with udp
   $sqludpmuni =   
     "SELECT nomgeo 
     FROM municipio_puebla_4326 
@@ -59,32 +48,96 @@ Route::post('getinffeatures2', function(Request $request) {
   $resultudplineainf = DB::select($sqludplineainf,[]);
   $resultudppuntoinf = DB::select($sqludppuntoinf,[]);
   $resultudpmuni = DB::select($sqludpmuni,[]);
-  $munilist=[];
-  $munilist[]='pop';
+  $munilist = [];
+  foreach ($resultudpmuni as $munirow) {
+    $munilist[] = $munirow->nomgeo;
+  }
+
+//Get length of inf lines
+$inflength = 0;
+foreach($resultudplineainf AS $row2) {
+  $infolinegid = $row2->gid;
+  $lengthsql="SELECT ST_Length(ST_Transform(ST_INTERSECTION((select geom from infra_linea where gid = ?), (select geom from  udp_puebla_4326 where iden=?)),3857))";
+
+  $lengthresult = DB::select($lengthsql,[$infolinegid,$udpiden]);
+  $inflength = $inflength + (float)($lengthresult[0]->st_length);
+}
+
+  $newrow = new stdClass();
+  $newrow->infLength=$inflength;
+  $newrow->infCount=sizeof($resultudppuntoinf);
+  $jsonnewrow = json_encode($newrow);
+
+  return [
+    json_encode($newrow),
+    json_encode($munilist)
+  ];
+});
+
+// Route::post('getinffeatures2', function(Request $request) {
+//   $result="There was an error";
+//   $north =  $request->north;
+//   $east =  $request->east;
+//   $south =  $request->south;
+//   $west =  $request->west;
+//   $udpiden = $request->udpiden;
+
+//   //udp and infra lines 
+//   $sqludplineainf =   
+//     "SELECT gid, nombre 
+//     FROM infra_linea 
+//     where ST_Intersects(infra_linea.geom,
+//     (select geom from udp_puebla_4326 where iden={$udpiden}))";
+//     //udp and water points
+//   $sqludppuntoinf =   
+//     "SELECT gid, nombre 
+//     FROM infra_punto 
+//     where ST_Intersects(infra_punto.geom,
+//     (select geom from udp_puebla_4326 where iden={$udpiden}))";
+
+//   //which munis interect with udp
+//   $sqludpmuni =   
+//     "SELECT nomgeo 
+//     FROM municipio_puebla_4326 
+//     where ST_Intersects(ST_SetSRID(municipio_puebla_4326.geom, 4326),
+//     (select geom from udp_puebla_4326 where iden={$udpiden}))";
+      
+//   $resultudplineainf = DB::select($sqludplineainf,[]);
+//   $resultudppuntoinf = DB::select($sqludppuntoinf,[]);
+//   $resultudpmuni = DB::select($sqludpmuni,[]);
+//   $munilist = [];
+//     foreach ($resultudpmuni as $munirow) {
+//       $munilist[] = $munirow->nomgeo;
+//     }
 
   
 
-  //Get length of inf lines
-  $inflength =0;
-  foreach($resultudplineaagua AS $row2) {
-    $agualinegid = $row2->gid;
-    //get length of infra lines in udp
-    $lengthsql="SELECT ST_Length(ST_INTERSECTION((select geom from infra_lineas where gid = ?), (select geom from  udp_puebla_4326 where iden=?)))";
-    $lengthresult = DB::select($lengthsql,[$agualinegid,$udpiden]);
-    $inflength= $inflength + (float)($lengthresult[0]->st_length);
-  }
+//   //Get length of inf lines
+//   $inflength =0;
+//   foreach($resultudplineaagua AS $row2) {
+//     $agualinegid = $row2->gid;
+//     //get length of infra lines in udp
 
-  $multisql =" SELECT (ST_DUMP(ST_INTERSECTION((select geom from usos_de_suelo4 where gid = ?), 
-        (select geom from udp_puebla_4326 where iden=?)
-        ))).geom::geometry(Polygon,4326)";
 
-    $multiresult = DB::select($multisql,[$gid,$udpiden]);
-    $newrow = new stdClass();
-    $newrow->infLength=$inflength;
-    $newrow->infCount=sizeof($resultudppuntoinf);
-    $jsonnewrow = json_encode($newrow);
-  return $jsonnewrow;
-});
+//     $lengthsql="SELECT ST_Length(ST_Transform(ST_INTERSECTION((select geom from infra_lineas where gid = ?), (select geom from  udp_puebla_4326 where iden=?))),3857)";
+//     $lengthresult = DB::select($lengthsql,[$agualinegid,$udpiden]);
+//     $inflength= $inflength + (float)($lengthresult[0]->st_length)+8;
+//   }
+
+//   $multisql =" SELECT (ST_DUMP(ST_INTERSECTION((select geom from usos_de_suelo4 where gid = ?), 
+//         (select geom from udp_puebla_4326 where iden=?)
+//         ))).geom::geometry(Polygon,4326)";
+
+//     $multiresult = DB::select($multisql,[$gid,$udpiden]);
+//     $newrow = new stdClass();
+//     $newrow->infLength=$inflength;
+//     $newrow->infCount=sizeof($resultudppuntoinf);
+//     $jsonnewrow = json_encode($newrow);
+//   return $jsonnewrow;
+// });
+
+
+
 
 
 Route::post('getsuefeatures', function(Request $request) {
@@ -147,13 +200,19 @@ Route::post('getsuefeatures', function(Request $request) {
     $resultudppoliagua = DB::select($sqludppoliagua,[]);
     $resultudpmuni = DB::select($sqludpmuni,[]);
 
+    $munilist = [];
+    foreach ($resultudpmuni as $munirow) {
+      $munilist[] = $munirow->nomgeo;
+    }
+
     //Get length of water lines
     $agualength =0;
     foreach($resultudplineaagua AS $row2) {
       $agualinegid = $row2->gid;
  
       //get length of water lines in udp
-      $lengthsql="SELECT ST_Length(ST_INTERSECTION((select geom from agua_lineas where gid = ?), (select geom from  udp_puebla_4326 where iden=?)))";
+
+      $lengthsql="SELECT ST_Length(ST_Transform(ST_INTERSECTION((select geom from agua_lineas where gid = ?), (select geom from  udp_puebla_4326 where iden=?)),3857))";
       $lengthresult = DB::select($lengthsql,[$agualinegid,$udpiden]);
       $agualength= $agualength + (float)($lengthresult[0]->st_length);
     }
@@ -161,7 +220,7 @@ Route::post('getsuefeatures', function(Request $request) {
     foreach($resultudppoliagua AS $row3) {
       $aguapoligid = $row3->gid;
       //get length of water lines in udp
-      $areasql="SELECT ST_Area(ST_INTERSECTION((select geom from agua_poligonos where gid = ?), (select geom from  udp_puebla_4326 where iden=?)))";
+      $areasql="SELECT ST_Area(ST_Transform(ST_INTERSECTION((select geom from agua_poligonos where gid = ?), (select geom from  udp_puebla_4326 where iden=?)),3857))";
       $arearesult = DB::select($areasql,[$aguapoligid,$udpiden]);
       $aguaarea= $aguaarea + (float)($arearesult[0]->st_area);
     }
@@ -201,11 +260,12 @@ Route::post('getsuefeatures', function(Request $request) {
         $newrow->agualength=$agualength;
         $newrow->aguacount=sizeof($resultudppuntoagua)/2;
         $newrow->aguaarea=$aguaarea;
-        $newrow->munilist=$resultudpmuni;
         $newrows[]=$newrow;
       }
     }
     
+    
+
 /////////////AGUA///////////
     class layer
     {
@@ -238,7 +298,7 @@ Route::post('getsuefeatures', function(Request $request) {
     $layer3->color = 'black';
     $layer3->fillColor = 'blue';
     $layer3->opacity = 1;
-    $layer3->weight = 0.3;
+    $layer3->weight = 1;
     $layer3->fillOpacity = 1;
     $layer3->sql = "SELECT nombre, ST_AsGeoJSON(geom, 5) AS geojson FROM agua_poligonos
       where ST_Intersects(agua_poligonos.geom,                        

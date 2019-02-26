@@ -18,12 +18,12 @@ class UDPMapa extends React.Component {
     this.props.setStateBounds(bounds);
   }
 
-  setSoils(soils, udpsoils) {
-    this.props.setSoils(soils, udpsoils);
+  setSoils(soils, udpsoils, munilist) {
+    this.props.setSoils(soils, udpsoils, munilist);
   }
 
-  setInfra(soils) {
-    this.props.setInfra(soils);
+  setInfra(infInfo, munilist) {
+    this.props.setInfra(infInfo, munilist);
   }
 
   componentDidMount() {
@@ -66,7 +66,7 @@ class UDPMapa extends React.Component {
       }
 
       let c2;
-      if (item.geom && item.geom.features[0].geometry.type=='Point'){
+      if (maptype!='sue' && item.geom && item.geom.features[0].geometry.type=='Point'){
         c2 = L.geoJSON(item.geom, {
           pointToLayer: function (feature, latlng) {
             return L.circleMarker(latlng, geojsonMarkerOptions);
@@ -123,6 +123,7 @@ class UDPMapa extends React.Component {
           }
           getSueInfFeatures(bounds, udpiden).then(returnData => {
             if (maptype=='sue'){
+              
               setSoils(JSON.parse(returnData[0]), JSON.parse(returnData[1]),JSON.parse(returnData[5]));
               let myLayer = get_shp(item, mymap);
               overlayMaps[item.displayName] = myLayer;
@@ -134,7 +135,7 @@ class UDPMapa extends React.Component {
             }
 
             if (maptype=='inf'){
-              setInfra(returnData[0],returnData[2])
+              setInfra(JSON.parse(returnData[0]),JSON.parse(returnData[1]))
             }
 
           });

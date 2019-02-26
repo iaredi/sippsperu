@@ -147,13 +147,11 @@ class ParchesTable extends React.Component {
         columnsSum: columnsSum
       }));
       const agualength = (
-        allParches[0].agualength *
-        (2000 / 0.186914851250046)
+        allParches[0].agualength / 1000
       ).toPrecision(4);
       const aguacount = allParches[0].aguacount;
       const aguaarea = (
-        allParches[0].aguaarea *
-        (2500 / 0.00218206963154496)
+        allParches[0].aguaarea / 10000
       ).toPrecision(4);
 
       const dataAguaLinea = [

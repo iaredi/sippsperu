@@ -44098,6 +44098,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
@@ -44175,7 +44177,6 @@ var UDPMapapp = function (_React$Component) {
   }, {
     key: "setSoils",
     value: function setSoils(soils, udpsoils, munilist) {
-      console.log(munilist);
       if (soils != this.state.soils) {
         this.setState(function (prevState) {
           return {
@@ -44206,7 +44207,10 @@ var UDPMapapp = function (_React$Component) {
   }, {
     key: "setInfra",
     value: function setInfra(infraInfo, munilist) {
+
       if (infraInfo != this.state.infraInfo) {
+        console.log(typeof munilist === "undefined" ? "undefined" : _typeof(munilist));
+
         this.setState(function (prevState) {
           return {
             infraInfo: infraInfo
@@ -44404,13 +44408,13 @@ var UDPMapa = function (_React$Component) {
     }
   }, {
     key: "setSoils",
-    value: function setSoils(soils, udpsoils) {
-      this.props.setSoils(soils, udpsoils);
+    value: function setSoils(soils, udpsoils, munilist) {
+      this.props.setSoils(soils, udpsoils, munilist);
     }
   }, {
     key: "setInfra",
-    value: function setInfra(soils) {
-      this.props.setInfra(soils);
+    value: function setInfra(infInfo, munilist) {
+      this.props.setInfra(infInfo, munilist);
     }
   }, {
     key: "componentDidMount",
@@ -44456,7 +44460,7 @@ var UDPMapa = function (_React$Component) {
         }
 
         var c2 = void 0;
-        if (item.geom && item.geom.features[0].geometry.type == 'Point') {
+        if (maptype != 'sue' && item.geom && item.geom.features[0].geometry.type == 'Point') {
           c2 = _leaflet2.default.geoJSON(item.geom, {
             pointToLayer: function pointToLayer(feature, latlng) {
               return _leaflet2.default.circleMarker(latlng, geojsonMarkerOptions);
@@ -44539,7 +44543,8 @@ var UDPMapa = function (_React$Component) {
 
             getSueInfFeatures(bounds, udpiden).then(function (returnData) {
               if (maptype == 'sue') {
-                setSoils(JSON.parse(returnData[0]), JSON.parse(returnData[1]), ['pool']);
+
+                setSoils(JSON.parse(returnData[0]), JSON.parse(returnData[1]), JSON.parse(returnData[5]));
                 var _myLayer = get_shp(item, mymap);
                 overlayMaps[item.displayName] = _myLayer;
                 [JSON.parse(returnData[2]), JSON.parse(returnData[3]), JSON.parse(returnData[4])].forEach(function (item) {
@@ -44550,7 +44555,7 @@ var UDPMapa = function (_React$Component) {
               }
 
               if (maptype == 'inf') {
-                setInfra(returnData[0], returnData[2]);
+                setInfra(JSON.parse(returnData[0]), JSON.parse(returnData[1]));
               }
             });
           }
@@ -44829,9 +44834,9 @@ var ParchesTable = function (_React$Component) {
             columnsSum: columnsSum
           };
         });
-        var agualength = (allParches[0].agualength * (2000 / 0.186914851250046)).toPrecision(4);
+        var agualength = (allParches[0].agualength / 1000).toPrecision(4);
         var aguacount = allParches[0].aguacount;
-        var aguaarea = (allParches[0].aguaarea * (2500 / 0.00218206963154496)).toPrecision(4);
+        var aguaarea = (allParches[0].aguaarea / 10000).toPrecision(4);
 
         var dataAguaLinea = [{
           elemento: "Corriente  de agua",
@@ -44994,7 +44999,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function UdpTitle(props) {
   var munilist = props.munilist.map(function (item) {
-    return item.nomgeo.toUpperCase() + ", ";
+    return item.toUpperCase();
   });
 
   return _react2.default.createElement(

@@ -38,7 +38,6 @@ class UDPMapapp extends React.Component {
   }
 
   setSoils(soils, udpsoils, munilist) {
-    console.log(munilist)
     if (soils != this.state.soils) {
       this.setState(prevState => ({
         soils: soils
@@ -60,7 +59,10 @@ class UDPMapapp extends React.Component {
   }
 
   setInfra(infraInfo, munilist) {
+    
     if (infraInfo != this.state.infraInfo) { 
+      console.log(typeof(munilist))
+
       this.setState(prevState => ({
         infraInfo: infraInfo
       }));
