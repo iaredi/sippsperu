@@ -1,9 +1,13 @@
 import React from "react";
 
 function UdpTitle(props) {
-  const munilist = props.udpsoils[0].munilist.map(item => {
-    return `${item.nomgeo.toUpperCase()}, `;
-  });
+  const munilist = 
+      props.munilist.map(item => {
+        return `${item.nomgeo.toUpperCase()}, `;
+      })
+    
+    
+  
 
   return (
     <div>

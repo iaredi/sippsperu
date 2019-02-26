@@ -17,12 +17,77 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('getinffeatures', function(Request $request) {
+  $newrow = new stdClass();
+    $newrow->infLength=5;
+    $newrow->infCount=6;
+    $munilist=['muni1inf'];
+    return [
+      json_encode($newrow),
+      json_encode($munilist)
+    ];
+});
+
+Route::post('getinffeatures2', function(Request $request) {
+  $result="There was an error";
+  $north =  $request->north;
+  $east =  $request->east;
+  $south =  $request->south;
+  $west =  $request->west;
+  $udpiden = $request->udpiden;
+
+  //udp and infra lines 
+  $sqludplineainf =   
+    "SELECT gid, nombre 
+    FROM infra_linea 
+    where ST_Intersects(infra_linea.geom,
+    (select geom from udp_puebla_4326 where iden={$udpiden}))";
+    //udp and water points
+  $sqludppuntoinf =   
+    "SELECT gid, nombre 
+    FROM infra_punto 
+    where ST_Intersects(infra_punto.geom,
+    (select geom from udp_puebla_4326 where iden={$udpiden}))";
+
+  //which munis interect with udp
+  $sqludpmuni =   
+    "SELECT nomgeo 
+    FROM municipio_puebla_4326 
+    where ST_Intersects(ST_SetSRID(municipio_puebla_4326.geom, 4326),
+    (select geom from udp_puebla_4326 where iden={$udpiden}))";
+      
+  $resultudplineainf = DB::select($sqludplineainf,[]);
+  $resultudppuntoinf = DB::select($sqludppuntoinf,[]);
+  $resultudpmuni = DB::select($sqludpmuni,[]);
+  $munilist=[];
+  $munilist[]='pop';
+
+  
+
+  //Get length of inf lines
+  $inflength =0;
+  foreach($resultudplineaagua AS $row2) {
+    $agualinegid = $row2->gid;
+    //get length of infra lines in udp
+    $lengthsql="SELECT ST_Length(ST_INTERSECTION((select geom from infra_lineas where gid = ?), (select geom from  udp_puebla_4326 where iden=?)))";
+    $lengthresult = DB::select($lengthsql,[$agualinegid,$udpiden]);
+    $inflength= $inflength + (float)($lengthresult[0]->st_length);
+  }
+
+  $multisql =" SELECT (ST_DUMP(ST_INTERSECTION((select geom from usos_de_suelo4 where gid = ?), 
+        (select geom from udp_puebla_4326 where iden=?)
+        ))).geom::geometry(Polygon,4326)";
+
+    $multiresult = DB::select($multisql,[$gid,$udpiden]);
+    $newrow = new stdClass();
+    $newrow->infLength=$inflength;
+    $newrow->infCount=sizeof($resultudppuntoinf);
+    $jsonnewrow = json_encode($newrow);
+  return $jsonnewrow;
+});
 
 
-
-
-
-Route::post('getsuelofeatures', function(Request $request) {
+Route::post('getsuefeatures', function(Request $request) {
     $result="There was an error";
     $north =  $request->north;
     $east =  $request->east;
@@ -141,8 +206,6 @@ Route::post('getsuelofeatures', function(Request $request) {
       }
     }
     
-    
-
 /////////////AGUA///////////
     class layer
     {
@@ -195,7 +258,6 @@ Route::post('getsuelofeatures', function(Request $request) {
       ST_GeomFromText('POLYGON(({$east} {$north},{$east} {$south},{$west} {$south},{$west} {$north},{$east} {$north}))',4326))";
 
     $layersArray = array($layer2,$layer3,$layer4);
-    $mytext = 'none';
     foreach ($layersArray as $layer) {
       $features=[];
       $result2 = DB::select($layer->sql,[]);
@@ -232,7 +294,7 @@ Route::post('getsuelofeatures', function(Request $request) {
       json_encode($layersArray[0]),
       json_encode($layersArray[1]),
       json_encode($layersArray[2]),
-      json_encode($mytext)
+      json_encode($munilist)
 
 
     ];

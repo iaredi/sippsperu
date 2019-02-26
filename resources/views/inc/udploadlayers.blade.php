@@ -33,9 +33,23 @@
   $layer2->sql ="SELECT tipo, ST_AsGeoJSON(geom, 5) AS geojson FROM infra_punto
   WHERE ST_Intersects(geom,  (select geom FROM geom_count6_email where iden = '{$idennum}'))";
 
+  $layer3 = new layer();
+  $layer3->tableName = 'infra_linea';
+  $layer3->displayName = 'infra_linea';
+  $layer3->featureColumn = 'tipo';
+  $layer3->color = 'black';
+  $layer3->fillColor = 'orange';
+  $layer3->opacity = 1;
+  $layer3->weight = 0.1;
+  $layer3->fillOpacity = 1;
+  $layer3->sql ="SELECT tipo, ST_AsGeoJSON(geom, 5) AS geojson FROM infra_linea
+  WHERE ST_Intersects(geom,  (select geom FROM geom_count6_email where iden = '{$idennum}'))";
+
   $layersArray = array($layer1);
   if ($maptype=='inf'){
     $layersArray[] = $layer2;
+    $layersArray[] = $layer3;
+
   }
   
   $addlayers = DB::select("SELECT * FROM additional_layers",[]);

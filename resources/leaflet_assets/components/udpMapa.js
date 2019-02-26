@@ -11,6 +11,7 @@ class UDPMapa extends React.Component {
     super(props);
     this.setStateBounds = this.setStateBounds.bind(this);
     this.setSoils = this.setSoils.bind(this);
+    this.setInfra = this.setInfra.bind(this);
   }
 
   setStateBounds(bounds) {
@@ -19,6 +20,10 @@ class UDPMapa extends React.Component {
 
   setSoils(soils, udpsoils) {
     this.props.setSoils(soils, udpsoils);
+  }
+
+  setInfra(soils) {
+    this.props.setInfra(soils);
   }
 
   componentDidMount() {
@@ -74,13 +79,11 @@ class UDPMapa extends React.Component {
         });
       }
 
-      
-
       c2.addTo(mymap);
       return c2;
     };
 
-    const processArray = (array, mymap, setStateBounds, setSoils) => {
+    const processArray = (array, mymap, setStateBounds, setSoils, setInfra) => {
       const overlayMaps = this.overlayMaps || {};
       var bounds = "none";
       var udpiden = "none";
@@ -95,11 +98,11 @@ class UDPMapa extends React.Component {
             udpiden = item.sql.split("'")[1];
           }
         } else {
-          async function getSueloFeatures(bounds, udpiden) {
+          async function getSueInfFeatures(bounds, udpiden) {
             let myapi =
-              "https://biodiversidadpuebla.online/api/getsuelofeatures";
+              "https://biodiversidadpuebla.online/api/get"+maptype+"features";
             if (window.location.host == "localhost:3000")
-              myapi = "http://localhost:3000/api/getsuelofeatures";
+              myapi = "http://localhost:3000/api/get"+maptype+"features";
             const rawResponse = await fetch(myapi, {
               method: "POST",
               headers: {
@@ -118,26 +121,28 @@ class UDPMapa extends React.Component {
             let dataResult = await rawResponse.json();
             return dataResult;
           }
-          getSueloFeatures(bounds, udpiden).then(soils => {
-            setSoils(JSON.parse(soils[0]), JSON.parse(soils[1]));
-            let myLayer = get_shp(item, mymap);
-            overlayMaps[item.displayName] = myLayer;
+          getSueInfFeatures(bounds, udpiden).then(returnData => {
+            if (maptype=='sue'){
+              setSoils(JSON.parse(returnData[0]), JSON.parse(returnData[1]),JSON.parse(returnData[5]));
+              let myLayer = get_shp(item, mymap);
+              overlayMaps[item.displayName] = myLayer;
+              [ JSON.parse(returnData[2]), JSON.parse(returnData[3]), JSON.parse(returnData[4]) ].forEach(item => {
+                if (item.geom) {
+                  get_shp(item, mymap);
+                }
+              });
+            }
 
-            [
-              JSON.parse(soils[2]),
-              JSON.parse(soils[3]),
-              JSON.parse(soils[4])
-            ].forEach(item => {
-              if (item.geom) {
-                get_shp(item, mymap);
-              }
-            });
+            if (maptype=='inf'){
+              setInfra(returnData[0],returnData[2])
+            }
+
           });
         }
       });
     };
 
-    processArray(udpsomething, this.map, this.setStateBounds, this.setSoils);
+    processArray(udpsomething, this.map, this.setStateBounds, this.setSoils, this.setInfra);
     this.map.scrollWheelZoom.disable();
     L.control.scale({ imperial: false }).addTo(this.map);
 
