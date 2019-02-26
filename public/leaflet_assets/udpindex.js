@@ -44579,7 +44579,7 @@ function Blist(props) {
   return _react2.default.createElement(
     "div",
     { className: "legendEntryDiv" },
-    _react2.default.createElement("div", { className: "legendlines", id: props.descripcio }),
+    props.descripcio == "MANANTIAL" ? _react2.default.createElement("img", { src: "/img/" + props.descripcio + ".png", id: props.descripcio }) : _react2.default.createElement("div", { className: "legendlines", id: props.descripcio }),
     _react2.default.createElement(
       "p",
       { className: "legendp" },
@@ -44597,7 +44597,7 @@ function Legend(props) {
     });
   });
   var finalItemsList = [];
-  finalItemsList = maptype == 'sue' ? ["MANANTIAL", "CORRIENTE_DE_AGUA"] : maptype == 'inf' ? ["CARRETERA", "CALLE", "CAMINO", "LINEA_DE_TRANSMISION", "BORDO"] : null;
+  finalItemsList = maptype == 'sue' ? ["CORRIENTE_DE_AGUA", "MANANTIAL"] : maptype == 'inf' ? ["CARRETERA", "CALLE", "CAMINO", "LINEA_DE_TRANSMISION", "BORDO"] : null;
 
   var finalItems = finalItemsList.map(function (name) {
     return _react2.default.createElement(Blist, { key: name, descripcio: name });
@@ -44828,7 +44828,7 @@ var ParchesTable = function (_React$Component) {
         };
       });
 
-      var descriptionString = "La Unidad de Paisaje " + idennum + "       (UP) " + idennum + "  presenta una riqueza de parches igual a " + descripcioSet.size + " y una abundancia de parches       igual a " + allParches.length + ". De estos parches, " + continuoList.length + " son continuos presentando       una raz\xF3n de continuidad de" + (continuoList.length / allParches.length).toPrecision(4) + ". Dentro de los aproximadamente 2500 hecatares que       conforman la UP , el Uso de Suelo y Vegetaci\xF3n (USV) m\xE1s dominante es " + largestTypeName + " que representa el " + largestTypeCobertura.toPrecision(4) + "%  \n      del \xE1rea total de la unidad y est\xE1 dividido en       " + listofareas[largestTypeName].length + " parches de " + listofareas[largestTypeName] + " hect\xE1reas respectivamente. El parche de mayor       tama\xF1o corresponde al USV de " + maxname + " con un \xE1rea de      aproximadamente " + maxarea + " hect\xE1reas. La dominancia entre tama\xF1os de parche dentro de esta UP es       de " + (maxarea / 2500).toPrecision(4) + ", mientras que la dominancia entre tipos de parche es igual       a " + (largestTypeArea / 2500).toPrecision(4) + ". Esta UP presenta adem\xE1s una raz\xF3n de dispersi\xF3n h\xEDdrica de 0.00096       con corrientes de agua que cubren un total de " + agualength + " kilometros lineales; as\xED        como una densidad de cuerpos de agua de " + (aguaarea / 2500).toPrecision(4) + " y un \xE1rea de " + aguaarea + " hect\xE1reas.";
+      var descriptionString = "La Unidad de Paisaje       (UP) " + idennum + "  presenta una riqueza de parches igual a " + descripcioSet.size + " y una abundancia de parches       igual a " + allParches.length + ". De estos parches, " + continuoList.length + " son continuos presentando       una raz\xF3n de continuidad de" + (continuoList.length / allParches.length).toPrecision(4) + ". Dentro de los aproximadamente 2500 hecatares que       conforman la UP , el Uso de Suelo y Vegetaci\xF3n (USV) m\xE1s dominante es " + largestTypeName + " \n      que representa el " + largestTypeCobertura.toPrecision(4) + "%  \n      del \xE1rea total de la unidad y est\xE1 dividido en       " + listofareas[largestTypeName].length + " parches de " + listofareas[largestTypeName] + " hect\xE1reas respectivamente. El parche de mayor       tama\xF1o corresponde al USV de " + maxname + " con un \xE1rea de      aproximadamente " + maxarea + " hect\xE1reas. La dominancia entre tama\xF1os de parche dentro de esta UP es       de " + (maxarea / 2500).toPrecision(4) + ", mientras que la dominancia entre tipos de parche es igual       a " + (largestTypeArea / 2500).toPrecision(4) + ". Esta UP presenta adem\xE1s una raz\xF3n de dispersi\xF3n h\xEDdrica de 0.00096       con corrientes de agua que cubren un total de " + agualength + " kilometros lineales; as\xED        como una densidad de cuerpos de agua de " + (aguaarea / 2500).toPrecision(4) + " y un \xE1rea de " + aguaarea + " hect\xE1reas.";
 
       this.setText(descriptionString);
     }

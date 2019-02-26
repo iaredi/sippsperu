@@ -204,7 +204,7 @@ class ParchesTable extends React.Component {
       columnsAguaLinea: columnsAguaLinea
     }));
 
-    const descriptionString = `La Unidad de Paisaje ${idennum} \
+    const descriptionString = `La Unidad de Paisaje \
       (UP) ${idennum}  presenta una riqueza de parches igual a ${
       descripcioSet.size
     } y una abundancia de parches \
@@ -214,9 +214,8 @@ class ParchesTable extends React.Component {
       una razón de continuidad de${(
         continuoList.length / allParches.length
       ).toPrecision(4)}. Dentro de los aproximadamente 2500 hecatares que \
-      conforman la UP , el Uso de Suelo y Vegetación (USV) más dominante es ${largestTypeName} que representa el ${largestTypeCobertura.toPrecision(
-      4
-    )}% \ 
+      conforman la UP , el Uso de Suelo y Vegetación (USV) más dominante es ${largestTypeName} 
+      que representa el ${largestTypeCobertura.toPrecision(4)}% \ 
       del área total de la unidad y está dividido en \
       ${listofareas[largestTypeName].length} parches de ${
       listofareas[largestTypeName]

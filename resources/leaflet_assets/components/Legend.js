@@ -16,8 +16,9 @@ function Blist(props) {
   return (
     <div className='legendEntryDiv'>
     {props.descripcio=="MANANTIAL"?
-      :
-    <div className='legendlines' id={props.descripcio}></div>}
+      <img src={"/img/" + props.descripcio + ".png"} id={props.descripcio}/> :
+      <div className='legendlines' id={props.descripcio}></div>
+    }
       
       <p className="legendp">{props.descripcio}</p>
     </div>

@@ -175,7 +175,7 @@ Route::post('getsuelofeatures', function(Request $request) {
     $layer3->color = 'black';
     $layer3->fillColor = 'blue';
     $layer3->opacity = 1;
-    $layer3->weight = 1;
+    $layer3->weight = 0.3;
     $layer3->fillOpacity = 1;
     $layer3->sql = "SELECT nombre, ST_AsGeoJSON(geom, 5) AS geojson FROM agua_poligonos
       where ST_Intersects(agua_poligonos.geom,                        
