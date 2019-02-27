@@ -5,10 +5,9 @@ function Alist(props) {
     <span
       className="biodivcontainer"
       id={props.type + "span"}
-      style={{ float: "left", paddingLeft: "20px" }}
     >
-      <p className="shannonp">{props.shannon}</p>
-      <p className="iconp">{props.icon}</p>
+    <p className="shannonp">{props.shannon}</p>
+    <p className="iconp">{props.icon}</p>
     </span>
   );
 }
@@ -22,11 +21,10 @@ function UdpDiversity(props) {
     { type: "mamifero", icon: "🦌", shannon: shannon.split("*")[5] }
   ];
   function compare(a, b) {
-    if (a.shannon < b.shannon) return -1;
-    if (a.shannon > b.shannon) return 1;
+    if (parseFloat(a.shannon) < parseFloat(b.shannon)) return -1;
+    if (parseFloat(a.shannon) > parseFloat(b.shannon)) return 1;
     return 0;
   }
-
   bigArray.sort(compare);
 
   const listItems = bigArray.map((animal, ind) => {
@@ -47,8 +45,8 @@ function UdpDiversity(props) {
   const svgLines = bigArray.map((animal, ind) => {
     if (animal.shannon > 0) {
       previousAnimal++;
-      const x1my = 43 + previousAnimal * 64;
-      const x2my = 44.0 + +animal.shannon * 2.68;
+      const x1my = 37 + previousAnimal * 45;
+      const x2my = 44.0 + +animal.shannon * 2.72;
       return (
         <line
           key={animal.type}

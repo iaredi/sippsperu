@@ -1856,7 +1856,7 @@ module.exports = react;
 
 /***/ }),
 
-/***/ 27:
+/***/ 29:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* @preserve
@@ -15749,7 +15749,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _leaflet = __webpack_require__(27);
+var _leaflet = __webpack_require__(29);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 

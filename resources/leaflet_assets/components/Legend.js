@@ -17,10 +17,12 @@ function Blist(props) {
     <div className='legendEntryDiv'>
     {props.descripcio=="MANANTIAL"?
       <img src={"/img/" + props.descripcio + ".png"} id={props.descripcio}/> :
-      <div className='legendlines' id={props.descripcio}></div>
+      props.descripcio=="EDIFICACION"?
+        <svg height="10" width="25"> <circle cx="10" cy="5" r="3" stroke="black" strokeWidth="1" fill="yellow" /> </svg>
+        :
+        <div className='legendlines' id={props.descripcio}></div>
     }
-      
-      <p className="legendp">{props.descripcio}</p>
+    <p className="legendp">{props.descripcio}</p>
     </div>
   );
 }
@@ -37,7 +39,7 @@ function Legend(props) {
   let finalItemsList=[];
   finalItemsList = 
   maptype=='sue' ? ["CORRIENTE_DE_AGUA", "MANANTIAL"]:
-  maptype=='inf' ? ["CARRETERA", "CALLE","CAMINO", "LINEA_DE_TRANSMISION", "BORDO"]:
+  maptype=='inf' ? ["CARRETERA", "CALLE","CAMINO", "LINEA_DE_TRANSMISION", "BORDO", "EDIFICACION"]:
   null
     
 

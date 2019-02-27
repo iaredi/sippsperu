@@ -54,17 +54,21 @@ Route::post('getinffeatures', function(Request $request) {
   }
 
 //Get length of inf lines
-$inflength = 0;
-foreach($resultudplineainf AS $row2) {
-  $infolinegid = $row2->gid;
-  $lengthsql="SELECT ST_Length(ST_Transform(ST_INTERSECTION((select geom from infra_linea where gid = ?), (select geom from  udp_puebla_4326 where iden=?)),3857))";
 
-  $lengthresult = DB::select($lengthsql,[$infolinegid,$udpiden]);
-  $inflength = $inflength + (float)($lengthresult[0]->st_length);
+$infClasses=['BORDO','CALLE','CAMINO','CARRETERA','LINEA DE TRANSMISION'];
+$newrow = new stdClass();
+foreach ($infClasses as $infClass) {
+  $inflength = 0;
+  foreach($resultudplineainf AS $row2) {
+    $infolinegid = $row2->gid;
+    $lengthsql="SELECT ST_Length(ST_Transform(ST_INTERSECTION((select geom from infra_linea where gid = :gid and geografico = :infClass), (select geom from  udp_puebla_4326 where iden=:udpiden)),3857))";
+    $lengthresult = DB::select($lengthsql,['gid'=>$infolinegid, 'infClass'=>$infClass, 'udpiden'=>$udpiden]);
+    $inflength = $inflength + (float)($lengthresult[0]->st_length);
+  }
+  $lowerinfClass=strtolower($infClass);
+  $newrow->$lowerinfClass=$inflength;
 }
-
-  $newrow = new stdClass();
-  $newrow->infLength=$inflength;
+  
   $newrow->infCount=sizeof($resultudppuntoinf);
   $jsonnewrow = json_encode($newrow);
 

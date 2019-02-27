@@ -6,11 +6,8 @@ class ParchesTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      columns1: [{ dataField: "gid", text: "Tipo de Parche1" }],
       allParches: [{ area: "test1" }],
-      columnsSum: [{ dataField: "name", text: "Tipo de Parche2" }],
       allParchesSum: [{ name: "test2" }],
-      columnsAguaLinea: [{ dataField: "elemento", text: "Tipo de Parche3" }],
       dataAguaLinea: [{ elemento: "test3" }]
     };
     this.setText = this.setText.bind(this);
@@ -20,7 +17,6 @@ class ParchesTable extends React.Component {
   }
 
   componentDidMount() {
-    if(maptype=='sue'){
       const descripcioSet = new Set();
       const continuoList = [];
       let maxarea = 0.0;
@@ -36,10 +32,8 @@ class ParchesTable extends React.Component {
           ((100 * parseFloat(parche.area)) / parche.totalarea)
             .toPrecision(4)
             .toString() + "%";
-        parche.area = parseFloat(
-          (parseFloat(parche.area) * (2500 / 0.00218206963154496)).toPrecision(4)
-        );
-
+        parche.area = (parseFloat(parche.area) * (2500 / 0.00218206963154496)).toPrecision(4)
+        
         descripcioSet.add(parche.descripcio);
         if (parche.area > maxarea) {
           maxarea = parche.area;
@@ -80,28 +74,6 @@ class ParchesTable extends React.Component {
         allParches: allParches
       }));
 
-      const columns1 = [
-        {
-          dataField: "descripcio",
-          text: "Parche"
-        },
-        {
-          dataField: "cobertura",
-          text: "Cobertura"
-        },
-        {
-          dataField: "continuidad",
-          text: "Continuidad"
-        },
-        {
-          dataField: "area",
-          text: "Area (h)"
-        }
-      ];
-      this.setState(prevState => ({
-        columns1: columns1
-      }));
-
       const allParchesSum = [
         {
           name: "REQUEZA DE TIPOS DE PARCHE",
@@ -129,23 +101,8 @@ class ParchesTable extends React.Component {
       this.setState(prevState => ({
         allParchesSum: allParchesSum
       }));
-      const columnsSum = [
-        {
-          dataField: "name",
-          text: " "
-        },
-        {
-          dataField: "number",
-          text: " "
-        },
-        {
-          dataField: "nombre",
-          text: " "
-        }
-      ];
-      this.setState(prevState => ({
-        columnsSum: columnsSum
-      }));
+      
+     
       const agualength = (
         allParches[0].agualength / 1000
       ).toPrecision(4);
@@ -180,29 +137,7 @@ class ParchesTable extends React.Component {
         dataAguaLinea: dataAguaLinea
       }));
 
-      const columnsAguaLinea = [
-        {
-          dataField: "elemento",
-          text: "ELEMENTO"
-        },
-        {
-          dataField: "longitud",
-          text: "LONGITUD (km)"
-        },
-        {
-          dataField: "area",
-          text: "AREA (h^2)"
-        },
-        {
-          dataField: "densidad",
-          text: "DENSIDAD (unidades)"
-        }
-      ];
-
-      this.setState(prevState => ({
-        columnsAguaLinea: columnsAguaLinea
-      }));
-
+      
       const descriptionString = `La Unidad de Paisaje \
         (UP) ${idennum}  presenta una riqueza de parches igual a ${
         descripcioSet.size
@@ -233,78 +168,118 @@ class ParchesTable extends React.Component {
         )} y un área de ${aguaarea} hectáreas.`;
 
       this.setText(descriptionString);
-
-    }
-    if(maptype=='inf'){
     
-    }
   }
 
   render() {
-    if (maptype=='sue'){
-      return (
-        <div>
-          <div className="container">
-            <div className="flex-column d-flex justify-content-around align-items-center p-3">
-              <BootstrapTable
-                keyField="area"
-                data={this.state.allParches}
-                columns={this.state.columns1}
-                bootstrap4={false}
-                bordered={true}
-                classes={"bsparchtable"}
-                striped
-                hover
-                condensed
-                noDataIndication={"Cargando..."}
-              />
-            </div>
-          </div>
+      const columnsSum = [
+        {
+          dataField: "name",
+          text: " "
+        },
+        {
+          dataField: "number",
+          text: " "
+        },
+        {
+          dataField: "nombre",
+          text: " "
+        }
+      ];
 
-          <div className="container">
-            <div className="flex-column d-flex justify-content-around align-items-center p-3">
-              <BootstrapTable
-                keyField="name"
-                data={this.state.allParchesSum}
-                columns={this.state.columnsSum}
-                bootstrap4={false}
-                bordered={true}
-                classes={"bsparchtable"}
-                striped
-                hover
-                condensed
-                noDataIndication={"No hay datos"}
-              />
-            </div>
-          </div>
+      const columns1 = [
+        {
+          dataField: "descripcio",
+          text: "Parche"
+        },
+        {
+          dataField: "cobertura",
+          text: "Cobertura"
+        },
+        {
+          dataField: "continuidad",
+          text: "Continuidad"
+        },
+        {
+          dataField: "area",
+          text: "Area (h)"
+        }
+      ];
 
-          <div className="container">
-            <div className="flex-column d-flex justify-content-around align-items-center p-3">
-              <BootstrapTable
-                keyField="elemento"
-                data={this.state.dataAguaLinea}
-                columns={this.state.columnsAguaLinea}
-                bootstrap4={false}
-                bordered={true}
-                classes={"bsparchtable"}
-                striped
-                hover
-                condensed
-                noDataIndication={"No hay datos"}
-              />
-            </div>
+      const columnsAguaLinea = [
+        {
+          dataField: "elemento",
+          text: "ELEMENTO"
+        },
+        {
+          dataField: "longitud",
+          text: "LONGITUD (km)"
+        },
+        {
+          dataField: "area",
+          text: "AREA (h^2)"
+        },
+        {
+          dataField: "densidad",
+          text: "DENSIDAD (unidades)"
+        }
+      ];
+
+    return (
+      <div>
+        <div className="container">
+          <div className="flex-column d-flex justify-content-around align-items-center p-3">
+            <BootstrapTable
+              keyField="area"
+              data={this.state.allParches}
+              columns={columns1}
+              bootstrap4={false}
+              bordered={true}
+              classes={"bsparchtable"}
+              striped
+              hover
+              condensed
+              noDataIndication={"Cargando..."}
+            />
           </div>
         </div>
-      );
-    }
-    if (maptype=='inf'){
-      return (
-        <div>
-          <p>{this.props.infraInfo.infLength}</p>
-          <p>{this.props.infraInfo.infCount}</p>
+
+        <div className="container">
+          <div className="flex-column d-flex justify-content-around align-items-center p-3">
+            <BootstrapTable
+              keyField="name"
+              data={this.state.allParchesSum}
+              columns={columnsSum}
+              bootstrap4={false}
+              bordered={true}
+              classes={"bsparchtable"}
+              striped
+              hover
+              condensed
+              noDataIndication={"No hay datos"}
+            />
+          </div>
         </div>
-      )
-    }
+
+        <div className="container">
+          <div className="flex-column d-flex justify-content-around align-items-center p-3">
+            <BootstrapTable
+              keyField="elemento"
+              data={this.state.dataAguaLinea}
+              columns={columnsAguaLinea}
+              bootstrap4={false}
+              bordered={true}
+              classes={"bsparchtable"}
+              striped
+              hover
+              condensed
+              noDataIndication={"No hay datos"}
+            />
+          </div>
+        </div>
+      </div>
+    );
+    
   }
 }
 export default ParchesTable;

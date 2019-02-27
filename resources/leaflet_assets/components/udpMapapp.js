@@ -4,6 +4,7 @@ import React from "react";
 import UDPMapa from "./udpMapa";
 import Legend from "./Legend";
 import ParchesTable from "./ParchesTable";
+import InfraTable from "./InfraTable";
 import UdpTitle from "./UdpTitle";
 import UdpDiversity from "./UdpDiversity";
 
@@ -12,6 +13,7 @@ class UDPMapapp extends React.Component {
     super(props);
     this.setSoils = this.setSoils.bind(this);
     this.setInfra = this.setInfra.bind(this);
+    this.setMuni = this.setMuni.bind(this);
     this.setStateBounds = this.setStateBounds.bind(this);
     this.setText = this.setText.bind(this);
 
@@ -37,13 +39,10 @@ class UDPMapapp extends React.Component {
     }
   }
 
-  setSoils(soils, udpsoils, munilist) {
+  setSoils(soils, udpsoils) {
     if (soils != this.state.soils) {
       this.setState(prevState => ({
         soils: soils
-      }));
-      this.setState(prevState => ({
-        munilist: munilist
       }));
     }
     if (udpsoils != this.state.udpsoils) {
@@ -58,21 +57,23 @@ class UDPMapapp extends React.Component {
     }
   }
 
-  setInfra(infraInfo, munilist) {
-    
+  setInfra(infraInfo) {
     if (infraInfo != this.state.infraInfo) { 
-      console.log(typeof(munilist))
-
       this.setState(prevState => ({
         infraInfo: infraInfo
-      }));
-      this.setState(prevState => ({
-        munilist: munilist
       }));
     }
     if (!this.state.boundsobtained) {
       this.setState(prevState => ({
         boundsobtained: true
+      }));
+    }
+  }
+
+  setMuni(munilist) {
+    if (munilist != this.state.munilist) { 
+      this.setState(prevState => ({
+        munilist: munilist
       }));
     }
   }
@@ -114,6 +115,7 @@ class UDPMapapp extends React.Component {
               setStateBounds={this.setStateBounds}
               setSoils={this.setSoils}
               setInfra={this.setInfra}
+              setMuni={this.setMuni}
             />
           </div>
 
@@ -146,11 +148,13 @@ class UDPMapapp extends React.Component {
             )}
 
             {this.state.boundsobtained ? (
-              <ParchesTable
-                udpsoils={this.state.udpsoils}
-                infraInfo={this.state.infraInfo}
-                setText={this.setText}
-              />
+              maptype=='sue'?
+                <ParchesTable udpsoils={this.state.udpsoils} setText={this.setText} />
+              :
+                maptype=='inf'?
+                <InfraTable infraInfo={this.state.infraInfo} setText={this.setText} />
+                :
+                null
             ) : (
               <p>Cargando...</p>
             )}

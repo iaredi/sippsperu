@@ -275,9 +275,14 @@ tr:nth-child(odd) {
   width:20px;
 }
 
-#biodivContainer{
-  border: black solid 1px;
-  margin-top:5px;
+.biodivcontainer{
+  float: left;
+  margin-left: 20px;
+  padding: 2px;
+  text-align: center;
+  border:black solid 1px;
+  background-color: white;
+
 }
 
 #udpDiversity{

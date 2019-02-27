@@ -42,32 +42,36 @@
   $layer3->opacity = 1;
   $layer3->weight = 0.1;
   $layer3->fillOpacity = 1;
-  $layer3->sql ="SELECT tipo, ST_AsGeoJSON(geom, 5) AS geojson FROM infra_linea
-  WHERE ST_Intersects(geom,  (select geom FROM geom_count6_email where iden = '{$idennum}'))";
+  $layer3->sql ="SELECT color, dash, weight, tipo, ST_AsGeoJSON(geom, 5) AS geojson FROM infra_linea
+  WHERE ST_Intersects(geom,  (select geom FROM geom_count6_email where iden = '{$idennum}'))
+  and geografico IN ('LINEA DE TRANSMISION','CALLE', 'CAMINO','CARRETERA', 'BORDO')
+  ";
 
   $layersArray = array($layer1);
   if ($maptype=='inf'){
     $layersArray[] = $layer2;
     $layersArray[] = $layer3;
-
   }
-  
-  $addlayers = DB::select("SELECT * FROM additional_layers",[]);
-  foreach($addlayers as $singlerow) {
-    if ($singlerow->tablename=='suelo_geometries_simplified'){
-      $templayer = new layer();
-      $templayer->tableName = "usos_de_suelo4";
-      $templayer->displayName = $singlerow->displayname;
-      $templayer->featureColumn = $singlerow->featurecolumn;
-      $templayer->color = $singlerow->color;
-      $templayer->fillColor = $singlerow->fillcolor;
-      $templayer->opacity =$singlerow->opacity;
-      $templayer->weight =$singlerow->weight;
-      $templayer->fillOpacity = $singlerow->fillopacity;
-      $templayer->sql = "SELECT color, {$singlerow->featurecolumn}, ST_AsGeoJSON(geom, 5) AS geojson FROM usos_de_suelo4";
-      $layersArray[]=$templayer;
+
+  if ($maptype=='sue'){
+    $addlayers = DB::select("SELECT * FROM additional_layers",[]);
+    foreach($addlayers as $singlerow) {
+      if ($singlerow->tablename=='suelo_geometries_simplified'){
+        $templayer = new layer();
+        $templayer->tableName = "usos_de_suelo4";
+        $templayer->displayName = $singlerow->displayname;
+        $templayer->featureColumn = $singlerow->featurecolumn;
+        $templayer->color = $singlerow->color;
+        $templayer->fillColor = $singlerow->fillcolor;
+        $templayer->opacity =$singlerow->opacity;
+        $templayer->weight =$singlerow->weight;
+        $templayer->fillOpacity = $singlerow->fillopacity;
+        $templayer->sql = "SELECT color, {$singlerow->featurecolumn}, ST_AsGeoJSON(geom, 5) AS geojson FROM usos_de_suelo4";
+        $layersArray[]=$templayer;
+      }
     }
   }
+  
   foreach ($layersArray as $layer) {
     $features=[];
     $result = DB::select($layer->sql,[]);      

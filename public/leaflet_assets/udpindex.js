@@ -103,7 +103,7 @@ if (true) {
   // By explicitly using `prop-types` you are opting into new development behavior.
   // http://fb.me/prop-types-in-prod
   var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(30)(isValidElement, throwOnDirectAccess);
+  module.exports = __webpack_require__(31)(isValidElement, throwOnDirectAccess);
 } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
@@ -122,7 +122,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _underscore = __webpack_require__(35);
+var _underscore = __webpack_require__(36);
 
 var _underscore2 = _interopRequireDefault(_underscore);
 
@@ -750,15 +750,15 @@ var _selection = __webpack_require__(15);
 
 var selection = _interopRequireWildcard(_selection);
 
-var _expand = __webpack_require__(39);
+var _expand = __webpack_require__(40);
 
 var expand = _interopRequireWildcard(_expand);
 
-var _mutate = __webpack_require__(40);
+var _mutate = __webpack_require__(41);
 
 var mutate = _interopRequireWildcard(_mutate);
 
-var _sort = __webpack_require__(41);
+var _sort = __webpack_require__(42);
 
 var sort = _interopRequireWildcard(_sort);
 
@@ -1080,7 +1080,7 @@ var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _cell = __webpack_require__(46);
+var _cell = __webpack_require__(47);
 
 var _cell2 = _interopRequireDefault(_cell);
 
@@ -1539,7 +1539,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(26);
+var	fixUrls = __webpack_require__(28);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -4409,6 +4409,60 @@ module.exports = react;
 
 /***/ }),
 /* 26 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _bootstrapTable = __webpack_require__(30);
+
+var _bootstrapTable2 = _interopRequireDefault(_bootstrapTable);
+
+var _contexts = __webpack_require__(58);
+
+var _contexts2 = _interopRequireDefault(_contexts);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = (0, _contexts2.default)(_bootstrapTable2.default);
+
+/***/ }),
+/* 27 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(62);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(20)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../css-loader/index.js!./react-bootstrap-table2.min.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./react-bootstrap-table2.min.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 28 */
 /***/ (function(module, exports) {
 
 
@@ -4503,7 +4557,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 27 */
+/* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* @preserve
@@ -18379,30 +18433,7 @@ window.L = exports;
 
 
 /***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _bootstrapTable = __webpack_require__(29);
-
-var _bootstrapTable2 = _interopRequireDefault(_bootstrapTable);
-
-var _contexts = __webpack_require__(57);
-
-var _contexts2 = _interopRequireDefault(_contexts);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = (0, _contexts2.default)(_bootstrapTable2.default);
-
-/***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18426,19 +18457,19 @@ var _classnames = __webpack_require__(5);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _header = __webpack_require__(31);
+var _header = __webpack_require__(32);
 
 var _header2 = _interopRequireDefault(_header);
 
-var _caption = __webpack_require__(43);
+var _caption = __webpack_require__(44);
 
 var _caption2 = _interopRequireDefault(_caption);
 
-var _body = __webpack_require__(44);
+var _body = __webpack_require__(45);
 
 var _body2 = _interopRequireDefault(_body);
 
-var _propsResolver = __webpack_require__(55);
+var _propsResolver = __webpack_require__(56);
 
 var _propsResolver2 = _interopRequireDefault(_propsResolver);
 
@@ -18675,7 +18706,7 @@ BootstrapTable.defaultProps = {
 exports.default = BootstrapTable;
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19237,7 +19268,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19255,23 +19286,23 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _headerCell = __webpack_require__(32);
+var _headerCell = __webpack_require__(33);
 
 var _headerCell2 = _interopRequireDefault(_headerCell);
 
-var _selectionHeaderCell = __webpack_require__(36);
+var _selectionHeaderCell = __webpack_require__(37);
 
 var _selectionHeaderCell2 = _interopRequireDefault(_selectionHeaderCell);
 
-var _expandHeaderCell = __webpack_require__(37);
+var _expandHeaderCell = __webpack_require__(38);
 
 var _expandHeaderCell2 = _interopRequireDefault(_expandHeaderCell);
 
-var _selectionHeaderCellConsumer = __webpack_require__(38);
+var _selectionHeaderCellConsumer = __webpack_require__(39);
 
 var _selectionHeaderCellConsumer2 = _interopRequireDefault(_selectionHeaderCellConsumer);
 
-var _expandHeaderCellConsumer = __webpack_require__(42);
+var _expandHeaderCellConsumer = __webpack_require__(43);
 
 var _expandHeaderCellConsumer2 = _interopRequireDefault(_expandHeaderCellConsumer);
 
@@ -19351,7 +19382,7 @@ Header.propTypes = {
 exports.default = Header;
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19380,11 +19411,11 @@ var _const = __webpack_require__(3);
 
 var _const2 = _interopRequireDefault(_const);
 
-var _symbol = __webpack_require__(33);
+var _symbol = __webpack_require__(34);
 
 var _symbol2 = _interopRequireDefault(_symbol);
 
-var _caret = __webpack_require__(34);
+var _caret = __webpack_require__(35);
 
 var _caret2 = _interopRequireDefault(_caret);
 
@@ -19527,7 +19558,7 @@ HeaderCell.propTypes = {
 exports.default = HeaderCell;
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19572,7 +19603,7 @@ var SortSymbol = function SortSymbol() {
 exports.default = SortSymbol;
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19630,7 +19661,7 @@ SortCaret.propTypes = {
 exports.default = SortCaret;
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.9.1
@@ -21330,7 +21361,7 @@ exports.default = SortCaret;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(21)(module)))
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21502,7 +21533,7 @@ SelectionHeaderCell.propTypes = {
 exports.default = SelectionHeaderCell;
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21586,7 +21617,7 @@ ExpansionHeaderCell.propTypes = {
 exports.default = ExpansionHeaderCell;
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21619,7 +21650,7 @@ exports.default = function (Component) {
 };
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21684,7 +21715,7 @@ var getExpandedRows = exports.getExpandedRows = function getExpandedRows(data, k
 };
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21709,7 +21740,7 @@ var editCell = exports.editCell = function editCell(data, keyField, rowId, dataF
 };
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21781,7 +21812,7 @@ var nextOrder = exports.nextOrder = function nextOrder(currentSortColumn, _ref2)
 };
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21814,7 +21845,7 @@ exports.default = function (Component) {
 };
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21851,7 +21882,7 @@ Caption.propTypes = {
 exports.default = Caption;
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21877,15 +21908,15 @@ var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _simpleRow = __webpack_require__(45);
+var _simpleRow = __webpack_require__(46);
 
 var _simpleRow2 = _interopRequireDefault(_simpleRow);
 
-var _aggregateRow = __webpack_require__(48);
+var _aggregateRow = __webpack_require__(49);
 
 var _aggregateRow2 = _interopRequireDefault(_aggregateRow);
 
-var _rowSection = __webpack_require__(51);
+var _rowSection = __webpack_require__(52);
 
 var _rowSection2 = _interopRequireDefault(_rowSection);
 
@@ -21893,11 +21924,11 @@ var _const = __webpack_require__(3);
 
 var _const2 = _interopRequireDefault(_const);
 
-var _rowConsumer = __webpack_require__(52);
+var _rowConsumer = __webpack_require__(53);
 
 var _rowConsumer2 = _interopRequireDefault(_rowConsumer);
 
-var _rowConsumer3 = __webpack_require__(53);
+var _rowConsumer3 = __webpack_require__(54);
 
 var _rowConsumer4 = _interopRequireDefault(_rowConsumer3);
 
@@ -22018,7 +22049,7 @@ Body.propTypes = {
 exports.default = Body;
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22132,7 +22163,7 @@ SimpleRow.defaultProps = {
 exports.default = SimpleRow;
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22154,7 +22185,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _cellEventDelegater = __webpack_require__(47);
+var _cellEventDelegater = __webpack_require__(48);
 
 var _cellEventDelegater2 = _interopRequireDefault(_cellEventDelegater);
 
@@ -22277,7 +22308,7 @@ Cell.propTypes = {
 exports.default = Cell;
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22347,7 +22378,7 @@ exports.default = function (ExtendBase) {
 };
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22373,11 +22404,11 @@ var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _expandCell = __webpack_require__(49);
+var _expandCell = __webpack_require__(50);
 
 var _expandCell2 = _interopRequireDefault(_expandCell);
 
-var _selectionCell = __webpack_require__(50);
+var _selectionCell = __webpack_require__(51);
 
 var _selectionCell2 = _interopRequireDefault(_selectionCell);
 
@@ -22508,7 +22539,7 @@ RowAggregator.defaultProps = {
 exports.default = RowAggregator;
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22609,7 +22640,7 @@ ExpandCell.propTypes = {
 exports.default = ExpandCell;
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22746,7 +22777,7 @@ SelectionCell.propTypes = {
 exports.default = SelectionCell;
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22797,7 +22828,7 @@ RowSection.defaultProps = {
 exports.default = RowSection;
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22876,7 +22907,7 @@ exports.default = function (Component) {
 };
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22893,7 +22924,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _expandRow = __webpack_require__(54);
+var _expandRow = __webpack_require__(55);
 
 var _expandRow2 = _interopRequireDefault(_expandRow);
 
@@ -22936,7 +22967,7 @@ exports.default = function (Component, visibleColumnSize) {
 };
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22984,7 +23015,7 @@ ExpandRow.defaultProps = {
 exports.default = ExpandRow;
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22996,7 +23027,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _columnResolver = __webpack_require__(56);
+var _columnResolver = __webpack_require__(57);
 
 var _columnResolver2 = _interopRequireDefault(_columnResolver);
 
@@ -23042,7 +23073,7 @@ exports.default = function (ExtendBase) {
 };
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23094,7 +23125,7 @@ exports.default = function (ExtendBase) {
 };
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23116,11 +23147,11 @@ var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _dataContext = __webpack_require__(58);
+var _dataContext = __webpack_require__(59);
 
 var _dataContext2 = _interopRequireDefault(_dataContext);
 
-var _sortContext = __webpack_require__(59);
+var _sortContext = __webpack_require__(60);
 
 var _sortContext2 = _interopRequireDefault(_sortContext);
 
@@ -23132,7 +23163,7 @@ var _rowExpandContext = __webpack_require__(11);
 
 var _rowExpandContext2 = _interopRequireDefault(_rowExpandContext);
 
-var _remoteResolver2 = __webpack_require__(60);
+var _remoteResolver2 = __webpack_require__(61);
 
 var _remoteResolver3 = _interopRequireDefault(_remoteResolver2);
 
@@ -23447,7 +23478,7 @@ var withContext = function withContext(Base) {
 exports.default = withContext;
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23536,7 +23567,7 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23688,7 +23719,7 @@ exports.default = function (dataOperator, isRemoteSort, handleSortChange) {
 };
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23807,37 +23838,6 @@ exports.default = function (ExtendBase) {
     return RemoteResolver;
   }(ExtendBase);
 };
-
-/***/ }),
-/* 61 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(62);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(20)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./react-bootstrap-table2.min.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./react-bootstrap-table2.min.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
 
 /***/ }),
 /* 62 */
@@ -44098,8 +44098,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
-
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
@@ -44118,11 +44116,15 @@ var _ParchesTable = __webpack_require__(128);
 
 var _ParchesTable2 = _interopRequireDefault(_ParchesTable);
 
-var _UdpTitle = __webpack_require__(129);
+var _InfraTable = __webpack_require__(129);
+
+var _InfraTable2 = _interopRequireDefault(_InfraTable);
+
+var _UdpTitle = __webpack_require__(130);
 
 var _UdpTitle2 = _interopRequireDefault(_UdpTitle);
 
-var _UdpDiversity = __webpack_require__(130);
+var _UdpDiversity = __webpack_require__(131);
 
 var _UdpDiversity2 = _interopRequireDefault(_UdpDiversity);
 
@@ -44145,6 +44147,7 @@ var UDPMapapp = function (_React$Component) {
 
     _this.setSoils = _this.setSoils.bind(_this);
     _this.setInfra = _this.setInfra.bind(_this);
+    _this.setMuni = _this.setMuni.bind(_this);
     _this.setStateBounds = _this.setStateBounds.bind(_this);
     _this.setText = _this.setText.bind(_this);
 
@@ -44176,16 +44179,11 @@ var UDPMapapp = function (_React$Component) {
     }
   }, {
     key: "setSoils",
-    value: function setSoils(soils, udpsoils, munilist) {
+    value: function setSoils(soils, udpsoils) {
       if (soils != this.state.soils) {
         this.setState(function (prevState) {
           return {
             soils: soils
-          };
-        });
-        this.setState(function (prevState) {
-          return {
-            munilist: munilist
           };
         });
       }
@@ -44206,19 +44204,11 @@ var UDPMapapp = function (_React$Component) {
     }
   }, {
     key: "setInfra",
-    value: function setInfra(infraInfo, munilist) {
-
+    value: function setInfra(infraInfo) {
       if (infraInfo != this.state.infraInfo) {
-        console.log(typeof munilist === "undefined" ? "undefined" : _typeof(munilist));
-
         this.setState(function (prevState) {
           return {
             infraInfo: infraInfo
-          };
-        });
-        this.setState(function (prevState) {
-          return {
-            munilist: munilist
           };
         });
       }
@@ -44226,6 +44216,17 @@ var UDPMapapp = function (_React$Component) {
         this.setState(function (prevState) {
           return {
             boundsobtained: true
+          };
+        });
+      }
+    }
+  }, {
+    key: "setMuni",
+    value: function setMuni(munilist) {
+      if (munilist != this.state.munilist) {
+        this.setState(function (prevState) {
+          return {
+            munilist: munilist
           };
         });
       }
@@ -44276,7 +44277,8 @@ var UDPMapapp = function (_React$Component) {
             _react2.default.createElement(_udpMapa2.default, {
               setStateBounds: this.setStateBounds,
               setSoils: this.setSoils,
-              setInfra: this.setInfra
+              setInfra: this.setInfra,
+              setMuni: this.setMuni
             })
           ),
           _react2.default.createElement(
@@ -44322,11 +44324,7 @@ var UDPMapapp = function (_React$Component) {
               null,
               "Cargando..."
             ),
-            this.state.boundsobtained ? _react2.default.createElement(_ParchesTable2.default, {
-              udpsoils: this.state.udpsoils,
-              infraInfo: this.state.infraInfo,
-              setText: this.setText
-            }) : _react2.default.createElement(
+            this.state.boundsobtained ? maptype == 'sue' ? _react2.default.createElement(_ParchesTable2.default, { udpsoils: this.state.udpsoils, setText: this.setText }) : maptype == 'inf' ? _react2.default.createElement(_InfraTable2.default, { infraInfo: this.state.infraInfo, setText: this.setText }) : null : _react2.default.createElement(
               "p",
               null,
               "Cargando..."
@@ -44368,7 +44366,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _leaflet = __webpack_require__(27);
+var _leaflet = __webpack_require__(29);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
@@ -44398,6 +44396,7 @@ var UDPMapa = function (_React$Component) {
     _this.setStateBounds = _this.setStateBounds.bind(_this);
     _this.setSoils = _this.setSoils.bind(_this);
     _this.setInfra = _this.setInfra.bind(_this);
+    _this.setMuni = _this.setMuni.bind(_this);
     return _this;
   }
 
@@ -44408,13 +44407,18 @@ var UDPMapa = function (_React$Component) {
     }
   }, {
     key: "setSoils",
-    value: function setSoils(soils, udpsoils, munilist) {
-      this.props.setSoils(soils, udpsoils, munilist);
+    value: function setSoils(soils, udpsoils) {
+      this.props.setSoils(soils, udpsoils);
     }
   }, {
     key: "setInfra",
-    value: function setInfra(infInfo, munilist) {
-      this.props.setInfra(infInfo, munilist);
+    value: function setInfra(infInfo) {
+      this.props.setInfra(infInfo);
+    }
+  }, {
+    key: "setMuni",
+    value: function setMuni(munilist) {
+      this.props.setMuni(munilist);
     }
   }, {
     key: "componentDidMount",
@@ -44438,7 +44442,16 @@ var UDPMapa = function (_React$Component) {
           opacity: item.opacity,
           fillOpacity: item.fillOpacity
         };
-
+        if (item.tableName == "infra_punto") {
+          geojsonMarkerOptions = {
+            radius: 2,
+            fillColor: item.fillColor,
+            color: item.color,
+            weight: item.weight,
+            opacity: item.opacity,
+            fillOpacity: item.fillOpacity
+          };
+        }
         var myStyle = {
           weight: item.weight,
           color: item.color,
@@ -44454,6 +44467,18 @@ var UDPMapa = function (_React$Component) {
               opacity: item.opacity,
               weight: item.weight,
               color: item.color,
+              fillOpacity: item.fillOpacity
+            };
+          };
+        }
+
+        if (item.tableName == "infra_linea") {
+          myStyle = function myStyle(feature) {
+            return {
+              opacity: item.opacity,
+              weight: feature.properties["weight"],
+              color: feature.properties["color"],
+              dashArray: feature.properties["dash"],
               fillOpacity: item.fillOpacity
             };
           };
@@ -44477,7 +44502,7 @@ var UDPMapa = function (_React$Component) {
         return c2;
       };
 
-      var processArray = function processArray(array, mymap, setStateBounds, setSoils, setInfra) {
+      var processArray = function processArray(array, mymap, setStateBounds, setSoils, setInfra, setMuni) {
         var overlayMaps = _this2.overlayMaps || {};
         var bounds = "none";
         var udpiden = "none";
@@ -44491,7 +44516,8 @@ var UDPMapa = function (_React$Component) {
               setStateBounds(mymap.getBounds());
               udpiden = item.sql.split("'")[1];
             }
-          } else {
+          }
+          if (item.tableName == "usos_de_suelo4" || item.tableName == "infra_linea") {
             var getSueInfFeatures = function () {
               var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(bounds, udpiden) {
                 var myapi, rawResponse, dataResult;
@@ -44542,9 +44568,10 @@ var UDPMapa = function (_React$Component) {
             }();
 
             getSueInfFeatures(bounds, udpiden).then(function (returnData) {
-              if (maptype == 'sue') {
+              setMuni(JSON.parse(returnData[returnData.length - 1]));
 
-                setSoils(JSON.parse(returnData[0]), JSON.parse(returnData[1]), JSON.parse(returnData[5]));
+              if (maptype == 'sue') {
+                setSoils(JSON.parse(returnData[0]), JSON.parse(returnData[1]));
                 var _myLayer = get_shp(item, mymap);
                 overlayMaps[item.displayName] = _myLayer;
                 [JSON.parse(returnData[2]), JSON.parse(returnData[3]), JSON.parse(returnData[4])].forEach(function (item) {
@@ -44555,14 +44582,14 @@ var UDPMapa = function (_React$Component) {
               }
 
               if (maptype == 'inf') {
-                setInfra(JSON.parse(returnData[0]), JSON.parse(returnData[1]));
+                setInfra(JSON.parse(returnData[0]));
               }
             });
           }
         });
       };
 
-      processArray(udpsomething, this.map, this.setStateBounds, this.setSoils, this.setInfra);
+      processArray(udpsomething, this.map, this.setStateBounds, this.setSoils, this.setInfra, this.setMuni);
       this.map.scrollWheelZoom.disable();
       _leaflet2.default.control.scale({ imperial: false }).addTo(this.map);
 
@@ -44631,7 +44658,13 @@ function Blist(props) {
   return _react2.default.createElement(
     "div",
     { className: "legendEntryDiv" },
-    props.descripcio == "MANANTIAL" ? _react2.default.createElement("img", { src: "/img/" + props.descripcio + ".png", id: props.descripcio }) : _react2.default.createElement("div", { className: "legendlines", id: props.descripcio }),
+    props.descripcio == "MANANTIAL" ? _react2.default.createElement("img", { src: "/img/" + props.descripcio + ".png", id: props.descripcio }) : props.descripcio == "EDIFICACION" ? _react2.default.createElement(
+      "svg",
+      { height: "10", width: "25" },
+      " ",
+      _react2.default.createElement("circle", { cx: "10", cy: "5", r: "3", stroke: "black", strokeWidth: "1", fill: "yellow" }),
+      " "
+    ) : _react2.default.createElement("div", { className: "legendlines", id: props.descripcio }),
     _react2.default.createElement(
       "p",
       { className: "legendp" },
@@ -44649,7 +44682,7 @@ function Legend(props) {
     });
   });
   var finalItemsList = [];
-  finalItemsList = maptype == 'sue' ? ["CORRIENTE_DE_AGUA", "MANANTIAL"] : maptype == 'inf' ? ["CARRETERA", "CALLE", "CAMINO", "LINEA_DE_TRANSMISION", "BORDO"] : null;
+  finalItemsList = maptype == 'sue' ? ["CORRIENTE_DE_AGUA", "MANANTIAL"] : maptype == 'inf' ? ["CARRETERA", "CALLE", "CAMINO", "LINEA_DE_TRANSMISION", "BORDO", "EDIFICACION"] : null;
 
   var finalItems = finalItemsList.map(function (name) {
     return _react2.default.createElement(Blist, { key: name, descripcio: name });
@@ -44682,11 +44715,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactBootstrapTableNext = __webpack_require__(28);
+var _reactBootstrapTableNext = __webpack_require__(26);
 
 var _reactBootstrapTableNext2 = _interopRequireDefault(_reactBootstrapTableNext);
 
-__webpack_require__(61);
+__webpack_require__(27);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -44705,11 +44738,8 @@ var ParchesTable = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (ParchesTable.__proto__ || Object.getPrototypeOf(ParchesTable)).call(this, props));
 
     _this.state = {
-      columns1: [{ dataField: "gid", text: "Tipo de Parche1" }],
       allParches: [{ area: "test1" }],
-      columnsSum: [{ dataField: "name", text: "Tipo de Parche2" }],
       allParchesSum: [{ name: "test2" }],
-      columnsAguaLinea: [{ dataField: "elemento", text: "Tipo de Parche3" }],
       dataAguaLinea: [{ elemento: "test3" }]
     };
     _this.setText = _this.setText.bind(_this);
@@ -44724,254 +44754,219 @@ var ParchesTable = function (_React$Component) {
   }, {
     key: "componentDidMount",
     value: function componentDidMount() {
-      if (maptype == 'sue') {
-        var compare = function compare(a, b) {
-          if (a.descripcio < b.descripcio) return -1;
-          if (a.descripcio > b.descripcio) return 1;
-          return 0;
-        };
+      var descripcioSet = new Set();
+      var continuoList = [];
+      var maxarea = 0.0;
+      var parchetotal = {};
+      var largestTypeArea = 0;
+      var largestTypeName = "";
+      var largestTypeCobertura = 0;
+      var maxname = "";
+      var listofareas = {};
+      var allParches = this.props.udpsoils.map(function (parche) {
+        parche.continuidad = parche.aislado ? "Aislado" : "Continuo";
+        parche.cobertura = (100 * parseFloat(parche.area) / parche.totalarea).toPrecision(4).toString() + "%";
+        parche.area = (parseFloat(parche.area) * (2500 / 0.00218206963154496)).toPrecision(4);
 
-        var descripcioSet = new Set();
-        var continuoList = [];
-        var maxarea = 0.0;
-        var parchetotal = {};
-        var largestTypeArea = 0;
-        var largestTypeName = "";
-        var largestTypeCobertura = 0;
-        var maxname = "";
-        var listofareas = {};
-        var allParches = this.props.udpsoils.map(function (parche) {
-          parche.continuidad = parche.aislado ? "Aislado" : "Continuo";
-          parche.cobertura = (100 * parseFloat(parche.area) / parche.totalarea).toPrecision(4).toString() + "%";
-          parche.area = parseFloat((parseFloat(parche.area) * (2500 / 0.00218206963154496)).toPrecision(4));
+        descripcioSet.add(parche.descripcio);
+        if (parche.area > maxarea) {
+          maxarea = parche.area;
+          maxname = parche.descripcio;
+        }
 
-          descripcioSet.add(parche.descripcio);
-          if (parche.area > maxarea) {
-            maxarea = parche.area;
-            maxname = parche.descripcio;
-          }
+        if (parchetotal[parche.descripcio]) {
+          parchetotal[parche.descripcio] = parseFloat(parche.area) + parchetotal[parche.descripcio];
+        } else {
+          parchetotal[parche.descripcio] = parseFloat(parche.area);
+        }
 
-          if (parchetotal[parche.descripcio]) {
-            parchetotal[parche.descripcio] = parseFloat(parche.area) + parchetotal[parche.descripcio];
-          } else {
-            parchetotal[parche.descripcio] = parseFloat(parche.area);
-          }
+        if (listofareas[parche.descripcio]) {
+          listofareas[parche.descripcio].push(parche.area.toString() + " hectáreas ");
+        } else {
+          listofareas[parche.descripcio] = [parche.area.toString()];
+        }
+        if (parchetotal[parche.descripcio] > largestTypeArea) {
+          largestTypeName = parche.descripcio;
+          largestTypeArea = parchetotal[parche.descripcio];
+          largestTypeCobertura = largestTypeArea / 25;
+        }
+        if (!parche.aislado) continuoList.push(parche.descripcio);
+        return parche;
+      });
 
-          if (listofareas[parche.descripcio]) {
-            listofareas[parche.descripcio].push(parche.area.toString() + " hectáreas ");
-          } else {
-            listofareas[parche.descripcio] = [parche.area.toString()];
-          }
-          if (parchetotal[parche.descripcio] > largestTypeArea) {
-            largestTypeName = parche.descripcio;
-            largestTypeArea = parchetotal[parche.descripcio];
-            largestTypeCobertura = largestTypeArea / 25;
-          }
-          if (!parche.aislado) continuoList.push(parche.descripcio);
-          return parche;
-        });
-
-        allParches.sort(compare);
-        this.setState(function (prevState) {
-          return {
-            allParches: allParches
-          };
-        });
-
-        var columns1 = [{
-          dataField: "descripcio",
-          text: "Parche"
-        }, {
-          dataField: "cobertura",
-          text: "Cobertura"
-        }, {
-          dataField: "continuidad",
-          text: "Continuidad"
-        }, {
-          dataField: "area",
-          text: "Area (h)"
-        }];
-        this.setState(function (prevState) {
-          return {
-            columns1: columns1
-          };
-        });
-
-        var allParchesSum = [{
-          name: "REQUEZA DE TIPOS DE PARCHE",
-          number: descripcioSet.size,
-          nombre: "-"
-        }, { name: "ABUNDANCIA DE PARCHES", number: allParches.length, nombre: "-" }, { name: "PARCHES CONTINUOS", number: continuoList.length, nombre: "-" }, {
-          name: "RAZON DE CONTINUIDAD DE PARCHES",
-          number: (continuoList.length / allParches.length).toPrecision(4),
-          nombre: "-"
-        }, {
-          name: "DOMINANCIA ENTRE TAMANOS DE PARCHE",
-          number: (maxarea / 2500).toPrecision(4),
-          nombre: maxname
-        }, {
-          name: "DOMINANCIA ENTRE TIPOS DE PARCHE",
-          number: (largestTypeArea / 2500).toPrecision(4),
-          nombre: largestTypeName
-        }];
-        this.setState(function (prevState) {
-          return {
-            allParchesSum: allParchesSum
-          };
-        });
-        var columnsSum = [{
-          dataField: "name",
-          text: " "
-        }, {
-          dataField: "number",
-          text: " "
-        }, {
-          dataField: "nombre",
-          text: " "
-        }];
-        this.setState(function (prevState) {
-          return {
-            columnsSum: columnsSum
-          };
-        });
-        var agualength = (allParches[0].agualength / 1000).toPrecision(4);
-        var aguacount = allParches[0].aguacount;
-        var aguaarea = (allParches[0].aguaarea / 10000).toPrecision(4);
-
-        var dataAguaLinea = [{
-          elemento: "Corriente  de agua",
-          longitud: agualength,
-          area: "-",
-          densidad: "-"
-        }, {
-          elemento: "Cuerpo de agua",
-          longitud: "-",
-          area: aguaarea,
-          densidad: "-"
-        }, { elemento: "Manantial", longitud: "-", area: "-", densidad: aguacount }, {
-          elemento: "TOTAL",
-          longitud: agualength,
-          area: aguaarea,
-          densidad: aguacount
-        }];
-
-        this.setState(function (prevState) {
-          return {
-            dataAguaLinea: dataAguaLinea
-          };
-        });
-
-        var columnsAguaLinea = [{
-          dataField: "elemento",
-          text: "ELEMENTO"
-        }, {
-          dataField: "longitud",
-          text: "LONGITUD (km)"
-        }, {
-          dataField: "area",
-          text: "AREA (h^2)"
-        }, {
-          dataField: "densidad",
-          text: "DENSIDAD (unidades)"
-        }];
-
-        this.setState(function (prevState) {
-          return {
-            columnsAguaLinea: columnsAguaLinea
-          };
-        });
-
-        var descriptionString = "La Unidad de Paisaje         (UP) " + idennum + "  presenta una riqueza de parches igual a " + descripcioSet.size + " y una abundancia de parches         igual a " + allParches.length + ". De estos parches, " + continuoList.length + " son continuos presentando         una raz\xF3n de continuidad de" + (continuoList.length / allParches.length).toPrecision(4) + ". Dentro de los aproximadamente 2500 hecatares que         conforman la UP , el Uso de Suelo y Vegetaci\xF3n (USV) m\xE1s dominante es " + largestTypeName + " \n        que representa el " + largestTypeCobertura.toPrecision(4) + "%  \n        del \xE1rea total de la unidad y est\xE1 dividido en         " + listofareas[largestTypeName].length + " parches de " + listofareas[largestTypeName] + " hect\xE1reas respectivamente. El parche de mayor         tama\xF1o corresponde al USV de " + maxname + " con un \xE1rea de        aproximadamente " + maxarea + " hect\xE1reas. La dominancia entre tama\xF1os de parche dentro de esta UP es         de " + (maxarea / 2500).toPrecision(4) + ", mientras que la dominancia entre tipos de parche es igual         a " + (largestTypeArea / 2500).toPrecision(4) + ". Esta UP presenta adem\xE1s una raz\xF3n de dispersi\xF3n h\xEDdrica de 0.00096         con corrientes de agua que cubren un total de " + agualength + " kilometros lineales; as\xED          como una densidad de cuerpos de agua de " + (aguaarea / 2500).toPrecision(4) + " y un \xE1rea de " + aguaarea + " hect\xE1reas.";
-
-        this.setText(descriptionString);
+      function compare(a, b) {
+        if (a.descripcio < b.descripcio) return -1;
+        if (a.descripcio > b.descripcio) return 1;
+        return 0;
       }
-      if (maptype == 'inf') {}
+
+      allParches.sort(compare);
+      this.setState(function (prevState) {
+        return {
+          allParches: allParches
+        };
+      });
+
+      var allParchesSum = [{
+        name: "REQUEZA DE TIPOS DE PARCHE",
+        number: descripcioSet.size,
+        nombre: "-"
+      }, { name: "ABUNDANCIA DE PARCHES", number: allParches.length, nombre: "-" }, { name: "PARCHES CONTINUOS", number: continuoList.length, nombre: "-" }, {
+        name: "RAZON DE CONTINUIDAD DE PARCHES",
+        number: (continuoList.length / allParches.length).toPrecision(4),
+        nombre: "-"
+      }, {
+        name: "DOMINANCIA ENTRE TAMANOS DE PARCHE",
+        number: (maxarea / 2500).toPrecision(4),
+        nombre: maxname
+      }, {
+        name: "DOMINANCIA ENTRE TIPOS DE PARCHE",
+        number: (largestTypeArea / 2500).toPrecision(4),
+        nombre: largestTypeName
+      }];
+      this.setState(function (prevState) {
+        return {
+          allParchesSum: allParchesSum
+        };
+      });
+
+      var agualength = (allParches[0].agualength / 1000).toPrecision(4);
+      var aguacount = allParches[0].aguacount;
+      var aguaarea = (allParches[0].aguaarea / 10000).toPrecision(4);
+
+      var dataAguaLinea = [{
+        elemento: "Corriente  de agua",
+        longitud: agualength,
+        area: "-",
+        densidad: "-"
+      }, {
+        elemento: "Cuerpo de agua",
+        longitud: "-",
+        area: aguaarea,
+        densidad: "-"
+      }, { elemento: "Manantial", longitud: "-", area: "-", densidad: aguacount }, {
+        elemento: "TOTAL",
+        longitud: agualength,
+        area: aguaarea,
+        densidad: aguacount
+      }];
+
+      this.setState(function (prevState) {
+        return {
+          dataAguaLinea: dataAguaLinea
+        };
+      });
+
+      var descriptionString = "La Unidad de Paisaje         (UP) " + idennum + "  presenta una riqueza de parches igual a " + descripcioSet.size + " y una abundancia de parches         igual a " + allParches.length + ". De estos parches, " + continuoList.length + " son continuos presentando         una raz\xF3n de continuidad de" + (continuoList.length / allParches.length).toPrecision(4) + ". Dentro de los aproximadamente 2500 hecatares que         conforman la UP , el Uso de Suelo y Vegetaci\xF3n (USV) m\xE1s dominante es " + largestTypeName + " \n        que representa el " + largestTypeCobertura.toPrecision(4) + "%  \n        del \xE1rea total de la unidad y est\xE1 dividido en         " + listofareas[largestTypeName].length + " parches de " + listofareas[largestTypeName] + " hect\xE1reas respectivamente. El parche de mayor         tama\xF1o corresponde al USV de " + maxname + " con un \xE1rea de        aproximadamente " + maxarea + " hect\xE1reas. La dominancia entre tama\xF1os de parche dentro de esta UP es         de " + (maxarea / 2500).toPrecision(4) + ", mientras que la dominancia entre tipos de parche es igual         a " + (largestTypeArea / 2500).toPrecision(4) + ". Esta UP presenta adem\xE1s una raz\xF3n de dispersi\xF3n h\xEDdrica de 0.00096         con corrientes de agua que cubren un total de " + agualength + " kilometros lineales; as\xED          como una densidad de cuerpos de agua de " + (aguaarea / 2500).toPrecision(4) + " y un \xE1rea de " + aguaarea + " hect\xE1reas.";
+
+      this.setText(descriptionString);
     }
   }, {
     key: "render",
     value: function render() {
-      if (maptype == 'sue') {
-        return _react2.default.createElement(
+      var columnsSum = [{
+        dataField: "name",
+        text: " "
+      }, {
+        dataField: "number",
+        text: " "
+      }, {
+        dataField: "nombre",
+        text: " "
+      }];
+
+      var columns1 = [{
+        dataField: "descripcio",
+        text: "Parche"
+      }, {
+        dataField: "cobertura",
+        text: "Cobertura"
+      }, {
+        dataField: "continuidad",
+        text: "Continuidad"
+      }, {
+        dataField: "area",
+        text: "Area (h)"
+      }];
+
+      var columnsAguaLinea = [{
+        dataField: "elemento",
+        text: "ELEMENTO"
+      }, {
+        dataField: "longitud",
+        text: "LONGITUD (km)"
+      }, {
+        dataField: "area",
+        text: "AREA (h^2)"
+      }, {
+        dataField: "densidad",
+        text: "DENSIDAD (unidades)"
+      }];
+
+      return _react2.default.createElement(
+        "div",
+        null,
+        _react2.default.createElement(
           "div",
-          null,
+          { className: "container" },
           _react2.default.createElement(
             "div",
-            { className: "container" },
-            _react2.default.createElement(
-              "div",
-              { className: "flex-column d-flex justify-content-around align-items-center p-3" },
-              _react2.default.createElement(_reactBootstrapTableNext2.default, {
-                keyField: "area",
-                data: this.state.allParches,
-                columns: this.state.columns1,
-                bootstrap4: false,
-                bordered: true,
-                classes: "bsparchtable",
-                striped: true,
-                hover: true,
-                condensed: true,
-                noDataIndication: "Cargando..."
-              })
-            )
-          ),
-          _react2.default.createElement(
-            "div",
-            { className: "container" },
-            _react2.default.createElement(
-              "div",
-              { className: "flex-column d-flex justify-content-around align-items-center p-3" },
-              _react2.default.createElement(_reactBootstrapTableNext2.default, {
-                keyField: "name",
-                data: this.state.allParchesSum,
-                columns: this.state.columnsSum,
-                bootstrap4: false,
-                bordered: true,
-                classes: "bsparchtable",
-                striped: true,
-                hover: true,
-                condensed: true,
-                noDataIndication: "No hay datos"
-              })
-            )
-          ),
-          _react2.default.createElement(
-            "div",
-            { className: "container" },
-            _react2.default.createElement(
-              "div",
-              { className: "flex-column d-flex justify-content-around align-items-center p-3" },
-              _react2.default.createElement(_reactBootstrapTableNext2.default, {
-                keyField: "elemento",
-                data: this.state.dataAguaLinea,
-                columns: this.state.columnsAguaLinea,
-                bootstrap4: false,
-                bordered: true,
-                classes: "bsparchtable",
-                striped: true,
-                hover: true,
-                condensed: true,
-                noDataIndication: "No hay datos"
-              })
-            )
+            { className: "flex-column d-flex justify-content-around align-items-center p-3" },
+            _react2.default.createElement(_reactBootstrapTableNext2.default, {
+              keyField: "area",
+              data: this.state.allParches,
+              columns: columns1,
+              bootstrap4: false,
+              bordered: true,
+              classes: "bsparchtable",
+              striped: true,
+              hover: true,
+              condensed: true,
+              noDataIndication: "Cargando..."
+            })
           )
-        );
-      }
-      if (maptype == 'inf') {
-        return _react2.default.createElement(
+        ),
+        _react2.default.createElement(
           "div",
-          null,
+          { className: "container" },
           _react2.default.createElement(
-            "p",
-            null,
-            this.props.infraInfo.infLength
-          ),
-          _react2.default.createElement(
-            "p",
-            null,
-            this.props.infraInfo.infCount
+            "div",
+            { className: "flex-column d-flex justify-content-around align-items-center p-3" },
+            _react2.default.createElement(_reactBootstrapTableNext2.default, {
+              keyField: "name",
+              data: this.state.allParchesSum,
+              columns: columnsSum,
+              bootstrap4: false,
+              bordered: true,
+              classes: "bsparchtable",
+              striped: true,
+              hover: true,
+              condensed: true,
+              noDataIndication: "No hay datos"
+            })
           )
-        );
-      }
+        ),
+        _react2.default.createElement(
+          "div",
+          { className: "container" },
+          _react2.default.createElement(
+            "div",
+            { className: "flex-column d-flex justify-content-around align-items-center p-3" },
+            _react2.default.createElement(_reactBootstrapTableNext2.default, {
+              keyField: "elemento",
+              data: this.state.dataAguaLinea,
+              columns: columnsAguaLinea,
+              bootstrap4: false,
+              bordered: true,
+              classes: "bsparchtable",
+              striped: true,
+              hover: true,
+              condensed: true,
+              noDataIndication: "No hay datos"
+            })
+          )
+        )
+      );
     }
   }]);
 
@@ -44982,6 +44977,160 @@ exports.default = ParchesTable;
 
 /***/ }),
 /* 129 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrapTableNext = __webpack_require__(26);
+
+var _reactBootstrapTableNext2 = _interopRequireDefault(_reactBootstrapTableNext);
+
+__webpack_require__(27);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var InfraTable = function (_React$Component) {
+  _inherits(InfraTable, _React$Component);
+
+  function InfraTable(props) {
+    _classCallCheck(this, InfraTable);
+
+    var _this = _possibleConstructorReturn(this, (InfraTable.__proto__ || Object.getPrototypeOf(InfraTable)).call(this, props));
+
+    _this.state = {
+      dataInfra: [{
+        elemento: "Bordo",
+        longitud: (_this.props.infraInfo.bordo / 1000).toPrecision(4),
+        densidad: "-"
+      }, {
+        elemento: "Calle",
+        longitud: (_this.props.infraInfo.calle / 1000).toPrecision(4),
+        densidad: "-"
+      }, {
+        elemento: "Camino",
+        longitud: (_this.props.infraInfo.camino / 1000).toPrecision(4),
+        densidad: "-"
+      }, {
+        elemento: "Carretera",
+        longitud: (_this.props.infraInfo.carretera / 1000).toPrecision(4),
+        densidad: "-"
+      }, {
+        elemento: "Edificion",
+        longitud: "-",
+        densidad: _this.props.infraInfo.infCount
+      }, {
+        elemento: "Linea de Transmision",
+        longitud: (_this.props.infraInfo["linea de transmision"] / 1000).toPrecision(4),
+        densidad: "-"
+      }, {
+        elemento: "TOTAL",
+        longitud: ((_this.props.infraInfo["linea de transmision"] + _this.props.infraInfo.bordo + _this.props.infraInfo.camino + _this.props.infraInfo.calle + _this.props.infraInfo.carretera) / 1000).toPrecision(4),
+        densidad: _this.props.infraInfo.infCount
+      }, {
+        elemento: "RAZÓN DE FRAGMENTACIÓN",
+        longitud: ((_this.props.infraInfo["linea de transmision"] + _this.props.infraInfo.bordo + _this.props.infraInfo.camino + _this.props.infraInfo.calle + _this.props.infraInfo.carretera) / 25000000).toPrecision(4),
+        densidad: "-"
+      }]
+    };
+    _this.setText = _this.setText.bind(_this);
+    return _this;
+  }
+
+  _createClass(InfraTable, [{
+    key: "setText",
+    value: function setText(text) {
+      this.props.setText(text);
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+
+      var existingList = this.state.dataInfra.filter(function (data) {
+        var calcNumber = isNaN(data.longitud) ? data.densidad : data.longitud;
+        return calcNumber > 0;
+      });
+
+      var existingNameList = existingList.map(function (row) {
+        return row.elemento;
+      });
+
+      var maxlinea = this.state.dataInfra.reduce(function (acc, val) {
+        if (val.longitud != '-') {
+          acc[0] = acc[0] === undefined || parseFloat(val.longitud) > acc[1] ? val.elemento : acc[0];
+          acc[1] = acc[1] === undefined || parseFloat(val.longitud) > acc[1] ? parseFloat(val.longitud) : acc[1];
+        }
+        return acc;
+      }, []);
+
+      var descriptionString = "En esta Unidad de Paisaje     (UP) " + idennum + " intervienen los siguintes elementos de infraestructura: " + existingNameList + " \n    La raz\xF3n de fragmentaci\xF3n\n    de esta UP es igual a " + this.state.dataInfra[7].longitud + ". De tipos de elementos lineales, lo m\xE1s\n    predominante es " + maxlinea[0] + " que ocupan " + maxlinea[1] + " kilometros\n    lineales. En esta UP intervienen tambi\xE9n aproximadamente " + this.props.infraInfo.infCount + "\n    edificaciones de diferentes tipos.";
+
+      this.setText(descriptionString);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var columnsInfra = [{
+        dataField: "elemento",
+        text: "ELEMENTO"
+      }, {
+        dataField: "longitud",
+        text: "LONGITUD (km)"
+      }, {
+        dataField: "densidad",
+        text: "DENSIDAD (unidades)"
+      }];
+
+      return _react2.default.createElement(
+        "div",
+        null,
+        _react2.default.createElement(
+          "div",
+          { className: "container" },
+          _react2.default.createElement(
+            "div",
+            { className: "flex-column d-flex justify-content-around align-items-center p-3" },
+            _react2.default.createElement(_reactBootstrapTableNext2.default, {
+              keyField: "elemento",
+              data: this.state.dataInfra,
+              columns: columnsInfra,
+              bootstrap4: false,
+              bordered: true,
+              classes: "bsparchtable",
+              striped: true,
+              hover: true,
+              condensed: true,
+              noDataIndication: "Cargando..."
+            })
+          )
+        )
+      );
+    }
+  }]);
+
+  return InfraTable;
+}(_react2.default.Component);
+
+exports.default = InfraTable;
+
+/***/ }),
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45035,7 +45184,7 @@ function UdpTitle(props) {
 exports.default = UdpTitle;
 
 /***/ }),
-/* 130 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -45056,8 +45205,7 @@ function Alist(props) {
     "span",
     {
       className: "biodivcontainer",
-      id: props.type + "span",
-      style: { float: "left", paddingLeft: "20px" }
+      id: props.type + "span"
     },
     _react2.default.createElement(
       "p",
@@ -45074,11 +45222,10 @@ function Alist(props) {
 function UdpDiversity(props) {
   var bigArray = [{ type: "arbol", icon: "🌲", shannon: shannon.split("*")[0] }, { type: "arbusto", icon: "🌳", shannon: shannon.split("*")[1] }, { type: "ave", icon: "🦅", shannon: shannon.split("*")[2] }, { type: "hierba", icon: "🌱", shannon: shannon.split("*")[3] }, { type: "herpetofauna", icon: "🐍", shannon: shannon.split("*")[4] }, { type: "mamifero", icon: "🦌", shannon: shannon.split("*")[5] }];
   function compare(a, b) {
-    if (a.shannon < b.shannon) return -1;
-    if (a.shannon > b.shannon) return 1;
+    if (parseFloat(a.shannon) < parseFloat(b.shannon)) return -1;
+    if (parseFloat(a.shannon) > parseFloat(b.shannon)) return 1;
     return 0;
   }
-
   bigArray.sort(compare);
 
   var listItems = bigArray.map(function (animal, ind) {
@@ -45097,8 +45244,8 @@ function UdpDiversity(props) {
   var svgLines = bigArray.map(function (animal, ind) {
     if (animal.shannon > 0) {
       previousAnimal++;
-      var x1my = 43 + previousAnimal * 64;
-      var x2my = 44.0 + +animal.shannon * 2.68;
+      var x1my = 37 + previousAnimal * 45;
+      var x2my = 44.0 + +animal.shannon * 2.72;
       return _react2.default.createElement("line", {
         key: animal.type,
         x1: x1my,

@@ -12,18 +12,23 @@ class UDPMapa extends React.Component {
     this.setStateBounds = this.setStateBounds.bind(this);
     this.setSoils = this.setSoils.bind(this);
     this.setInfra = this.setInfra.bind(this);
+    this.setMuni = this.setMuni.bind(this);
   }
 
   setStateBounds(bounds) {
     this.props.setStateBounds(bounds);
   }
 
-  setSoils(soils, udpsoils, munilist) {
-    this.props.setSoils(soils, udpsoils, munilist);
+  setSoils(soils, udpsoils) {
+    this.props.setSoils(soils, udpsoils);
   }
 
-  setInfra(infInfo, munilist) {
-    this.props.setInfra(infInfo, munilist);
+  setInfra(infInfo) {
+    this.props.setInfra(infInfo);
+  }
+
+  setMuni(munilist) {
+    this.props.setMuni(munilist);
   }
 
   componentDidMount() {
@@ -44,7 +49,16 @@ class UDPMapa extends React.Component {
         opacity: item.opacity,
         fillOpacity: item.fillOpacity
     };
-
+    if (item.tableName == "infra_punto") {
+    geojsonMarkerOptions = {
+      radius: 2,
+      fillColor: item.fillColor,
+      color: item.color,
+      weight: item.weight,
+      opacity: item.opacity,
+      fillOpacity: item.fillOpacity
+  };
+    }
     let myStyle={
       weight: item.weight,
       color: item.color,
@@ -53,17 +67,29 @@ class UDPMapa extends React.Component {
       fillOpacity: item.fillOpacity
     } 
 
-      if (item.tableName == "usos_de_suelo4") {
-        myStyle = feature => {
-          return {
-            fillColor: feature.properties["color"],
-            opacity: item.opacity,
-            weight: item.weight,
-            color: item.color,
-            fillOpacity: item.fillOpacity
-          };
+    if (item.tableName == "usos_de_suelo4") {
+      myStyle = feature => {
+        return {
+          fillColor: feature.properties["color"],
+          opacity: item.opacity,
+          weight: item.weight,
+          color: item.color,
+          fillOpacity: item.fillOpacity
         };
-      }
+      };
+    }
+
+    if (item.tableName == "infra_linea") {
+      myStyle = feature => {
+        return {
+          opacity: item.opacity,
+          weight: feature.properties["weight"],
+          color: feature.properties["color"],
+          dashArray: feature.properties["dash"],
+          fillOpacity: item.fillOpacity
+        };
+      };
+    }
 
       let c2;
       if (maptype!='sue' && item.geom && item.geom.features[0].geometry.type=='Point'){
@@ -83,7 +109,7 @@ class UDPMapa extends React.Component {
       return c2;
     };
 
-    const processArray = (array, mymap, setStateBounds, setSoils, setInfra) => {
+    const processArray = (array, mymap, setStateBounds, setSoils, setInfra, setMuni) => {
       const overlayMaps = this.overlayMaps || {};
       var bounds = "none";
       var udpiden = "none";
@@ -97,7 +123,8 @@ class UDPMapa extends React.Component {
             setStateBounds(mymap.getBounds());
             udpiden = item.sql.split("'")[1];
           }
-        } else {
+        }
+        if (item.tableName == "usos_de_suelo4" || item.tableName == "infra_linea"){
           async function getSueInfFeatures(bounds, udpiden) {
             let myapi =
               "https://biodiversidadpuebla.online/api/get"+maptype+"features";
@@ -122,12 +149,13 @@ class UDPMapa extends React.Component {
             return dataResult;
           }
           getSueInfFeatures(bounds, udpiden).then(returnData => {
+            setMuni(JSON.parse(returnData[returnData.length-1]))
+
             if (maptype=='sue'){
-              
-              setSoils(JSON.parse(returnData[0]), JSON.parse(returnData[1]),JSON.parse(returnData[5]));
+              setSoils(JSON.parse(returnData[0]), JSON.parse(returnData[1]));
               let myLayer = get_shp(item, mymap);
               overlayMaps[item.displayName] = myLayer;
-              [ JSON.parse(returnData[2]), JSON.parse(returnData[3]), JSON.parse(returnData[4]) ].forEach(item => {
+              [JSON.parse(returnData[2]), JSON.parse(returnData[3]), JSON.parse(returnData[4]) ].forEach(item => {
                 if (item.geom) {
                   get_shp(item, mymap);
                 }
@@ -135,7 +163,7 @@ class UDPMapa extends React.Component {
             }
 
             if (maptype=='inf'){
-              setInfra(JSON.parse(returnData[0]),JSON.parse(returnData[1]))
+              setInfra(JSON.parse(returnData[0]))
             }
 
           });
@@ -143,7 +171,7 @@ class UDPMapa extends React.Component {
       });
     };
 
-    processArray(udpsomething, this.map, this.setStateBounds, this.setSoils, this.setInfra);
+    processArray(udpsomething, this.map, this.setStateBounds, this.setSoils, this.setInfra, this.setMuni);
     this.map.scrollWheelZoom.disable();
     L.control.scale({ imperial: false }).addTo(this.map);
 
