@@ -44428,7 +44428,8 @@ var UDPMapa = function (_React$Component) {
       // create map
       this.map = _leaflet2.default.map("map", {
         center: [18.69349, 360 - 98.16245],
-        zoom: 10,
+        zoom: 1,
+        zoomSnap: 0.1,
         layers: [],
         zoomControl: false
       });
@@ -44512,7 +44513,7 @@ var UDPMapa = function (_React$Component) {
             overlayMaps[item.displayName] = myLayer;
             if (item.tableName == "udp_puebla_4326") {
               mymap.fitBounds(myLayer.getBounds());
-              bounds = mymap.getBounds();
+              mymap.setZoom(13.6), bounds = mymap.getBounds();
               setStateBounds(mymap.getBounds());
               udpiden = item.sql.split("'")[1];
             }
