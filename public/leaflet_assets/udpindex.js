@@ -44427,8 +44427,7 @@ var UDPMapa = function (_React$Component) {
 
       // create map
       this.map = _leaflet2.default.map("map", {
-        center: [18.69349, 360 - 98.16245],
-        zoom: 1,
+
         zoomSnap: 0.1,
         layers: [],
         zoomControl: false
@@ -45167,7 +45166,8 @@ function UdpTitle(props) {
       _react2.default.createElement(
         "h6",
         { id: "framentation" },
-        " MAPA DE FRAGMENTACI\xD3N AMBIENTAL"
+        " MAPA DE FRAGMENTACI\xD3N ",
+        maptype == 'sue' ? 'AMBIENTAL' : maptype == 'inf' ? 'INFRASTRUCTURA' : null
       ),
       _react2.default.createElement(
         "h6",

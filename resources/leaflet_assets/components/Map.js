@@ -25,8 +25,7 @@ class Map extends React.Component {
     this.props.setDefaultMax(defaultmax[`${this.props.mapSettings.distinctOrTotal}_${this.props.mapSettings.myObsType}`])
     // create map
     this.map = L.map("map", {
-      center: [18.69349,360-98.16245],
-      zoom: 9,
+      zoomSnap: 0.5,
       layers: []
     });
 
@@ -98,8 +97,9 @@ class Map extends React.Component {
       array.forEach(function(item){
         let myLayer = get_shp(item,mymap,getColor,getOutline);
         if (item.tableName =='udp_puebla_4326'){
-            dynamicLayer=myLayer
-            mymap.fitBounds(myLayer.getBounds())
+          dynamicLayer=myLayer
+          mymap.fitBounds(myLayer.getBounds())
+          mymap.setZoom(7.5)
         }
         overlayMaps[item.displayName]=myLayer;
       });

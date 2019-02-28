@@ -34,8 +34,7 @@ class UDPMapa extends React.Component {
   componentDidMount() {
     // create map
     this.map = L.map("map", {
-      center: [18.69349, 360 - 98.16245],
-      zoom: 1,
+      
       zoomSnap: 0.1,
       layers: [],
       zoomControl: false

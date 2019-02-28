@@ -23911,8 +23911,7 @@ var Map = function (_React$Component) {
       this.props.setDefaultMax(defaultmax[this.props.mapSettings.distinctOrTotal + "_" + this.props.mapSettings.myObsType]);
       // create map
       this.map = _leaflet2.default.map("map", {
-        center: [18.69349, 360 - 98.16245],
-        zoom: 9,
+        zoomSnap: 0.5,
         layers: []
       });
 
@@ -23984,6 +23983,7 @@ var Map = function (_React$Component) {
           if (item.tableName == 'udp_puebla_4326') {
             dynamicLayer = myLayer;
             mymap.fitBounds(myLayer.getBounds());
+            mymap.setZoom(7.5);
           }
           overlayMaps[item.displayName] = myLayer;
         });

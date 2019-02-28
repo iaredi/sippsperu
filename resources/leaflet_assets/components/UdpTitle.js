@@ -18,7 +18,7 @@ function UdpTitle(props) {
       </h6>
 
       <div id="updmunititle">
-        <h6 id="framentation"> MAPA DE FRAGMENTACIÓN AMBIENTAL</h6>
+        <h6 id="framentation"> MAPA DE FRAGMENTACIÓN {maptype=='sue'?'AMBIENTAL':maptype=='inf'?'INFRASTRUCTURA':null}</h6>
         <h6 id="muniudp">
           {" "}
           MUNICIPIO DE {munilist} PUEBLA, UNIDAD DE PAISAJE {idennum}
