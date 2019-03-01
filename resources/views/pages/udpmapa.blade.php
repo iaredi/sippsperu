@@ -2,6 +2,9 @@
 if (!session('email')){
     return redirect()->to('/login')->send();
 }
+if (!session('readpp')){
+  return redirect()->to('/privacidad')->send();
+}
 $geojsonidennum=json_encode($idennum);
 $geojsonshannon=json_encode($shannon);
 $geojsonmaptype=json_encode($maptype);

@@ -3,6 +3,9 @@
 if (!session('email')){
     return redirect()->to('/login')->send();
 }
+if (!session('readpp')){
+  return redirect()->to('/privacidad')->send();
+}
 session(['speciesabsent' => 'false']);
 
 if ($_SERVER['REQUEST_METHOD']=="POST"){

@@ -40,6 +40,9 @@ class Map extends React.Component {
     maxZoom: 18,
     });
 
+    
+        
+
     this.baseMaps = {
       "Imagery":imagery,
       "Streets": streets
@@ -103,6 +106,10 @@ class Map extends React.Component {
         }
         overlayMaps[item.displayName]=myLayer;
       });
+
+      // var tempraster = L.tileLayer('temptiles/{z}/{x}/{y}.png', { enable:true, tms: true, opacity: 0.8, attribution: ""});
+      // overlayMaps['temp_85_puebla']= tempraster
+        
       L.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
       return dynamicLayer
     }

@@ -7,6 +7,9 @@
     if (!session('email')){
         return redirect()->to('/login')->send();
     }
+    if (!session('readpp')){
+      return redirect()->to('/privacidad')->send();
+    }
     $useremail=json_encode(session('email'));
     if ($_SERVER['REQUEST_METHOD']=="POST"){
       $saveworked = savedata($_POST,$useremail);

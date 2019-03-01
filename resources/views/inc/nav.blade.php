@@ -24,11 +24,12 @@
     <ul class="navbar-nav ml-auto">
       <?php
             $root_directory = "testdir";
+                echo "<li class='nav-item'><a class='nav-link' href='/privacidad'>Privacidad</a></li>";
+
                 if (session('email')) {
                     $useremail=session('email');
                     if (session('admin')){
-                        echo "<li class='nav-item'><a class='nav-link' href='/admin'>Admin</a></li>";
-
+                      echo "<li class='nav-item'><a class='nav-link' href='/admin'>Admin</a></li>";
                     }
                     echo "<li class='nav-item'><a class='nav-link' id='useremail' >{$useremail}</a></li>";
 
@@ -36,9 +37,9 @@
 
                 } else {
                     echo "<li class='nav-item'><a class='nav-link' href='/login'>Login</a></li>";
-
                     echo "<li class='nav-item'><a class='nav-link' href='/register'>Registro</a></li>";
                 }
+                
         ?>
     </ul>
   </div>

@@ -15866,6 +15866,10 @@ var Map = function (_React$Component) {
           }
           overlayMaps[item.displayName] = myLayer;
         });
+
+        var tempraster = _leaflet2.default.tileLayer('temptiles/{z}/{x}/{y}.png', { enable: true, tms: true, opacity: 0.8, attribution: "" });
+        overlayMaps['temp_85_puebla'] = tempraster;
+
         _leaflet2.default.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
         return dynamicLayer;
       };

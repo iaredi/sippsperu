@@ -57,5 +57,8 @@ class PagesController extends Controller
     public function cargarshapes(){
         return view('pages/cargarshapes');
     }  
+    public function privacy(){
+      return view('pages/privacy');
+  }  
 }
 

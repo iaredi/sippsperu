@@ -26,6 +26,8 @@ Route::get('/reset_1', 'PagesController@reset_1');
 Route::get('/reset_2', 'PagesController@reset_2');
 Route::get('/cargarshapes', 'PagesController@cargarshapes');
 Route::get('/cargarshapesadmin', 'PagesController@cargarshapesadmin');
+Route::get('/privacidad', 'PagesController@privacy');
+
 Route::get('/mostrarnormas/{infotype}/{idenudpraw}', function ($infotype,$idenudpraw){
   return view('pages/mostrarnormas',['infotype'=>$infotype,'idenudp'=>$idenudpraw]);
 });
@@ -48,6 +50,8 @@ Route::post('/cargarshapesadmin', 'PagesController@cargarshapesadmin');
 Route::post('/udpmapa', 'PagesController@udpmapa');
 Route::post('/ingresarexcel', 'PagesController@ingresarexcel');
 Route::post('/mostrarnormas', 'PagesController@mostrarnormas');
+Route::post('/privacidad', 'PagesController@privacy');
+
 
 
 Route::get('getspecieslist/{lifeform}', function ($lifeform) {

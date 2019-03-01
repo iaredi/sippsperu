@@ -10794,3 +10794,11 @@ img {
   height: 100%;
 }
 
+#privacyHeader {
+  text-align: center;
+}
+
+#pptext {
+  padding: 10px 40px 10px 40px;
+}
+

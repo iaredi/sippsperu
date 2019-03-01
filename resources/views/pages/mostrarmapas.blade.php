@@ -2,6 +2,9 @@
 if (!session('email')){
     return redirect()->to('/login')->send();
 }
+if (!session('readpp')){
+    return redirect()->to('/privacidad')->send();
+}
 ?>
 
 @include('inc/loadlayers')
