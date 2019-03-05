@@ -44095,7 +44095,7 @@ _reactDom2.default.render(_react2.default.createElement(_udpMapapp2.default, nul
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -44138,209 +44138,213 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 //import BootstrapTable from 'react-bootstrap-table-next';
 
 var UDPMapapp = function (_React$Component) {
-  _inherits(UDPMapapp, _React$Component);
+	_inherits(UDPMapapp, _React$Component);
 
-  function UDPMapapp(props) {
-    _classCallCheck(this, UDPMapapp);
+	function UDPMapapp(props) {
+		_classCallCheck(this, UDPMapapp);
 
-    var _this = _possibleConstructorReturn(this, (UDPMapapp.__proto__ || Object.getPrototypeOf(UDPMapapp)).call(this, props));
+		var _this = _possibleConstructorReturn(this, (UDPMapapp.__proto__ || Object.getPrototypeOf(UDPMapapp)).call(this, props));
 
-    _this.setSoils = _this.setSoils.bind(_this);
-    _this.setInfra = _this.setInfra.bind(_this);
-    _this.setMuni = _this.setMuni.bind(_this);
-    _this.setStateBounds = _this.setStateBounds.bind(_this);
-    _this.setText = _this.setText.bind(_this);
+		_this.setSoils = _this.setSoils.bind(_this);
+		_this.setInfra = _this.setInfra.bind(_this);
+		_this.setMuni = _this.setMuni.bind(_this);
+		_this.setStateBounds = _this.setStateBounds.bind(_this);
+		_this.setText = _this.setText.bind(_this);
 
-    _this.state = {
-      mytext: "Cargando...",
-      bounds: {
-        _northEast: { lat: 1, lng: 1 },
-        _southWest: { lat: 1, lng: 1 }
-      },
-      boundsobtained: false,
-      soils: [{ color: "rgb:000", descripcio: "Cargando..." }],
-      munilist: ['cargando...'],
-      infraInfo: { infLength: -2, infCount: -1 },
-      udpsoils: [{ color: "rgb:000", descripcio: "Cargando..." }]
-    };
-    return _this;
-  }
+		_this.state = {
+			mytext: "Cargando...",
+			bounds: {
+				_northEast: { lat: 1, lng: 1 },
+				_southWest: { lat: 1, lng: 1 }
+			},
+			boundsobtained: false,
+			soils: [{ color: "rgb:000", descripcio: "Cargando..." }],
+			munilist: ["cargando..."],
+			infraInfo: { infLength: -2, infCount: -1 },
+			udpsoils: [{ color: "rgb:000", descripcio: "Cargando..." }]
+		};
+		return _this;
+	}
 
-  _createClass(UDPMapapp, [{
-    key: "setText",
-    value: function setText(mytext) {
-      if (mytext != this.state.mytext) {
-        this.setState(function (prevState) {
-          return {
-            mytext: mytext
-          };
-        });
-      }
-    }
-  }, {
-    key: "setSoils",
-    value: function setSoils(soils, udpsoils) {
-      if (soils != this.state.soils) {
-        this.setState(function (prevState) {
-          return {
-            soils: soils
-          };
-        });
-      }
-      if (udpsoils != this.state.udpsoils) {
-        this.setState(function (prevState) {
-          return {
-            udpsoils: udpsoils
-          };
-        });
-      }
-      if (!this.state.boundsobtained) {
-        this.setState(function (prevState) {
-          return {
-            boundsobtained: true
-          };
-        });
-      }
-    }
-  }, {
-    key: "setInfra",
-    value: function setInfra(infraInfo) {
-      if (infraInfo != this.state.infraInfo) {
-        this.setState(function (prevState) {
-          return {
-            infraInfo: infraInfo
-          };
-        });
-      }
-      if (!this.state.boundsobtained) {
-        this.setState(function (prevState) {
-          return {
-            boundsobtained: true
-          };
-        });
-      }
-    }
-  }, {
-    key: "setMuni",
-    value: function setMuni(munilist) {
-      if (munilist != this.state.munilist) {
-        this.setState(function (prevState) {
-          return {
-            munilist: munilist
-          };
-        });
-      }
-    }
-  }, {
-    key: "setStateBounds",
-    value: function setStateBounds(bounds) {
-      if (bounds != this.state.bounds) {
-        this.setState(function (prevState) {
-          return {
-            bounds: bounds
-          };
-        });
-      }
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var shannonBoolean = shannon.split("*")[0] > 0 || shannon.split("*")[1] > 0 || shannon.split("*")[2] > 0 || shannon.split("*")[3] > 0 || shannon.split("*")[4] > 0 || shannon.split("*")[5] > 0;
-      var westernLongitude = this.state.bounds._southWest.lng.toPrecision(6);
-      var easternLongitude = this.state.bounds._northEast.lng.toPrecision(6);
-      var southernLatitude = this.state.bounds._southWest.lat.toPrecision(6);
-      var northernLatitude = this.state.bounds._northEast.lat.toPrecision(6);
+	_createClass(UDPMapapp, [{
+		key: "setText",
+		value: function setText(mytext) {
+			if (mytext != this.state.mytext) {
+				this.setState(function (prevState) {
+					return {
+						mytext: mytext
+					};
+				});
+			}
+		}
+	}, {
+		key: "setSoils",
+		value: function setSoils(soils, udpsoils) {
+			if (soils != this.state.soils) {
+				this.setState(function (prevState) {
+					return {
+						soils: soils
+					};
+				});
+			}
+			if (udpsoils != this.state.udpsoils) {
+				this.setState(function (prevState) {
+					return {
+						udpsoils: udpsoils
+					};
+				});
+			}
+			if (!this.state.boundsobtained) {
+				this.setState(function (prevState) {
+					return {
+						boundsobtained: true
+					};
+				});
+			}
+		}
+	}, {
+		key: "setInfra",
+		value: function setInfra(infraInfo) {
+			if (infraInfo != this.state.infraInfo) {
+				this.setState(function (prevState) {
+					return {
+						infraInfo: infraInfo
+					};
+				});
+			}
+			if (!this.state.boundsobtained) {
+				this.setState(function (prevState) {
+					return {
+						boundsobtained: true
+					};
+				});
+			}
+		}
+	}, {
+		key: "setMuni",
+		value: function setMuni(munilist) {
+			if (munilist != this.state.munilist) {
+				this.setState(function (prevState) {
+					return {
+						munilist: munilist
+					};
+				});
+			}
+		}
+	}, {
+		key: "setStateBounds",
+		value: function setStateBounds(bounds) {
+			if (bounds != this.state.bounds) {
+				this.setState(function (prevState) {
+					return {
+						bounds: bounds
+					};
+				});
+			}
+		}
+	}, {
+		key: "render",
+		value: function render() {
+			var shannonBoolean = shannon.split("*")[0] > 0 || shannon.split("*")[1] > 0 || shannon.split("*")[2] > 0 || shannon.split("*")[3] > 0 || shannon.split("*")[4] > 0 || shannon.split("*")[5] > 0;
+			var westernLongitude = this.state.bounds._southWest.lng.toPrecision(6);
+			var easternLongitude = this.state.bounds._northEast.lng.toPrecision(6);
+			var southernLatitude = this.state.bounds._southWest.lat.toPrecision(6);
+			var northernLatitude = this.state.bounds._northEast.lat.toPrecision(6);
 
-      return _react2.default.createElement(
-        "div",
-        null,
-        _react2.default.createElement(
-          "div",
-          { className: "udplayout" },
-          _react2.default.createElement(
-            "div",
-            { id: "bbtop" },
-            _react2.default.createElement(
-              "span",
-              { className: "top left" },
-              northernLatitude + ", " + westernLongitude
-            ),
-            _react2.default.createElement(
-              "span",
-              { className: "top right" },
-              northernLatitude + ", " + easternLongitude
-            )
-          ),
-          _react2.default.createElement(
-            "div",
-            { id: "udpmapdiv", className: "border border-dark" },
-            _react2.default.createElement(_udpMapa2.default, {
-              setStateBounds: this.setStateBounds,
-              setSoils: this.setSoils,
-              setInfra: this.setInfra,
-              setMuni: this.setMuni
-            })
-          ),
-          _react2.default.createElement(
-            "div",
-            { id: "bbbottom" },
-            _react2.default.createElement(
-              "span",
-              { className: "bottom left" },
-              southernLatitude + ", " + westernLongitude
-            ),
-            _react2.default.createElement(
-              "span",
-              { className: "bottom right" },
-              southernLatitude + ", " + easternLongitude
-            )
-          ),
-          _react2.default.createElement(
-            "div",
-            { id: "legenddiv" },
-            _react2.default.createElement(_Legend2.default, { soils: this.state.soils })
-          ),
-          _react2.default.createElement(
-            "div",
-            { id: "descriptiondiv" },
-            _react2.default.createElement(
-              "h6",
-              { id: "descripcionheader" },
-              "DESCRIPCI\xD3N "
-            ),
-            _react2.default.createElement(
-              "p",
-              { id: "descripciontext" },
-              this.state.mytext
-            )
-          ),
-          _react2.default.createElement(
-            "div",
-            { id: "parchestable" },
-            this.state.boundsobtained ? _react2.default.createElement(_UdpTitle2.default, {
-              munilist: this.state.munilist
-            }) : _react2.default.createElement(
-              "p",
-              null,
-              "Cargando..."
-            ),
-            this.state.boundsobtained ? maptype == 'sue' ? _react2.default.createElement(_ParchesTable2.default, { udpsoils: this.state.udpsoils, setText: this.setText }) : maptype == 'inf' ? _react2.default.createElement(_InfraTable2.default, { infraInfo: this.state.infraInfo, setText: this.setText }) : null : _react2.default.createElement(
-              "p",
-              null,
-              "Cargando..."
-            )
-          ),
-          shannonBoolean && _react2.default.createElement(
-            "div",
-            { id: "biodivreport" },
-            _react2.default.createElement(_UdpDiversity2.default, null)
-          )
-        )
-      );
-    }
-  }]);
+			return _react2.default.createElement(
+				"div",
+				null,
+				_react2.default.createElement(
+					"div",
+					{ className: "udplayout" },
+					_react2.default.createElement(
+						"div",
+						{ id: "bbtop" },
+						_react2.default.createElement(
+							"span",
+							{ className: "top left" },
+							northernLatitude + ", " + westernLongitude
+						),
+						_react2.default.createElement(
+							"span",
+							{ className: "top right" },
+							northernLatitude + ", " + easternLongitude
+						)
+					),
+					_react2.default.createElement(
+						"div",
+						{ id: "udpmapdiv", className: "border border-dark" },
+						_react2.default.createElement(_udpMapa2.default, {
+							setStateBounds: this.setStateBounds,
+							setSoils: this.setSoils,
+							setInfra: this.setInfra,
+							setMuni: this.setMuni
+						})
+					),
+					_react2.default.createElement(
+						"div",
+						{ id: "bbbottom" },
+						_react2.default.createElement(
+							"span",
+							{ className: "bottom left" },
+							southernLatitude + ", " + westernLongitude
+						),
+						_react2.default.createElement(
+							"span",
+							{ className: "bottom right" },
+							southernLatitude + ", " + easternLongitude
+						)
+					),
+					_react2.default.createElement(
+						"div",
+						{ id: "legenddiv" },
+						_react2.default.createElement(_Legend2.default, { soils: this.state.soils })
+					),
+					_react2.default.createElement(
+						"div",
+						{ id: "descriptiondiv" },
+						_react2.default.createElement(
+							"h6",
+							{ id: "descripcionheader" },
+							"DESCRIPCI\xD3N "
+						),
+						_react2.default.createElement(
+							"p",
+							{ id: "descripciontext" },
+							this.state.mytext
+						)
+					),
+					_react2.default.createElement(
+						"div",
+						{ id: "parchestable" },
+						this.state.boundsobtained ? _react2.default.createElement(_UdpTitle2.default, { munilist: this.state.munilist }) : _react2.default.createElement(
+							"p",
+							null,
+							"Cargando..."
+						),
+						this.state.boundsobtained ? maptype == "sue" ? _react2.default.createElement(_ParchesTable2.default, {
+							udpsoils: this.state.udpsoils,
+							setText: this.setText
+						}) : maptype == "inf" ? _react2.default.createElement(_InfraTable2.default, {
+							infraInfo: this.state.infraInfo,
+							setText: this.setText
+						}) : null : _react2.default.createElement(
+							"p",
+							null,
+							"Cargando..."
+						)
+					),
+					shannonBoolean && _react2.default.createElement(
+						"div",
+						{ id: "biodivreport" },
+						_react2.default.createElement(_UdpDiversity2.default, null)
+					)
+				)
+			);
+		}
+	}]);
 
-  return UDPMapapp;
+	return UDPMapapp;
 }(_react2.default.Component);
 
 exports.default = UDPMapapp;
@@ -45064,14 +45068,14 @@ var InfraTable = function (_React$Component) {
 
       var existingList = this.state.dataInfra.filter(function (data) {
         var calcNumber = isNaN(data.longitud) ? data.densidad : data.longitud;
-        return calcNumber > 0;
+        return calcNumber > 0 && data.elemento != 'RAZÓN DE FRAGMENTACIÓN' && data.elemento != 'TOTAL';
       });
 
       var existingNameList = existingList.map(function (row) {
         return row.elemento;
       });
 
-      var maxlinea = this.state.dataInfra.reduce(function (acc, val) {
+      var maxlinea = existingList.reduce(function (acc, val) {
         if (val.longitud != '-') {
           acc[0] = acc[0] === undefined || parseFloat(val.longitud) > acc[1] ? val.elemento : acc[0];
           acc[1] = acc[1] === undefined || parseFloat(val.longitud) > acc[1] ? parseFloat(val.longitud) : acc[1];

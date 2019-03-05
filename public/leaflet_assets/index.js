@@ -23861,7 +23861,7 @@ exports.push([module.i, ".react-bootstrap-table table{table-layout:fixed}.react-
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -23883,202 +23883,209 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var style = {
-  height: "100%"
+    height: "100%"
 };
 
 var Map = function (_React$Component) {
-  _inherits(Map, _React$Component);
+    _inherits(Map, _React$Component);
 
-  function Map(props) {
-    _classCallCheck(this, Map);
+    function Map(props) {
+        _classCallCheck(this, Map);
 
-    var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Map.__proto__ || Object.getPrototypeOf(Map)).call(this, props));
 
-    _this.getColor = _this.getColor.bind(_this);
-    return _this;
-  }
+        _this.getColor = _this.getColor.bind(_this);
+        _this.handleOverlayChange = _this.handleOverlayChange.bind(_this);
 
-  _createClass(Map, [{
-    key: "getColor",
-    value: function getColor(x) {
-      return x < this.props.mapSettings.maxValue * (1 / 6) ? '#edf8fb' : x < this.props.mapSettings.maxValue * (2 / 6) ? '#ccece6' : x < this.props.mapSettings.maxValue * (3 / 6) ? '#99d8c9' : x < this.props.mapSettings.maxValue * (4 / 6) ? '#66c2a4' : x < this.props.mapSettings.maxValue * (5 / 6) ? '#41ae76' : x < this.props.mapSettings.maxValue ? '#238b45' : '#005824';
+        return _this;
     }
-  }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var _this2 = this;
 
-      this.props.setDefaultMax(defaultmax[this.props.mapSettings.distinctOrTotal + "_" + this.props.mapSettings.myObsType]);
-      // create map
-      this.map = _leaflet2.default.map("map", {
-        zoomSnap: 0.5,
-        layers: []
-      });
-
-      var streets = _leaflet2.default.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-      }).addTo(this.map);
-
-      var imagery = _leaflet2.default.tileLayer('http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: '&copy; <a href="http://www.esri.com/">Esri</a>i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-        maxZoom: 18
-      });
-
-      this.baseMaps = {
-        "Imagery": imagery,
-        "Streets": streets
-      };
-
-      var get_shp = function get_shp(item, mymap) {
-        ////
-        var geojsonMarkerOptions = {
-          radius: 4,
-          fillColor: item.fillColor,
-          color: item.color,
-          weight: item.weight,
-          opacity: item.opacity,
-          fillOpacity: item.fillOpacity
-        };
-
-        var myStyle = {
-          weight: item.weight,
-          color: item.color,
-          opacity: item.opacity,
-          fillColor: item.fillColor,
-          fillOpacity: item.fillOpacity
-        };
-
-        var onEachFeature = function onEachFeature(feature, layer) {
-          var handleFeatureClick = function handleFeatureClick(event) {
-            _this2.props.handleFeatureClick(event);
-          };
-          layer.on('click', handleFeatureClick);
-        };
-
-        var c2 = _leaflet2.default.geoJson(item.geom, {
-          style: myStyle,
-          onEachFeature: onEachFeature
-        });
-        if (item.geom && item.geom.features[0].geometry.type == 'Point') {
-          c2 = _leaflet2.default.geoJSON(item.geom, {
-            pointToLayer: function pointToLayer(feature, latlng) {
-              return _leaflet2.default.circleMarker(latlng, geojsonMarkerOptions);
-            },
-            onEachFeature: onEachFeature,
-            style: myStyle
-
-          });
+    _createClass(Map, [{
+        key: "getColor",
+        value: function getColor(x) {
+            return x < this.props.mapSettings.maxValue * (1 / 6) ? "#edf8fb" : x < this.props.mapSettings.maxValue * (2 / 6) ? "#ccece6" : x < this.props.mapSettings.maxValue * (3 / 6) ? "#99d8c9" : x < this.props.mapSettings.maxValue * (4 / 6) ? "#66c2a4" : x < this.props.mapSettings.maxValue * (5 / 6) ? "#41ae76" : x < this.props.mapSettings.maxValue ? "#238b45" : "#005824";
         }
-        if (item.tableName == 'linea_mtp' || item.tableName == 'udp_puebla_4326') {
-          c2.addTo(mymap);
+    }, {
+        key: "handleOverlayChange",
+        value: function handleOverlayChange(name, type) {
+            this.props.handleOverlayChange(name, type);
         }
-        return c2;
-      };
+    }, {
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            var _this2 = this;
 
-      var processArray = function processArray(array, mymap, mybaseMaps, getColor, getOutline) {
-        var dynamicLayer = 'notset';
-        var overlayMaps = _this2.overlayMaps || {};
-        array.forEach(function (item) {
-          var myLayer = get_shp(item, mymap, getColor, getOutline);
-          if (item.tableName == 'udp_puebla_4326') {
-            dynamicLayer = myLayer;
-            mymap.fitBounds(myLayer.getBounds());
-            mymap.setZoom(7.5);
-          }
-          overlayMaps[item.displayName] = myLayer;
-        });
+            this.props.setDefaultMax(defaultmax[this.props.mapSettings.distinctOrTotal + "_" + this.props.mapSettings.myObsType]);
+            // create map
+            this.map = _leaflet2.default.map("map", {
+                zoomSnap: 0.5,
+                layers: []
+            });
 
-        var tempraster = _leaflet2.default.tileLayer('temptiles/{z}/{x}/{y}.png', { enable: true, tms: true, opacity: 0.8, attribution: "" });
-        overlayMaps['temp_85_puebla'] = tempraster;
+            var streets = _leaflet2.default.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+                attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(this.map);
 
-        _leaflet2.default.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
-        return dynamicLayer;
-      };
-      this.dynamicLayer = processArray(something, this.map, this.baseMaps, this.getColor, this.getOutline);
-      this.map.on("click", this.props.handleMapClick);
-      this.map.scrollWheelZoom.disable();
-      ///////////LEGENDNEW////////////
+            var imagery = _leaflet2.default.tileLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+                attribution: '&copy; <a href="http://www.esri.com/">Esri</a>i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+                maxZoom: 18
+            });
 
-      var legend = _leaflet2.default.control({ position: 'bottomleft' });
-      this.makeDiv = function (map) {
-        grades = [];
-        labels = [];
-        var div = _leaflet2.default.DomUtil.create('div', 'info legend'),
-            grades,
-            labels = [];
-        _leaflet2.default.DomUtil.addClass(div, "colorLegend border border-secondary p-2");
+            this.baseMaps = {
+                Imagery: imagery,
+                Streets: streets
+            };
 
-        div.innerHTML += '<i class="m-1" style="outline: 5px solid purple; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + 'Sus datos <br><br>';
-        div.innerHTML += '<i class="m-1" style="outline: 5px solid red; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + 'Datos de otros monitores<br><br>';
-        div.innerHTML += '<i class="m-1" style="outline: 5px solid yellow; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + 'Selección<br>';
-        return div;
-      };
-      legend.onAdd = this.makeDiv;
-      legend.addTo(this.map);
-      this.legend = legend;
+            var get_shp = function get_shp(item, mymap) {
+                var geojsonMarkerOptions = {
+                    radius: 4,
+                    fillColor: item.fillColor,
+                    color: item.color,
+                    weight: item.weight,
+                    opacity: item.opacity,
+                    fillOpacity: item.fillOpacity
+                };
 
-      ///////////LEGENDOLD////////////
+                var myStyle = {
+                    weight: item.weight,
+                    color: item.color,
+                    opacity: item.opacity,
+                    fillColor: item.fillColor,
+                    fillOpacity: item.fillOpacity
+                };
 
-      var legend = _leaflet2.default.control({ position: 'bottomright' });
+                var onEachFeature = function onEachFeature(feature, layer) {
+                    var handleFeatureClick = function handleFeatureClick(event) {
+                        _this2.props.handleFeatureClick(event);
+                    };
+                    layer.on("click", handleFeatureClick);
+                };
 
-      this.makeDiv = function (map) {
-        grades = [];
-        for (var i = 0; i <= 6; i++) {
-          grades.push(_this2.props.mapSettings.maxValue * (i / 6)), labels = [];
+                var c2 = _leaflet2.default.geoJson(item.geom, {
+                    style: myStyle,
+                    onEachFeature: onEachFeature
+                });
+                if (item.geom && item.geom.features[0].geometry.type == "Point") {
+                    c2 = _leaflet2.default.geoJSON(item.geom, {
+                        pointToLayer: function pointToLayer(feature, latlng) {
+                            return _leaflet2.default.circleMarker(latlng, geojsonMarkerOptions);
+                        },
+                        onEachFeature: onEachFeature,
+                        style: myStyle
+                    });
+                }
+                if (item.tableName == "linea_mtp" || item.tableName == "udp_puebla_4326") {
+                    c2.addTo(mymap);
+                }
+                return c2;
+            };
+
+            var processArray = function processArray(array, mymap, mybaseMaps, getColor, getOutline) {
+                var dynamicLayer = "notset";
+                var overlayMaps = _this2.overlayMaps || {};
+                array.forEach(function (item) {
+                    var myLayer = get_shp(item, mymap, getColor, getOutline);
+                    if (item.tableName == "udp_puebla_4326") {
+                        dynamicLayer = myLayer;
+                        mymap.fitBounds(myLayer.getBounds());
+                        mymap.setZoom(7.5);
+                    }
+                    overlayMaps[item.displayName] = myLayer;
+                });
+
+                var tempraster = _leaflet2.default.tileLayer("temptiles/{z}/{x}/{y}.png", { enable: true, tms: true, opacity: 0.8, attribution: "" });
+                overlayMaps["temp_85_puebla"] = tempraster;
+
+                _leaflet2.default.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
+                return dynamicLayer;
+            };
+            this.dynamicLayer = processArray(something, this.map, this.baseMaps, this.getColor, this.getOutline);
+            this.map.on("click", this.props.handleMapClick);
+            this.map.scrollWheelZoom.disable();
+            this.map.on('overlayadd', function (eo) {
+                _this2.handleOverlayChange(eo.name, eo.type);
+            });
+            this.map.on('overlayremove', function (eo) {
+                _this2.handleOverlayChange(eo.name, eo.type);
+            });
+
+            //Sus Datos Legend
+            var susDatosLegend = _leaflet2.default.control({ position: "bottomleft" });
+            this.makeDiv = function () {
+                var div = _leaflet2.default.DomUtil.create("div", "info legend"),
+                    grades = [],
+                    labels = [];
+                _leaflet2.default.DomUtil.addClass(div, "colorLegend border border-secondary p-2");
+
+                div.innerHTML += '<i class="m-1" style="outline: 3px solid purple; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + "Sus datos <br><br>";
+                div.innerHTML += '<i class="m-1" style="outline: 3px solid red; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + "Datos de otros monitores<br><br>";
+                div.innerHTML += '<i class="m-1" style="outline: 3px solid yellow; background:white">&nbsp&nbsp&nbsp&nbsp</i> ' + "Selección<br>";
+                return div;
+            };
+            susDatosLegend.onAdd = this.makeDiv;
+            susDatosLegend.addTo(this.map);
+
+            //Species number legend
+            var speciesLegend = _leaflet2.default.control({ position: "bottomright" });
+
+            this.makeDiv = function () {
+                grades = [];
+                for (var i = 0; i <= 6; i++) {
+                    grades.push(_this2.props.mapSettings.maxValue * (i / 6)), labels = [];
+                }
+                var getColor = _this2.getColor;
+                var div = _leaflet2.default.DomUtil.create("div", "info legend"),
+                    grades,
+                    labels = [];
+                _leaflet2.default.DomUtil.addClass(div, "colorLegend border border-secondary");
+                // loop through our density intervals and generate a label with a colored square for each interval
+                for (var i = 0; i < grades.length; i++) {
+                    div.innerHTML += '<i style="background:' + getColor(grades[i]) + '">&nbsp&nbsp&nbsp&nbsp</i> ' + Math.floor(grades[i]) + (grades[i + 1] ? "&ndash;" + Math.floor(grades[i + 1]) + "<br>" : "+");
+                }
+                return div;
+            };
+            speciesLegend.onAdd = this.makeDiv;
+            speciesLegend.addTo(this.map);
+            this.speciesLegend = speciesLegend;
+            /////////////////////////////////////////////////////
         }
-        var getColor = _this2.getColor;
-        var div = _leaflet2.default.DomUtil.create('div', 'info legend'),
-            grades,
-            labels = [];
-        _leaflet2.default.DomUtil.addClass(div, "colorLegend border border-secondary");
-        // loop through our density intervals and generate a label with a colored square for each interval
-        for (var i = 0; i < grades.length; i++) {
-          div.innerHTML += '<i style="background:' + getColor(grades[i]) + '">&nbsp&nbsp&nbsp&nbsp</i> ' + Math.floor(grades[i]) + (grades[i + 1] ? '&ndash;' + Math.floor(grades[i + 1]) + '<br>' : '+');
+    }, {
+        key: "componentDidUpdate",
+        value: function componentDidUpdate(_ref) {
+            var _this3 = this;
+
+            var mapSettings = _ref.mapSettings;
+
+            if (this.props.mapSettings !== mapSettings) {
+                this.map.removeControl(this.speciesLegend);
+                var updatedLegend = _leaflet2.default.control({ position: "bottomright" });
+                updatedLegend.onAdd = this.makeDiv;
+                updatedLegend.addTo(this.map);
+                this.speciesLegend = updatedLegend;
+                var getColor = this.getColor;
+                var getOutline = this.props.getOutline;
+                var targetProperty = this.props.mapSettings.distinctOrTotal + "_" + this.props.mapSettings.myObsType;
+
+                var myStyle = function myStyle(feature) {
+                    return {
+                        fillColor: getColor(feature.properties[targetProperty]),
+                        opacity: 1,
+                        weight: getOutline(feature.properties, "weight"),
+                        color: getOutline(feature.properties, "color"),
+                        fillOpacity: _this3.props.mapSettings.fillOpacity
+                    };
+                };
+                this.dynamicLayer.setStyle(myStyle);
+            }
         }
-        return div;
-      };
-      legend.onAdd = this.makeDiv;
-      legend.addTo(this.map);
-      this.legend = legend;
-      /////////////////////////////////////////////////////
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(_ref) {
-      var _this3 = this;
+    }, {
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement("div", { id: "map", style: style });
+        }
+    }]);
 
-      var mapSettings = _ref.mapSettings;
-
-      if (this.props.mapSettings !== mapSettings) {
-        this.map.removeControl(this.legend);
-        var legend = _leaflet2.default.control({ position: 'bottomright' });
-        legend.onAdd = this.makeDiv;
-        legend.addTo(this.map);
-        this.legend = legend;
-        var getColor = this.getColor;
-        var getOutline = this.props.getOutline;
-        var targetProperty = this.props.mapSettings.distinctOrTotal + "_" + this.props.mapSettings.myObsType;
-
-        var myStyle = function myStyle(feature, maxValue) {
-          return {
-            "fillColor": getColor(feature.properties[targetProperty]),
-            "opacity": 1,
-            "weight": getOutline(feature.properties, 'weight'),
-            "color": getOutline(feature.properties, 'color'),
-            "fillOpacity": _this3.props.mapSettings.fillOpacity
-          };
-        };
-        this.dynamicLayer.setStyle(myStyle);
-      }
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      return _react2.default.createElement("div", { id: "map", style: style });
-    }
-  }]);
-
-  return Map;
+    return Map;
 }(_react2.default.Component);
 
 exports.default = Map;
@@ -44245,12 +44252,14 @@ module.exports = "/images/marker-icon-2x.png?314bb1697dc187df9e9abf35e7094197";
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _regenerator = __webpack_require__(22);
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -44281,400 +44290,397 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Normaapp = function (_React$Component) {
-  _inherits(Normaapp, _React$Component);
+    _inherits(Normaapp, _React$Component);
 
-  function Normaapp(props) {
-    _classCallCheck(this, Normaapp);
+    function Normaapp(props) {
+        _classCallCheck(this, Normaapp);
 
-    var _this = _possibleConstructorReturn(this, (Normaapp.__proto__ || Object.getPrototypeOf(Normaapp)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Normaapp.__proto__ || Object.getPrototypeOf(Normaapp)).call(this, props));
 
-    _this.handleMapClick = _this.handleMapClick.bind(_this);
-    _this.handleSpeciesChange = _this.handleSpeciesChange.bind(_this);
-    _this.handleTotalDistinctChange = _this.handleTotalDistinctChange.bind(_this);
-    _this.handleOpacityChange = _this.handleOpacityChange.bind(_this);
-    _this.handleMaxChange = _this.handleMaxChange.bind(_this);
-    _this.handleFeatureClick = _this.handleFeatureClick.bind(_this);
-    _this.setDefaultMax = _this.setDefaultMax.bind(_this);
-    _this.state = {
-      currentUdpId: -1,
-      speciesResult: [],
-      previous: 0,
-      udp: 0,
-      udpButton: false,
-      clickLocation: { lat: 99.9, lng: 99.9 },
-      mapSettings: {
-        distinctOrTotal: "total_observaciones",
-        myObsType: "ave",
-        fillOpacity: 0.6,
-        maxValue: 99
-      },
-      featureInfo: {
-        properties: { message: "click somewhere", displayName: " " }
-      },
-      table: [{ tableName: "udp_puebla_4326", color: "blue" }]
-    };
-    return _this;
-  }
+        _this.handleMapClick = _this.handleMapClick.bind(_this);
+        _this.handleSpeciesChange = _this.handleSpeciesChange.bind(_this);
+        _this.handleTotalDistinctChange = _this.handleTotalDistinctChange.bind(_this);
+        _this.handleOpacityChange = _this.handleOpacityChange.bind(_this);
+        _this.handleMaxChange = _this.handleMaxChange.bind(_this);
+        _this.handleFeatureClick = _this.handleFeatureClick.bind(_this);
+        _this.setDefaultMax = _this.setDefaultMax.bind(_this);
+        _this.handleOverlayChange = _this.handleOverlayChange.bind(_this);
+        _this.setRasterValue = _this.setRasterValue.bind(_this);
+        _this.getRasterValue = _this.getRasterValue.bind(_this);
 
-  _createClass(Normaapp, [{
-    key: "getOutline",
-    value: function getOutline(properties, cat) {
-      var email = document.getElementById("useremail").textContent;
-      var emailArray = [properties.ave_email, properties.arbol_email, properties.arbusto_email, properties.hierba_email, properties.herpetofauna_email, properties.mamifero_email];
-      if (cat == "color") {
-        return emailArray.includes(email) ? "purple" : emailArray.some(function (el) {
-          return el !== null;
-        }) ? "red" : "black";
-      } else {
-        return emailArray.includes(email) ? 3 : emailArray.some(function (el) {
-          return el !== null;
-        }) ? 3 : 0.3;
-      }
+        _this.state = {
+            currentUdpId: -1,
+            rasterOn: false,
+            speciesResult: [],
+            previous: 0,
+            udp: 0,
+            udpButton: false,
+            clickLocation: { lat: 99.9, lng: 99.9 },
+            mapSettings: {
+                distinctOrTotal: "total_observaciones",
+                myObsType: "ave",
+                fillOpacity: 0.6,
+                maxValue: 99
+            },
+            featureInfo: {
+                properties: { message: "click somewhere", displayName: " " }
+            }
+        };
+        return _this;
     }
-  }, {
-    key: "handleMapClick",
-    value: function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(event) {
-        return _regenerator2.default.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                this.setState(function (prevState) {
-                  return {
-                    clickLocation: {
-                      lat: event.latlng.lat,
-                      lng: event.latlng.lng
+
+    _createClass(Normaapp, [{
+        key: "handleOverlayChange",
+        value: function handleOverlayChange(name, type) {
+            this.setState(function (prevState) {
+                return {
+                    rasterOn: name == 'temp_85_puebla' && type == 'overlayadd' ? true : name == 'temp_85_puebla' && type == 'overlayremove' ? false : prevState.rasterOn
+                };
+            });
+        }
+    }, {
+        key: "getOutline",
+        value: function getOutline(properties, category) {
+            var email = document.getElementById("useremail").textContent;
+            var emailArray = [properties.ave_email, properties.arbol_email, properties.arbusto_email, properties.hierba_email, properties.herpetofauna_email, properties.mamifero_email];
+            if (category == "color") {
+                return emailArray.includes(email) ? "purple" : emailArray.some(function (el) {
+                    return el !== null;
+                }) ? "red" : "black";
+            } else {
+                return emailArray.includes(email) ? 3 : emailArray.some(function (el) {
+                    return el !== null;
+                }) ? 2 : 0.3;
+            }
+        }
+    }, {
+        key: "setRasterValue",
+        value: function setRasterValue(value) {
+            this.setState(function () {
+                return {
+                    featureInfo: {
+                        properties: {
+                            displayName: "Grados",
+                            featureColumn: "Grados",
+                            Grados: value
+
+                        }
                     }
-                  };
+                };
+            });
+        }
+    }, {
+        key: "getRasterValue",
+        value: function () {
+            var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(lat, lng) {
+                var myapi, rawResponse, dataResult;
+                return _regenerator2.default.wrap(function _callee$(_context) {
+                    while (1) {
+                        switch (_context.prev = _context.next) {
+                            case 0:
+                                myapi = "https://biodiversidadpuebla.online/api/getRasterValue";
+
+                                if (window.location.host == "localhost:3000") myapi = "http://localhost:3000/api/getRasterValue";
+                                _context.next = 4;
+                                return fetch(myapi, {
+                                    method: "POST",
+                                    headers: {
+                                        Accept: "application/json",
+                                        "Content-Type": "application/json;",
+                                        mode: "cors"
+                                    },
+                                    body: JSON.stringify({
+                                        lat: lat,
+                                        lng: lng
+                                    })
+                                });
+
+                            case 4:
+                                rawResponse = _context.sent;
+                                _context.next = 7;
+                                return rawResponse.json();
+
+                            case 7:
+                                dataResult = _context.sent;
+                                return _context.abrupt("return", dataResult);
+
+                            case 9:
+                            case "end":
+                                return _context.stop();
+                        }
+                    }
+                }, _callee, this);
+            }));
+
+            function getRasterValue(_x, _x2) {
+                return _ref.apply(this, arguments);
+            }
+
+            return getRasterValue;
+        }()
+    }, {
+        key: "handleMapClick",
+        value: function handleMapClick(event) {
+            var _this2 = this;
+
+            this.setState(function () {
+                return {
+                    clickLocation: {
+                        lat: event.latlng.lat,
+                        lng: event.latlng.lng
+                    }
+                };
+            });
+
+            if (this.state.rasterOn) {
+                this.getRasterValue(event.latlng.lat, event.latlng.lng).then(function (returnData) {
+                    _this2.setRasterValue(parseFloat(returnData).toPrecision(2));
+                });
+            }
+        }
+    }, {
+        key: "handleSpeciesChange",
+        value: function handleSpeciesChange(value) {
+            var max = defaultmax[this.state.mapSettings.distinctOrTotal + "_" + value];
+            max = max < 6 ? 6 : max;
+            this.setState(function (prevState) {
+                return {
+                    mapSettings: {
+                        distinctOrTotal: prevState.mapSettings.distinctOrTotal,
+                        myObsType: value,
+                        fillOpacity: prevState.mapSettings.fillOpacity,
+                        maxValue: max
+                    }
+                };
+            });
+        }
+    }, {
+        key: "handleTotalDistinctChange",
+        value: function handleTotalDistinctChange(value) {
+            var max = defaultmax[value + "_" + this.state.mapSettings.myObsType];
+            max = max < 6 ? 6 : max;
+            this.setState(function (prevState) {
+                return {
+                    mapSettings: _extends({}, prevState.mapSettings, {
+                        distinctOrTotal: value,
+                        maxValue: max
+                    })
+                };
+            });
+        }
+    }, {
+        key: "setDefaultMax",
+        value: function setDefaultMax(max) {
+            max = max < 6 ? 6 : max;
+            this.setState(function (prevState) {
+                return {
+                    mapSettings: _extends({}, prevState.mapSettings, {
+                        maxValue: max
+                    })
+                };
+            });
+        }
+    }, {
+        key: "handleFeatureClick",
+        value: function handleFeatureClick(event) {
+            var _this3 = this;
+
+            if (!this.state.rasterOn) {
+                var idtype = event.target.feature.properties.name == "udp_puebla_4326" ? "udp" : "linea_mtp";
+                this.setState(function () {
+                    return {
+                        udpButton: idtype == "udp" ? true : false
+                    };
                 });
 
-              case 1:
-              case "end":
-                return _context.stop();
+                this.setState(function () {
+                    return {
+                        currentUdpId: event.target.feature.properties.iden
+                    };
+                });
+
+                var myColor = "green";
+                var myWeight = 5;
+                var myOpacity = 5;
+
+                if (this.state.previous) {
+                    something.forEach(function (thing) {
+                        if (thing.tableName == _this3.state.previous.feature.properties.name) {
+                            myColor = thing.color;
+                            myWeight = thing.weight;
+                            myOpacity = thing.opacity;
+                        }
+                    });
+
+                    if (this.state.previous.feature.properties.name == "udp_puebla_4326") {
+                        this.state.previous.setStyle({
+                            weight: this.getOutline(this.state.previous.feature.properties, "weight"),
+                            color: this.getOutline(this.state.previous.feature.properties, "color"),
+                            opacity: myOpacity
+                        });
+                    } else {
+                        this.state.previous.setStyle({
+                            color: myColor,
+                            weight: myWeight,
+                            opacity: myOpacity
+                        });
+                    }
+                }
+                this.setState(function () {
+                    return {
+                        previous: event.target
+                    };
+                });
+
+                var highlight = {
+                    color: "yellow",
+                    weight: 3,
+                    opacity: 1
+                };
+                event.target.setStyle(highlight);
+
+                this.setState(function () {
+                    return {
+                        featureInfo: {
+                            properties: event.target.feature.properties
+                        }
+                    };
+                });
             }
-          }
-        }, _callee, this);
-      }));
-
-      function handleMapClick(_x) {
-        return _ref.apply(this, arguments);
-      }
-
-      return handleMapClick;
-    }()
-  }, {
-    key: "handleSpeciesChange",
-    value: function handleSpeciesChange(value) {
-      var max = defaultmax[this.state.mapSettings.distinctOrTotal + "_" + value];
-      max = max < 6 ? 6 : max;
-      this.setState(function (prevState) {
-        return {
-          mapSettings: {
-            distinctOrTotal: prevState.mapSettings.distinctOrTotal,
-            myObsType: value,
-            fillOpacity: prevState.mapSettings.fillOpacity,
-            maxValue: max
-          }
-        };
-      });
-    }
-  }, {
-    key: "handleTotalDistinctChange",
-    value: function handleTotalDistinctChange(value) {
-      var max = defaultmax[value + "_" + this.state.mapSettings.myObsType];
-      max = max < 6 ? 6 : max;
-      this.setState(function (prevState) {
-        return {
-          mapSettings: {
-            distinctOrTotal: value,
-            myObsType: prevState.mapSettings.myObsType,
-            fillOpacity: prevState.mapSettings.fillOpacity,
-            maxValue: max
-          }
-        };
-      });
-    }
-  }, {
-    key: "setDefaultMax",
-    value: function setDefaultMax(max) {
-      max = max < 6 ? 6 : max;
-      this.setState(function (prevState) {
-        return {
-          mapSettings: {
-            distinctOrTotal: prevState.mapSettings.distinctOrTotal,
-            myObsType: prevState.mapSettings.myObsType,
-            fillOpacity: prevState.mapSettings.fillOpacity,
-            maxValue: max
-          }
-        };
-      });
-    }
-  }, {
-    key: "handleFeatureClick",
-    value: function handleFeatureClick(event) {
-      var _this2 = this;
-
-      var getSpecies = function () {
-        var _ref2 = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee2(lifeform, idtype, idnumber) {
-          var myapi, rawResponse, dataResult;
-          return _regenerator2.default.wrap(function _callee2$(_context2) {
-            while (1) {
-              switch (_context2.prev = _context2.next) {
-                case 0:
-                  myapi = "https://biodiversidadpuebla.online/api/getspecies";
-
-                  if (window.location.host == "localhost:3000") myapi = "http://localhost:3000/api/getspecies";
-                  _context2.next = 4;
-                  return fetch(myapi, {
-                    method: "POST",
-                    headers: {
-                      Accept: "application/json",
-                      "Content-Type": "application/json;",
-                      mode: "cors"
-                    },
-                    body: JSON.stringify({
-                      lifeform: lifeform,
-                      idtype: idtype,
-                      idnumber: idnumber,
-                      useremail: document.getElementById("useremail").textContent
-                    })
-                  });
-
-                case 4:
-                  rawResponse = _context2.sent;
-                  _context2.next = 7;
-                  return rawResponse.json();
-
-                case 7:
-                  dataResult = _context2.sent;
-                  return _context2.abrupt("return", dataResult);
-
-                case 9:
-                case "end":
-                  return _context2.stop();
-              }
-            }
-          }, _callee2, this);
-        }));
-
-        return function getSpecies(_x2, _x3, _x4) {
-          return _ref2.apply(this, arguments);
-        };
-      }();
-
-      var lifeform = this.state.mapSettings.myObsType;
-      var idtype = event.target.feature.properties.name == "udp_puebla_4326" ? "udp" : "linea_mtp";
-      this.setState(function () {
-        return {
-          udpButton: idtype == "udp" ? true : false
-        };
-      });
-
-      this.setState(function () {
-        return {
-          currentUdpId: event.target.feature.properties.iden
-        };
-      });
-      var idnumber = event.target.feature.properties.iden;
-
-      if (event.target.feature.properties.name == "udp_puebla_4326" || event.target.feature.properties.name == "linea_mtp") {
-        getSpecies(lifeform, idtype, idnumber).then(function (myspeciesResult) {
-          _this2.setState(function (prevState) {
-            return {
-              speciesResult: myspeciesResult
-            };
-          });
-        });
-      }
-
-      /////////////////////////////////////////////////////////////////////////////////////////////
-      var myColor = "green";
-      var myWeight = 5;
-      var myOpacity = 5;
-
-      if (this.state.previous) {
-        something.forEach(function (thing) {
-          if (thing.tableName == _this2.state.previous.feature.properties.name) {
-            myColor = thing.color;
-            myWeight = thing.weight;
-            myOpacity = thing.opacity;
-          }
-        });
-
-        if (this.state.previous.feature.properties.name == "udp_puebla_4326") {
-          this.state.previous.setStyle({
-            weight: this.getOutline(this.state.previous.feature.properties, "weight"),
-            color: this.getOutline(this.state.previous.feature.properties, "color"),
-            opacity: myOpacity
-          });
-        } else {
-          this.state.previous.setStyle({
-            color: myColor,
-            weight: myWeight,
-            opacity: myOpacity
-          });
         }
-      }
-      this.setState(function () {
-        return {
-          previous: event.target
-        };
-      });
+    }, {
+        key: "handleOpacityChange",
+        value: function handleOpacityChange(value) {
+            this.setState(function (prevState) {
+                return {
+                    mapSettings: _extends({}, prevState.mapSettings, {
+                        fillOpacity: value
+                    })
+                };
+            });
+        }
+    }, {
+        key: "handleMaxChange",
+        value: function handleMaxChange(value) {
+            this.setState(function (prevState) {
+                return {
+                    mapSettings: _extends({}, prevState.mapSettings, {
+                        maxValue: value
+                    })
+                };
+            });
+        }
+    }, {
+        key: "render",
+        value: function render() {
+            return _react2.default.createElement(
+                "div",
+                { id: "mappagediv" },
+                _react2.default.createElement(
+                    "div",
+                    { id: "pagecontainer" },
+                    _react2.default.createElement(
+                        "div",
+                        { id: "mapdiv", className: "border border-dark" },
+                        _react2.default.createElement(_Map2.default, {
+                            getOutline: this.getOutline,
+                            handleMapClick: this.handleMapClick,
+                            handleFeatureClick: this.handleFeatureClick,
+                            setDefaultMax: this.setDefaultMax,
+                            mapSettings: this.state.mapSettings,
+                            handleOverlayChange: this.handleOverlayChange
+                        })
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        { id: "mapinfodisplay" },
+                        _react2.default.createElement(_FeatureInfoDisplay2.default, {
+                            clickLocation: this.state.clickLocation,
+                            featureInfo: this.state.featureInfo,
+                            clicked: this.state.clickLocation.lat != 99.9
+                        })
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        { id: "mapcontrol" },
+                        _react2.default.createElement(_MapControl2.default, {
+                            handleSpeciesChange: this.handleSpeciesChange,
+                            handleTotalDistinctChange: this.handleTotalDistinctChange,
+                            handleOpacityChange: this.handleOpacityChange,
+                            handleMaxChange: this.handleMaxChange,
+                            mapSettings: this.state.mapSettings
+                        })
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        { id: "buttons1" },
+                        this.state.udpButton && _react2.default.createElement(
+                            "div",
+                            { id: "buttonContainer" },
+                            _react2.default.createElement(
+                                "a",
+                                {
+                                    className: "btn btn-primary m-2 btn-sm mapInfoButton",
+                                    href: "/mostrarnormas/normas/" + this.state.currentUdpId,
+                                    role: "button"
+                                },
+                                " ",
+                                "Especies y Normas 059"
+                            ),
+                            _react2.default.createElement(
+                                "a",
+                                {
+                                    className: "btn btn-primary m-2 btn-sm mapInfoButton",
+                                    href: "/mostrarnormas/ae/" + this.state.currentUdpId,
+                                    role: "button"
+                                },
+                                " ",
+                                "Attributos Ecologicos",
+                                " "
+                            ),
+                            _react2.default.createElement(
+                                "a",
+                                {
+                                    className: "btn btn-primary m-2 btn-sm mapInfoButton",
+                                    href: "/udpmapa/sue/" + this.state.currentUdpId + "/" + (this.state.featureInfo.properties.shannon_arbol + "*" + this.state.featureInfo.properties.shannon_arbusto + "*" + this.state.featureInfo.properties.shannon_ave + "*" + this.state.featureInfo.properties.shannon_hierba + "*" + this.state.featureInfo.properties.shannon_herpetofauna + "*" + this.state.featureInfo.properties.shannon_mamifero),
+                                    role: "button"
+                                },
+                                " ",
+                                "Fragmentaci\xF3n Ambiental",
+                                " "
+                            ),
+                            _react2.default.createElement(
+                                "a",
+                                {
+                                    className: "btn btn-primary m-2 btn-sm mapInfoButton",
+                                    href: "/udpmapa/inf/" + this.state.currentUdpId + "/" + (this.state.featureInfo.properties.shannon_arbol + "*" + this.state.featureInfo.properties.shannon_arbusto + "*" + this.state.featureInfo.properties.shannon_ave + "*" + this.state.featureInfo.properties.shannon_hierba + "*" + this.state.featureInfo.properties.shannon_herpetofauna + "*" + this.state.featureInfo.properties.shannon_mamifero),
+                                    role: "button"
+                                },
+                                " ",
+                                "Infrastructura",
+                                " "
+                            )
+                        )
+                    ),
+                    _react2.default.createElement(
+                        "div",
+                        { id: "buttons2" },
+                        _react2.default.createElement(
+                            "a",
+                            {
+                                className: "btn btn-info btn-sm m-2",
+                                href: "/cargarshapes",
+                                role: "button"
+                            },
+                            "Cargar Shapefile de Predio"
+                        )
+                    )
+                )
+            );
+        }
+    }]);
 
-      var highlight = {
-        color: "yellow",
-        weight: 3,
-        opacity: 1
-      };
-      event.target.setStyle(highlight);
-
-      this.setState(function (prevState) {
-        return {
-          featureInfo: {
-            properties: event.target.feature.properties
-          }
-        };
-      });
-    }
-  }, {
-    key: "handleOpacityChange",
-    value: function handleOpacityChange(value) {
-      this.setState(function (prevState) {
-        return {
-          mapSettings: {
-            distinctOrTotal: prevState.mapSettings.distinctOrTotal,
-            myObsType: prevState.mapSettings.myObsType,
-            fillOpacity: value,
-            maxValue: prevState.mapSettings.maxValue
-          }
-        };
-      });
-    }
-  }, {
-    key: "handleMaxChange",
-    value: function handleMaxChange(value) {
-      this.setState(function (prevState) {
-        return {
-          mapSettings: {
-            distinctOrTotal: prevState.mapSettings.distinctOrTotal,
-            myObsType: prevState.mapSettings.myObsType,
-            fillOpacity: prevState.mapSettings.fillOpacity,
-            maxValue: value
-          }
-        };
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      return _react2.default.createElement(
-        "div",
-        { id: "mappagediv" },
-        _react2.default.createElement(
-          "div",
-          { id: "pagecontainer" },
-          _react2.default.createElement(
-            "div",
-            { id: "mapdiv", className: "border border-dark" },
-            _react2.default.createElement(_Map2.default, {
-              getOutline: this.getOutline,
-              handleMapClick: this.handleMapClick,
-              handleFeatureClick: this.handleFeatureClick,
-              setDefaultMax: this.setDefaultMax,
-              mapSettings: this.state.mapSettings,
-              table: this.state.table
-            })
-          ),
-          _react2.default.createElement(
-            "div",
-            { id: "mapinfodisplay" },
-            _react2.default.createElement(_FeatureInfoDisplay2.default, {
-              clickLocation: this.state.clickLocation,
-              featureInfo: this.state.featureInfo,
-              clicked: this.state.clickLocation.lat != 99.9
-            })
-          ),
-          _react2.default.createElement(
-            "div",
-            { id: "mapcontrol" },
-            _react2.default.createElement(_MapControl2.default, {
-              handleSpeciesChange: this.handleSpeciesChange,
-              handleTotalDistinctChange: this.handleTotalDistinctChange,
-              handleOpacityChange: this.handleOpacityChange,
-              handleMaxChange: this.handleMaxChange,
-              mapSettings: this.state.mapSettings
-            })
-          ),
-          _react2.default.createElement(
-            "div",
-            { id: "buttons1" },
-            this.state.udpButton && _react2.default.createElement(
-              "div",
-              { id: "buttonContainer" },
-              _react2.default.createElement(
-                "a",
-                {
-                  className: "btn btn-primary m-2 btn-sm mapInfoButton",
-                  href: "/mostrarnormas/normas/" + this.state.currentUdpId,
-                  role: "button"
-                },
-                " ",
-                "Especies y Normas 059"
-              ),
-              _react2.default.createElement(
-                "a",
-                {
-                  className: "btn btn-primary m-2 btn-sm mapInfoButton",
-                  href: "/mostrarnormas/ae/" + this.state.currentUdpId,
-                  role: "button"
-                },
-                " ",
-                "Attributos Ecologicos",
-                " "
-              ),
-              _react2.default.createElement(
-                "a",
-                {
-                  className: "btn btn-primary m-2 btn-sm mapInfoButton",
-                  href: "/udpmapa/sue/" + this.state.currentUdpId + "/" + (this.state.featureInfo.properties.shannon_arbol + "*" + this.state.featureInfo.properties.shannon_arbusto + "*" + this.state.featureInfo.properties.shannon_ave + "*" + this.state.featureInfo.properties.shannon_hierba + "*" + this.state.featureInfo.properties.shannon_herpetofauna + "*" + this.state.featureInfo.properties.shannon_mamifero),
-                  role: "button"
-                },
-                " ",
-                "Fragmentaci\xF3n Ambiental",
-                " "
-              ),
-              _react2.default.createElement(
-                "a",
-                {
-                  className: "btn btn-primary m-2 btn-sm mapInfoButton",
-                  href: "/udpmapa/inf/" + this.state.currentUdpId + "/" + (this.state.featureInfo.properties.shannon_arbol + "*" + this.state.featureInfo.properties.shannon_arbusto + "*" + this.state.featureInfo.properties.shannon_ave + "*" + this.state.featureInfo.properties.shannon_hierba + "*" + this.state.featureInfo.properties.shannon_herpetofauna + "*" + this.state.featureInfo.properties.shannon_mamifero),
-                  role: "button"
-                },
-                " ",
-                "Infrastructura",
-                " "
-              )
-            )
-          ),
-          _react2.default.createElement(
-            "div",
-            { id: "buttons2" },
-            _react2.default.createElement(
-              "a",
-              {
-                className: "btn btn-info btn-sm m-2",
-                href: "/cargarshapes",
-                role: "button"
-              },
-              "Cargar Shapefile de Predio"
-            )
-          )
-        )
-      );
-    }
-  }]);
-
-  return Normaapp;
+    return Normaapp;
 }(_react2.default.Component);
 
 exports.default = Normaapp;
@@ -44722,7 +44728,7 @@ var MapControl = function (_React$Component) {
   _createClass(MapControl, [{
     key: "handleSpeciesChange",
     value: function handleSpeciesChange(event) {
-      var error = this.props.handleSpeciesChange(event.target.value);
+      this.props.handleSpeciesChange(event.target.value);
     }
   }, {
     key: "handleTotalDistinctChange",
@@ -44904,10 +44910,8 @@ exports.default = MapControl;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+	value: true
 });
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
 
@@ -44921,159 +44925,136 @@ __webpack_require__(27);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function FeatureInfoDisplay(props) {
+	var allTableRows = [];
+	if (props.featureInfo.properties.displayName == "Linea MTP" || props.featureInfo.properties.displayName == "Unidad de Paisaje") {
+		var lifeForms = ["arbol", "arbusto", "hierba", "ave", "herpetofauna", "mamifero", "Dato acumulado"];
+		var categoryList = ["total_observaciones", "distinct_species", "dominancia", "shannon", "biodiversidad_verdadera"];
+		var myIcons = {
+			ave: "🦅",
+			arbol: "🌲",
+			arbusto: "🌳",
+			hierba: "🌱",
+			herpetofauna: "🐍",
+			mamifero: "🦌"
+		};
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+		lifeForms.map(function (life) {
+			var oneTableRow = {};
+			oneTableRow["name"] = life == "herpetofauna" ? "herpetofauna" : life;
+			oneTableRow["name"] = life == "Dato acumulado" ? oneTableRow["name"] : myIcons[life] + oneTableRow["name"];
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+			categoryList.map(function (category, index) {
+				if (life == "Dato acumulado") {
+					var mysum = -999.99;
+					if (category == "biodiversidad_verdadera") {
+						mysum = Math.exp(props.featureInfo.properties["shannon_ave"]) == 1 ? 0 : Math.exp(props.featureInfo.properties["shannon_ave"]);
+						mysum += Math.exp(props.featureInfo.properties["shannon_hierba"]) == 1 ? 0 : Math.exp(props.featureInfo.properties["shannon_hierba"]);
+						mysum += Math.exp(props.featureInfo.properties["shannon_arbusto"]) == 1 ? 0 : Math.exp(props.featureInfo.properties["shannon_arbusto"]);
+						mysum += Math.exp(props.featureInfo.properties["shannon_arbol"]) == 1 ? 0 : Math.exp(props.featureInfo.properties["shannon_arbol"]);
+						mysum += Math.exp(props.featureInfo.properties["shannon_herpetofauna"]) == 1 ? 0 : Math.exp(props.featureInfo.properties["shannon_herpetofauna"]);
+						mysum += Math.exp(props.featureInfo.properties["shannon_mamifero"]) == 1 ? 0 : Math.exp(props.featureInfo.properties["shannon_mamifero"]);
+					} else {
+						mysum = +props.featureInfo.properties[category + "_ave"] + +props.featureInfo.properties[category + "_hierba"] + +props.featureInfo.properties[category + "_arbusto"] + +props.featureInfo.properties[category + "_arbol"] + +props.featureInfo.properties[category + "_herpetofauna"] + +props.featureInfo.properties[category + "_mamifero"];
+					}
+					if (index > 1) mysum = (mysum / 6).toPrecision(4);
+					oneTableRow[category] = mysum;
+				} else {
+					var newCat = category.replace("_" + life, "");
+					var myValue = -999.99;
+					if (newCat == "biodiversidad_verdadera") {
+						myValue = Math.exp(oneTableRow["shannon"]).toPrecision(4) == 1 ? 0 : Math.exp(oneTableRow["shannon"]).toPrecision(4);
+					} else {
+						myValue = index > 1 ? (+props.featureInfo.properties[category + "_" + life]).toPrecision(4) : props.featureInfo.properties[category + "_" + life];
+					}
+					oneTableRow[newCat] = myValue;
+				}
+			});
+			allTableRows.push(oneTableRow);
+		});
+	}
+	var columns = [{
+		dataField: "name",
+		text: "Nombre",
+		headerStyle: {
+			width: "128px"
+		}
+	}, {
+		dataField: "total_observaciones",
+		text: "Individuos",
+		headerStyle: {
+			width: "80px"
+		}
+	}, {
+		dataField: "distinct_species",
+		text: "Especies Distintas",
+		headerStyle: {
+			width: "80px"
+		}
+	}, {
+		dataField: "dominancia",
+		headerStyle: {
+			width: "92px"
+		},
+		text: "Dominancia",
+		classes: "testme"
+	}, {
+		dataField: "shannon",
+		headerStyle: {
+			width: "62px"
+		},
+		text: "Shannon"
+	}, {
+		dataField: "biodiversidad_verdadera",
+		headerStyle: {
+			width: "92px"
+		},
+		text: "Biodiversidad Verdadera",
+		classes: "testme"
+	}];
 
-var FeatureInfoDisplay = function (_React$Component) {
-  _inherits(FeatureInfoDisplay, _React$Component);
-
-  function FeatureInfoDisplay(props) {
-    _classCallCheck(this, FeatureInfoDisplay);
-
-    return _possibleConstructorReturn(this, (FeatureInfoDisplay.__proto__ || Object.getPrototypeOf(FeatureInfoDisplay)).call(this, props));
-  }
-
-  _createClass(FeatureInfoDisplay, [{
-    key: "render",
-    value: function render() {
-      var _this2 = this;
-
-      var allTableRows = [];
-      if (this.props.featureInfo.properties.displayName == "Linea MTP" || this.props.featureInfo.properties.displayName == "Unidad de Paisaje") {
-        var lifeForms = ["arbol", "arbusto", "hierba", "ave", "herpetofauna", "mamifero", "Dato acumulado"];
-        var categoryList = ["total_observaciones", "distinct_species", "dominancia", "shannon", "biodiversidad_verdadera"];
-        var myIcons = {
-          ave: "🦅",
-          arbol: "🌲",
-          arbusto: "🌳",
-          hierba: "🌱",
-          herpetofauna: "🐍",
-          mamifero: "🦌"
-        };
-
-        lifeForms.map(function (life) {
-          var oneTableRow = {};
-          oneTableRow["name"] = life == "herpetofauna" ? "herpetofauna" : life;
-          oneTableRow["name"] = life == "Dato acumulado" ? oneTableRow["name"] : myIcons[life] + oneTableRow["name"];
-
-          categoryList.map(function (category, index) {
-            if (life == "Dato acumulado") {
-              var mysum = -999.99;
-              if (category == "biodiversidad_verdadera") {
-                mysum = Math.exp(_this2.props.featureInfo.properties["shannon_ave"]) == 1 ? 0 : Math.exp(_this2.props.featureInfo.properties["shannon_ave"]);
-                mysum += Math.exp(_this2.props.featureInfo.properties["shannon_hierba"]) == 1 ? 0 : Math.exp(_this2.props.featureInfo.properties["shannon_hierba"]);
-                mysum += Math.exp(_this2.props.featureInfo.properties["shannon_arbusto"]) == 1 ? 0 : Math.exp(_this2.props.featureInfo.properties["shannon_arbusto"]);
-                mysum += Math.exp(_this2.props.featureInfo.properties["shannon_arbol"]) == 1 ? 0 : Math.exp(_this2.props.featureInfo.properties["shannon_arbol"]);
-                mysum += Math.exp(_this2.props.featureInfo.properties["shannon_herpetofauna"]) == 1 ? 0 : Math.exp(_this2.props.featureInfo.properties["shannon_herpetofauna"]);
-                mysum += Math.exp(_this2.props.featureInfo.properties["shannon_mamifero"]) == 1 ? 0 : Math.exp(_this2.props.featureInfo.properties["shannon_mamifero"]);
-              } else {
-                mysum = +_this2.props.featureInfo.properties[category + "_ave"] + +_this2.props.featureInfo.properties[category + "_hierba"] + +_this2.props.featureInfo.properties[category + "_arbusto"] + +_this2.props.featureInfo.properties[category + "_arbol"] + +_this2.props.featureInfo.properties[category + "_herpetofauna"] + +_this2.props.featureInfo.properties[category + "_mamifero"];
-              }
-              if (index > 1) mysum = (mysum / 6).toPrecision(4);
-              oneTableRow[category] = mysum;
-            } else {
-              var newCat = category.replace("_" + life, "");
-              var myValue = -999.99;
-              if (newCat == "biodiversidad_verdadera") {
-                myValue = Math.exp(oneTableRow["shannon"]).toPrecision(4) == 1 ? 0 : Math.exp(oneTableRow["shannon"]).toPrecision(4);
-              } else {
-                myValue = index > 1 ? (+_this2.props.featureInfo.properties[category + "_" + life]).toPrecision(4) : _this2.props.featureInfo.properties[category + "_" + life];
-              }
-              oneTableRow[newCat] = myValue;
-            }
-          });
-          allTableRows.push(oneTableRow);
-        });
-      }
-      var columns = [{
-        dataField: "name",
-        text: "Nombre",
-        headerStyle: {
-          width: "128px"
-        }
-      }, {
-        dataField: "total_observaciones",
-        text: "Individuos",
-        headerStyle: {
-          width: "80px"
-        }
-      }, {
-        dataField: "distinct_species",
-        text: "Especies Distintas",
-        headerStyle: {
-          width: "80px"
-        }
-      }, {
-        dataField: "dominancia",
-        headerStyle: {
-          width: "92px"
-        },
-        text: "Dominancia",
-        classes: "testme"
-      }, {
-        dataField: "shannon",
-        headerStyle: {
-          width: "62px"
-        },
-        text: "Shannon"
-      }, {
-        dataField: "biodiversidad_verdadera",
-        headerStyle: {
-          width: "92px"
-        },
-        text: "Biodiversidad Verdadera",
-        classes: "testme"
-      }];
-
-      return _react2.default.createElement(
-        "div",
-        null,
-        _react2.default.createElement(
-          "div",
-          { className: "container" },
-          _react2.default.createElement(
-            "div",
-            { className: "flex-column d-flex justify-content-around align-items-center p-3" },
-            this.props.clicked && _react2.default.createElement(
-              "div",
-              null,
-              _react2.default.createElement(
-                "div",
-                { className: "font-weight-bold" },
-                this.props.featureInfo.properties.displayName + " : ",
-                this.props.featureInfo.properties[this.props.featureInfo.properties.featureColumn]
-              ),
-              _react2.default.createElement(
-                "div",
-                null,
-                "lat : ",
-                this.props.clickLocation.lat.toPrecision(6),
-                ", lng : ",
-                this.props.clickLocation.lng.toPrecision(6)
-              )
-            )
-          )
-        ),
-        _react2.default.createElement(_reactBootstrapTableNext2.default, {
-          keyField: "name",
-          data: allTableRows,
-          columns: columns,
-          bordered: true,
-          classes: "featureInfoTable",
-          striped: true,
-          hover: true,
-          condensed: true,
-          noDataIndication: "No hay datos"
-        })
-      );
-    }
-  }]);
-
-  return FeatureInfoDisplay;
-}(_react2.default.Component);
+	return _react2.default.createElement(
+		"div",
+		null,
+		_react2.default.createElement(
+			"div",
+			{ className: "container" },
+			_react2.default.createElement(
+				"div",
+				{ className: "flex-column d-flex justify-content-around align-items-center p-3" },
+				props.clicked && _react2.default.createElement(
+					"div",
+					null,
+					_react2.default.createElement(
+						"div",
+						{ className: "font-weight-bold" },
+						props.featureInfo.properties.displayName + " : ",
+						props.featureInfo.properties[props.featureInfo.properties.featureColumn]
+					),
+					_react2.default.createElement(
+						"div",
+						null,
+						"lat : ",
+						props.clickLocation.lat.toPrecision(6),
+						", lng : ",
+						props.clickLocation.lng.toPrecision(6)
+					)
+				)
+			)
+		),
+		_react2.default.createElement(_reactBootstrapTableNext2.default, {
+			keyField: "name",
+			data: allTableRows,
+			columns: columns,
+			bordered: true,
+			classes: "featureInfoTable",
+			striped: true,
+			hover: true,
+			condensed: true,
+			noDataIndication: "No hay datos"
+		})
+	);
+}
 
 exports.default = FeatureInfoDisplay;
 

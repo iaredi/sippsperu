@@ -10,7 +10,7 @@ class MapControl extends React.Component {
   }
 
   handleSpeciesChange(event) {
-    const error = this.props.handleSpeciesChange(event.target.value);
+    this.props.handleSpeciesChange(event.target.value);
   }
   handleTotalDistinctChange(event) {
     this.props.handleTotalDistinctChange(event.target.value);
@@ -87,5 +87,4 @@ class MapControl extends React.Component {
     );
   }
 }
-
 export default MapControl;

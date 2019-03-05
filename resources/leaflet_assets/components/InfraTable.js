@@ -71,12 +71,12 @@ class InfraTable extends React.Component {
 
     const existingList = this.state.dataInfra.filter(data => {
       const calcNumber = isNaN(data.longitud) ? data.densidad : data.longitud
-      return calcNumber>0
+      return calcNumber>0 && data.elemento!='RAZÓN DE FRAGMENTACIÓN' && data.elemento!='TOTAL'
     })
 
     const existingNameList = existingList.map(row=>row.elemento)
 
-    const maxlinea = this.state.dataInfra.reduce((acc, val) => {
+    const maxlinea = existingList.reduce((acc, val) => {
       if (val.longitud != '-'){
         acc[0] = ( acc[0] === undefined || parseFloat(val.longitud) > acc[1] ) ? val.elemento : acc[0]
         acc[1] = ( acc[1] === undefined || parseFloat(val.longitud) > acc[1] ) ? parseFloat(val.longitud)  : acc[1]

@@ -41,7 +41,10 @@ mix.js('resources/assets/js/app.js', 'public/js')
         'resources/views/**/*',
         'resources/lang/**/*',
         'routes/**/*'
-    ],
+	],
+	ignore: [
+		'public/temptiles/**/*',
+	],
     reloadDelay: 200,
     proxy: 'mylocalhost',
     notify: false

@@ -18,6 +18,25 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
+Route::post('getRasterValue', function(Request $request) {
+	$result="There was an error";
+	$lat =  $request->lat;
+	$lng =  $request->lng;
+	
+
+	$sql="SELECT ST_Value(rast, foo.pt_geom) AS rastval FROM temp_85_puebla CROSS JOIN (SELECT ST_SetSRID(ST_MakePoint({$lng},{$lat}), 4326) AS pt_geom) AS foo where st_intersects(rast,foo.pt_geom)";
+        $result = DB::select($sql,[]); 
+        if (sizeof($result)>0 ){
+          	$value=$result[0]->rastval;
+        }
+  
+	$final = json_encode($value);
+  
+	return $final;
+	
+  });
+  
+
 
 Route::post('getinffeatures', function(Request $request) {
   $result="There was an error";
@@ -517,7 +536,7 @@ Route::post('getspecies', function(Request $request) {
       $row8->abundancia_relativa=round(100*($row8->total_cientifico)/$numeroindiviudos,2).'%';
       $transpuntoresult = DB::select($transpuntosql, []);
       $pointtotal = sizeof($transpuntoresult);
-      $row8->frequencia= ($row8->sitios)/$pointtotal;
+      $row8->frequencia= round(($row8->sitios)/$pointtotal,4);
       $row8->dominancia= round(pow(($row8->total_cientifico)/$numeroindiviudos,2),4);
 
   } 
