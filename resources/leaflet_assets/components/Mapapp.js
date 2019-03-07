@@ -281,7 +281,18 @@ class Normaapp extends React.Component {
 
                     <div id="buttons1">
                         {this.state.udpButton && (
-                            <div id="buttonContainer">
+							<div id="buttonContainer">
+								<a
+									className="btn btn-primary m-2 btn-sm mapInfoButton"
+									href={
+										"/mostrarnormas/in/" +
+										this.state.currentUdpId
+									}
+									role="button"
+								>
+								{" "}
+								Instrumentos de Gestion Territorial{" "}
+							</a>
                                 <a
                                     className="btn btn-primary m-2 btn-sm mapInfoButton"
                                     href={

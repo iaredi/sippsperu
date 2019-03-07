@@ -23925,11 +23925,13 @@ var Map = function (_React$Component) {
             var streets = _leaflet2.default.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(this.map);
+            streets['category'] = 'Base';
 
             var imagery = _leaflet2.default.tileLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
                 attribution: '&copy; <a href="http://www.esri.com/">Esri</a>i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
                 maxZoom: 18
             });
+            imagery['category'] = 'Base';
 
             this.baseMaps = {
                 Imagery: imagery,
@@ -23977,6 +23979,9 @@ var Map = function (_React$Component) {
                 if (item.tableName == "linea_mtp" || item.tableName == "udp_puebla_4326") {
                     c2.addTo(mymap);
                 }
+                c2['category'] = item.category;
+                c2['tableName'] = item.tableName;
+
                 return c2;
             };
 
@@ -23990,13 +23995,53 @@ var Map = function (_React$Component) {
                         mymap.fitBounds(myLayer.getBounds());
                         mymap.setZoom(7.5);
                     }
+
+                    if (myLayer.category == 'Referencial') {
+                        overlayMaps["Placeholder_Referencial"] = myLayer;
+                    }
+                    if (myLayer.category == 'Monitoreo Activo') {
+                        overlayMaps["Placeholder_Monitoreo Activo"] = myLayer;
+                    }
+                    if (myLayer.category == 'Gestion del Territorio') {
+                        overlayMaps["Placeholder_Gestion del Territorio"] = myLayer;
+                    }
                     overlayMaps[item.displayName] = myLayer;
                 });
 
                 var tempraster = _leaflet2.default.tileLayer("temptiles/{z}/{x}/{y}.png", { enable: true, tms: true, opacity: 0.8, attribution: "" });
-                overlayMaps["temp_85_puebla"] = tempraster;
+                tempraster.category = 'Referencial';
+                overlayMaps["Escenario85_2099_Temp_UNIATMOS_2015"] = tempraster;
 
-                _leaflet2.default.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
+                var compare = function compare(a, b) {
+                    if (a.category == 'Base') {
+                        return -1;
+                    }
+                    var ascore = a.category == 'Referencial' ? 15 : a.category == 'Monitoreo Activo' ? 10 : 5;
+                    var abonus = a.category.includes('PlaceHolder') ? 1 : 0;
+                    var bscore = b.category == 'Referencial' ? 15 : b.category == 'Monitoreo Activo' ? 10 : 5;
+                    var bbonus = b.category.includes('PlaceHolder') ? 1 : 0;
+                    var afinalscore = ascore + abonus;
+                    var bfinalscore = bscore + bbonus;
+
+                    if (afinalscore > bfinalscore) {
+                        return -1;
+                    }
+                    if (afinalscore < bfinalscore) {
+                        return 1;
+                    }
+                    return 0;
+                };
+                var contolOptions = { sortLayers: true, sortFunction: compare };
+                _leaflet2.default.control.layers(mybaseMaps, overlayMaps, contolOptions).addTo(mymap);
+
+                var layerList = document.getElementsByClassName("leaflet-control-layers-overlays")[0].children;
+                for (var i = 0; i < layerList.length; i++) {
+                    if (layerList[i].innerText.includes("Placeholder")) {
+                        var newText = layerList[i].innerText.split("_")[1].toUpperCase();
+                        layerList[i].innerHTML = "<div class=layerHeader>" + newText + "</div>";
+                    }
+                }
+
                 return dynamicLayer;
             };
             this.dynamicLayer = processArray(something, this.map, this.baseMaps, this.getColor, this.getOutline);
@@ -44621,6 +44666,17 @@ var Normaapp = function (_React$Component) {
                                 "a",
                                 {
                                     className: "btn btn-primary m-2 btn-sm mapInfoButton",
+                                    href: "/mostrarnormas/in/" + this.state.currentUdpId,
+                                    role: "button"
+                                },
+                                " ",
+                                "Instrumentos de Gestion Territorial",
+                                " "
+                            ),
+                            _react2.default.createElement(
+                                "a",
+                                {
+                                    className: "btn btn-primary m-2 btn-sm mapInfoButton",
                                     href: "/mostrarnormas/normas/" + this.state.currentUdpId,
                                     role: "button"
                                 },
@@ -45130,7 +45186,7 @@ __webpack_require__(77);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_reactDom2.default.render(_react2.default.createElement(_Mapapp2.default, null), document.getElementById('app'));
+_reactDom2.default.render(_react2.default.createElement(_Mapapp2.default, null), document.getElementById("app"));
 
 /***/ })
 /******/ ]);

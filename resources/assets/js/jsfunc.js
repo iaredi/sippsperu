@@ -988,7 +988,7 @@ function addOnChangeAdminTable(){
 
     }  
     const currentOnChange3 =function() {currentFunction3()}   
-             getSelection.onchange=currentOnChange3;
+    getSelection.onchange=currentOnChange3;
 }
 var numRows=0;
 if(window.location.href.substr(-5)==='admin'){

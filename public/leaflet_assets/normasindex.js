@@ -30211,6 +30211,10 @@ var _Normaapp = __webpack_require__(134);
 
 var _Normaapp2 = _interopRequireDefault(_Normaapp);
 
+var _Intersection = __webpack_require__(137);
+
+var _Intersection2 = _interopRequireDefault(_Intersection);
+
 __webpack_require__(70);
 
 __webpack_require__(76);
@@ -30219,7 +30223,7 @@ __webpack_require__(77);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_reactDom2.default.render(_react2.default.createElement(_Normaapp2.default, null), document.getElementById('app'));
+_reactDom2.default.render(infotype == 'in' ? _react2.default.createElement(_Intersection2.default, null) : _react2.default.createElement(_Normaapp2.default, null), document.getElementById('app'));
 
 /***/ }),
 /* 134 */
@@ -30673,6 +30677,160 @@ var SpeciesDisplay = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = SpeciesDisplay;
+
+/***/ }),
+/* 136 */,
+/* 137 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _regenerator = __webpack_require__(22);
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactBootstrapTableNext = __webpack_require__(26);
+
+var _reactBootstrapTableNext2 = _interopRequireDefault(_reactBootstrapTableNext);
+
+__webpack_require__(27);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Normaapp = function (_React$Component) {
+  _inherits(Normaapp, _React$Component);
+
+  function Normaapp(props) {
+    _classCallCheck(this, Normaapp);
+
+    var _this = _possibleConstructorReturn(this, (Normaapp.__proto__ || Object.getPrototypeOf(Normaapp)).call(this, props));
+
+    _this.state = {
+      objects: []
+    };
+    return _this;
+  }
+
+  _createClass(Normaapp, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      var getIntersection = function () {
+        var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(udpiden) {
+          var myapi, rawResponse, dataResult;
+          return _regenerator2.default.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  myapi = "https://biodiversidadpuebla.online/api/getintersection";
+
+                  if (window.location.host == "localhost:3000") myapi = "http://localhost:3000/api/getintersection";
+                  _context.next = 4;
+                  return fetch(myapi, {
+                    method: "POST",
+                    headers: {
+                      Accept: "application/json",
+                      "Content-Type": "application/json;",
+                      mode: "cors"
+                    },
+                    body: JSON.stringify({
+                      udpiden: udpiden
+                    })
+                  });
+
+                case 4:
+                  rawResponse = _context.sent;
+                  _context.next = 7;
+                  return rawResponse.json();
+
+                case 7:
+                  dataResult = _context.sent;
+                  return _context.abrupt("return", dataResult);
+
+                case 9:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee, this);
+        }));
+
+        return function getIntersection(_x) {
+          return _ref.apply(this, arguments);
+        };
+      }();
+
+      getIntersection(idennum).then(function (intersectionResult) {
+        console.log(intersectionResult);
+        var objects = [{ 'object': 'edif', 'name': 'edif1' }];
+        _this2.setState(function () {
+          return {
+            objects: intersectionResult
+          };
+        });
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var columns = [{
+        dataField: "object",
+        text: "Instrumento"
+      }, {
+        dataField: "name",
+        text: "Nombre"
+      }];
+      return _react2.default.createElement(
+        "div",
+        null,
+        _react2.default.createElement(
+          "div",
+          { className: "container" },
+          _react2.default.createElement(
+            "div",
+            { className: "flex-column d-flex justify-content-around align-items-center p-3" },
+            _react2.default.createElement(_reactBootstrapTableNext2.default, {
+              keyField: "name",
+              data: this.state.objects,
+              columns: columns,
+              bootstrap4: false,
+              bordered: true,
+              classes: "bsparchtable",
+              striped: true,
+              hover: true,
+              condensed: true,
+              noDataIndication: "..."
+            })
+          )
+        )
+      );
+    }
+  }]);
+
+  return Normaapp;
+}(_react2.default.Component);
+
+exports.default = Normaapp;
 
 /***/ })
 /******/ ]);

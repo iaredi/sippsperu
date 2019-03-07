@@ -18,22 +18,43 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 
+Route::post('getintersection', function(Request $request) {
+	$result=[];
+	$addcolumnssql = "SELECT tablename, displayname, featurecolumn FROM additional_layers WHERE category='Gestion del Territorio'";
+	$addcolumns = DB::select($addcolumnssql,[]);
+	foreach ($addcolumns as $table) {
+		$tablename=$table->tablename;
+		$displayname=$table->displayname;
+		$featurecolumn=$table->featurecolumn;
+
+		$featurecolumnsql = "SELECT {$featurecolumn} as val FROM {$tablename} WHERE ST_Intersects(geom,(select geom from udp_puebla_4326 where iden=?))";
+		$rawvalue=DB::select($featurecolumnsql,[$request->udpiden]);
+		foreach ($rawvalue as $val) {
+			$result[]=array('object'=>$displayname, 'name'=>$val->val);
+		}
+		// if (sizeof($rawvalue)!=0){
+		// 	$value = $rawvalue->val;
+		// 	$result[]=array('object'=>$displayName, 'name'=>$value);
+		// }
+		//$result[]=$rawvalue;
+		
+	}
+
+	return $result;
+});
+
+
 Route::post('getRasterValue', function(Request $request) {
 	$result="There was an error";
 	$lat =  $request->lat;
 	$lng =  $request->lng;
-	
-
 	$sql="SELECT ST_Value(rast, foo.pt_geom) AS rastval FROM temp_85_puebla CROSS JOIN (SELECT ST_SetSRID(ST_MakePoint({$lng},{$lat}), 4326) AS pt_geom) AS foo where st_intersects(rast,foo.pt_geom)";
         $result = DB::select($sql,[]); 
         if (sizeof($result)>0 ){
           	$value=$result[0]->rastval;
         }
-  
 	$final = json_encode($value);
-  
 	return $final;
-	
   });
   
 

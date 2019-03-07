@@ -1,8 +1,30 @@
 <?php 
 if (!session('admin')){
-    return redirect()->to('/login')->send();
+	return redirect()->to('/login')->send();
 }
+$allcolumns=[];
+$addcolumnssql = "SELECT tablename, displayname FROM additional_layers WHERE tablename!='suelo_geometries_simplified'";
+$addcolumns = DB::select($addcolumnssql,[]);
+foreach ($addcolumns as $table) {
+	$tablename=$table->tablename;
+	$displayname=$table->displayname;
+	$featurecolumnsql = "SELECT column_name FROM information_schema.columns WHERE table_name=?";
+	$allcolumns[$displayname]=DB::select($featurecolumnsql,[strtolower($tablename)]);
+}
+$allcolumns['Uso de Suelo'] =[['column_name'=>'descripcio']];
+
+
+$geojson=json_encode($allcolumns);
+
 ?>
+<script>
+	var allcolumns = {!! $geojson !!};
+</script>
+
+
+
+
+
   @include('inc/saveadmin')
   @include('inc/setuppage')
   @include('inc/header')
@@ -13,14 +35,14 @@ if (!session('admin')){
   <div class="row">
     <div class="warnings">
       <?php
-                    if (session('adminerror')) {
-                        $msg=session('adminerror');
-                        echo "<p class='bg-info text-center'>{$msg}</p>";
-                        
-                    }
-                    session(['adminerror'=>'']);
+			if (session('adminerror')) {
+				$msg=session('adminerror');
+				echo "<p class='bg-info text-center'>{$msg}</p>";
+				
+			}
+			session(['adminerror'=>'']);
 
-                ?>
+		?>
     </div>
   </div>
 
@@ -161,8 +183,8 @@ if (!session('admin')){
         </div>
         <div>
           <label for="campoclick" class=" h6 displayname">Campo Click</label>
-          <input type="text" required name="campoclick" id="campoclick">
-        </div>
+          <select required name="campoclick" id="campoclick"></select>
+		</div>
         <div>
           <label for="fillcolor" class=" h6 shapenombre">Fill Color</label>
           <input type="color" required name="fillcolor" id="fillcolor">
@@ -182,19 +204,47 @@ if (!session('admin')){
         <div>
           <label for="lineaanchura" class=" h6 shapenombre">Linea Anchura</label>
           <input type="number" min=0 max=5 step=0 .1 required name="lineaanchura" id="lineaanchura">
-        </div>
+		</div>
+		<div>
+			<label for="category" class=" h6 shapenombre">Category</label>
+			<select id ='category' name ='category'>
+				<option value="Referencial">Referencial</option>
+				<option value="Monitoreo Activo">Monitoreo Activo</option>
+				<option value="Gestion del Territorio">Gestion del Territorio</option>
+			  </select>
+		</div>
         <br>
 
         <input type="hidden" name="action" value="cargarshape">
         <input type="submit" id="measurementlinea_mtpSubmit" class="mySubmit">
       </form>
-      <div style='text-align:center;'>
-        <a class="btn btn-primary m-2 btn-sm mapInfoButton" href="/cargarshapesadmin" role="button">Cargar Shapefile</a>
-      </div>
+      
     </div>
-
+	<div style='text-align:center;'>
+        <a class="btn btn-primary m-2 btn-sm mapInfoButton" href="/cargarshapesadmin" role="button">Cargar Shapefile</a>
+    </div>
   </div>
   <script src="{{ asset('js/jsfunc.js') }}">
-
   </script>
+
+   <script>
+		var mySelection = document.getElementById('measurementadditional_layerscargar')
+	   	mySelection.addEventListener("change", function (){
+			var tableName = mySelection.value
+			if (tableName=='notselected') return
+			console.log(allcolumns)
+			let frag = document.createDocumentFragment(),elOption;
+			for (let i = 0; i<allcolumns[tableName].length; i++){
+				elOption = frag.appendChild(document.createElement('option'));
+				elOption.value = allcolumns[tableName][i]['column_name'];
+				elOption.innerHTML = allcolumns[tableName][i]['column_name'];
+			}
+			var campoClick = document.getElementById('campoclick')
+			while (campoClick.hasChildNodes()) {
+				campoClick.removeChild(campoClick.lastChild);
+			}
+			campoClick.appendChild(frag)
+	   })
+   </script>
+
   @include('inc/footer')

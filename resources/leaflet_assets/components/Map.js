@@ -49,7 +49,9 @@ class Map extends React.Component {
         const streets = L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
             attribution:
                 '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(this.map);
+		}).addTo(this.map);
+		streets['category']='Base'
+
 
         const imagery = L.tileLayer(
             "http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
@@ -59,6 +61,7 @@ class Map extends React.Component {
                 maxZoom: 18
             }
         );
+		imagery['category']='Base'
 
         this.baseMaps = {
             Imagery: imagery,
@@ -105,7 +108,12 @@ class Map extends React.Component {
             }
             if ( item.tableName == "linea_mtp" || item.tableName == "udp_puebla_4326" ) {
                 c2.addTo(mymap);
-            }
+			}
+			c2['category']=item.category
+			c2['tableName']=item.tableName
+
+			
+
             return c2;
         };
 
@@ -118,14 +126,55 @@ class Map extends React.Component {
                     dynamicLayer = myLayer;
                     mymap.fitBounds(myLayer.getBounds());
                     mymap.setZoom(7.5);
-                }
+				}
+
+				if (myLayer.category=='Referencial'){
+					overlayMaps["Placeholder_Referencial"] = myLayer;
+				}
+				if (myLayer.category=='Monitoreo Activo'){
+					overlayMaps["Placeholder_Monitoreo Activo"] = myLayer;
+				}
+				if (myLayer.category=='Gestion del Territorio'){
+					overlayMaps["Placeholder_Gestion del Territorio"] = myLayer;
+				}
                 overlayMaps[item.displayName] = myLayer;
 			});
 
 			var tempraster = L.tileLayer("temptiles/{z}/{x}/{y}.png", { enable: true, tms: true, opacity: 0.8, attribution: "" });
-			overlayMaps["temp_85_puebla"] = tempraster;
+			tempraster.category='Referencial'
+			overlayMaps["Escenario85_2099_Temp_UNIATMOS_2015"] = tempraster;
 			
-            L.control.layers(mybaseMaps, overlayMaps).addTo(mymap);
+			const compare =function(a, b) {
+				if (a.category=='Base') {
+					return -1;
+				}
+				const ascore = a.category=='Referencial'?15:a.category=='Monitoreo Activo'?10:5
+				const abonus = a.category.includes('PlaceHolder')?1:0 
+				const bscore = b.category=='Referencial'?15:b.category=='Monitoreo Activo'?10:5
+				const bbonus = b.category.includes('PlaceHolder')?1:0 
+				const afinalscore=ascore + abonus
+				const bfinalscore=bscore + bbonus
+
+				if (afinalscore>bfinalscore) {
+				  return -1;
+				}
+				if (afinalscore<bfinalscore) {
+					return 1;
+				  }
+				return 0;
+			  }
+			  const contolOptions={sortLayers:true, sortFunction:compare}
+			L.control.layers(mybaseMaps, overlayMaps,contolOptions).addTo(mymap);
+			
+			const layerList=document.getElementsByClassName("leaflet-control-layers-overlays")[0].children
+			for (let i = 0; i < layerList.length; i++) {
+				if(layerList[i].innerText.includes("Placeholder")){
+					const newText=(layerList[i].innerText.split("_")[1]).toUpperCase()
+					layerList[i].innerHTML = `<div class=layerHeader>${newText}</div>`				
+				}
+			}
+		
+
             return dynamicLayer;
         };
         this.dynamicLayer = processArray( something, this.map, this.baseMaps, this.getColor, this.getOutline );

@@ -46,7 +46,7 @@ if (!session('admin')){
             $db = env("DB_PASSWORD", "somedefaultvalue");
             $dbname = env("DB_DATABASE", "somedefaultvalue");
             $loadshp="shp2pgsql -I -s 4326:4326 ../storage/shp/{$shpfile}2 {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d {$dbname}";
-            $loadshp="shp2pgsql -W Latin-1 -I -s 4326:4326 ../storage/shp/{$shpfile}2 {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d {$dbname}";
+            $loadshp="shp2pgsql -W LATIN1 -I -s 4326:4326 ../storage/shp/{$shpfile}2 {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d {$dbname}";
             
             $output= shell_exec($loadshp);
             $output2= shell_exec("rm -rf ../storage/shp/*");
@@ -54,8 +54,8 @@ if (!session('admin')){
                     $geom= DB::select("select geom from {$shapenombre}", []);
                     if (isset($geom[0])){
                         $arraytopass = [$_POST['shapenombre'],$_POST['displayname'],strtolower($_POST['featurecolumn']),$_POST['lineacolor']];
-                        array_push( $arraytopass,$_POST['fillcolor'],$_POST['fillopacidad'],$_POST['lineaopacidad'],$_POST['lineaanchura'] );
-                        $layerresult= DB::insert("INSERT into additional_layers (tablename, displayname, featurecolumn, color,fillcolor,fillopacity,opacity,weight) values (?,?,?,?,?,?,?,?)", $arraytopass);
+                        array_push( $arraytopass,$_POST['fillcolor'],$_POST['fillopacidad'],$_POST['lineaopacidad'],$_POST['lineaanchura'],$_POST['category'] );
+                        $layerresult= DB::insert("INSERT into additional_layers (tablename, displayname, featurecolumn, color,fillcolor,fillopacity,opacity,weight,category) values (?,?,?,?,?,?,?,?,?)", $arraytopass);
                         return redirect()->to('/thanks')->send();
                     }else{
                         $errorlist[]= "Su shape no tiene polygono";
@@ -120,7 +120,16 @@ if (!session('admin')){
     <div>
         <label for="lineaanchura" class=" h6 shapenombre">Linea Anchura</label>
         <input type="number" min=0 max=5 step = 0.1 required name="lineaanchura" id="lineaanchura">
-    </div>
+	</div>
+	<div>
+		<label for="category" class=" h6 shapenombre">Category</label>
+		<select id ='category' name ='category'>
+			<option value="Referencial">Referencial</option>
+			<option value="Monitoreo Activo">Monitoreo Activo</option>
+			<option value="Gestion del Territorio">Gestion del Territorio</option>
+		  </select>
+	</div>
+
     <div>
         <label for="shp" class="h6 shapelabel">.shp</label>
         <input type="file" required name="shp" id="shp">
@@ -136,7 +145,8 @@ if (!session('admin')){
     <div>
         <label for="prj" class="h6 shapelabel">.prj</label>
         <input type="file" required name="prj" id="prj">
-    </div>
+	</div>
+	
     
     
     <div class="row">

@@ -46,7 +46,7 @@ mix.js('resources/assets/js/app.js', 'public/js')
 		'public/temptiles/**/*',
 	],
     reloadDelay: 200,
-    proxy: 'mylocalhost',
+    proxy: 'lsapp3',
     notify: false
     
 });

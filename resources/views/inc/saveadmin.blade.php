@@ -82,8 +82,8 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
                 session(['adminerror'=> "{$cargartablename} ha side borrado"]);            
             }else{
                 $arraytopass = [$_POST['displayname'],$_POST['campoclick'],$_POST['lineacolor'],$_POST['fillcolor'],$_POST['fillopacidad']];
-                array_push( $arraytopass,$_POST['lineaopacidad'],$_POST['lineaanchura'],$cargartablename);
-                $layerresult= DB::update("UPDATE additional_layers set (displayname,featurecolumn,color,fillcolor,fillopacity,opacity,weight) = (?,?,?,?,?,?,?) where tablename = ?", $arraytopass);            
+                array_push( $arraytopass,$_POST['lineaopacidad'],$_POST['lineaanchura'],$_POST['category'],$cargartablename);
+                $layerresult= DB::update("UPDATE additional_layers set (displayname,featurecolumn,color,fillcolor,fillopacity,opacity,weight,category) = (?,?,?,?,?,?,?,?) where tablename = ?", $arraytopass);            
                 session(['adminerror'=> "{$cargartablename} ha cambiado"]);
             }
         }
