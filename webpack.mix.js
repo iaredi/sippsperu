@@ -19,19 +19,15 @@ mix.autoload({
 mix.js('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css')
     .copy('resources/assets/css/print.css', 'public/css')
-    .copy('resources/assets/excel/ingresarexcel.xlsx', 'public/storage')
+	.copy('resources/assets/excel/ingresarexcel.xlsx', 'public/storage')
+	.copy('resources/leaflet_assets/leaflet.css', 'public/leaflet_assets/leaflet.css')
 
    .copyDirectory('resources/img', 'public/img')
-   .js('resources/assets/js/jsfunc.js', 'public/js')
    .copyDirectory('resources/leaflet_assets/images', 'public/leaflet_assets/images')
-   .js('resources/leaflet_assets/components/Map.js', 'public/leaflet_assets/components/Map.js')
-   .js('resources/leaflet_assets/components/Mapapp.js', 'public/leaflet_assets/components/Mapapp.js')
-   .js('resources/leaflet_assets/index.js', 'public/leaflet_assets/index.js')
-   .js('resources/leaflet_assets/udpindex.js', 'public/leaflet_assets/udpindex.js')
-   .js('resources/leaflet_assets/normasindex.js', 'public/leaflet_assets/normasindex.js')
-
-   .copy('resources/leaflet_assets/index.html', 'public/leaflet_assets/index.html')
-   .copy('resources/leaflet_assets/leaflet.css', 'public/leaflet_assets/leaflet.css');
+   .js('resources/assets/js/jsfunc.js', 'public/js')
+   .js('resources/assets/js/components/Map.js', 'public/js/components/Map.js')
+   .js('resources/assets/js/components/Mapapp.js', 'public/js/components/Mapapp.js')
+   .js('resources/assets/js/index.js', 'public/js/index.js');
    
 
    mix.browserSync({

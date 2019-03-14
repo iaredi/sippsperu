@@ -89,6 +89,7 @@
         foreach ($worksheetNames as $sheet) {
           //LOC
           if (strpos($sheet, 'LOC') !== false){
+			$emptylocationsheet=false;
             $obspost = array('selectlinea_mtp' => $_POST['selectlinea_mtp']);
             $obspost['mode']='Datos Nuevos';
             $obspost['submit']='submit';
@@ -123,7 +124,9 @@
                 break;
               }else{
                 $locvalue = trim($spreadsheet->getSheetByName($sheet)->getCell("{$letter}2")->getValue());
-                
+                if($locvalue==NULL){
+					$emptylocationsheet=true;
+				}
                 $obspost["row0*{$transpunto}_{$lifeform}*{$loccolvalue}"] = $locvalue;
                 
                 $letter = ++$letter;
@@ -157,7 +160,7 @@
                   foreach ($obscolumnarray as $obscolumn) {
                     $obsvalue = trim($spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}{$row_number}")->getValue());
                     if (strpos($obscolumn, 'iden_foto') !== false){
-                      if($obsvalue==NULL){
+                      if($obsvalue==NULL ||$obsvalue=="00" || $obsvalue=="000"|| $obsvalue=="0000"){
                         $obsvalue = "No Presentado";
                       }else{
                         $uploadfotoarray[$obsvalue]="observacion_{$lifeform}";
@@ -174,7 +177,9 @@
                           $obspost["row{$true_row}*observacion_{$lifeform}*species"]=$cientifico;
                         }
                       }
-                    }
+					}
+					
+					
                     $obspost["row{$true_row}*observacion_{$lifeform}*{$obscolumn}"] = $obsvalue;
                     
                     $letter = ++$letter;
@@ -183,8 +188,10 @@
                 
                 $row_number=$row_number+1;
                 }
-            }//end scan rows of observacions
-            $obspostarray[]=$obspost;
+			}//end scan rows of observacions
+			if (!$emptylocationsheet){
+            	$obspostarray[]=$obspost;
+			}
         }//end if LOC
       }//end looping through sheets
 
@@ -211,11 +218,14 @@
       
       //save all if no errors
       if(sizeof($errorlist)==0){
+		  
         $newmedicion = savedata($medicionpost,$_FILES, $useremail,true);
         foreach ($obspostarray as $currentobspost) {
           $currentobspost['selectmedicion'] = $newmedicion;
-          $saveworked = savedata($currentobspost,$useremail,true);
+		  $saveworked = savedata($currentobspost,$useremail,true);
           if ($saveworked=="false"){
+			echo var_dump(session('resultofquery'));
+
             $errorlist[]="Hubo una problema guardando datos";
           }
         }
@@ -224,6 +234,7 @@
   if(sizeof($errorlist)==0 && sizeof(session('resultofquery'))>0){
     redirect()->to('/thanks')->send();
   }else{
+
     $errorlist[]="Hubo una problema guardando datos";
   }
 

@@ -33,56 +33,40 @@ class UDPMapapp extends React.Component {
 
 	setText(mytext) {
 		if (mytext != this.state.mytext) {
-			this.setState(prevState => ({
-				mytext: mytext
-			}));
+			this.setState({mytext: mytext});
 		}
 	}
 
 	setSoils(soils, udpsoils) {
 		if (soils != this.state.soils) {
-			this.setState(prevState => ({
-				soils: soils
-			}));
+			this.setState({soils: soils});
 		}
 		if (udpsoils != this.state.udpsoils) {
-			this.setState(prevState => ({
-				udpsoils: udpsoils
-			}));
+			this.setState({udpsoils: udpsoils});
 		}
 		if (!this.state.boundsobtained) {
-			this.setState(prevState => ({
-				boundsobtained: true
-			}));
+			this.setState({boundsobtained: true});
 		}
 	}
 
 	setInfra(infraInfo) {
 		if (infraInfo != this.state.infraInfo) {
-			this.setState(prevState => ({
-				infraInfo: infraInfo
-			}));
+			this.setState({infraInfo: infraInfo});
 		}
 		if (!this.state.boundsobtained) {
-			this.setState(prevState => ({
-				boundsobtained: true
-			}));
+			this.setState({boundsobtained: true});
 		}
 	}
 
 	setMuni(munilist) {
 		if (munilist != this.state.munilist) {
-			this.setState(prevState => ({
-				munilist: munilist
-			}));
+			this.setState({munilist: munilist});
 		}
 	}
 
 	setStateBounds(bounds) {
 		if (bounds != this.state.bounds) {
-			this.setState(prevState => ({
-				bounds: bounds
-			}));
+			this.setState({ bounds: bounds });
 		}
 	}
 

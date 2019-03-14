@@ -9,13 +9,14 @@ $geojsonidennum=json_encode($idennum);
 $geojsonshannon=json_encode($shannon);
 $geojsonmaptype=json_encode($maptype);
 
+
 ?>
 
 <script>
   var idennum = {!! $geojsonidennum !!};
   var shannon = {!! $geojsonshannon !!};
   var maptype = {!! $geojsonmaptype !!};
-
+	var infotype ='udp'
 </script>
 
 @include('inc/udploadlayers')
@@ -34,11 +35,10 @@ $geojsonmaptype=json_encode($maptype);
   </head>
   <body id="udpbody">
 
-    <div class="container">
-    </div> <!--Container-->
+    
     <div id="app"></div>
     <link rel="stylesheet" href="/leaflet_assets/leaflet.css"> 
-    <script src="{{ asset('leaflet_assets/udpindex.js') }}" ></script>  
+    <script src="{{ asset('js/index.js') }}" ></script>  
   </body>
   
 </html>

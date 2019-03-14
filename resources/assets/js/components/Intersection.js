@@ -1,6 +1,7 @@
 import React from "react";
 import BootstrapTable from "react-bootstrap-table-next";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.min.css";
+import fetchData from "../fetchData";
 
 class Normaapp extends React.Component {
   constructor(props) {
@@ -11,31 +12,8 @@ class Normaapp extends React.Component {
   }
 
   componentDidMount() {
-    async function getIntersection(udpiden) {
-      let myapi = "https://biodiversidadpuebla.online/api/getintersection";
-      if (window.location.host == "localhost:3000")
-        myapi = "http://localhost:3000/api/getintersection";
-      const rawResponse = await fetch(myapi, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json;",
-          mode: "cors"
-        },
-        body: JSON.stringify({
-          udpiden: udpiden,
-        })
-      });
-      let dataResult = await rawResponse.json();
-      return dataResult;
-    }
-
-	getIntersection(idennum).then(intersectionResult => {
-		console.log(intersectionResult)
-		const objects =[{'object':'edif','name':'edif1',}]
-		this.setState(() => ({
-			objects:intersectionResult
-		}));        
+	fetchData('getintersection',{udpiden: idennum}).then(intersectionResult => {
+		this.setState({objects:intersectionResult});        
 	});
   }
 
@@ -49,7 +27,7 @@ class Normaapp extends React.Component {
           dataField: "name",
           text: "Nombre"
         }
-      ];
+	  ];
     return (
       <div>
 		<div className="container">

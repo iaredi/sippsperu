@@ -1,5 +1,6 @@
 import React from "react";
 import L from "leaflet";
+import fetchData from "../fetchData";
 
 const style = {
   width: "98%",
@@ -126,30 +127,13 @@ class UDPMapa extends React.Component {
           }
         }
         if (item.tableName == "usos_de_suelo4" || item.tableName == "infra_linea"){
-          async function getSueInfFeatures(bounds, udpiden) {
-            let myapi =
-              "https://biodiversidadpuebla.online/api/get"+maptype+"features";
-            if (window.location.host == "localhost:3000")
-              myapi = "http://localhost:3000/api/get"+maptype+"features";
-            const rawResponse = await fetch(myapi, {
-              method: "POST",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json;",
-                mode: "cors"
-              },
-              body: JSON.stringify({
-                north: bounds._northEast.lat,
-                east: bounds._northEast.lng,
-                south: bounds._southWest.lat,
-                west: bounds._southWest.lng,
-                udpiden: udpiden
-              })
-            });
-            let dataResult = await rawResponse.json();
-            return dataResult;
-          }
-          getSueInfFeatures(bounds, udpiden).then(returnData => {
+          fetchData("get"+maptype+"features",{
+			north: bounds._northEast.lat,
+			east: bounds._northEast.lng,
+			south: bounds._southWest.lat,
+			west: bounds._southWest.lng,
+			udpiden: udpiden
+		  }).then(returnData => {
             setMuni(JSON.parse(returnData[returnData.length-1]))
 
             if (maptype=='sue'){

@@ -60,26 +60,26 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 117);
+/******/ 	return __webpack_require__(__webpack_require__.s = 103);
 /******/ })
 /************************************************************************/
 /******/ ({
 
-/***/ 117:
+/***/ 103:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(118);
+module.exports = __webpack_require__(104);
 
 
 /***/ }),
 
-/***/ 118:
+/***/ 104:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _regenerator = __webpack_require__(22);
+var _regenerator = __webpack_require__(17);
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
@@ -88,6 +88,8 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+//import fetchData from "./fetchData";
 
 function buildDropdowns(tableName, menu) {
     var jsTable = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "Form";
@@ -830,7 +832,6 @@ function clickReadyButton(e) {
                 while (1) {
                     switch (_context.prev = _context.next) {
                         case 0:
-
                             //let myapi ='http://localhost:3000/api/getudp'
                             myapi = 'https://biodiversidadpuebla.online/api/getudp';
 
@@ -1175,15 +1176,15 @@ if (window.location.href.substr(-5) === 'admin') {
 
 /***/ }),
 
-/***/ 22:
+/***/ 17:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(23);
+module.exports = __webpack_require__(21);
 
 
 /***/ }),
 
-/***/ 23:
+/***/ 21:
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1208,7 +1209,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(24);
+module.exports = __webpack_require__(22);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -1225,7 +1226,7 @@ if (hadRuntime) {
 
 /***/ }),
 
-/***/ 24:
+/***/ 22:
 /***/ (function(module, exports) {
 
 /**

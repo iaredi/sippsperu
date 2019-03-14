@@ -189,7 +189,8 @@ tr:nth-child(odd) {
 }
 
 #CORRIENTE_DE_AGUA {
-  border-top: 3px solid blue; 
+  border-top: 3px solid blue;
+  width:15px; 
 }
 
 .legendlines{

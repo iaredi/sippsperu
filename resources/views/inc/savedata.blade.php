@@ -1,8 +1,9 @@
 <?php
   function savedata($newpost, $useremail, $fromexcel=false){
     $errorarray=[];
-    $resultofquery=[];
-    if ($_SERVER['REQUEST_METHOD']=="POST" && sizeof(session('error'))==0 && (!session('visitante'))){
+	$resultofquery=[];
+
+    if ($_SERVER['REQUEST_METHOD']=="POST"  && (!session('visitante'))){
       $mtpchoice =$newpost['selectlinea_mtp'];    
         if ($mtpchoice=="Nuevo") {
           //Save New Estado Data
@@ -244,7 +245,6 @@
                   $obscolumns=buildcolumnsarray($newpost,$obstype, "row{$i}");
                   $obscolumns["iden_especie"]= $iden_especie;
                   $obscolumns["iden_foto"]= $iden_foto;
-                  echo $i;
                   
                   
                   if($iden_foto=='No Presentado' || explode("_" , $iden_foto)[0]=='observacion'){

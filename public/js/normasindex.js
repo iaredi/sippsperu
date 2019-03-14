@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 132);
+/******/ 	return __webpack_require__(__webpack_require__.s = 135);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,7 +73,7 @@
 if (false) {
   module.exports = require('./cjs/react.production.min.js');
 } else {
-  module.exports = __webpack_require__(25);
+  module.exports = __webpack_require__(28);
 }
 
 
@@ -450,7 +450,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 var printWarning = function() {};
 
 if (true) {
-  var ReactPropTypesSecret = __webpack_require__(12);
+  var ReactPropTypesSecret = __webpack_require__(13);
   var loggedTypeFailures = {};
 
   printWarning = function(text) {
@@ -562,7 +562,7 @@ var _operators = __webpack_require__(10);
 
 var _operators2 = _interopRequireDefault(_operators);
 
-var _selection = __webpack_require__(16);
+var _selection = __webpack_require__(18);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -746,7 +746,7 @@ var _rows = __webpack_require__(6);
 
 var rows = _interopRequireWildcard(_rows);
 
-var _selection = __webpack_require__(16);
+var _selection = __webpack_require__(18);
 
 var selection = _interopRequireWildcard(_selection);
 
@@ -930,6 +930,13 @@ exports.default = {
 /* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
+module.exports = __webpack_require__(26);
+
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 /**
  * Copyright (c) 2013-present, Facebook, Inc.
@@ -946,8 +953,62 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 13 */,
 /* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _bootstrapTable = __webpack_require__(31);
+
+var _bootstrapTable2 = _interopRequireDefault(_bootstrapTable);
+
+var _contexts = __webpack_require__(59);
+
+var _contexts2 = _interopRequireDefault(_contexts);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+exports.default = (0, _contexts2.default)(_bootstrapTable2.default);
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(63);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(24)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../css-loader/index.js!./react-bootstrap-table2.min.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./react-bootstrap-table2.min.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 16 */,
+/* 17 */
 /***/ (function(module, exports) {
 
 var g;
@@ -974,14 +1035,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 15 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(23);
-
-
-/***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1065,7 +1119,7 @@ var getSelectedRows = exports.getSelectedRows = function getSelectedRows(data, k
 };
 
 /***/ }),
-/* 17 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1225,7 +1279,7 @@ var RowPureContent = function (_React$Component) {
 exports.default = RowPureContent;
 
 /***/ }),
-/* 18 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1353,7 +1407,7 @@ exports.default = function (ExtendBase) {
 };
 
 /***/ }),
-/* 19 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1418,7 +1472,71 @@ exports.default = function (ExtendBase) {
 };
 
 /***/ }),
-/* 20 */
+/* 22 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _regenerator = __webpack_require__(12);
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+exports.default = function () {
+	var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(url, body) {
+		var myapi, rawResponse, dataResult;
+		return _regenerator2.default.wrap(function _callee$(_context) {
+			while (1) {
+				switch (_context.prev = _context.next) {
+					case 0:
+						myapi = "https://biodiversidadpuebla.online/api/" + url;
+
+						if (window.location.host == "localhost:3000") myapi = "http://localhost:3000/api/" + url;
+						_context.next = 4;
+						return fetch(myapi, {
+							method: "POST",
+							headers: {
+								Accept: "application/json",
+								"Content-Type": "application/json;",
+								mode: "cors"
+							},
+							body: JSON.stringify(body)
+						});
+
+					case 4:
+						rawResponse = _context.sent;
+						_context.next = 7;
+						return rawResponse.json();
+
+					case 7:
+						dataResult = _context.sent;
+						return _context.abrupt("return", dataResult);
+
+					case 9:
+					case "end":
+						return _context.stop();
+				}
+			}
+		}, _callee, this);
+	}));
+
+	function fetchData(_x, _x2) {
+		return _ref.apply(this, arguments);
+	}
+
+	return fetchData;
+}();
+
+/***/ }),
+/* 23 */
 /***/ (function(module, exports) {
 
 /*
@@ -1500,7 +1618,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 21 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -1546,7 +1664,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(29);
+var	fixUrls = __webpack_require__(30);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -1859,7 +1977,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 22 */
+/* 25 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -1887,7 +2005,7 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 23 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -1912,7 +2030,7 @@ var oldRuntime = hadRuntime && g.regeneratorRuntime;
 // Force reevalutation of runtime.js.
 g.regeneratorRuntime = undefined;
 
-module.exports = __webpack_require__(24);
+module.exports = __webpack_require__(27);
 
 if (hadRuntime) {
   // Restore the original runtime.
@@ -1928,7 +2046,7 @@ if (hadRuntime) {
 
 
 /***/ }),
-/* 24 */
+/* 27 */
 /***/ (function(module, exports) {
 
 /**
@@ -2661,7 +2779,7 @@ if (hadRuntime) {
 
 
 /***/ }),
-/* 25 */
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -4408,125 +4526,8 @@ module.exports = react;
 
 
 /***/ }),
-/* 26 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-
-var _bootstrapTable = __webpack_require__(31);
-
-var _bootstrapTable2 = _interopRequireDefault(_bootstrapTable);
-
-var _contexts = __webpack_require__(59);
-
-var _contexts2 = _interopRequireDefault(_contexts);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = (0, _contexts2.default)(_bootstrapTable2.default);
-
-/***/ }),
-/* 27 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(63);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(21)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./react-bootstrap-table2.min.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./react-bootstrap-table2.min.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _regenerator = __webpack_require__(15);
-
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-exports.default = function () {
-	var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(url, body) {
-		var myapi, rawResponse, dataResult;
-		return _regenerator2.default.wrap(function _callee$(_context) {
-			while (1) {
-				switch (_context.prev = _context.next) {
-					case 0:
-						myapi = "https://biodiversidadpuebla.online/api/" + url;
-
-						if (window.location.host == "localhost:3000") myapi = "http://localhost:3000/api/" + url;
-						_context.next = 4;
-						return fetch(myapi, {
-							method: "POST",
-							headers: {
-								Accept: "application/json",
-								"Content-Type": "application/json;",
-								mode: "cors"
-							},
-							body: JSON.stringify(body)
-						});
-
-					case 4:
-						rawResponse = _context.sent;
-						_context.next = 7;
-						return rawResponse.json();
-
-					case 7:
-						dataResult = _context.sent;
-						return _context.abrupt("return", dataResult);
-
-					case 9:
-					case "end":
-						return _context.stop();
-				}
-			}
-		}, _callee, this);
-	}));
-
-	function fetchData(_x, _x2) {
-		return _ref.apply(this, arguments);
-	}
-
-	return fetchData;
-}();
-
-/***/ }),
-/* 29 */
+/* 29 */,
+/* 30 */
 /***/ (function(module, exports) {
 
 
@@ -4621,7 +4622,6 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 30 */,
 /* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -4910,7 +4910,7 @@ exports.default = BootstrapTable;
 
 var assign = __webpack_require__(7);
 
-var ReactPropTypesSecret = __webpack_require__(12);
+var ReactPropTypesSecret = __webpack_require__(13);
 var checkPropTypes = __webpack_require__(8);
 
 var printWarning = function() {};
@@ -7547,7 +7547,7 @@ exports.default = SortCaret;
   }
 }());
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(22)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(17), __webpack_require__(25)(module)))
 
 /***/ }),
 /* 38 */
@@ -8260,15 +8260,15 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _rowPureContent = __webpack_require__(17);
+var _rowPureContent = __webpack_require__(19);
 
 var _rowPureContent2 = _interopRequireDefault(_rowPureContent);
 
-var _eventDelegater = __webpack_require__(18);
+var _eventDelegater = __webpack_require__(20);
 
 var _eventDelegater2 = _interopRequireDefault(_eventDelegater);
 
-var _shouldUpdater2 = __webpack_require__(19);
+var _shouldUpdater2 = __webpack_require__(21);
 
 var _shouldUpdater3 = _interopRequireDefault(_shouldUpdater2);
 
@@ -8601,15 +8601,15 @@ var _selectionCell = __webpack_require__(52);
 
 var _selectionCell2 = _interopRequireDefault(_selectionCell);
 
-var _shouldUpdater2 = __webpack_require__(19);
+var _shouldUpdater2 = __webpack_require__(21);
 
 var _shouldUpdater3 = _interopRequireDefault(_shouldUpdater2);
 
-var _eventDelegater = __webpack_require__(18);
+var _eventDelegater = __webpack_require__(20);
 
 var _eventDelegater2 = _interopRequireDefault(_eventDelegater);
 
-var _rowPureContent = __webpack_require__(17);
+var _rowPureContent = __webpack_require__(19);
 
 var _rowPureContent2 = _interopRequireDefault(_rowPureContent);
 
@@ -10032,7 +10032,7 @@ exports.default = function (ExtendBase) {
 /* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(20)(false);
+exports = module.exports = __webpack_require__(23)(false);
 // imports
 
 
@@ -30112,7 +30112,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(21)(content, options);
+var update = __webpack_require__(24)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -30133,7 +30133,7 @@ if(false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 var escape = __webpack_require__(73);
-exports = module.exports = __webpack_require__(20)(false);
+exports = module.exports = __webpack_require__(23)(false);
 // imports
 
 
@@ -30201,95 +30201,7 @@ module.exports = "/images/marker-icon-2x.png?314bb1697dc187df9e9abf35e7094197";
 /* 81 */,
 /* 82 */,
 /* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */,
-/* 92 */,
-/* 93 */,
-/* 94 */,
-/* 95 */,
-/* 96 */,
-/* 97 */,
-/* 98 */,
-/* 99 */,
-/* 100 */,
-/* 101 */,
-/* 102 */,
-/* 103 */,
-/* 104 */,
-/* 105 */,
-/* 106 */,
-/* 107 */,
-/* 108 */,
-/* 109 */,
-/* 110 */,
-/* 111 */,
-/* 112 */,
-/* 113 */,
-/* 114 */,
-/* 115 */,
-/* 116 */,
-/* 117 */,
-/* 118 */,
-/* 119 */,
-/* 120 */,
-/* 121 */,
-/* 122 */,
-/* 123 */,
-/* 124 */,
-/* 125 */,
-/* 126 */,
-/* 127 */,
-/* 128 */,
-/* 129 */,
-/* 130 */,
-/* 131 */,
-/* 132 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(133);
-
-
-/***/ }),
-/* 133 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-var _reactDom = __webpack_require__(65);
-
-var _reactDom2 = _interopRequireDefault(_reactDom);
-
-var _Normaapp = __webpack_require__(134);
-
-var _Normaapp2 = _interopRequireDefault(_Normaapp);
-
-var _Intersection = __webpack_require__(136);
-
-var _Intersection2 = _interopRequireDefault(_Intersection);
-
-__webpack_require__(71);
-
-__webpack_require__(77);
-
-__webpack_require__(78);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-_reactDom2.default.render(infotype == 'in' ? _react2.default.createElement(_Intersection2.default, null) : _react2.default.createElement(_Normaapp2.default, null), document.getElementById('app'));
-
-/***/ }),
-/* 134 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30299,7 +30211,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _regenerator = __webpack_require__(15);
+var _regenerator = __webpack_require__(12);
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
@@ -30309,11 +30221,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _SpeciesDisplay = __webpack_require__(135);
+var _SpeciesDisplay = __webpack_require__(85);
 
 var _SpeciesDisplay2 = _interopRequireDefault(_SpeciesDisplay);
 
-var _fetchData = __webpack_require__(28);
+var _fetchData = __webpack_require__(22);
 
 var _fetchData2 = _interopRequireDefault(_fetchData);
 
@@ -30520,7 +30432,7 @@ var Normaapp = function (_React$Component) {
 exports.default = Normaapp;
 
 /***/ }),
-/* 135 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30538,11 +30450,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactBootstrapTableNext = __webpack_require__(26);
+var _reactBootstrapTableNext = __webpack_require__(14);
 
 var _reactBootstrapTableNext2 = _interopRequireDefault(_reactBootstrapTableNext);
 
-__webpack_require__(27);
+__webpack_require__(15);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -30698,7 +30610,7 @@ var SpeciesDisplay = function (_React$Component) {
 exports.default = SpeciesDisplay;
 
 /***/ }),
-/* 136 */
+/* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -30714,13 +30626,13 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactBootstrapTableNext = __webpack_require__(26);
+var _reactBootstrapTableNext = __webpack_require__(14);
 
 var _reactBootstrapTableNext2 = _interopRequireDefault(_reactBootstrapTableNext);
 
-__webpack_require__(27);
+__webpack_require__(15);
 
-var _fetchData = __webpack_require__(28);
+var _fetchData = __webpack_require__(22);
 
 var _fetchData2 = _interopRequireDefault(_fetchData);
 
@@ -30796,6 +30708,94 @@ var Normaapp = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = Normaapp;
+
+/***/ }),
+/* 87 */,
+/* 88 */,
+/* 89 */,
+/* 90 */,
+/* 91 */,
+/* 92 */,
+/* 93 */,
+/* 94 */,
+/* 95 */,
+/* 96 */,
+/* 97 */,
+/* 98 */,
+/* 99 */,
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */,
+/* 106 */,
+/* 107 */,
+/* 108 */,
+/* 109 */,
+/* 110 */,
+/* 111 */,
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */,
+/* 132 */,
+/* 133 */,
+/* 134 */,
+/* 135 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(136);
+
+
+/***/ }),
+/* 136 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _react = __webpack_require__(0);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(65);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _Normaapp = __webpack_require__(84);
+
+var _Normaapp2 = _interopRequireDefault(_Normaapp);
+
+var _Intersection = __webpack_require__(86);
+
+var _Intersection2 = _interopRequireDefault(_Intersection);
+
+__webpack_require__(71);
+
+__webpack_require__(77);
+
+__webpack_require__(78);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_reactDom2.default.render(infotype == 'in' ? _react2.default.createElement(_Intersection2.default, null) : _react2.default.createElement(_Normaapp2.default, null), document.getElementById('app'));
 
 /***/ })
 /******/ ]);

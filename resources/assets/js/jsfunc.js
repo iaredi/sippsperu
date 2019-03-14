@@ -1,3 +1,4 @@
+//import fetchData from "./fetchData";
 
 function buildDropdowns(tableName, menu, jsTable="Form",octothorp=false){
     if (!(menu)){
@@ -749,7 +750,6 @@ function clickReadyButton(e){
     
     
     async function getData(){
-
         //let myapi ='http://localhost:3000/api/getudp'
         let myapi ='https://biodiversidadpuebla.online/api/getudp'
 

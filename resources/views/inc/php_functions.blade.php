@@ -138,7 +138,14 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 
                     $col=$colobj->column_name;
                     if (substr($col,0,4) != 'iden'){
-                        $colarray[$col]=trim($newpost["{$rowandnum}*{$tablename}*{$col}"]);
+						$colarray[$col]=trim($newpost["{$rowandnum}*{$tablename}*{$col}"]);
+						//Check for incorrect datetime formats 
+						if (strpos($col, 'hora') !== false && strpos($colarray[$col], ':') == false){
+							$colarray[$col]="00:01";
+						}
+						if (strpos($col, 'fecha') !== false && strpos($colarray[$col], '-') == false){
+							$colarray[$col]="01/01/0001";
+						}
                     }
                 }
             return $colarray;

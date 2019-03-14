@@ -30,5 +30,5 @@ if ($infotype=='in'){
   </div>
 
   <div id="app"></div>
-  <script src="{{ asset('/leaflet_assets/normasindex.js') }}"></script>
+  <script src="{{ asset('/js/index.js') }}"></script>
   @include('inc/footer')

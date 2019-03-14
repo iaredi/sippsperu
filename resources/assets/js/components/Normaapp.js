@@ -1,5 +1,6 @@
 import React from "react";
 import SpeciesDisplay from "./SpeciesDisplay";
+import fetchData from "../fetchData";
 
 class Normaapp extends React.Component {
   constructor(props) {
@@ -15,31 +16,9 @@ class Normaapp extends React.Component {
   }
 
   componentDidMount() {
-    async function getSpecies(lifeform, idtype, idnumber) {
-      let myapi = "https://biodiversidadpuebla.online/api/getspecies";
-      if (window.location.host == "localhost:3000")
-        myapi = "http://localhost:3000/api/getspecies";
-      const rawResponse = await fetch(myapi, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json;",
-          mode: "cors"
-        },
-        body: JSON.stringify({
-          lifeform: lifeform,
-          idtype: idtype,
-          idnumber: idnumber,
-          useremail: document.getElementById("useremail").textContent
-        })
-      });
-      let dataResult = await rawResponse.json();
-      return dataResult;
-    }
-
     const processArray = async array => {
       for (const item of array) {
-        getSpecies(item.toLowerCase(), "udp", idennum).then(myspeciesResult => {
+        fetchData('getspecies',{lifeform:item.toLowerCase(), idtype:"udp", idnumber:idennum,useremail: document.getElementById("useremail").textContent}).then(myspeciesResult => {
           const newObject = {};
           newObject["speciesResult" + item] = myspeciesResult;
           this.setState(prevState => newObject);

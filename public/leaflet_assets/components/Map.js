@@ -83,7 +83,7 @@ if (false) {
 /***/ 119:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(63);
+module.exports = __webpack_require__(64);
 
 
 /***/ }),
@@ -1856,7 +1856,7 @@ module.exports = react;
 
 /***/ }),
 
-/***/ 29:
+/***/ 30:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* @preserve
@@ -15733,7 +15733,7 @@ window.L = exports;
 
 /***/ }),
 
-/***/ 63:
+/***/ 64:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15749,7 +15749,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _leaflet = __webpack_require__(29);
+var _leaflet = __webpack_require__(30);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
@@ -15801,12 +15801,12 @@ var Map = function (_React$Component) {
                 layers: []
             });
 
-            var streets = _leaflet2.default.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+            var streets = _leaflet2.default.tileLayer("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png", {
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(this.map);
             streets['category'] = 'Base';
 
-            var imagery = _leaflet2.default.tileLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+            var imagery = _leaflet2.default.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
                 attribution: '&copy; <a href="http://www.esri.com/">Esri</a>i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
                 maxZoom: 18
             });

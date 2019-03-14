@@ -2,6 +2,7 @@ import React from "react";
 import Map from "./Map";
 import MapControl from "./MapControl";
 import FeatureInfoDisplay from "./FeatureInfoDisplay";
+import fetchData from "../fetchData";
 
 class Normaapp extends React.Component {
     constructor(props) {
@@ -15,7 +16,6 @@ class Normaapp extends React.Component {
 		this.setDefaultMax = this.setDefaultMax.bind(this);
 		this.handleOverlayChange = this.handleOverlayChange.bind(this);
 		this.setRasterValue = this.setRasterValue.bind(this);
-		this.getRasterValue = this.getRasterValue.bind(this);
 
         this.state = {
 			currentUdpId: -1,
@@ -39,9 +39,9 @@ class Normaapp extends React.Component {
 	
 	handleOverlayChange(name,type){
 		this.setState((prevState) => ({
-			rasterOn: (name=='temp_85_puebla' && type=='overlayadd')
+			rasterOn: (name=='Escenario85_2099_Temp_UNIATMOS_2015' && type=='overlayadd')
 			?true
-			:(name=='temp_85_puebla' && type=='overlayremove')
+			:(name=='Escenario85_2099_Temp_UNIATMOS_2015' && type=='overlayremove')
 				?false
 				:prevState.rasterOn
         }));
@@ -85,27 +85,6 @@ class Normaapp extends React.Component {
 		}));
 	}
 
-	async getRasterValue(lat,lng ) {
-		let myapi =
-		  "https://biodiversidadpuebla.online/api/getRasterValue";
-		if (window.location.host == "localhost:3000")
-		  myapi = "http://localhost:3000/api/getRasterValue";
-		const rawResponse = await fetch(myapi, {
-		  method: "POST",
-		  headers: {
-			Accept: "application/json",
-			"Content-Type": "application/json;",
-			mode: "cors"
-		  },
-		  body: JSON.stringify({
-			lat: lat,
-			lng: lng,
-		  })
-		});
-		let dataResult = await rawResponse.json();
-		return dataResult;
-	  }
-
     handleMapClick(event) {
         this.setState(() => ({
             clickLocation: {
@@ -115,7 +94,7 @@ class Normaapp extends React.Component {
 		}));
 		
 		if(this.state.rasterOn){
-			this.getRasterValue(event.latlng.lat, event.latlng.lng).then(returnData => { 
+			fetchData('getRasterValue',{lat:event.latlng.lat, lng:event.latlng.lng}).then(returnData => { 
 				this.setRasterValue((parseFloat(returnData)).toPrecision(2))
 			})
 		}

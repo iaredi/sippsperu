@@ -103,7 +103,7 @@ if (true) {
   // By explicitly using `prop-types` you are opting into new development behavior.
   // http://fb.me/prop-types-in-prod
   var throwOnDirectAccess = true;
-  module.exports = __webpack_require__(31)(isValidElement, throwOnDirectAccess);
+  module.exports = __webpack_require__(32)(isValidElement, throwOnDirectAccess);
 } else {
   // By explicitly using `prop-types` you are opting into new production behavior.
   // http://fb.me/prop-types-in-prod
@@ -122,7 +122,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _underscore = __webpack_require__(36);
+var _underscore = __webpack_require__(37);
 
 var _underscore2 = _interopRequireDefault(_underscore);
 
@@ -562,7 +562,7 @@ var _operators = __webpack_require__(10);
 
 var _operators2 = _interopRequireDefault(_operators);
 
-var _selection = __webpack_require__(15);
+var _selection = __webpack_require__(16);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -746,19 +746,19 @@ var _rows = __webpack_require__(6);
 
 var rows = _interopRequireWildcard(_rows);
 
-var _selection = __webpack_require__(15);
+var _selection = __webpack_require__(16);
 
 var selection = _interopRequireWildcard(_selection);
 
-var _expand = __webpack_require__(40);
+var _expand = __webpack_require__(41);
 
 var expand = _interopRequireWildcard(_expand);
 
-var _mutate = __webpack_require__(41);
+var _mutate = __webpack_require__(42);
 
 var mutate = _interopRequireWildcard(_mutate);
 
-var _sort = __webpack_require__(42);
+var _sort = __webpack_require__(43);
 
 var sort = _interopRequireWildcard(_sort);
 
@@ -977,6 +977,13 @@ module.exports = g;
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
+module.exports = __webpack_require__(23);
+
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
 "use strict";
 
 
@@ -1058,7 +1065,7 @@ var getSelectedRows = exports.getSelectedRows = function getSelectedRows(data, k
 };
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1080,7 +1087,7 @@ var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _cell = __webpack_require__(47);
+var _cell = __webpack_require__(48);
 
 var _cell2 = _interopRequireDefault(_cell);
 
@@ -1218,7 +1225,7 @@ var RowPureContent = function (_React$Component) {
 exports.default = RowPureContent;
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1346,7 +1353,7 @@ exports.default = function (ExtendBase) {
 };
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1411,7 +1418,7 @@ exports.default = function (ExtendBase) {
 };
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
 /*
@@ -1493,7 +1500,7 @@ function toComment(sourceMap) {
 
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*
@@ -1539,7 +1546,7 @@ var singleton = null;
 var	singletonCounter = 0;
 var	stylesInsertedAtTop = [];
 
-var	fixUrls = __webpack_require__(28);
+var	fixUrls = __webpack_require__(29);
 
 module.exports = function(list, options) {
 	if (typeof DEBUG !== "undefined" && DEBUG) {
@@ -1852,7 +1859,7 @@ function updateLink (link, options, obj) {
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -1877,13 +1884,6 @@ module.exports = function(module) {
 	}
 	return module;
 };
-
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(23);
 
 
 /***/ }),
@@ -4418,11 +4418,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _bootstrapTable = __webpack_require__(30);
+var _bootstrapTable = __webpack_require__(31);
 
 var _bootstrapTable2 = _interopRequireDefault(_bootstrapTable);
 
-var _contexts = __webpack_require__(58);
+var _contexts = __webpack_require__(59);
 
 var _contexts2 = _interopRequireDefault(_contexts);
 
@@ -4437,7 +4437,7 @@ exports.default = (0, _contexts2.default)(_bootstrapTable2.default);
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(62);
+var content = __webpack_require__(63);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // Prepare cssTransformation
 var transform;
@@ -4445,7 +4445,7 @@ var transform;
 var options = {}
 options.transform = transform
 // add the styles to the DOM
-var update = __webpack_require__(20)(content, options);
+var update = __webpack_require__(21)(content, options);
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(false) {
@@ -4463,6 +4463,70 @@ if(false) {
 
 /***/ }),
 /* 28 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+
+var _regenerator = __webpack_require__(15);
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+exports.default = function () {
+	var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(url, body) {
+		var myapi, rawResponse, dataResult;
+		return _regenerator2.default.wrap(function _callee$(_context) {
+			while (1) {
+				switch (_context.prev = _context.next) {
+					case 0:
+						myapi = "https://biodiversidadpuebla.online/api/" + url;
+
+						if (window.location.host == "localhost:3000") myapi = "http://localhost:3000/api/" + url;
+						_context.next = 4;
+						return fetch(myapi, {
+							method: "POST",
+							headers: {
+								Accept: "application/json",
+								"Content-Type": "application/json;",
+								mode: "cors"
+							},
+							body: JSON.stringify(body)
+						});
+
+					case 4:
+						rawResponse = _context.sent;
+						_context.next = 7;
+						return rawResponse.json();
+
+					case 7:
+						dataResult = _context.sent;
+						return _context.abrupt("return", dataResult);
+
+					case 9:
+					case "end":
+						return _context.stop();
+				}
+			}
+		}, _callee, this);
+	}));
+
+	function fetchData(_x, _x2) {
+		return _ref.apply(this, arguments);
+	}
+
+	return fetchData;
+}();
+
+/***/ }),
+/* 29 */
 /***/ (function(module, exports) {
 
 
@@ -4557,7 +4621,7 @@ module.exports = function (css) {
 
 
 /***/ }),
-/* 29 */
+/* 30 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* @preserve
@@ -18433,7 +18497,7 @@ window.L = exports;
 
 
 /***/ }),
-/* 30 */
+/* 31 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -18457,19 +18521,19 @@ var _classnames = __webpack_require__(5);
 
 var _classnames2 = _interopRequireDefault(_classnames);
 
-var _header = __webpack_require__(32);
+var _header = __webpack_require__(33);
 
 var _header2 = _interopRequireDefault(_header);
 
-var _caption = __webpack_require__(44);
+var _caption = __webpack_require__(45);
 
 var _caption2 = _interopRequireDefault(_caption);
 
-var _body = __webpack_require__(45);
+var _body = __webpack_require__(46);
 
 var _body2 = _interopRequireDefault(_body);
 
-var _propsResolver = __webpack_require__(56);
+var _propsResolver = __webpack_require__(57);
 
 var _propsResolver2 = _interopRequireDefault(_propsResolver);
 
@@ -18706,7 +18770,7 @@ BootstrapTable.defaultProps = {
 exports.default = BootstrapTable;
 
 /***/ }),
-/* 31 */
+/* 32 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19268,7 +19332,7 @@ module.exports = function(isValidElement, throwOnDirectAccess) {
 
 
 /***/ }),
-/* 32 */
+/* 33 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19286,23 +19350,23 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _headerCell = __webpack_require__(33);
+var _headerCell = __webpack_require__(34);
 
 var _headerCell2 = _interopRequireDefault(_headerCell);
 
-var _selectionHeaderCell = __webpack_require__(37);
+var _selectionHeaderCell = __webpack_require__(38);
 
 var _selectionHeaderCell2 = _interopRequireDefault(_selectionHeaderCell);
 
-var _expandHeaderCell = __webpack_require__(38);
+var _expandHeaderCell = __webpack_require__(39);
 
 var _expandHeaderCell2 = _interopRequireDefault(_expandHeaderCell);
 
-var _selectionHeaderCellConsumer = __webpack_require__(39);
+var _selectionHeaderCellConsumer = __webpack_require__(40);
 
 var _selectionHeaderCellConsumer2 = _interopRequireDefault(_selectionHeaderCellConsumer);
 
-var _expandHeaderCellConsumer = __webpack_require__(43);
+var _expandHeaderCellConsumer = __webpack_require__(44);
 
 var _expandHeaderCellConsumer2 = _interopRequireDefault(_expandHeaderCellConsumer);
 
@@ -19382,7 +19446,7 @@ Header.propTypes = {
 exports.default = Header;
 
 /***/ }),
-/* 33 */
+/* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19411,11 +19475,11 @@ var _const = __webpack_require__(3);
 
 var _const2 = _interopRequireDefault(_const);
 
-var _symbol = __webpack_require__(34);
+var _symbol = __webpack_require__(35);
 
 var _symbol2 = _interopRequireDefault(_symbol);
 
-var _caret = __webpack_require__(35);
+var _caret = __webpack_require__(36);
 
 var _caret2 = _interopRequireDefault(_caret);
 
@@ -19558,7 +19622,7 @@ HeaderCell.propTypes = {
 exports.default = HeaderCell;
 
 /***/ }),
-/* 34 */
+/* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19603,7 +19667,7 @@ var SortSymbol = function SortSymbol() {
 exports.default = SortSymbol;
 
 /***/ }),
-/* 35 */
+/* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -19661,7 +19725,7 @@ SortCaret.propTypes = {
 exports.default = SortCaret;
 
 /***/ }),
-/* 36 */
+/* 37 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;//     Underscore.js 1.9.1
@@ -21358,10 +21422,10 @@ exports.default = SortCaret;
   }
 }());
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(21)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(14), __webpack_require__(22)(module)))
 
 /***/ }),
-/* 37 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21533,7 +21597,7 @@ SelectionHeaderCell.propTypes = {
 exports.default = SelectionHeaderCell;
 
 /***/ }),
-/* 38 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21617,7 +21681,7 @@ ExpansionHeaderCell.propTypes = {
 exports.default = ExpansionHeaderCell;
 
 /***/ }),
-/* 39 */
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21650,7 +21714,7 @@ exports.default = function (Component) {
 };
 
 /***/ }),
-/* 40 */
+/* 41 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21715,7 +21779,7 @@ var getExpandedRows = exports.getExpandedRows = function getExpandedRows(data, k
 };
 
 /***/ }),
-/* 41 */
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21740,7 +21804,7 @@ var editCell = exports.editCell = function editCell(data, keyField, rowId, dataF
 };
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21812,7 +21876,7 @@ var nextOrder = exports.nextOrder = function nextOrder(currentSortColumn, _ref2)
 };
 
 /***/ }),
-/* 43 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21845,7 +21909,7 @@ exports.default = function (Component) {
 };
 
 /***/ }),
-/* 44 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21882,7 +21946,7 @@ Caption.propTypes = {
 exports.default = Caption;
 
 /***/ }),
-/* 45 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -21908,15 +21972,15 @@ var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _simpleRow = __webpack_require__(46);
+var _simpleRow = __webpack_require__(47);
 
 var _simpleRow2 = _interopRequireDefault(_simpleRow);
 
-var _aggregateRow = __webpack_require__(49);
+var _aggregateRow = __webpack_require__(50);
 
 var _aggregateRow2 = _interopRequireDefault(_aggregateRow);
 
-var _rowSection = __webpack_require__(52);
+var _rowSection = __webpack_require__(53);
 
 var _rowSection2 = _interopRequireDefault(_rowSection);
 
@@ -21924,11 +21988,11 @@ var _const = __webpack_require__(3);
 
 var _const2 = _interopRequireDefault(_const);
 
-var _rowConsumer = __webpack_require__(53);
+var _rowConsumer = __webpack_require__(54);
 
 var _rowConsumer2 = _interopRequireDefault(_rowConsumer);
 
-var _rowConsumer3 = __webpack_require__(54);
+var _rowConsumer3 = __webpack_require__(55);
 
 var _rowConsumer4 = _interopRequireDefault(_rowConsumer3);
 
@@ -22049,7 +22113,7 @@ Body.propTypes = {
 exports.default = Body;
 
 /***/ }),
-/* 46 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22071,15 +22135,15 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _rowPureContent = __webpack_require__(16);
+var _rowPureContent = __webpack_require__(17);
 
 var _rowPureContent2 = _interopRequireDefault(_rowPureContent);
 
-var _eventDelegater = __webpack_require__(17);
+var _eventDelegater = __webpack_require__(18);
 
 var _eventDelegater2 = _interopRequireDefault(_eventDelegater);
 
-var _shouldUpdater2 = __webpack_require__(18);
+var _shouldUpdater2 = __webpack_require__(19);
 
 var _shouldUpdater3 = _interopRequireDefault(_shouldUpdater2);
 
@@ -22163,7 +22227,7 @@ SimpleRow.defaultProps = {
 exports.default = SimpleRow;
 
 /***/ }),
-/* 47 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22185,7 +22249,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _cellEventDelegater = __webpack_require__(48);
+var _cellEventDelegater = __webpack_require__(49);
 
 var _cellEventDelegater2 = _interopRequireDefault(_cellEventDelegater);
 
@@ -22308,7 +22372,7 @@ Cell.propTypes = {
 exports.default = Cell;
 
 /***/ }),
-/* 48 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22378,7 +22442,7 @@ exports.default = function (ExtendBase) {
 };
 
 /***/ }),
-/* 49 */
+/* 50 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22404,23 +22468,23 @@ var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _expandCell = __webpack_require__(50);
+var _expandCell = __webpack_require__(51);
 
 var _expandCell2 = _interopRequireDefault(_expandCell);
 
-var _selectionCell = __webpack_require__(51);
+var _selectionCell = __webpack_require__(52);
 
 var _selectionCell2 = _interopRequireDefault(_selectionCell);
 
-var _shouldUpdater2 = __webpack_require__(18);
+var _shouldUpdater2 = __webpack_require__(19);
 
 var _shouldUpdater3 = _interopRequireDefault(_shouldUpdater2);
 
-var _eventDelegater = __webpack_require__(17);
+var _eventDelegater = __webpack_require__(18);
 
 var _eventDelegater2 = _interopRequireDefault(_eventDelegater);
 
-var _rowPureContent = __webpack_require__(16);
+var _rowPureContent = __webpack_require__(17);
 
 var _rowPureContent2 = _interopRequireDefault(_rowPureContent);
 
@@ -22539,7 +22603,7 @@ RowAggregator.defaultProps = {
 exports.default = RowAggregator;
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22640,7 +22704,7 @@ ExpandCell.propTypes = {
 exports.default = ExpandCell;
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22777,7 +22841,7 @@ SelectionCell.propTypes = {
 exports.default = SelectionCell;
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22828,7 +22892,7 @@ RowSection.defaultProps = {
 exports.default = RowSection;
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22907,7 +22971,7 @@ exports.default = function (Component) {
 };
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -22924,7 +22988,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _expandRow = __webpack_require__(55);
+var _expandRow = __webpack_require__(56);
 
 var _expandRow2 = _interopRequireDefault(_expandRow);
 
@@ -22967,7 +23031,7 @@ exports.default = function (Component, visibleColumnSize) {
 };
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23015,7 +23079,7 @@ ExpandRow.defaultProps = {
 exports.default = ExpandRow;
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23027,7 +23091,7 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _columnResolver = __webpack_require__(57);
+var _columnResolver = __webpack_require__(58);
 
 var _columnResolver2 = _interopRequireDefault(_columnResolver);
 
@@ -23073,7 +23137,7 @@ exports.default = function (ExtendBase) {
 };
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23125,7 +23189,7 @@ exports.default = function (ExtendBase) {
 };
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23147,11 +23211,11 @@ var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _dataContext = __webpack_require__(59);
+var _dataContext = __webpack_require__(60);
 
 var _dataContext2 = _interopRequireDefault(_dataContext);
 
-var _sortContext = __webpack_require__(60);
+var _sortContext = __webpack_require__(61);
 
 var _sortContext2 = _interopRequireDefault(_sortContext);
 
@@ -23163,7 +23227,7 @@ var _rowExpandContext = __webpack_require__(11);
 
 var _rowExpandContext2 = _interopRequireDefault(_rowExpandContext);
 
-var _remoteResolver2 = __webpack_require__(61);
+var _remoteResolver2 = __webpack_require__(62);
 
 var _remoteResolver3 = _interopRequireDefault(_remoteResolver2);
 
@@ -23478,7 +23542,7 @@ var withContext = function withContext(Base) {
 exports.default = withContext;
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23567,7 +23631,7 @@ exports.default = function () {
 };
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23719,7 +23783,7 @@ exports.default = function (dataOperator, isRemoteSort, handleSortChange) {
 };
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23840,10 +23904,10 @@ exports.default = function (ExtendBase) {
 };
 
 /***/ }),
-/* 62 */
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(19)(false);
+exports = module.exports = __webpack_require__(20)(false);
 // imports
 
 
@@ -23854,7 +23918,7 @@ exports.push([module.i, ".react-bootstrap-table table{table-layout:fixed}.react-
 
 
 /***/ }),
-/* 63 */
+/* 64 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -23870,7 +23934,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _leaflet = __webpack_require__(29);
+var _leaflet = __webpack_require__(30);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
@@ -23922,12 +23986,12 @@ var Map = function (_React$Component) {
                 layers: []
             });
 
-            var streets = _leaflet2.default.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+            var streets = _leaflet2.default.tileLayer("https://a.tile.openstreetmap.org/{z}/{x}/{y}.png", {
                 attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             }).addTo(this.map);
             streets['category'] = 'Base';
 
-            var imagery = _leaflet2.default.tileLayer("http://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+            var imagery = _leaflet2.default.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
                 attribution: '&copy; <a href="http://www.esri.com/">Esri</a>i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
                 maxZoom: 18
             });
@@ -24136,7 +24200,6 @@ var Map = function (_React$Component) {
 exports.default = Map;
 
 /***/ }),
-/* 64 */,
 /* 65 */,
 /* 66 */,
 /* 67 */,
@@ -24152,7 +24215,8 @@ exports.default = Map;
 /* 77 */,
 /* 78 */,
 /* 79 */,
-/* 80 */
+/* 80 */,
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24162,10 +24226,6 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _regenerator = __webpack_require__(22);
-
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -24174,21 +24234,23 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _Map = __webpack_require__(63);
+var _Map = __webpack_require__(64);
 
 var _Map2 = _interopRequireDefault(_Map);
 
-var _MapControl = __webpack_require__(81);
+var _MapControl = __webpack_require__(82);
 
 var _MapControl2 = _interopRequireDefault(_MapControl);
 
-var _FeatureInfoDisplay = __webpack_require__(82);
+var _FeatureInfoDisplay = __webpack_require__(83);
 
 var _FeatureInfoDisplay2 = _interopRequireDefault(_FeatureInfoDisplay);
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+var _fetchData = __webpack_require__(28);
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+var _fetchData2 = _interopRequireDefault(_fetchData);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -24213,7 +24275,6 @@ var Normaapp = function (_React$Component) {
         _this.setDefaultMax = _this.setDefaultMax.bind(_this);
         _this.handleOverlayChange = _this.handleOverlayChange.bind(_this);
         _this.setRasterValue = _this.setRasterValue.bind(_this);
-        _this.getRasterValue = _this.getRasterValue.bind(_this);
 
         _this.state = {
             currentUdpId: -1,
@@ -24241,7 +24302,7 @@ var Normaapp = function (_React$Component) {
         value: function handleOverlayChange(name, type) {
             this.setState(function (prevState) {
                 return {
-                    rasterOn: name == 'temp_85_puebla' && type == 'overlayadd' ? true : name == 'temp_85_puebla' && type == 'overlayremove' ? false : prevState.rasterOn
+                    rasterOn: name == 'Escenario85_2099_Temp_UNIATMOS_2015' && type == 'overlayadd' ? true : name == 'Escenario85_2099_Temp_UNIATMOS_2015' && type == 'overlayremove' ? false : prevState.rasterOn
                 };
             });
         }
@@ -24277,55 +24338,6 @@ var Normaapp = function (_React$Component) {
             });
         }
     }, {
-        key: "getRasterValue",
-        value: function () {
-            var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(lat, lng) {
-                var myapi, rawResponse, dataResult;
-                return _regenerator2.default.wrap(function _callee$(_context) {
-                    while (1) {
-                        switch (_context.prev = _context.next) {
-                            case 0:
-                                myapi = "https://biodiversidadpuebla.online/api/getRasterValue";
-
-                                if (window.location.host == "localhost:3000") myapi = "http://localhost:3000/api/getRasterValue";
-                                _context.next = 4;
-                                return fetch(myapi, {
-                                    method: "POST",
-                                    headers: {
-                                        Accept: "application/json",
-                                        "Content-Type": "application/json;",
-                                        mode: "cors"
-                                    },
-                                    body: JSON.stringify({
-                                        lat: lat,
-                                        lng: lng
-                                    })
-                                });
-
-                            case 4:
-                                rawResponse = _context.sent;
-                                _context.next = 7;
-                                return rawResponse.json();
-
-                            case 7:
-                                dataResult = _context.sent;
-                                return _context.abrupt("return", dataResult);
-
-                            case 9:
-                            case "end":
-                                return _context.stop();
-                        }
-                    }
-                }, _callee, this);
-            }));
-
-            function getRasterValue(_x, _x2) {
-                return _ref.apply(this, arguments);
-            }
-
-            return getRasterValue;
-        }()
-    }, {
         key: "handleMapClick",
         value: function handleMapClick(event) {
             var _this2 = this;
@@ -24340,7 +24352,7 @@ var Normaapp = function (_React$Component) {
             });
 
             if (this.state.rasterOn) {
-                this.getRasterValue(event.latlng.lat, event.latlng.lng).then(function (returnData) {
+                (0, _fetchData2.default)('getRasterValue', { lat: event.latlng.lat, lng: event.latlng.lng }).then(function (returnData) {
                     _this2.setRasterValue(parseFloat(returnData).toPrecision(2));
                 });
             }
@@ -24604,7 +24616,7 @@ var Normaapp = function (_React$Component) {
 exports.default = Normaapp;
 
 /***/ }),
-/* 81 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24821,7 +24833,7 @@ var MapControl = function (_React$Component) {
 exports.default = MapControl;
 
 /***/ }),
-/* 82 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -24977,7 +24989,6 @@ function FeatureInfoDisplay(props) {
 exports.default = FeatureInfoDisplay;
 
 /***/ }),
-/* 83 */,
 /* 84 */,
 /* 85 */,
 /* 86 */,
@@ -25017,7 +25028,7 @@ exports.default = FeatureInfoDisplay;
 /* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(80);
+module.exports = __webpack_require__(81);
 
 
 /***/ })

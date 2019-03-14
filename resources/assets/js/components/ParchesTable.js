@@ -70,9 +70,7 @@ class ParchesTable extends React.Component {
       }
 
       allParches.sort(compare);
-      this.setState(prevState => ({
-        allParches: allParches
-      }));
+      this.setState({ allParches: allParches });
 
       const allParchesSum = [
         {
@@ -98,9 +96,7 @@ class ParchesTable extends React.Component {
           nombre: largestTypeName
         }
       ];
-      this.setState(prevState => ({
-        allParchesSum: allParchesSum
-      }));
+      this.setState({ allParchesSum: allParchesSum });
       
      
       const agualength = (
@@ -133,9 +129,7 @@ class ParchesTable extends React.Component {
         }
       ];
 
-      this.setState(prevState => ({
-        dataAguaLinea: dataAguaLinea
-      }));
+      this.setState({ dataAguaLinea: dataAguaLinea });
 
       
       const descriptionString = `La Unidad de Paisaje \

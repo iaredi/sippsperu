@@ -7,14 +7,14 @@
 	}
 ?>
 
-@include('inc/loadlayers')
-@include('inc/header')
-@include('inc/nav')
+	@include('inc/loadlayers')
+	@include('inc/header')
+	@include('inc/nav')
 
-<div id="app"></div>
-<link rel="stylesheet" href="leaflet_assets/leaflet.css"> 
-<script src="{{ asset('leaflet_assets/index.js') }}" ></script>  
-
-@include('inc/footer')
-
-
+	<div id="app"></div>
+	<link rel="stylesheet" href="leaflet_assets/leaflet.css">
+	<script>
+		var infotype ='map'
+	</script>
+	<script src="{{ asset('js/index.js') }}"></script>
+	@include('inc/footer')
