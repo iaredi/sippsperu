@@ -342,6 +342,70 @@ var getRowByRowId = exports.getRowByRowId = function getRowByRowId(data, keyFiel
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _regenerator = __webpack_require__(12);
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
+exports.default = function () {
+    var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(url, body) {
+        var myapi, rawResponse, dataResult;
+        return _regenerator2.default.wrap(function _callee$(_context) {
+            while (1) {
+                switch (_context.prev = _context.next) {
+                    case 0:
+                        myapi = "https://biodiversidadpuebla.online/api/" + url;
+
+                        if (window.location.host == "localhost:3000") myapi = "http://localhost:3000/api/" + url;
+                        _context.next = 4;
+                        return fetch(myapi, {
+                            method: "POST",
+                            headers: {
+                                Accept: "application/json",
+                                "Content-Type": "application/json;",
+                                mode: "cors"
+                            },
+                            body: JSON.stringify(body)
+                        });
+
+                    case 4:
+                        rawResponse = _context.sent;
+                        _context.next = 7;
+                        return rawResponse.json();
+
+                    case 7:
+                        dataResult = _context.sent;
+                        return _context.abrupt("return", dataResult);
+
+                    case 9:
+                    case "end":
+                        return _context.stop();
+                }
+            }
+        }, _callee, this);
+    }));
+
+    function fetchData(_x, _x2) {
+        return _ref.apply(this, arguments);
+    }
+
+    return fetchData;
+}();
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
 /*
 object-assign
 (c) Sindre Sorhus
@@ -435,7 +499,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -451,7 +515,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 var printWarning = function() {};
 
 if (true) {
-  var ReactPropTypesSecret = __webpack_require__(11);
+  var ReactPropTypesSecret = __webpack_require__(13);
   var loggedTypeFailures = {};
 
   printWarning = function(text) {
@@ -533,7 +597,7 @@ module.exports = checkPropTypes;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports) {
 
 var g;
@@ -560,7 +624,14 @@ module.exports = g;
 
 
 /***/ }),
-/* 11 */
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(21);
+
+
+/***/ }),
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -579,7 +650,7 @@ module.exports = ReactPropTypesSecret;
 
 
 /***/ }),
-/* 12 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -602,7 +673,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 exports.default = (0, _contexts2.default)(_bootstrapTable2.default);
 
 /***/ }),
-/* 13 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -628,7 +699,7 @@ var _const = __webpack_require__(3);
 
 var _const2 = _interopRequireDefault(_const);
 
-var _operators = __webpack_require__(14);
+var _operators = __webpack_require__(16);
 
 var _operators2 = _interopRequireDefault(_operators);
 
@@ -800,7 +871,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 14 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -837,7 +908,7 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 exports.default = _extends({}, rows, selection, expand, mutate, sort);
 
 /***/ }),
-/* 15 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -859,7 +930,7 @@ var _propTypes = __webpack_require__(1);
 
 var _propTypes2 = _interopRequireDefault(_propTypes);
 
-var _operators = __webpack_require__(14);
+var _operators = __webpack_require__(16);
 
 var _operators2 = _interopRequireDefault(_operators);
 
@@ -997,7 +1068,7 @@ exports.default = {
 };
 
 /***/ }),
-/* 16 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
@@ -1028,14 +1099,7 @@ if(false) {
 }
 
 /***/ }),
-/* 17 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(21);
-
-
-/***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* @preserve
@@ -14911,70 +14975,6 @@ window.L = exports;
 
 
 /***/ }),
-/* 19 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _regenerator = __webpack_require__(17);
-
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
-exports.default = function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(url, body) {
-        var myapi, rawResponse, dataResult;
-        return _regenerator2.default.wrap(function _callee$(_context) {
-            while (1) {
-                switch (_context.prev = _context.next) {
-                    case 0:
-                        myapi = "https://biodiversidadpuebla.online/api/" + url;
-
-                        if (window.location.host == "localhost:3000") myapi = "http://localhost:3000/api/" + url;
-                        _context.next = 4;
-                        return fetch(myapi, {
-                            method: "POST",
-                            headers: {
-                                Accept: "application/json",
-                                "Content-Type": "application/json;",
-                                mode: "cors"
-                            },
-                            body: JSON.stringify(body)
-                        });
-
-                    case 4:
-                        rawResponse = _context.sent;
-                        _context.next = 7;
-                        return rawResponse.json();
-
-                    case 7:
-                        dataResult = _context.sent;
-                        return _context.abrupt("return", dataResult);
-
-                    case 9:
-                    case "end":
-                        return _context.stop();
-                }
-            }
-        }, _callee, this);
-    }));
-
-    function fetchData(_x, _x2) {
-        return _ref.apply(this, arguments);
-    }
-
-    return fetchData;
-}();
-
-/***/ }),
 /* 20 */
 /***/ (function(module, exports) {
 
@@ -15793,7 +15793,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _leaflet = __webpack_require__(18);
+var _leaflet = __webpack_require__(19);
 
 var _leaflet2 = _interopRequireDefault(_leaflet);
 
@@ -16080,8 +16080,8 @@ if (true) {
   (function() {
 'use strict';
 
-var _assign = __webpack_require__(8);
-var checkPropTypes = __webpack_require__(9);
+var _assign = __webpack_require__(9);
+var checkPropTypes = __webpack_require__(10);
 
 // TODO: this is special because it gets imported during build.
 
@@ -18811,7 +18811,7 @@ var _FeatureInfoDisplay = __webpack_require__(36);
 
 var _FeatureInfoDisplay2 = _interopRequireDefault(_FeatureInfoDisplay);
 
-var _fetchData = __webpack_require__(19);
+var _fetchData = __webpack_require__(8);
 
 var _fetchData2 = _interopRequireDefault(_fetchData);
 
@@ -19412,11 +19412,11 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _reactBootstrapTableNext = __webpack_require__(12);
+var _reactBootstrapTableNext = __webpack_require__(14);
 
 var _reactBootstrapTableNext2 = _interopRequireDefault(_reactBootstrapTableNext);
 
-__webpack_require__(16);
+__webpack_require__(18);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -19840,10 +19840,10 @@ exports.default = BootstrapTable;
 
 
 
-var assign = __webpack_require__(8);
+var assign = __webpack_require__(9);
 
-var ReactPropTypesSecret = __webpack_require__(11);
-var checkPropTypes = __webpack_require__(9);
+var ReactPropTypesSecret = __webpack_require__(13);
+var checkPropTypes = __webpack_require__(10);
 
 var printWarning = function() {};
 
@@ -22479,7 +22479,7 @@ exports.default = SortCaret;
   }
 }());
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10), __webpack_require__(20)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(20)(module)))
 
 /***/ }),
 /* 44 */
@@ -22752,7 +22752,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _selectionContext = __webpack_require__(13);
+var _selectionContext = __webpack_require__(15);
 
 var _selectionContext2 = _interopRequireDefault(_selectionContext);
 
@@ -22947,7 +22947,7 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _rowExpandContext = __webpack_require__(15);
+var _rowExpandContext = __webpack_require__(17);
 
 var _rowExpandContext2 = _interopRequireDefault(_rowExpandContext);
 
@@ -23974,7 +23974,7 @@ var _utils = __webpack_require__(2);
 
 var _utils2 = _interopRequireDefault(_utils);
 
-var _selectionContext = __webpack_require__(13);
+var _selectionContext = __webpack_require__(15);
 
 var _selectionContext2 = _interopRequireDefault(_selectionContext);
 
@@ -24049,7 +24049,7 @@ var _expandRow = __webpack_require__(62);
 
 var _expandRow2 = _interopRequireDefault(_expandRow);
 
-var _rowExpandContext = __webpack_require__(15);
+var _rowExpandContext = __webpack_require__(17);
 
 var _rowExpandContext2 = _interopRequireDefault(_rowExpandContext);
 
@@ -24276,11 +24276,11 @@ var _sortContext = __webpack_require__(67);
 
 var _sortContext2 = _interopRequireDefault(_sortContext);
 
-var _selectionContext = __webpack_require__(13);
+var _selectionContext = __webpack_require__(15);
 
 var _selectionContext2 = _interopRequireDefault(_selectionContext);
 
-var _rowExpandContext = __webpack_require__(15);
+var _rowExpandContext = __webpack_require__(17);
 
 var _rowExpandContext2 = _interopRequireDefault(_rowExpandContext);
 
@@ -24290,7 +24290,7 @@ var _remoteResolver3 = _interopRequireDefault(_remoteResolver2);
 
 var _bootstrap = __webpack_require__(5);
 
-var _operators = __webpack_require__(14);
+var _operators = __webpack_require__(16);
 
 var _operators2 = _interopRequireDefault(_operators);
 

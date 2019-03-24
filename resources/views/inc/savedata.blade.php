@@ -1,9 +1,9 @@
 <?php
   function savedata($newpost, $useremail, $fromexcel=false){
-    $errorarray=[];
+    
 	$resultofquery=[];
 
-    if ($_SERVER['REQUEST_METHOD']=="POST"  && (!session('visitante'))){
+    if ($_SERVER['REQUEST_METHOD']=="POST" && sizeof(session('error'))==0  && (!session('visitante'))){
       $mtpchoice =$newpost['selectlinea_mtp'];    
         if ($mtpchoice=="Nuevo") {
           //Save New Estado Data

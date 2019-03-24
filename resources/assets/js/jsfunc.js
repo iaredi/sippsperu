@@ -1,4 +1,4 @@
-//import fetchData from "./fetchData";
+import fetchData from "./fetchData";
 
 function buildDropdowns(tableName, menu, jsTable="Form",octothorp=false){
     if (!(menu)){
@@ -781,9 +781,20 @@ function clickReadyButton(e){
     
     if (e.offsetX>0){
         
-        getData().then(dataResult =>{
+        //getData().then(dataResult =>{
+			console.log(selectedPunto,selectedTransecto)
+		fetchData('getudp',
+			{
+				"lineamtp": document.getElementById("measurementlinea_mtpSelect").value,
+				"medicion":document.getElementById("measurementmedicionMedicion").value,
+				"observacion":myChoice,
+				"punto":selectedPunto? selectedPunto.value:"0",
+				"transecto":selectedTransecto? selectedTransecto.value:"0",
+				"useremail":useremail
+			}).then(dataResult =>{
             clearForm(menu,"Form")
             if (dataResult[0].length>0){
+				console.log(dataResult)
               
                 const myTBody = document.getElementById(menu+"TBody"+'Form')
                 const hiddenLocation = document.createElement('input')
