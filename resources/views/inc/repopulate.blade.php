@@ -1,24 +1,21 @@
-
 <?php
-       
-        $sessionlist=['linea_mtp','medicion'];
-        foreach($sessionlist as $sessiondropdown){
-            if (session()->has('my_'.$sessiondropdown)){
+	$sessionlist=['linea_mtp','medicion'];
+	foreach($sessionlist as $sessiondropdown){
+		if (session()->has('my_'.$sessiondropdown)){
 
 
 
-                echo "<script>document.getElementsByName(".json_encode('select'.$sessiondropdown).")[0].value=".json_encode(session('my_'.$sessiondropdown))."</script>";
+			echo "<script>document.getElementsByName(".json_encode('select'.$sessiondropdown).")[0].value=".json_encode(session('my_'.$sessiondropdown))."</script>";
 
 
-                echo "<script>document.getElementsByName(".json_encode('select'.$sessiondropdown).")[0].onchange()</script>";
-            
+			echo "<script>document.getElementsByName(".json_encode('select'.$sessiondropdown).")[0].onchange()</script>";
+		
 
-            }
-        }
+		}
+	}
 
     if (sizeof(session('error'))>0 && isset($_POST['mode']) ) {
         echo '<script>var newold='.json_encode($_POST['mode']).'</script>';
-
         if (isset($_POST['hiddenlocation'])){
             echo '<script>var hiddenlocationvalue='.json_encode($_POST['hiddenlocation']).'</script>';
         }

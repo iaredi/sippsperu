@@ -101,16 +101,15 @@
                 $medicionfkey=askforkey("linea_mtp", "iden", "nombre_iden", $mtpchoice);
 
                 $linea_mtpclave_predio=askforkey("linea_mtp", "iden_predio", "nombre_iden", $mtpchoice);
-                $predioname=askforkey("predio", "nombre", "iden", $linea_mtpclave_predio);
+				$predioname=askforkey("predio", "nombre", "iden", $linea_mtpclave_predio);
+				$formatteddate = substr($newpost['row0*medicion*fecha'], 8, 2) .  substr($newpost['row0*medicion*fecha'], 4, 4) . substr($newpost['row0*medicion*fecha'], 0, 4);
                 $medicioncolumns=array(
                   "iden_linea_mtp"=>$medicionfkey,
                   "fecha"=> $newpost['row0*medicion*fecha'],
-                  "iden_nombre"=> $predioname."*".$newpost['row0*medicion*fecha']
+                  "iden_nombre"=> $predioname."*".$formatteddate
                 );
                 $resultofquery[]= savenewentry("medicion", $medicioncolumns);
                 $max_medicion = getserialmax( "medicion");
-                session(['testvar' => $newpost['row0*medicion*fecha']]);
-
 
                 //Save New People and Brigada Data  
                 $max_medicion = getserialmax( "medicion");

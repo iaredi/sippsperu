@@ -28,7 +28,7 @@
         $day =  $spreadsheet->getSheetByName('MEDICION')->getCell('A3')->getValue();
         $month =  $spreadsheet->getSheetByName('MEDICION')->getCell('B3')->getValue();
         $year =  $spreadsheet->getSheetByName('MEDICION')->getCell('C3')->getValue();
-        $medicionpost['row0*medicion*fecha'] ="{$year}-{$month}-{$day}";
+        $medicionpost['row0*medicion*fecha'] ="{$day}-{$month}-{$year}";
 
         $brigadarownumber=3;
         while (true){
