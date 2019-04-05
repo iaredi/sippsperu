@@ -157,6 +157,7 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 
 
   function formatdate($locvalue){
+	  echo $locvalue;
 	if (strlen($locvalue)<=4){
 		return "01-01-1900";
 	}
@@ -169,27 +170,47 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 		$locvalue=substr($locvalue, 0, 3) . "0" . substr($locvalue, 3);
 	}
 	//Switch day and month
-	if (is_numeric(substr($locvalue, 3, 2))){
-		$locvalue= substr($locvalue, 3, 3) .substr($locvalue, 0, 3) . substr($locvalue, 6, 4);
-	}else{
-		$rawmonth=strtolower(explode(substr($locvalue, 2, 1), $locvalue)[1]);
-		$newmonth = strpos($rawmonth, 'ene') !== false ? 'jan':
-		strpos($rawmonth, 'ene') !== false || strpos($rawmonth, 'jan') !== false  ? 'jan':
-		strpos($rawmonth, 'feb') !== false ? 'feb':
-		strpos($rawmonth, 'mar') !== false ? 'mar':
-		strpos($rawmonth, 'abr') !== false || strpos($rawmonth, 'apr') !== false  ? 'apr':
-		strpos($rawmonth, 'may') !== false ? 'may':
-		strpos($rawmonth, 'jun') !== false ? 'jun':
-		strpos($rawmonth, 'jul') !== false ? 'jul':
-		strpos($rawmonth, 'ago') !== false || strpos($rawmonth, 'aug') !== false  ? 'aug':
-		strpos($rawmonth, 'sep') !== false ? 'sep':
-		strpos($rawmonth, 'oct') !== false ? 'oct':
-		strpos($rawmonth, 'nov') !== false ? 'nov':
-		strpos($rawmonth, 'dic') !== false || strpos($rawmonth, 'dec') !== false  ? 'dec': 
-		'error';
-		$locvalue=explode(substr($locvalue, 2, 1), $locvalue)[0] ."-" . $newmonth ."-". explode(substr($locvalue, 2, 1), $locvalue)[2];
+	$divider=substr($locvalue, 2, 1);
+	$rawmonth=strtolower(explode($divider, $locvalue)[1]);	
+	if (ctype_alpha(substr($locvalue, 3, 2))){
+		if (strpos($rawmonth, 'ene') !== false || strpos($rawmonth, 'jan') !== false){
+			$rawmonth='01';
+		}
+		elseif (strpos($rawmonth, 'feb') !== false){
+			$rawmonth='02';
+		}
+		elseif (strpos($rawmonth, 'mar') !== false){
+			$rawmonth='03';
+		}
+		elseif (strpos($rawmonth, 'abr') !== false || strpos($rawmonth, 'apr') !== false){
+			$rawmonth='04';
+		}
+		elseif (strpos($rawmonth, 'may') !== false){
+			$rawmonth='05';
+		}
+		elseif (strpos($rawmonth, 'jun') !== false){
+			$rawmonth='06';
+		}
+		elseif (strpos($rawmonth, 'jul') !== false){
+			$rawmonth='07';
+		}
+		elseif (strpos($rawmonth, 'aug') !== false || strpos($rawmonth, 'ago') !== false){
+			$rawmonth='08';
+		}
+		elseif (strpos($rawmonth, 'ene') !== false){
+			$rawmonth='09';
+		}
+		elseif (strpos($rawmonth, 'ene') !== false){
+			$rawmonth='10';
+		}
+		elseif (strpos($rawmonth, 'ene') !== false){
+			$rawmonth='11';
+		}
+		elseif (strpos($rawmonth, 'dic') !== false || strpos($rawmonth, 'dec') !== false){
+			$rawmonth='12';
+		}
 	}
-		return str_replace("/","-",$locvalue);
+	return explode($divider, $locvalue)[0] ."-" . $rawmonth ."-". explode($divider, $locvalue)[2];
   }
 
     function uploadfoto($newpost,$filesname,$filestmpname,$filessize, $obstype){
