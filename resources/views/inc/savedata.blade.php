@@ -104,12 +104,11 @@
 
                 $linea_mtpclave_predio=askforkey("linea_mtp", "iden_predio", "nombre_iden", $mtpchoice);
 				$predioname=askforkey("predio", "nombre", "iden", $linea_mtpclave_predio);
-				$formatteddate = substr($newpost['row0*medicion*fecha'], 3, 2) .'-'.  substr($newpost['row0*medicion*fecha'], 0, 2) .'-'. substr($newpost['row0*medicion*fecha'], 7);
-				
+				$spanishdate = substr($newpost['row0*medicion*fecha'], 3, 2) .'-'.  substr($newpost['row0*medicion*fecha'], 0, 2) .'-'. substr($newpost['row0*medicion*fecha'], 6);
 				$medicioncolumns=array(
                   "iden_linea_mtp"=>$medicionfkey,
-                  "fecha"=> $formatteddate,
-                  "iden_nombre"=> $predioname."*".$newpost['row0*medicion*fecha']
+                  "fecha"=> $newpost['row0*medicion*fecha'],
+                  "iden_nombre"=> $predioname."*".$spanishdate
                 );
 				$resultofquery[]= savenewentry("medicion", $medicioncolumns);
 				echo var_dump($resultofquery);

@@ -27,17 +27,8 @@
         $day =  $spreadsheet->getSheetByName('MEDICION')->getCell('A3')->getValue();
         $month =  $spreadsheet->getSheetByName('MEDICION')->getCell('B3')->getValue();
 		$year =  $spreadsheet->getSheetByName('MEDICION')->getCell('C3')->getValue();
-		if (strlen($day)==1){	
-			$day="0".$day;
-		}
-		if (strlen($month)==1){	
-			$month="0".$month;
-		}
-		if (strlen($year)==2){	
-			$year="20".$year;
-		}
 		
-        $medicionpost['row0*medicion*fecha'] ="{$day}-{$month}-{$year}";
+        $medicionpost['row0*medicion*fecha'] =formatdate($day.'-'.$month.'-'.$year);
 
         $brigadarownumber=3;
         while (true){
@@ -141,40 +132,7 @@
 					$errorlist[]="No hay datos en {$letter}2 en {$sheet} ";
 				}
 				if (strpos($loccolvalue, 'fecha') !== false){
-					if (strlen($locvalue)<=4){
-						$locvalue="01-01-1900";
-					}else{
-					//Add leading zero to day 
-						if (!is_numeric(substr($locvalue, 1, 1))){	
-							$locvalue="0".$locvalue;
-						}
-						//Add leading zero to month 
-						if (is_numeric(substr($locvalue, 3, 1)) && !(is_numeric(substr($locvalue, 4, 1)))){	
-							$locvalue=substr($locvalue, 0, 3) . "0" . substr($locvalue, 3);
-						}
-						//Switch day and month
-						if (is_numeric(substr($locvalue, 3, 2))){
-							$locvalue= substr($locvalue, 3, 3) .substr($locvalue, 0, 3) . substr($locvalue, 6, 4);
-						}else{
-							$rawmonth=strtolower(explode(substr($locvalue, 2, 1), $locvalue)[1]);
-							$newmonth = strpos($rawmonth, 'ene') !== false ? 'jan':
-							strpos($rawmonth, 'ene') !== false || strpos($rawmonth, 'jan') !== false  ? 'jan':
-							strpos($rawmonth, 'feb') !== false ? 'feb':
-							strpos($rawmonth, 'mar') !== false ? 'mar':
-							strpos($rawmonth, 'abr') !== false || strpos($rawmonth, 'apr') !== false  ? 'apr':
-							strpos($rawmonth, 'may') !== false ? 'may':
-							strpos($rawmonth, 'jun') !== false ? 'jun':
-							strpos($rawmonth, 'jul') !== false ? 'jul':
-							strpos($rawmonth, 'ago') !== false || strpos($rawmonth, 'aug') !== false  ? 'aug':
-							strpos($rawmonth, 'sep') !== false ? 'sep':
-							strpos($rawmonth, 'oct') !== false ? 'oct':
-							strpos($rawmonth, 'nov') !== false ? 'nov':
-							strpos($rawmonth, 'dic') !== false || strpos($rawmonth, 'dec') !== false  ? 'dec': 
-							'error';
-							$locvalue=explode(substr($locvalue, 2, 1), $locvalue)[0] ."-" . $newmonth ."-". explode(substr($locvalue, 2, 1), $locvalue)[2];
-						}
-						$locvalue=str_replace("/","-",$locvalue);
-					}
+					$locvalue=formatdate($locvalue);
 				}
 
 
@@ -309,7 +267,7 @@
       if(sizeof($errorlist)==0){
 		  
 		$newmedicion = savedata($medicionpost,$_FILES, $useremail,true);
-		
+		echo $newmedicion;
         foreach ($obspostarray as $currentobspost) {
 		  $currentobspost['selectmedicion'] = $newmedicion;
 			
@@ -326,7 +284,5 @@
   }
 
 }
-
-
   session(['error' => $errorlist]);
 ?>
