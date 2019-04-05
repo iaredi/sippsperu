@@ -22,7 +22,7 @@ $layer1->opacity = 1;
 $layer1->weight = 0.3;
 $layer1->fillOpacity = 0.5;
 $layer1->sql ="SELECT *, ST_AsGeoJSON(geom_count6_dom.geom, 5) AS geojson FROM geom_count6_dom
-LEFT JOIN onlyemail ON geom_count6_dom.iden = onlyemail.iden limit 1"
+LEFT JOIN onlyemail ON geom_count6_dom.iden = onlyemail.iden"
 ;
 $layer1->category='Referencial';
 
