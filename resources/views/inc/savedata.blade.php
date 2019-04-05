@@ -104,8 +104,9 @@
 
                 $linea_mtpclave_predio=askforkey("linea_mtp", "iden_predio", "nombre_iden", $mtpchoice);
 				$predioname=askforkey("predio", "nombre", "iden", $linea_mtpclave_predio);
-				$formatteddate = substr($newpost['row0*medicion*fecha'], 8, 2) .  substr($newpost['row0*medicion*fecha'], 4, 4) . substr($newpost['row0*medicion*fecha'], 0, 4);
-                $medicioncolumns=array(
+				//$formatteddate = substr($newpost['row0*medicion*fecha'], 8, 2) .  substr($newpost['row0*medicion*fecha'], 4, 4) . substr($newpost['row0*medicion*fecha'], 0, 4);
+				$formatteddate = $newpost['row0*medicion*fecha'];
+				$medicioncolumns=array(
                   "iden_linea_mtp"=>$medicionfkey,
                   "fecha"=> $newpost['row0*medicion*fecha'],
                   "iden_nombre"=> $predioname."*".$formatteddate
@@ -283,7 +284,8 @@
           $failed++;
           $errorarray[]=$result;
         }
-      }
+	  }
+	  
       if(!$failed && $saved>0){
         return "true";
       }else{

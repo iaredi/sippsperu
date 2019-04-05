@@ -44,11 +44,11 @@
 					"Si no hizo la observacion, ingrese 0000.",
 					"Si hiciera observacion y no hubiera especies, ingrese 000.",
 					"Si no sabe con certeza algún dato, ingrese 00.",
-					"Todos los medidas son de 3 grados de precision. Por ejemplo 1.792",
-					"Todos las coordenadas son de 4 grados de precision. Por ejemplo -110.8170",
-					"No usa la palabra 'false'. Se puede usar 'falso' o 'no'",
-					"Solo 'notas' y 'iden_fotos' se puede dejar vacios",
-					"Hay que usar nombres de columnos exactos"
+					"Todos los medidas son de 3 grados de precision. Por ejemplo 1.792.",
+					"Todos las coordenadas son de 4 grados de precision. Por ejemplo -110.8170.",
+					"No usa la palabra 'false'. Se puede usar 'falso' o 'no'.",
+					"Solo 'notas' y 'iden_fotos' se puede dejar vacios.",
+					"Hay que usar nombres de columnos exactos."
 				];
 				foreach ($hintlist as $hint) {
 					echo "<p class='text-dark text-center'style='background-color: lightsteelblue;'>{$hint}</p>";

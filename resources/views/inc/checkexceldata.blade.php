@@ -301,6 +301,7 @@
         $newmedicion = savedata($medicionpost,$_FILES, $useremail,true);
         foreach ($obspostarray as $currentobspost) {
 		  $currentobspost['selectmedicion'] = $newmedicion;
+
 		  $saveworked = savedata($currentobspost,$useremail,true);
           
         }
