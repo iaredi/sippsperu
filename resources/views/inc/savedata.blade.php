@@ -111,7 +111,6 @@
                   "iden_nombre"=> $predioname."*".$spanishdate
                 );
 				$resultofquery[]= savenewentry("medicion", $medicioncolumns);
-				echo var_dump($resultofquery);
                 $max_medicion = getserialmax( "medicion");
 
                 //Save New People and Brigada Data  
@@ -274,7 +273,7 @@
                 }
             }
       }
-      session(['resultofquery' => $resultofquery]);
+	  session(['resultofquery' => $resultofquery]);
       $saved=0;
       $failed=0;
       foreach($resultofquery as $result) {

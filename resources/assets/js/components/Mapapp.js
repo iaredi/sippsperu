@@ -56,7 +56,7 @@ class Normaapp extends React.Component {
             properties.hierba_email,
             properties.herpetofauna_email,
             properties.mamifero_email
-        ];
+		];
         if (category == "color") {
             return emailArray.includes(email)
                 ? "purple"
@@ -204,6 +204,7 @@ class Normaapp extends React.Component {
 				}
 			}));
 		}
+		console.log(this.state.featureInfo)
     }
 
     handleOpacityChange(value) {

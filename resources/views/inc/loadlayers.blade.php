@@ -21,19 +21,23 @@ $layer1->fillColor = 'blue';
 $layer1->opacity = 1;
 $layer1->weight = 0.3;
 $layer1->fillOpacity = 0.5;
-$layer1->sql ="SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6_email";
+$layer1->sql ="SELECT *, ST_AsGeoJSON(geom_count6_dom.geom, 5) AS geojson FROM geom_count6_dom
+LEFT JOIN onlyemail ON geom_count6_dom.iden = onlyemail.iden limit 1"
+;
 $layer1->category='Referencial';
 
 $layer2 = new layer();
 $layer2->tableName = 'linea_mtp';
 $layer2->displayName = 'Linea MTP';
-$layer2->featureColumn = 'iden';
+$layer2->featureColumn = 'nombre_iden';
 $layer2->color = 'blue';
 $layer2->fillColor = 'black';
 $layer2->opacity = 1;
 $layer2->weight = 5;
 $layer2->fillOpacity = 1;
-$layer2->sql = "SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6_linea where iden_email like '{$dbemail}'";
+$layer2->sql = "SELECT *, linea_mtp.nombre_iden, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6_linea
+LEFT JOIN linea_mtp ON geom_count6_linea.iden = linea_mtp.iden
+where geom_count6_linea.iden_email like '{$dbemail}'";
 $layer2->category='Monitoreo Activo';
 
 
@@ -115,6 +119,10 @@ foreach ($layersArray as $layer) {
 			$row->displayName=$layer->displayName;
 			$row->featureColumn=$layer->featureColumn;
 			if ($layer->tableName=='udp_puebla_4326'){
+
+
+
+
 				foreach($dslist as $ds){
 					if($defaultmax[$ds]<$row->$ds){
 					$defaultmax[$ds]=$row->$ds;

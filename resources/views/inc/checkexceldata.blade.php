@@ -131,8 +131,18 @@
 				if ($locvalue==NULL && $letter!='A'){
 					$errorlist[]="No hay datos en {$letter}2 en {$sheet} ";
 				}
+
 				if (strpos($loccolvalue, 'fecha') !== false){
+					if ($locvalue=='00'||$locvalue=='000'||$locvalue=='0000'){
+						$locvalue='01-01-1900';
+					}
+					if (is_numeric($locvalue)){
+						$errorlist[]="La fecha en {$letter}2 en {$sheet} es en formato incorrecto.";
+					}
 					$locvalue=formatdate($locvalue);
+					if (!(is_numeric(substr($locvalue, 0, 2))&&is_numeric(substr($locvalue, 3, 2))&&is_numeric(substr($locvalue, 6, 4)))){
+						$errorlist[]="La fecha en {$letter}2 en {$sheet} es en formato incorrecto.";
+					}
 				}
 
 
@@ -191,6 +201,19 @@
                           $obspost["row{$true_row}*observacion_{$lifeform}*species"]=$cientifico;
                         }
                       }
+					}
+					//Handle Date
+					if (strpos($obscolumn, 'fecha') !== false){
+						if ($obsvalue=='00'||$obsvalue=='000'||$obsvalue=='0000'){
+							$obsvalue='01-01-1900';
+						}
+						if (is_numeric($obsvalue)){
+							$errorlist[]="La fecha en {$letter}{$row_number} en {$sheetobs} es en formato incorrecto.";
+						}
+						$obsvalue=formatdate($obsvalue);
+						if (!(is_numeric(substr($obsvalue, 0, 2))&&is_numeric(substr($obsvalue, 3, 2))&&is_numeric(substr($obsvalue, 6, 4)))){
+							$errorlist[]="La fecha en {$letter}{$row_number} en {$sheetobs} es en formato incorrecto.";
+						}
 					}
 
 					//Handle Invador
@@ -262,16 +285,23 @@
           $errorlist[]="{$fotonameexcel} no fue encontrado. Hay que subir fotos con los mismos nombres de los que estan en excel";
         }
       }
-      
-      //save all if no errors
+      //Check if Medicion already exist
+	  $spanishdate = substr($medicionpost['row0*medicion*fecha'], 3, 2) .'-'.  substr($medicionpost['row0*medicion*fecha'], 0, 2) .'-'. substr($medicionpost['row0*medicion*fecha'], 6);
+	  $checkold =trim(explode("(" , $medicionpost['selectlinea_mtp'])[0]).'*'.$spanishdate;
+	  if (sizeof(DB::select("Select iden from medicion where iden_nombre=?", [$checkold]))>0){
+		$errorlist[]="Ya existe una medicion para esta linea y fecha.";
+	  }
+	  //save all if no errors
+
       if(sizeof($errorlist)==0){
-		  
 		$newmedicion = savedata($medicionpost,$_FILES, $useremail,true);
-		echo $newmedicion;
         foreach ($obspostarray as $currentobspost) {
 		  $currentobspost['selectmedicion'] = $newmedicion;
 			
 		  $saveworked = savedata($currentobspost,$useremail,true);
+		  if ($saveworked=='false'){
+			$errorlist[]="Hubo una problema guardando datos.";
+		  }
           
         }
       }

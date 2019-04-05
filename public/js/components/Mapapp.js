@@ -19031,6 +19031,7 @@ var Normaapp = function (_React$Component) {
                     };
                 });
             }
+            console.log(this.state.featureInfo);
         }
     }, {
         key: "handleOpacityChange",

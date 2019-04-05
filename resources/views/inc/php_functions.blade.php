@@ -157,7 +157,7 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 
 
   function formatdate($locvalue){
-	  echo $locvalue;
+	  
 	if (strlen($locvalue)<=4){
 		return "01-01-1900";
 	}
@@ -165,10 +165,12 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 	if (!is_numeric(substr($locvalue, 1, 1))){	
 		$locvalue="0".$locvalue;
 	}
+	
 	//Add leading zero to month 
 	if (is_numeric(substr($locvalue, 3, 1)) && !(is_numeric(substr($locvalue, 4, 1)))){	
 		$locvalue=substr($locvalue, 0, 3) . "0" . substr($locvalue, 3);
 	}
+	
 	//Switch day and month
 	$divider=substr($locvalue, 2, 1);
 	$rawmonth=strtolower(explode($divider, $locvalue)[1]);	
@@ -210,7 +212,7 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 			$rawmonth='12';
 		}
 	}
-	return explode($divider, $locvalue)[0] ."-" . $rawmonth ."-". explode($divider, $locvalue)[2];
+	return $rawmonth ."-". explode($divider, $locvalue)[0] ."-" .  explode($divider, $locvalue)[2];
   }
 
     function uploadfoto($newpost,$filesname,$filestmpname,$filessize, $obstype){

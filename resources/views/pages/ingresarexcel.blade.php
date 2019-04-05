@@ -16,7 +16,7 @@
     } 
     if (file_exists($myfile)) {
       header('Content-Description: File Transfer');
-      header('Content-Disposition: attachment; filename=ingesarexcel.xlsx');
+      header('Content-Disposition: attachment; filename=ingresarexcel.xlsx');
       header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
       header('Expires: 0');
       header('Content-Length: ' . filesize($myfile));
