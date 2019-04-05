@@ -26,7 +26,17 @@
         $medicionpost['selectmedicion']='Nuevo';
         $day =  $spreadsheet->getSheetByName('MEDICION')->getCell('A3')->getValue();
         $month =  $spreadsheet->getSheetByName('MEDICION')->getCell('B3')->getValue();
-        $year =  $spreadsheet->getSheetByName('MEDICION')->getCell('C3')->getValue();
+		$year =  $spreadsheet->getSheetByName('MEDICION')->getCell('C3')->getValue();
+		if (strlen($day)==1){	
+			$day="0".$day;
+		}
+		if (strlen($month)==1){	
+			$month="0".$month;
+		}
+		if (strlen($year)==2){	
+			$year="20".$year;
+		}
+		
         $medicionpost['row0*medicion*fecha'] ="{$day}-{$month}-{$year}";
 
         $brigadarownumber=3;
@@ -298,10 +308,11 @@
       //save all if no errors
       if(sizeof($errorlist)==0){
 		  
-        $newmedicion = savedata($medicionpost,$_FILES, $useremail,true);
+		$newmedicion = savedata($medicionpost,$_FILES, $useremail,true);
+		
         foreach ($obspostarray as $currentobspost) {
 		  $currentobspost['selectmedicion'] = $newmedicion;
-
+			
 		  $saveworked = savedata($currentobspost,$useremail,true);
           
         }
