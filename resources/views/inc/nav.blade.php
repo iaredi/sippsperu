@@ -4,11 +4,18 @@
     aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
+  <div class="dropdown">
+		<a class="dropbtn">Ingresar Datos 
+		  <i class="fa fa-caret-down"></i>
+		</a>
+		<div class="dropdown-content">
+		  <a href="/ingresardatos">Monitoreo de Biodiversidad</a>
+		  <a href="/ingresardatos">Monitoreo de Acciones</a>
+		</div>
+	  </div> 
+
   <div class="collapse navbar-collapse" id="navbarText">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="/ingresardatos">Ingresar Datos</a>
-      </li>
       <li class="nav-item">
         <a class="nav-link" href="/descargar">Descargar Datos</a>
       </li> 

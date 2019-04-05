@@ -6,6 +6,7 @@
     if ($_SERVER['REQUEST_METHOD']=="POST" && sizeof(session('error'))==0  && (!session('visitante'))){
       $mtpchoice =$newpost['selectlinea_mtp'];    
         if ($mtpchoice=="Nuevo") {
+
           //Save New Estado Data
           $estadochoice = $newpost['selectestado'];
           if ($estadochoice=="Nuevo") {
@@ -93,6 +94,7 @@
             }
 
         } else {
+
             $medicionchoice = $newpost['selectmedicion'];
             session(['my_linea_mtp' => $mtpchoice]);
             if ($medicionchoice=="Nuevo") {
@@ -165,7 +167,7 @@
                     }
                 }
                 if($fromexcel){
-                  return $predioname."*".$newpost['row0*medicion*fecha'];
+                  return $medicioncolumns['iden_nombre'];
                 }
             }else{
               session(['my_medicion' => $medicionchoice]);
@@ -258,7 +260,8 @@
                   }else{ 
                     $resultofquery[] = $iden_foto;
                   }
-                } 
+				} 
+
                 if (sizeof($resultofquery)==0){
 
                   $resultofquery[] = savenewentry("{$transpunto}_{$speciestype}", $unitcolumns);

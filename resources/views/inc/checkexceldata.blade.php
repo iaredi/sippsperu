@@ -2,6 +2,7 @@
 
   use PhpOffice\PhpSpreadsheet\IOFactory;
   $errorlist=[];
+  session(['error' => []]);
 
   if ($_SERVER['REQUEST_METHOD']=="POST" && isset($_POST['ingresarexcel'])) {
       if ($_FILES['excelFromUser']['name']=='') {
@@ -11,8 +12,6 @@
         $errorlist[]= "Los menus desplegables no deben estar vacios";
       }
       //Upload fotos
-
-      
 
       if(sizeof($errorlist)==0){
         $target_dir = "../storage/shp/";
@@ -124,9 +123,51 @@
                 break;
               }else{
                 $locvalue = trim($spreadsheet->getSheetByName($sheet)->getCell("{$letter}2")->getValue());
-                if($locvalue==NULL){
+                if($locvalue==NULL && $letter=='A'){
 					$emptylocationsheet=true;
 				}
+
+				if ($locvalue==NULL && $letter!='A'){
+					$errorlist[]="No hay datos en {$letter}2 en {$sheet} ";
+				}
+				if (strpos($loccolvalue, 'fecha') !== false){
+					if (strlen($locvalue)<=4){
+						$locvalue="01-01-1900";
+					}else{
+					//Add leading zero to day 
+						if (!is_numeric(substr($locvalue, 1, 1))){	
+							$locvalue="0".$locvalue;
+						}
+						//Add leading zero to month 
+						if (is_numeric(substr($locvalue, 3, 1)) && !(is_numeric(substr($locvalue, 4, 1)))){	
+							$locvalue=substr($locvalue, 0, 3) . "0" . substr($locvalue, 3);
+						}
+						//Switch day and month
+						if (is_numeric(substr($locvalue, 3, 2))){
+							$locvalue= substr($locvalue, 3, 3) .substr($locvalue, 0, 3) . substr($locvalue, 6, 4);
+						}else{
+							$rawmonth=strtolower(explode(substr($locvalue, 2, 1), $locvalue)[1]);
+							$newmonth = strpos($rawmonth, 'ene') !== false ? 'jan':
+							strpos($rawmonth, 'ene') !== false || strpos($rawmonth, 'jan') !== false  ? 'jan':
+							strpos($rawmonth, 'feb') !== false ? 'feb':
+							strpos($rawmonth, 'mar') !== false ? 'mar':
+							strpos($rawmonth, 'abr') !== false || strpos($rawmonth, 'apr') !== false  ? 'apr':
+							strpos($rawmonth, 'may') !== false ? 'may':
+							strpos($rawmonth, 'jun') !== false ? 'jun':
+							strpos($rawmonth, 'jul') !== false ? 'jul':
+							strpos($rawmonth, 'ago') !== false || strpos($rawmonth, 'aug') !== false  ? 'aug':
+							strpos($rawmonth, 'sep') !== false ? 'sep':
+							strpos($rawmonth, 'oct') !== false ? 'oct':
+							strpos($rawmonth, 'nov') !== false ? 'nov':
+							strpos($rawmonth, 'dic') !== false || strpos($rawmonth, 'dec') !== false  ? 'dec': 
+							'error';
+							$locvalue=explode(substr($locvalue, 2, 1), $locvalue)[0] ."-" . $newmonth ."-". explode(substr($locvalue, 2, 1), $locvalue)[2];
+						}
+						$locvalue=str_replace("/","-",$locvalue);
+					}
+				}
+
+
                 $obspost["row0*{$transpunto}_{$lifeform}*{$loccolvalue}"] = $locvalue;
                 
                 $letter = ++$letter;
@@ -154,19 +195,24 @@
               if ($spreadsheet->getSheetByName($sheetobs)->getCell("B{$row_number}")->getValue()==NULL){
                 break;
               }else{
-
                   $letter = 'A';
                   //scan across columns
                   foreach ($obscolumnarray as $obscolumn) {
-                    $obsvalue = trim($spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}{$row_number}")->getValue());
-                    if (strpos($obscolumn, 'iden_foto') !== false){
-                      if($obsvalue==NULL ||$obsvalue=="00" || $obsvalue=="000"|| $obsvalue=="0000"){
+					  
+					$newobscolumn = $obscolumn; 
+					$obsvalue = trim($spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}{$row_number}")->getValue());
+					if ($obsvalue==NULL && $newobscolumn!='notas' && $newobscolumn!='iden_foto' ){
+						$errorlist[]="No hay datos en {$letter}{$row_number} en {$sheetobs}.";
+					}
+                    if (strpos($newobscolumn, 'iden_foto') !== false){
+                      if($obsvalue==NULL || $obsvalue==""  || $obsvalue=="00" || $obsvalue=="000" || $obsvalue=="0000"){
                         $obsvalue = "No Presentado";
                       }else{
                         $uploadfotoarray[$obsvalue]="observacion_{$lifeform}";
                         $obsvalue="observacion_{$lifeform}_{$obsvalue}";
                       }
-                    }
+					}
+					
                     if($obscolumn=='cientifico'){
                       if ($obsvalue==NULL){
                         break;
@@ -178,9 +224,42 @@
                         }
                       }
 					}
+
+					//Handle Invador
+					if($obscolumn=='invasor'){
+						$invasor= strtolower($obsvalue);
+						if($invasor=='true' || $invasor=='si' || $invasor=='verdadero' ){
+							$obsvalue='true';
+						}else{
+							$obsvalue='false';
+						}
+					}
+					//Handle Radio
+					if($obscolumn=='radio_0_30m'){
+						$newobscolumn = 'cantidad';
+						$obspost["row{$true_row}*observacion_{$lifeform}*radio"] = 'menos de 30m';
+					}
+					if($obscolumn=='radio_30m_o_mas'){
+						$newobscolumn = 'cantidad';
+						$obspost["row{$true_row}*observacion_{$lifeform}*radio"] = 'mas de 30m';
+					}
+
+					$oldmicrositio = [ 'fo_arbol','fo_arbusto','tr_arbol','tr_arbusto','ro','su'] ; 
+					if(in_array($obscolumn,$oldmicrositio)){
+						$newobscolumn = 'micrositio';
+						$obsvalue=$obscolumn;
+					}
+
+					if($newobscolumn=='numero_de_individulos_capturados'){
+						$newobscolumn = 'cantidad';
+					}
+
+					if($lifeform=='ave'){
+						$obspost["row{$true_row}*observacion_{$lifeform}*especie_cactus"] = '000';
+					}
 					
 					
-                    $obspost["row{$true_row}*observacion_{$lifeform}*{$obscolumn}"] = $obsvalue;
+                    $obspost["row{$true_row}*observacion_{$lifeform}*{$newobscolumn}"] = $obsvalue;
                     
                     $letter = ++$letter;
                   }
@@ -221,21 +300,17 @@
 		  
         $newmedicion = savedata($medicionpost,$_FILES, $useremail,true);
         foreach ($obspostarray as $currentobspost) {
-          $currentobspost['selectmedicion'] = $newmedicion;
+		  $currentobspost['selectmedicion'] = $newmedicion;
 		  $saveworked = savedata($currentobspost,$useremail,true);
-          if ($saveworked=="false"){
-			echo var_dump(session('resultofquery'));
-
-            $errorlist[]="Hubo una problema guardando datos";
-          }
+          
         }
       }
   }//end if no errors
-  if(sizeof($errorlist)==0 && sizeof(session('resultofquery'))>0){
-    redirect()->to('/thanks')->send();
-  }else{
 
-    $errorlist[]="Hubo una problema guardando datos";
+  if(sizeof($errorlist)==0 && sizeof(session('resultofquery'))>0){
+	redirect()->to('/thanks')->send();
+  }else{
+    $errorlist[]="Hubo una problema guardando datos.";
   }
 
 }
