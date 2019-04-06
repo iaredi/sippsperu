@@ -138,6 +138,7 @@
 					}
 					if (is_numeric($locvalue)){
 						$errorlist[]="La fecha en {$letter}2 en {$sheet} es en formato incorrecto.";
+						$locvalue='01-01-1900';
 					}
 					$locvalue=formatdate($locvalue);
 					if (!(is_numeric(substr($locvalue, 0, 2))&&is_numeric(substr($locvalue, 3, 2))&&is_numeric(substr($locvalue, 6, 4)))){
@@ -207,9 +208,15 @@
 						if ($obsvalue=='00'||$obsvalue=='000'||$obsvalue=='0000'){
 							$obsvalue='01-01-1900';
 						}
+
+					
+						
 						if (is_numeric($obsvalue)){
+							$obsvalue='01-01-1900';
 							$errorlist[]="La fecha en {$letter}{$row_number} en {$sheetobs} es en formato incorrecto.";
 						}
+						
+						
 						$obsvalue=formatdate($obsvalue);
 						if (!(is_numeric(substr($obsvalue, 0, 2))&&is_numeric(substr($obsvalue, 3, 2))&&is_numeric(substr($obsvalue, 6, 4)))){
 							$errorlist[]="La fecha en {$letter}{$row_number} en {$sheetobs} es en formato incorrecto.";

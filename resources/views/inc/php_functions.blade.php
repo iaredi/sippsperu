@@ -87,7 +87,6 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
             return askforkey($table, 'iden', "cientifico",  $cientifico);
         }else{
             $resultofquery = savenewentry($table, $newspecies);
-            echo $resultofquery;
             return getserialmax( $table);
         }
     }
@@ -157,7 +156,6 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 
 
   function formatdate($locvalue){
-	  
 	if (strlen($locvalue)<=4){
 		return "01-01-1900";
 	}
