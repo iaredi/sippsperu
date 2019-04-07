@@ -27,8 +27,14 @@
         $day =  $spreadsheet->getSheetByName('MEDICION')->getCell('A3')->getValue();
         $month =  $spreadsheet->getSheetByName('MEDICION')->getCell('B3')->getValue();
 		$year =  $spreadsheet->getSheetByName('MEDICION')->getCell('C3')->getValue();
-		
-        $medicionpost['row0*medicion*fecha'] =formatdate($day.'-'.$month.'-'.$year);
+
+		list($newdatevalue,$dateerror) = formatdate("{$day}-{$month}-{$year}", 'MEDICION', 'A-C', '');
+		if($dateerror==''){
+			$medicionpost['row0*medicion*fecha']=$newdatevalue;
+		}else{
+			$errorlist[]=$dateerror;
+		}		
+
 
         $brigadarownumber=3;
         while (true){
@@ -133,16 +139,11 @@
 				}
 
 				if (strpos($loccolvalue, 'fecha') !== false){
-					if ($locvalue=='00'||$locvalue=='000'||$locvalue=='0000'){
-						$locvalue='01-01-1900';
-					}
-					if (is_numeric($locvalue)){
-						$errorlist[]="La fecha en {$letter}2 en {$sheet} es en formato incorrecto.";
-						$locvalue='01-01-1900';
-					}
-					$locvalue=formatdate($locvalue);
-					if (!(is_numeric(substr($locvalue, 0, 2))&&is_numeric(substr($locvalue, 3, 2))&&is_numeric(substr($locvalue, 6, 4)))){
-						$errorlist[]="La fecha en {$letter}2 en {$sheet} es en formato incorrecto.";
+					list($newdatevalue,$dateerror) = formatdate($locvalue,  $sheet, $letter, 2);
+					if($dateerror==''){
+						$locvalue=$newdatevalue;
+					}else{
+						$errorlist[]=$dateerror;
 					}
 				}
 
@@ -205,21 +206,11 @@
 					}
 					//Handle Date
 					if (strpos($obscolumn, 'fecha') !== false){
-						if ($obsvalue=='00'||$obsvalue=='000'||$obsvalue=='0000'){
-							$obsvalue='01-01-1900';
-						}
-
-					
-						
-						if (is_numeric($obsvalue)){
-							$obsvalue='01-01-1900';
-							$errorlist[]="La fecha en {$letter}{$row_number} en {$sheetobs} es en formato incorrecto.";
-						}
-						
-						
-						$obsvalue=formatdate($obsvalue);
-						if (!(is_numeric(substr($obsvalue, 0, 2))&&is_numeric(substr($obsvalue, 3, 2))&&is_numeric(substr($obsvalue, 6, 4)))){
-							$errorlist[]="La fecha en {$letter}{$row_number} en {$sheetobs} es en formato incorrecto.";
+						list($newdatevalue,$dateerror) = formatdate($obsvalue, $sheetobs, $letter, $row_number);
+						if($dateerror==''){
+							$obsvalue=$newdatevalue;
+						}else{
+							$errorlist[]=$dateerror;
 						}
 					}
 
@@ -292,12 +283,14 @@
           $errorlist[]="{$fotonameexcel} no fue encontrado. Hay que subir fotos con los mismos nombres de los que estan en excel";
         }
       }
-      //Check if Medicion already exist
-	  $spanishdate = substr($medicionpost['row0*medicion*fecha'], 3, 2) .'-'.  substr($medicionpost['row0*medicion*fecha'], 0, 2) .'-'. substr($medicionpost['row0*medicion*fecha'], 6);
-	  $checkold =trim(explode("(" , $medicionpost['selectlinea_mtp'])[0]).'*'.$spanishdate;
-	  if (sizeof(DB::select("Select iden from medicion where iden_nombre=?", [$checkold]))>0){
-		$errorlist[]="Ya existe una medicion para esta linea y fecha.";
-	  }
+	  //Check if Medicion already exist
+		if(sizeof($errorlist)==0){
+			$spanishdate = substr($medicionpost['row0*medicion*fecha'], 3, 2) .'-'.  substr($medicionpost['row0*medicion*fecha'], 0, 2) .'-'. substr($medicionpost['row0*medicion*fecha'], 6);
+			$checkold =trim(explode("(" , $medicionpost['selectlinea_mtp'])[0]).'*'.$spanishdate;
+			if (sizeof(DB::select("Select iden from medicion where iden_nombre=?", [$checkold]))>0){
+				$errorlist[]="Ya existe una medicion para esta linea y fecha.";
+			}
+		}
 	  //save all if no errors
 
       if(sizeof($errorlist)==0){

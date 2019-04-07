@@ -155,68 +155,87 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
   }
 
 
-  function formatdate($locvalue){
-	if (strlen($locvalue)<=4){
-		return "01-01-1900";
+  function formatdate($locvalue, $sheet, $letter, $row_number){
+	  try {
+		if ($locvalue=='00'||$locvalue=='000'||$locvalue=='0000'){
+			$locvalue='01-01-1900';
+		}
+		if (strlen($locvalue)<8){
+			return array($locvalue, "La fecha en {$letter}{$row_number} en {$sheet} es en formato incorrecto.");
+		}
+
+		//Add leading zero to day 
+		if (!is_numeric(substr($locvalue, 1, 1))){	
+			$locvalue="0".$locvalue;
+		}
+		
+		//Add leading zero to month 
+		if (is_numeric(substr($locvalue, 3, 1)) && !(is_numeric(substr($locvalue, 4, 1)))){	
+			$locvalue=substr($locvalue, 0, 3) . "0" . substr($locvalue, 3);
+		}
+
+		if (!(is_numeric(substr($locvalue, 0, 2))&&is_numeric(substr($locvalue, 3, 2))&&is_numeric(substr($locvalue, 6, 4)))){
+			return array($locvalue, "La fecha en {$letter}{$row_number} en {$sheet} es en formato incorrecto.");
+		}
+		
+		//Switch day and month
+		$divider=substr($locvalue, 2, 1);
+		$rawmonth=strtolower(explode($divider, $locvalue)[1]);	
+		if (ctype_alpha(substr($locvalue, 3, 2))){
+			if (strpos($rawmonth, 'ene') !== false || strpos($rawmonth, 'jan') !== false){
+				$rawmonth='01';
+			}
+			elseif (strpos($rawmonth, 'feb') !== false){
+				$rawmonth='02';
+			}
+			elseif (strpos($rawmonth, 'mar') !== false){
+				$rawmonth='03';
+			}
+			elseif (strpos($rawmonth, 'abr') !== false || strpos($rawmonth, 'apr') !== false){
+				$rawmonth='04';
+			}
+			elseif (strpos($rawmonth, 'may') !== false){
+				$rawmonth='05';
+			}
+			elseif (strpos($rawmonth, 'jun') !== false){
+				$rawmonth='06';
+			}
+			elseif (strpos($rawmonth, 'jul') !== false){
+				$rawmonth='07';
+			}
+			elseif (strpos($rawmonth, 'aug') !== false || strpos($rawmonth, 'ago') !== false){
+				$rawmonth='08';
+			}
+			elseif (strpos($rawmonth, 'ene') !== false){
+				$rawmonth='09';
+			}
+			elseif (strpos($rawmonth, 'ene') !== false){
+				$rawmonth='10';
+			}
+			elseif (strpos($rawmonth, 'ene') !== false){
+				$rawmonth='11';
+			}
+			elseif (strpos($rawmonth, 'dic') !== false || strpos($rawmonth, 'dec') !== false){
+				$rawmonth='12';
+			}
+		}
+
+
+		if (!(
+		is_numeric(substr($locvalue, 0, 2)) && intval(substr($locvalue, 0, 2))>0 && intval(substr($locvalue, 0, 2))<31 &&
+		is_numeric(substr($locvalue, 3, 2)) && intval(substr($locvalue, 3, 2))>0 && intval(substr($locvalue, 3, 2))<13 &&
+		is_numeric(substr($locvalue, 6, 4)) && intval(substr($locvalue, 6, 4))>1899 && intval(substr($locvalue, 6, 4))<3000
+		)){
+			return array($locvalue, "La fecha en {$letter}{$row_number} en {$sheet} es en formato incorrecto.");
+		}
+		return array($rawmonth ."-". explode($divider, $locvalue)[0] ."-" .  explode($divider, $locvalue)[2], '');
+	}catch (Exception $e){
+		return array($locvalue, "La fecha en {$letter}2 en {$sheet}{$row_number} es en formato incorrecto.");
 	}
-	//Add leading zero to day 
-	if (!is_numeric(substr($locvalue, 1, 1))){	
-		$locvalue="0".$locvalue;
-	}
-	
-	//Add leading zero to month 
-	if (is_numeric(substr($locvalue, 3, 1)) && !(is_numeric(substr($locvalue, 4, 1)))){	
-		$locvalue=substr($locvalue, 0, 3) . "0" . substr($locvalue, 3);
-	}
-	
-	//Switch day and month
-	$divider=substr($locvalue, 2, 1);
-	$rawmonth=strtolower(explode($divider, $locvalue)[1]);	
-	if (ctype_alpha(substr($locvalue, 3, 2))){
-		if (strpos($rawmonth, 'ene') !== false || strpos($rawmonth, 'jan') !== false){
-			$rawmonth='01';
-		}
-		elseif (strpos($rawmonth, 'feb') !== false){
-			$rawmonth='02';
-		}
-		elseif (strpos($rawmonth, 'mar') !== false){
-			$rawmonth='03';
-		}
-		elseif (strpos($rawmonth, 'abr') !== false || strpos($rawmonth, 'apr') !== false){
-			$rawmonth='04';
-		}
-		elseif (strpos($rawmonth, 'may') !== false){
-			$rawmonth='05';
-		}
-		elseif (strpos($rawmonth, 'jun') !== false){
-			$rawmonth='06';
-		}
-		elseif (strpos($rawmonth, 'jul') !== false){
-			$rawmonth='07';
-		}
-		elseif (strpos($rawmonth, 'aug') !== false || strpos($rawmonth, 'ago') !== false){
-			$rawmonth='08';
-		}
-		elseif (strpos($rawmonth, 'ene') !== false){
-			$rawmonth='09';
-		}
-		elseif (strpos($rawmonth, 'ene') !== false){
-			$rawmonth='10';
-		}
-		elseif (strpos($rawmonth, 'ene') !== false){
-			$rawmonth='11';
-		}
-		elseif (strpos($rawmonth, 'dic') !== false || strpos($rawmonth, 'dec') !== false){
-			$rawmonth='12';
-		}
-	}
-	return $rawmonth ."-". explode($divider, $locvalue)[0] ."-" .  explode($divider, $locvalue)[2];
   }
 
     function uploadfoto($newpost,$filesname,$filestmpname,$filessize, $obstype){
-      
           if (isset($filesname) && ($filesname)!="" && ($filesname)!="0" && ($filesname)!="00" && ($filesname)!="000"){
-            
             $target_dir = "../storage/img/";
             $target_file = $target_dir . $obstype ."_". basename($filesname);
             $uploadOk = 1;
