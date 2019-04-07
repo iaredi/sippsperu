@@ -18843,11 +18843,13 @@ var Normaapp = function (_React$Component) {
 
         _this.state = {
             currentUdpId: -1,
+            currentLineaId: -1,
             rasterOn: false,
             speciesResult: [],
             previous: 0,
             udp: 0,
             udpButton: false,
+            lineaButton: false,
             clickLocation: { lat: 99.9, lng: 99.9 },
             mapSettings: {
                 distinctOrTotal: "total_observaciones",
@@ -18970,10 +18972,22 @@ var Normaapp = function (_React$Component) {
             var _this3 = this;
 
             if (!this.state.rasterOn) {
-                var idtype = event.target.feature.properties.name == "udp_puebla_4326" ? "udp" : "linea_mtp";
+                var idtype = event.target.feature.properties.name == "udp_puebla_4326" ? "udp" : event.target.feature.properties.name == "linea_mtp" ? "linea_mtp" : "other";
+
                 this.setState(function () {
                     return {
                         udpButton: idtype == "udp" ? true : false
+                    };
+                });
+                this.setState(function () {
+                    return {
+                        lineaButton: idtype == "linea_mtp" ? true : false
+                    };
+                });
+
+                this.setState(function () {
+                    return {
+                        currentLineaId: event.target.feature.properties.iden
                     };
                 });
 
@@ -19031,7 +19045,6 @@ var Normaapp = function (_React$Component) {
                     };
                 });
             }
-            console.log(this.state.featureInfo);
         }
     }, {
         key: "handleOpacityChange",
@@ -19099,6 +19112,17 @@ var Normaapp = function (_React$Component) {
                     _react2.default.createElement(
                         "div",
                         { id: "buttons1" },
+                        this.state.lineaButton && _react2.default.createElement(
+                            "a",
+                            {
+                                className: "btn btn-primary m-2 btn-sm mapInfoButton",
+                                href: "/mostrarnormas/ae/" + this.state.currentLineaId + 'l',
+                                role: "button"
+                            },
+                            " ",
+                            "Attributos Ecologicos",
+                            " "
+                        ),
                         this.state.udpButton && _react2.default.createElement(
                             "div",
                             { id: "buttonContainer" },
@@ -19127,7 +19151,7 @@ var Normaapp = function (_React$Component) {
                                 "a",
                                 {
                                     className: "btn btn-primary m-2 btn-sm mapInfoButton",
-                                    href: "/mostrarnormas/ae/" + this.state.currentUdpId,
+                                    href: "/mostrarnormas/ae/" + this.state.currentUdpId + 'u',
                                     role: "button"
                                 },
                                 " ",

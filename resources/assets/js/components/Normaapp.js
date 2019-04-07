@@ -16,10 +16,13 @@ class Normaapp extends React.Component {
   }
 
   componentDidMount() {
+
+	const idennumforapi = idennum.slice(0,-1);
+	const idtype = idennum.slice(-1)=='u' ? 'udp' : 'linea_mtp';
     const processArray = async array => {
       for (const item of array) {
-        fetchData('getspecies',{lifeform:item.toLowerCase(), idtype:"udp", idnumber:idennum,useremail: document.getElementById("useremail").textContent}).then(myspeciesResult => {
-          const newObject = {};
+        fetchData('getspecies',{lifeform:item.toLowerCase(), idtype:idtype, idnumber:idennumforapi,useremail: document.getElementById("useremail").textContent}).then(myspeciesResult => {
+			const newObject = {};
           newObject["speciesResult" + item] = myspeciesResult;
           this.setState(prevState => newObject);
         });

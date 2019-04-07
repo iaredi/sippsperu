@@ -19,11 +19,13 @@ class Normaapp extends React.Component {
 
         this.state = {
 			currentUdpId: -1,
+			currentLineaId:-1,
 			rasterOn : false,
             speciesResult: [],
             previous: 0,
             udp: 0,
-            udpButton: false,
+			udpButton: false,
+			lineaButton: false,
             clickLocation: { lat: 99.9, lng: 99.9 },
             mapSettings: {
                 distinctOrTotal: "total_observaciones",
@@ -142,9 +144,20 @@ class Normaapp extends React.Component {
 			const idtype =
 				event.target.feature.properties.name == "udp_puebla_4326"
 					? "udp"
-					: "linea_mtp";
+					: event.target.feature.properties.name == "linea_mtp"
+					? "linea_mtp"
+					:"other";
+
 			this.setState(() => ({
 				udpButton: idtype == "udp" ? true : false
+			}));
+			this.setState(() => ({
+				lineaButton: idtype == "linea_mtp" ? true : false
+			}));
+
+
+			this.setState(() => ({
+				currentLineaId: event.target.feature.properties.iden
 			}));
 
 			this.setState(() => ({
@@ -204,7 +217,6 @@ class Normaapp extends React.Component {
 				}
 			}));
 		}
-		console.log(this.state.featureInfo)
     }
 
     handleOpacityChange(value) {
@@ -259,7 +271,20 @@ class Normaapp extends React.Component {
                         />
                     </div>
 
-                    <div id="buttons1">
+					<div id="buttons1">
+					{this.state.lineaButton && (
+						<a
+							className="btn btn-primary m-2 btn-sm mapInfoButton"
+							href={
+								"/mostrarnormas/ae/" + 
+								this.state.currentLineaId+'l'
+							}
+							role="button"
+						>
+							{" "}
+							Attributos Ecologicos{" "}
+						</a>
+					)}
                         {this.state.udpButton && (
 							<div id="buttonContainer">
 								<a
@@ -289,7 +314,7 @@ class Normaapp extends React.Component {
                                     className="btn btn-primary m-2 btn-sm mapInfoButton"
                                     href={
                                         "/mostrarnormas/ae/" +
-                                        this.state.currentUdpId
+                                        this.state.currentUdpId +'u'
                                     }
                                     role="button"
                                 >
