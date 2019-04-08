@@ -4,7 +4,7 @@ import MapControl from "./MapControl";
 import FeatureInfoDisplay from "./FeatureInfoDisplay";
 import fetchData from "../fetchData";
 
-class Normaapp extends React.Component {
+class Mapapp extends React.Component {
     constructor(props) {
         super(props);
         this.handleMapClick = this.handleMapClick.bind(this);
@@ -50,7 +50,7 @@ class Normaapp extends React.Component {
 	}
 
     getOutline(properties, category) {
-        let email = document.getElementById("useremail").textContent;
+        let email = useremail;
         let emailArray = [
             properties.ave_email,
             properties.arbol_email,
@@ -402,4 +402,4 @@ class Normaapp extends React.Component {
     }
 }
 
-export default Normaapp;
+export default Mapapp;

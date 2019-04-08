@@ -644,3 +644,27 @@ Route::post('getspecies', function(Request $request) {
     
     return json_encode($obresult);
 });
+
+
+
+Route::post('getList', function(Request $request) {
+    $table = $request->table;
+	$column = $request->column;
+
+	$returnarray=[];
+
+	$wheresql='';
+	if(isset($request->where)){
+		$wheresql="WHERE {$request->where} LIKE '{$request->wherevalue}'";
+	}
+
+	$limitsql='';
+	if(isset($request->limit)){
+		$limitsql="LIMIT {$request->limit}";
+	}
+
+	$sql = "SELECT {$column} FROM {$table} {$wheresql} {$limitsql}";
+	$result = DB::select($sql, []);
+	
+    return json_encode($result);
+});

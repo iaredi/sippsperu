@@ -27,6 +27,8 @@ Route::get('/reset_2', 'PagesController@reset_2');
 Route::get('/cargarshapes', 'PagesController@cargarshapes');
 Route::get('/cargarshapesadmin', 'PagesController@cargarshapesadmin');
 Route::get('/privacidad', 'PagesController@privacy');
+Route::get('/linea', 'PagesController@linea');
+
 
 Route::get('/mostrarnormas/{infotype}/{idenudpraw}', function ($infotype,$idenudpraw){
   return view('pages/mostrarnormas',['infotype'=>$infotype,'idenudp'=>$idenudpraw]);

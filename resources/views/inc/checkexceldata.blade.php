@@ -20,24 +20,53 @@
         move_uploaded_file($_FILES['excelFromUser']["tmp_name"], $target_file);
         $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
         $worksheetNames = $reader->listWorksheetNames($target_file);
-        $spreadsheet = $reader->load($target_file);
+		$spreadsheet = $reader->load($target_file);
+		$sheetnames = $spreadsheet->getSheetNames();
+		$medicionexists=false;
+		foreach ($sheetnames as  $name) {
+			if ($name=='MEDICION'){
+				$medicionexists=true;
+			}else{
+				$exploded = explode("_" , $name);
+				if(sizeof($exploded)==3){
+					if (!in_array($exploded[0],['AVE','ARBO','ARBU','HERP','MAMI','HIER'])){
+						$errorlist[]="{$name} no tiene nombre correcto.";
+					}
+					if (!in_array($exploded[1],['LOC','OBS'])){
+						$errorlist[]="{$name} no tiene nombre correcto.";
+					}
+					if (!is_numeric($exploded[2])){
+						$errorlist[]="{$name} no tiene nombre correcto.";
+					}
+				}else{
+					$errorlist[]="{$name} no tiene nombre correcto.";
+				}
 
-        $medicionpost = array('selectlinea_mtp' => $_POST['selectlinea_mtp']);
-        $medicionpost['selectmedicion']='Nuevo';
-        $day =  $spreadsheet->getSheetByName('MEDICION')->getCell('A3')->getValue();
-        $month =  $spreadsheet->getSheetByName('MEDICION')->getCell('B3')->getValue();
-		$year =  $spreadsheet->getSheetByName('MEDICION')->getCell('C3')->getValue();
+			}
+		}
+		if(!$medicionexists){
+			$errorlist[]="No existe MEDICION";
 
-		list($newdatevalue,$dateerror) = formatdate("{$day}-{$month}-{$year}", 'MEDICION', 'A-C', '');
-		if($dateerror==''){
-			$medicionpost['row0*medicion*fecha']=$newdatevalue;
-		}else{
-			$errorlist[]=$dateerror;
-		}		
+		}
+
+		if(sizeof($errorlist)==0){
+			$medicionpost = array('selectlinea_mtp' => $_POST['selectlinea_mtp']);
+			$medicionpost['selectmedicion']='Nuevo';
+			$day =  $spreadsheet->getSheetByName('MEDICION')->getCell('A3')->getValue();
+			$month =  $spreadsheet->getSheetByName('MEDICION')->getCell('B3')->getValue();
+			$year =  $spreadsheet->getSheetByName('MEDICION')->getCell('C3')->getValue();
+
+			list($newdatevalue,$dateerror) = formatdate("{$day}-{$month}-{$year}", 'MEDICION', 'A-C', '');
+			if($dateerror==''){
+				$medicionpost['row0*medicion*fecha']=$newdatevalue;
+			}else{
+				$errorlist[]=$dateerror;
+			}		
+		}
 
 
         $brigadarownumber=3;
-        while (true){
+        while (true && sizeof($errorlist)==0){
           $materno =  $spreadsheet->getSheetByName('MEDICION')->getCell("D{$brigadarownumber}")->getValue();
           $paterno =  $spreadsheet->getSheetByName('MEDICION')->getCell("E{$brigadarownumber}")->getValue();
           $nombre =  $spreadsheet->getSheetByName('MEDICION')->getCell("F{$brigadarownumber}")->getValue();
@@ -159,7 +188,12 @@
             $letter = 'A';
             //scan columns to get column names
             while(true){
-              $value2 = $spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}1")->getValue();
+					if ($spreadsheet->getSheetByName($sheetobs)==null){
+						$errorlist[]="No existe {$sheetobs}.";
+						$value2=NULL;
+					}else{
+						$value2 = $spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}1")->getValue();
+					}
               if ($value2 == NULL){
                 break;
               }else{
@@ -171,7 +205,7 @@
             $row_number=2;
             $true_row=0;
 
-            while (true){
+            while (true && sizeof($errorlist)==0){
               if ($spreadsheet->getSheetByName($sheetobs)->getCell("B{$row_number}")->getValue()==NULL){
                 break;
               }else{
@@ -300,7 +334,7 @@
 			
 		  $saveworked = savedata($currentobspost,$useremail,true);
 		  if ($saveworked=='false'){
-			$errorlist[]="Hubo una problema guardando datos.";
+			$errorlist[]="Sus datos no fueron guardados.";
 		  }
           
         }
@@ -310,7 +344,7 @@
   if(sizeof($errorlist)==0 && sizeof(session('resultofquery'))>0){
 	redirect()->to('/thanks')->send();
   }else{
-    $errorlist[]="Hubo una problema guardando datos.";
+    $errorlist[]="Sus datos no fueron guardados.";
   }
 
 }
