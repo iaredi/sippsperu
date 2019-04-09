@@ -89,9 +89,27 @@ $geojson=json_encode($allcolumns);
         <input type="hidden" name="action" value="permitido">
         <input type="submit" id="measurementlinea_mtpSubmit" class="mySubmit">
       </form>
-    </div>
+	</div>
+	
+	<div class='border border-dark p-2 m-2'>
+		<form id="measurementform" method="post">
+		  {{ csrf_field() }}
+  
+		  <h3 id="measurement3">Borrar Medicion</h3>
+		  <table class="mytable">
+			<tbody id="measurementTBodyborrarmedicion">
+			</tbody>
+		  </table>
+  
+		  
+		  <input type="hidden" name="action" value="borrarmedicion">
+		  <input type="submit" value= 'Borrar' id="measurementlinea_mtpSubmit" class="mySubmit">
+		</form>
+	  </div>
     <br>
-    <br>
+	<br>
+	
+
     <div class='border border-dark p-2 m-2'>
       <form id="measurementform" method="post">
         {{ csrf_field() }}
@@ -213,7 +231,8 @@ $geojson=json_encode($allcolumns);
 				<option value="Gestion del Territorio">Gestion del Territorio</option>
 			  </select>
 		</div>
-        <br>
+		<br>
+		
 
         <input type="hidden" name="action" value="cargarshape">
         <input type="submit" id="measurementlinea_mtpSubmit" class="mySubmit">

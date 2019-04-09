@@ -8,12 +8,15 @@ class Linea extends React.Component {
 		super(props);
 		this.setFromSelect = this.setFromSelect.bind(this);
 		this.updateValue = this.updateValue.bind(this);
+		this.handleSubmit = this.handleSubmit.bind(this);
+
 
         this.state = {
 			linea:'',
 			lineaList:[],
 			email:useremail,
-			values:[]
+			values:[],
+			submitDisabled:true
 		};
 	}
 	
@@ -56,14 +59,21 @@ class Linea extends React.Component {
 		this.setState({
 			values:oldValues
 		});
+
+		this.checkValues()
 	}
 
+	handleSubmit(e){
+		console.log('submitted')
+		e.preventDefault()
+	}
+	
 	componentDidMount(){
 		const emailvalue = admin==1 ? '%' : useremail
 		fetchData('getList',{table:'linea_mtp', column:'nombre_iden',where:'iden_email', wherevalue:emailvalue }).then(returnData => { 	
 			const dataArray = returnData.map((row)=>row.nombre_iden)
 			this.setState({
-				lineaList:['','Nueva',...dataArray]
+				lineaList:['',...dataArray]
 			})
 		})
 	}
@@ -72,28 +82,30 @@ class Linea extends React.Component {
         return (
             <div>
                 <div className="h4 titleHeaders">
-                    <h4>Nueva Linea MTP</h4>
+                    <h4>Cambiar Linea Existente</h4>
 				</div>
+				<form onSubmit={this.handleSubmit} id="measurementform" method="post">
 
-				<DBDropdown
-					items={this.state.lineaList}
-					nameInState='linea'
-					setFromSelect={this.setFromSelect}
-					selectedItem={this.state.linea}
-				/>
-
-				{this.state.values!==[] &&
-					<Editable
-						table='linea_mtp'
-						selectedColumn='nombre_iden'
-						selectedValue={this.state.linea}
-						updateValue={this.updateValue}
-						values={this.state.values}
+					<DBDropdown
+						items={this.state.lineaList}
+						nameInState='linea'
+						setFromSelect={this.setFromSelect}
+						selectedItem={this.state.linea}
 					/>
-				}
+
+					{this.state.values!==[] &&
+						<Editable
+							table='linea_mtp'
+							selectedColumn='nombre_iden'
+							selectedValue={this.state.linea}
+							updateValue={this.updateValue}
+							values={this.state.values}
+						/>
+					}
 
 
-
+					<input type="submit" id="measurementlinea_mtpSubmit" className="border border-secondary btn btn-success mySubmit p-2 m-2"/>
+				</form>
             </div>
         );
     }

@@ -280,6 +280,7 @@
         if (strpos($result, 'exito') !== false){
             $saved++;
         }else{
+			echo $result;
           $failed++;
           $errorarray[]=$result;
         }

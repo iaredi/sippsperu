@@ -83,7 +83,12 @@ function buildDropdowns(tableName, menu, jsTable="Form",octothorp=false){
 function selectOptionsCreate(tableName, menu, preApproved=true, jsTable="Form",approvedList=[], withRows=false, withNuevo=true) {
     let myId=(withRows? "row"+numRows+tableName+"Form" : menu+tableName+jsTable )
     if (tableName==="observaciones") myId="measurementobservacionesObservaciones";
-    if (tableName==="medicion"){ myId="measurementmedicionMedicion"};
+	if (tableName==="medicion"){ myId="measurementmedicionMedicion"};
+    if (tableName==="borrarmedicion"){ 
+		tableName="medicion"
+		myId="measurementmedicionborrarmedicion"
+	};
+	
     if (tableName==="linea_mtp") myId="measurementlinea_mtpSelect";
     if (tableName==="municipio") {
         withNuevo=false
@@ -99,7 +104,9 @@ function selectOptionsCreate(tableName, menu, preApproved=true, jsTable="Form",a
         const mySelection = document.getElementById(myId);
         if (tableName.split('_')[0]==="observacion") tableName = tableName.replace("observacion", "especie");
         
-        let mycurrentlist=completetitlevallist[tableName];
+		let mycurrentlist=completetitlevallist[tableName];
+		if(tableName=='medicion') console.log(mycurrentlist)
+
         mycurrentlist= tableName==="observaciones"? ['ave','arbol','arbusto','mamifero','herpetofauna','hierba']:mycurrentlist
 
         let frag = document.createDocumentFragment(),elOption;
@@ -122,7 +129,7 @@ function selectOptionsCreate(tableName, menu, preApproved=true, jsTable="Form",a
 
             
             for (let i = 0; i<mycurrentlist.length; i++){
-                if(tableName!='medicion'|| mycurrentlist[i].split('*')[0]==document.getElementById('measurementlinea_mtpSelect').value.split(' (')[0]){
+                if((tableName!='medicion' || jsTable=='borrarmedicion') || mycurrentlist[i].split('*')[0]==document.getElementById('measurementlinea_mtpSelect').value.split(' (')[0]){
                     elOption = frag.appendChild(document.createElement('option'));
                     elOption.value = mycurrentlist[i];
                     elOption.innerHTML =mycurrentlist[i];
@@ -1006,7 +1013,11 @@ if(window.location.href.substr(-5)==='admin'){
     buildDropdowns( "usuario", "measurement", "Select" );
     selectOptionsCreate( "usuario",  "measurement",  true,  "Select", [],  false,  false);
     buildDropdowns( "usuario_permitido", "measurement", "Medicion" );
-    selectOptionsCreate( "usuario_permitido",  "measurement",  true,  "Medicion", [],  false, false);
+	selectOptionsCreate( "usuario_permitido",  "measurement",  true,  "Medicion", [],  false, false);
+
+	buildDropdowns( "medicion", "measurement", "borrarmedicion" );
+	selectOptionsCreate( "borrarmedicion",  "measurement",  true,  "borrarmedicion", [],  false, false);
+	
     buildDropdowns( "additional_layers", "measurement", "cargar" );
     selectOptionsCreate( "additional_layers",  "measurement",  true,  "cargar", [],  false, false);
     addOnChangeAdminTable()

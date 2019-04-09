@@ -188,6 +188,11 @@ function selectOptionsCreate(tableName, menu) {
     if (tableName === "medicion") {
         myId = "measurementmedicionMedicion";
     };
+    if (tableName === "borrarmedicion") {
+        tableName = "medicion";
+        myId = "measurementmedicionborrarmedicion";
+    };
+
     if (tableName === "linea_mtp") myId = "measurementlinea_mtpSelect";
     if (tableName === "municipio") {
         withNuevo = false;
@@ -203,6 +208,8 @@ function selectOptionsCreate(tableName, menu) {
         if (tableName.split('_')[0] === "observacion") tableName = tableName.replace("observacion", "especie");
 
         var mycurrentlist = completetitlevallist[tableName];
+        if (tableName == 'medicion') console.log(mycurrentlist);
+
         mycurrentlist = tableName === "observaciones" ? ['ave', 'arbol', 'arbusto', 'mamifero', 'herpetofauna', 'hierba'] : mycurrentlist;
 
         var frag = document.createDocumentFragment(),
@@ -225,7 +232,7 @@ function selectOptionsCreate(tableName, menu) {
         } else {
 
             for (var _i = 0; _i < mycurrentlist.length; _i++) {
-                if (tableName != 'medicion' || mycurrentlist[_i].split('*')[0] == document.getElementById('measurementlinea_mtpSelect').value.split(' (')[0]) {
+                if (tableName != 'medicion' || jsTable == 'borrarmedicion' || mycurrentlist[_i].split('*')[0] == document.getElementById('measurementlinea_mtpSelect').value.split(' (')[0]) {
                     elOption = frag.appendChild(document.createElement('option'));
                     elOption.value = mycurrentlist[_i];
                     elOption.innerHTML = mycurrentlist[_i];
@@ -1174,6 +1181,10 @@ if (window.location.href.substr(-5) === 'admin') {
     selectOptionsCreate("usuario", "measurement", true, "Select", [], false, false);
     buildDropdowns("usuario_permitido", "measurement", "Medicion");
     selectOptionsCreate("usuario_permitido", "measurement", true, "Medicion", [], false, false);
+
+    buildDropdowns("medicion", "measurement", "borrarmedicion");
+    selectOptionsCreate("borrarmedicion", "measurement", true, "borrarmedicion", [], false, false);
+
     buildDropdowns("additional_layers", "measurement", "cargar");
     selectOptionsCreate("additional_layers", "measurement", true, "cargar", [], false, false);
     addOnChangeAdminTable();

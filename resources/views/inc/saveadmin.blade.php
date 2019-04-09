@@ -1,3 +1,4 @@
+@include('inc/php_functions')
 
 <?php
 if ($_SERVER['REQUEST_METHOD']=="POST"){
@@ -28,15 +29,12 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
             }
         }
         if ($_POST['action']=="permitido") {
-            
             if($_POST['admin_option']=='add_email'){
                 $visitante='';
                 if (isset($_POST['visitante'])){
                     $visitante='*';
                 }
-               
                 $targetuser=$_POST['email_input'].$visitante;
-
                 $sql = "insert into usuario_permitido (email) values(:targetuser)";
                 $user_data = [':targetuser'=>trim($targetuser)];
                 $results = DB::insert($sql, $user_data);
@@ -50,6 +48,30 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
                 $results = DB::delete($sql, $user_data);
                 session(['adminerror'=>  "{$targetuser} ha sido borrado de los permitidos"]);
             }
+
+		}
+		
+		if ($_POST['action']=="borrarmedicion") {
+			if($_POST['selectmedicion']!="notselected"){
+				$target=$_POST['selectmedicion'];
+				$targetkey = askforkey('medicion', 'iden', 'iden_nombre', $target);
+				$delresultloc=0;
+				$delresultobs=0;
+				$locList=['punto_ave','punto_arbol','punto_arbusto','punto_mamifero', 'transecto_hierba','transecto_herpetofauna'];
+				foreach ($locList as $loc) {
+					$expoldeloc=explode("_" , $loc );
+
+					$sql="SELECT iden FROM {$loc} WHERE iden_medicion=:value";
+					$stmnt= DB::select($sql,[':value'=>$targetkey]);
+					foreach ($stmnt as $row) { 
+						$delresultobs=$delresultobs + DB::delete("DELETE FROM observacion_{$expoldeloc[1]} WHERE iden_{$expoldeloc[0]}=:value",[':value'=>$row->iden]); 
+					}
+					$delresultloc=$delresultloc + DB::delete("DELETE FROM {$loc} WHERE iden_medicion=:value",[':value'=>$targetkey]);
+				}
+				$delmedicion=DB::delete("DELETE FROM medicion WHERE iden_nombre=:value",[':value'=>$target]);
+				session(['adminerror'=>  "{$delresultloc} puntos/transectos borrados y {$delresultobs} observaciones borrados"]);
+			}
+          
 
         }
 

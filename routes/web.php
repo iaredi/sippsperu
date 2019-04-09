@@ -53,6 +53,7 @@ Route::post('/udpmapa', 'PagesController@udpmapa');
 Route::post('/ingresarexcel', 'PagesController@ingresarexcel');
 Route::post('/mostrarnormas', 'PagesController@mostrarnormas');
 Route::post('/privacidad', 'PagesController@privacy');
+Route::post('/linea', 'PagesController@linea');
 
 
 

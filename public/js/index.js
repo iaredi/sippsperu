@@ -46845,12 +46845,14 @@ var Linea = function (_React$Component) {
 
 		_this.setFromSelect = _this.setFromSelect.bind(_this);
 		_this.updateValue = _this.updateValue.bind(_this);
+		_this.handleSubmit = _this.handleSubmit.bind(_this);
 
 		_this.state = {
 			linea: '',
 			lineaList: [],
 			email: useremail,
-			values: []
+			values: [],
+			submitDisabled: true
 		};
 		return _this;
 	}
@@ -46897,6 +46899,14 @@ var Linea = function (_React$Component) {
 			this.setState({
 				values: oldValues
 			});
+
+			this.checkValues();
+		}
+	}, {
+		key: "handleSubmit",
+		value: function handleSubmit(e) {
+			console.log('submitted');
+			e.preventDefault();
 		}
 	}, {
 		key: "componentDidMount",
@@ -46909,7 +46919,7 @@ var Linea = function (_React$Component) {
 					return row.nombre_iden;
 				});
 				_this3.setState({
-					lineaList: ['', 'Nueva'].concat(_toConsumableArray(dataArray))
+					lineaList: [''].concat(_toConsumableArray(dataArray))
 				});
 			});
 		}
@@ -46925,22 +46935,27 @@ var Linea = function (_React$Component) {
 					_react2.default.createElement(
 						"h4",
 						null,
-						"Nueva Linea MTP"
+						"Cambiar Linea Existente"
 					)
 				),
-				_react2.default.createElement(_DBDropdown2.default, {
-					items: this.state.lineaList,
-					nameInState: "linea",
-					setFromSelect: this.setFromSelect,
-					selectedItem: this.state.linea
-				}),
-				this.state.values !== [] && _react2.default.createElement(_Editable2.default, {
-					table: "linea_mtp",
-					selectedColumn: "nombre_iden",
-					selectedValue: this.state.linea,
-					updateValue: this.updateValue,
-					values: this.state.values
-				})
+				_react2.default.createElement(
+					"form",
+					{ onSubmit: this.handleSubmit, id: "measurementform", method: "post" },
+					_react2.default.createElement(_DBDropdown2.default, {
+						items: this.state.lineaList,
+						nameInState: "linea",
+						setFromSelect: this.setFromSelect,
+						selectedItem: this.state.linea
+					}),
+					this.state.values !== [] && _react2.default.createElement(_Editable2.default, {
+						table: "linea_mtp",
+						selectedColumn: "nombre_iden",
+						selectedValue: this.state.linea,
+						updateValue: this.updateValue,
+						values: this.state.values
+					}),
+					_react2.default.createElement("input", { type: "submit", id: "measurementlinea_mtpSubmit", className: "border border-secondary btn btn-success mySubmit p-2 m-2" })
+				)
 			);
 		}
 	}]);

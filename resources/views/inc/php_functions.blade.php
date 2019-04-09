@@ -177,7 +177,6 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 		if (!(is_numeric(substr($locvalue, 0, 2))&&is_numeric(substr($locvalue, 3, 2))&&is_numeric(substr($locvalue, 6, 4)))){
 			return array($locvalue, "La fecha en {$letter}{$row_number} en {$sheet} es en formato incorrecto.");
 		}
-		
 		//Switch day and month
 		$divider=substr($locvalue, 2, 1);
 		$rawmonth=strtolower(explode($divider, $locvalue)[1]);	
@@ -222,17 +221,49 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 
 
 		if (!(
-		is_numeric(substr($locvalue, 0, 2)) && intval(substr($locvalue, 0, 2))>0 && intval(substr($locvalue, 0, 2))<31 &&
-		is_numeric(substr($locvalue, 3, 2)) && intval(substr($locvalue, 3, 2))>0 && intval(substr($locvalue, 3, 2))<13 &&
-		is_numeric(substr($locvalue, 6, 4)) && intval(substr($locvalue, 6, 4))>1899 && intval(substr($locvalue, 6, 4))<3000
+			is_numeric(substr($locvalue, 0, 2)) && intval(substr($locvalue, 0, 2))>0 && intval(substr($locvalue, 0, 2))<=31 &&
+			is_numeric(substr($locvalue, 3, 2)) && intval(substr($locvalue, 3, 2))>0 && intval(substr($locvalue, 3, 2))<13 &&
+			is_numeric(substr($locvalue, 6, 4)) && intval(substr($locvalue, 6, 4))>1899 && intval(substr($locvalue, 6, 4))<3000
 		)){
 			return array($locvalue, "La fecha en {$letter}{$row_number} en {$sheet} es en formato incorrecto.");
 		}
 		return array($rawmonth ."-". explode($divider, $locvalue)[0] ."-" .  explode($divider, $locvalue)[2], '');
 	}catch (Exception $e){
-		return array($locvalue, "La fecha en {$letter}2 en {$sheet}{$row_number} es en formato incorrecto.");
+		return array($locvalue, "La fecha en {$letter}{$row_number} en {$sheet}es en formato incorrecto.");
 	}
   }
+
+
+  function formathour($locvalue, $sheet, $letter, $row_number){
+	  try {
+		if ($locvalue=='00'||$locvalue=='000'||$locvalue=='0000'){
+			$locvalue='01:01';
+		}
+		if (strlen($locvalue)<3){
+			return array($locvalue, "La hora en {$letter}{$row_number} en {$sheet} es en formato incorrecto.");
+		}
+		//Add leading zero to hour 
+		if (!is_numeric(substr($locvalue, 1, 1))){	
+			$locvalue="0".$locvalue;
+		}
+		if (!(is_numeric(substr($locvalue, 0, 2)) && is_numeric(substr($locvalue, 3, 2)) && substr($locvalue, 2, 1)==':')){
+			return array($locvalue, "La hora en {$letter}{$row_number} en {$sheet} es en formato incorrecto.");
+		}
+
+		if (!(
+			is_numeric(substr($locvalue, 0, 2)) && intval(substr($locvalue, 0, 2))>=0 && intval(substr($locvalue, 0, 2))<24 &&
+			is_numeric(substr($locvalue, 3, 2)) && intval(substr($locvalue, 3, 2))>0 && intval(substr($locvalue, 3, 2))<60
+		)){
+			return array($locvalue, "La hora en {$letter}{$row_number} en {$sheet} es en formato incorrecto.");
+		}
+		return array(substr($locvalue, 0, 2).":".substr($locvalue, 3, 2), '');
+	}catch (Exception $e){
+		return array($locvalue, "La hora en {$letter}{$row_number} en {$sheet} es en formato incorrecto.");
+	}
+  }
+
+
+
 
     function uploadfoto($newpost,$filesname,$filestmpname,$filessize, $obstype){
           if (isset($filesname) && ($filesname)!="" && ($filesname)!="0" && ($filesname)!="00" && ($filesname)!="000"){

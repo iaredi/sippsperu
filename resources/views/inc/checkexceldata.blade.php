@@ -176,6 +176,14 @@
 					}
 				}
 
+				if (strpos($loccolvalue, 'hora') !== false){
+					list($newhoravalue,$horaerror) = formathour($locvalue,  $sheet, $letter, 2);
+					if($horaerror==''){
+						$locvalue=$newhoravalue;
+					}else{
+						$errorlist[]=$horaerror;
+					}
+				}
 
                 $obspost["row0*{$transpunto}_{$lifeform}*{$loccolvalue}"] = $locvalue;
                 
@@ -245,6 +253,16 @@
 							$obsvalue=$newdatevalue;
 						}else{
 							$errorlist[]=$dateerror;
+						}
+					}
+
+					//Handle Hour
+					if (strpos($obscolumn, 'hora') !== false){
+						list($newhoravalue,$horaerror) = formathour($obsvalue, $sheetobs, $letter, $row_number);
+						if($horaerror==''){
+							$obsvalue=$newhoravalue;
+						}else{
+							$errorlist[]=$horaerror;
 						}
 					}
 
@@ -334,7 +352,7 @@
 			
 		  $saveworked = savedata($currentobspost,$useremail,true);
 		  if ($saveworked=='false'){
-			$errorlist[]="Sus datos no fueron guardados.";
+			$errorlist[]="Sus datos no fueron guardados";
 		  }
           
         }
