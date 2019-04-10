@@ -206,20 +206,35 @@
                 $unit=ucfirst($transpunto);
                 $unitnum= $newpost["select{$unit}"]; 
                 $unitcolumns=buildcolumnsarray($newpost,"{$transpunto}_{$speciestype}", "row0");
-                $unitcolumns["iden_sampling_unit"]= $unitnum; 
+				$unitcolumns["iden_sampling_unit"]= $unitnum;
+				
+				
+
+
                 if ($lifeform=='arbol' || $lifeform=='arbusto'){
                   $unitcolumns["iden_sampling_unit"]= $newpost["selectTransecto"];
-                  $unitnum = $newpost["select{$unit}"]; 
-                  $unitcolumns["iden_numero_punto62"]= $unitnum;
+                  $unitcolumns["iden_numero_punto62"]= $newpost["select{$unit}"];
                 } 
                 //Save UDP
-                $mylong = $newpost["row0*{$transpunto}_{$speciestype}*{$longitudcolumn}"];
-                $mylat = $newpost["row0*{$transpunto}_{$speciestype}*{$latitudcolumn}"];
+                // $mylong = $newpost["row0*{$transpunto}_{$speciestype}*{$longitudcolumn}"];
+				// $mylat = $newpost["row0*{$transpunto}_{$speciestype}*{$latitudcolumn}"];
+				$pointname="punto_{$unitcolumns["iden_sampling_unit"]}";
+				if($unitcolumns["iden_sampling_unit"]==1){
+					$pointname="comienzo";
+				}
+				if($unitcolumns["iden_sampling_unit"]==5){
+					$pointname="fin";
+				}
+				$lineiden = askforkey("medicion", "iden_linea_mtp", "iden", $medicionkey);
+				$mylong = askforkey("linea_mtp", "{$pointname}_longitud", "iden", $lineiden);
+				$mylat = askforkey("linea_mtp", "{$pointname}_latitud", "iden", $lineiden);
+
                 $sql="SELECT udp_puebla_4326.iden FROM udp_puebla_4326 WHERE ST_Intersects(udp_puebla_4326.geom, ST_GeomFromText('POINT({$mylong} {$mylat})',4326))";
                 $udpresult = DB::select($sql, []);
                 if (sizeof($udpresult)>0){
                     $unitcolumns["iden_udp"]= $udpresult[0]->iden;
-                } 
+				} 
+
                 $unitcolumns["iden_medicion"]= $medicionkey;
             //Handle observaciones
                 $obscolumnarray=[];
