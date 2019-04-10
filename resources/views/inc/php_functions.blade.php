@@ -125,25 +125,25 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
     } 
 
 
-    function buildcolumnsarray($newpost,$tablename, $rowandnum){
+    function buildcolumnsarray($newpost,$tablename, $rowandnum, $withval=true){
         try {
             $sql="SELECT column_name FROM information_schema.columns WHERE table_schema = 'public' AND table_name   = :tablename";
             $result= DB::select($sql,[':tablename'=>$tablename]);
             $colarray=array();
                 foreach($result as $colobj){
-                    //if (explode("_" , $tablename)[0]!='observacion'){
-                    //    $tablename='observacion_'.explode("_" , $tablename)[1];
-                    //};
-
                     $col=$colobj->column_name;
                     if (substr($col,0,4) != 'iden'){
-						$colarray[$col]=trim($newpost["{$rowandnum}*{$tablename}*{$col}"]);
-						//Check for incorrect datetime formats 
-						if (strpos($col, 'hora') !== false && strpos($colarray[$col], ':') == false){
-							$colarray[$col]="00:01";
-						}
-						if (strpos($col, 'fecha') !== false && strpos($colarray[$col], '-') == false){
-							$colarray[$col]="01/01/0001";
+						if($withval){
+							$colarray[$col]=trim($newpost["{$rowandnum}*{$tablename}*{$col}"]);
+							//Check for incorrect datetime formats 
+							if (strpos($col, 'hora') !== false && strpos($colarray[$col], ':') == false){
+								$colarray[$col]="00:01";
+							}
+							if (strpos($col, 'fecha') !== false && strpos($colarray[$col], '-') == false){
+								$colarray[$col]="01/01/0001";
+							}
+						}else{
+							$colarray[$col]='';
 						}
                     }
                 }
@@ -236,8 +236,12 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 
   function formathour($locvalue, $sheet, $letter, $row_number){
 	  try {
+		
 		if ($locvalue=='00'||$locvalue=='000'||$locvalue=='0000'){
 			$locvalue='01:01';
+		}
+		if (intval($locvalue<1)&&intval($locvalue>=0)&&is_numeric($locvalue)){
+			return array($locvalue, "");
 		}
 		if (strlen($locvalue)<3){
 			return array($locvalue, "La hora en {$letter}{$row_number} en {$sheet} es en formato incorrecto.");

@@ -214,7 +214,9 @@
             $true_row=0;
 
             while (true && sizeof($errorlist)==0){
-              if ($spreadsheet->getSheetByName($sheetobs)->getCell("B{$row_number}")->getValue()==NULL){
+			  if ($spreadsheet->getSheetByName($sheetobs)->getCell("A{$row_number}")->getValue()==NULL &&
+			  $spreadsheet->getSheetByName($sheetobs)->getCell("B{$row_number}")->getValue()==NULL && 
+			  $spreadsheet->getSheetByName($sheetobs)->getCell("C{$row_number}")->getValue()==NULL){
                 break;
               }else{
                   $letter = 'A';
@@ -235,8 +237,9 @@
                       }
 					}
 					
+					
                     if($obscolumn=='cientifico'){
-                      if ($obsvalue==NULL){
+                      if ($obsvalue==NULL ){
                         break;
                       }else{
                         $cientifico = $spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}{$row_number}")->getValue();
@@ -265,6 +268,7 @@
 							$errorlist[]=$horaerror;
 						}
 					}
+					
 
 					//Handle Invador
 					if($obscolumn=='invasor'){
@@ -300,7 +304,7 @@
 					}
 					
 					
-                    $obspost["row{$true_row}*observacion_{$lifeform}*{$newobscolumn}"] = $obsvalue;
+					$obspost["row{$true_row}*observacion_{$lifeform}*{$newobscolumn}"] = $obsvalue;
                     
                     $letter = ++$letter;
                   }
@@ -343,6 +347,38 @@
 				$errorlist[]="Ya existe una medicion para esta linea y fecha.";
 			}
 		}
+
+		//Make sure all neccessary columns are present
+		if(sizeof($errorlist)==0){
+			foreach ($obspostarray as $currentobspost) {
+				$transpunto="punto";
+				$lifeform = $currentobspost['selectobservaciones'];
+				if ($lifeform=='hierba' || $lifeform=='herpetofauna'){
+					$transpunto="transecto";
+				}
+				if ($lifeform=="ave") $lifeformraw='AVE';
+				if ($lifeform=="arbol") $lifeformraw='ARBO';
+				if ($lifeform=="arbusto") $lifeformraw='ARBU';
+				if ($lifeform=="hierba") $lifeformraw='HIER';
+				if ($lifeform=="mamifero") $lifeformraw='MAMI';
+				if ($lifeform=="herpetofauna") $lifeformraw='HERP';
+				$transpuntoupper=ucfirst($transpunto);
+				$unitcolumns=buildcolumnsarray($currentobspost,"{$transpunto}_{$lifeform}", "row0",false);
+				foreach ($unitcolumns as $key => $value) {
+					if((substr($key,0,4) != 'iden')&&(!isset($currentobspost["row0*{$transpunto}_{$lifeform}*$key"]))){
+						$errorlist[]="No existe {$key} en {$lifeformraw}_LOC_{$currentobspost['select'.$transpuntoupper]}";
+					}
+				}
+				$unitcolumns=buildcolumnsarray($currentobspost,"observacion_{$lifeform}", "row0",false);
+				foreach ($unitcolumns as $key => $value) {
+					if((substr($key,0,4) != 'iden')&&($key!='notas')&&(!isset($currentobspost["row0*observacion_{$lifeform}*$key"]))){
+						$errorlist[]="No existe {$key} en {$lifeformraw}_OBS_{$currentobspost['select'.$transpuntoupper]}";
+						echo var_dump($currentobspost);
+					}
+				}
+			}
+		}
+	
 	  //save all if no errors
 
       if(sizeof($errorlist)==0){
@@ -352,7 +388,7 @@
 			
 		  $saveworked = savedata($currentobspost,$useremail,true);
 		  if ($saveworked=='false'){
-			$errorlist[]="Sus datos no fueron guardados";
+			$errorlist[]="Hubo problema guardando datos.";
 		  }
           
         }
