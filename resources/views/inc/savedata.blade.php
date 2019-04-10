@@ -242,7 +242,11 @@
                   //Handle fotos
                   $postid = "row{$i}*{$obstype}*iden_foto";
                   if ($fromexcel){
-                    $iden_foto = $newpost[$postid];
+					  if (isset($newpost[$postid])){
+						  $iden_foto = $newpost[$postid];
+					  }else{
+						$iden_foto = 'No presentado';
+					  }
                   }else{
                     $iden_foto = $_FILES[$postid];
                     $iden_foto = uploadfoto($newpost,$_FILES[$postid]["name"], $_FILES[$postid]["tmp_name"], $_FILES[$postid]["size"], $obstype);
@@ -295,7 +299,6 @@
         if (strpos($result, 'exito') !== false){
             $saved++;
         }else{
-			echo $result;
           $failed++;
           $errorarray[]=$result;
         }

@@ -161,7 +161,7 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 			$locvalue='01-01-1900';
 		}
 		if (strlen($locvalue)<8){
-			return array($locvalue, "La fecha en {$letter}{$row_number} en {$sheet} es en formato incorrecto.");
+			return array($locvalue, "La fecha en {$letter}{$row_number} en {$sheet} es en 'date' formato.");
 		}
 
 		//Add leading zero to day 
@@ -173,14 +173,10 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 		if (is_numeric(substr($locvalue, 3, 1)) && !(is_numeric(substr($locvalue, 4, 1)))){	
 			$locvalue=substr($locvalue, 0, 3) . "0" . substr($locvalue, 3);
 		}
-
-		if (!(is_numeric(substr($locvalue, 0, 2))&&is_numeric(substr($locvalue, 3, 2))&&is_numeric(substr($locvalue, 6, 4)))){
-			return array($locvalue, "La fecha en {$letter}{$row_number} en {$sheet} es en formato incorrecto.");
-		}
-		//Switch day and month
 		$divider=substr($locvalue, 2, 1);
-		$rawmonth=strtolower(explode($divider, $locvalue)[1]);	
-		if (ctype_alpha(substr($locvalue, 3, 2))){
+		$rawmonth=strtolower(explode($divider, $locvalue)[1]);
+
+		if (ctype_alpha(substr($locvalue, 3, 3))){
 			if (strpos($rawmonth, 'ene') !== false || strpos($rawmonth, 'jan') !== false){
 				$rawmonth='01';
 			}
@@ -218,17 +214,25 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 				$rawmonth='12';
 			}
 		}
+		$newloc = $rawmonth ."-". explode($divider, $locvalue)[0] ."-" .  explode($divider, $locvalue)[2];
+
+		if (!(is_numeric(substr($newloc, 0, 2))&&is_numeric(substr($newloc, 3, 2))&&is_numeric(substr($newloc, 6, 4)))){
 
 
-		if (!(
-			is_numeric(substr($locvalue, 0, 2)) && intval(substr($locvalue, 0, 2))>0 && intval(substr($locvalue, 0, 2))<=31 &&
-			is_numeric(substr($locvalue, 3, 2)) && intval(substr($locvalue, 3, 2))>0 && intval(substr($locvalue, 3, 2))<13 &&
-			is_numeric(substr($locvalue, 6, 4)) && intval(substr($locvalue, 6, 4))>1899 && intval(substr($locvalue, 6, 4))<3000
-		)){
-			return array($locvalue, "La fecha en {$letter}{$row_number} en {$sheet} es en formato incorrecto.");
+			return array($locvalue, "La fecha en {$letter}{$row_number} en {$sheet} es en formato incorrecto");
 		}
-		return array($rawmonth ."-". explode($divider, $locvalue)[0] ."-" .  explode($divider, $locvalue)[2], '');
+		//Switch day and month
+		
+		if (!(
+			is_numeric(substr($newloc, 3, 2)) && intval(substr($newloc, 3, 2))>0 && intval(substr($newloc, 3, 2))<=31 &&
+			is_numeric(substr($newloc, 0, 2)) && intval(substr($newloc, 0, 2))>0 && intval(substr($newloc, 0, 2))<13 &&
+			is_numeric(substr($newloc, 6, 4)) && intval(substr($newloc, 6, 4))>1899 && intval(substr($newloc, 6, 4))<3000
+		)){
+			return array($locvalue, "La fecha en {$letter}{$row_number} en {$sheet} tiene numeros incorrectos.");
+		}
+		return array($newloc,'');
 	}catch (Exception $e){
+
 		return array($locvalue, "La fecha en {$letter}{$row_number} en {$sheet}es en formato incorrecto.");
 	}
   }

@@ -167,6 +167,7 @@
 					$errorlist[]="No hay datos en {$letter}2 en {$sheet} ";
 				}
 
+				//Handle Date
 				if (strpos($loccolvalue, 'fecha') !== false){
 					list($newdatevalue,$dateerror) = formatdate($locvalue,  $sheet, $letter, 2);
 					if($dateerror==''){
@@ -174,8 +175,9 @@
 					}else{
 						$errorlist[]=$dateerror;
 					}
+					
 				}
-
+				//Handle hour 
 				if (strpos($loccolvalue, 'hora') !== false){
 					list($newhoravalue,$horaerror) = formathour($locvalue,  $sheet, $letter, 2);
 					if($horaerror==''){
@@ -216,7 +218,9 @@
             while (true && sizeof($errorlist)==0){
 			  if ($spreadsheet->getSheetByName($sheetobs)->getCell("A{$row_number}")->getValue()==NULL &&
 			  $spreadsheet->getSheetByName($sheetobs)->getCell("B{$row_number}")->getValue()==NULL && 
-			  $spreadsheet->getSheetByName($sheetobs)->getCell("C{$row_number}")->getValue()==NULL){
+			  $spreadsheet->getSheetByName($sheetobs)->getCell("C{$row_number}")->getValue()==NULL && 
+			  $spreadsheet->getSheetByName($sheetobs)->getCell("D{$row_number}")->getValue()==NULL && 
+			  $spreadsheet->getSheetByName($sheetobs)->getCell("E{$row_number}")->getValue()==NULL){
                 break;
               }else{
                   $letter = 'A';
@@ -225,9 +229,9 @@
 					  
 					$newobscolumn = $obscolumn; 
 					$obsvalue = trim($spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}{$row_number}")->getValue());
-					if ($obsvalue==NULL && $newobscolumn!='notas' && $newobscolumn!='iden_foto' ){
-						$errorlist[]="No hay datos en {$letter}{$row_number} en {$sheetobs}.";
-					}
+					// if ($obsvalue==NULL && $newobscolumn!='notas' && $newobscolumn!='iden_foto' ){
+					// 	$errorlist[]="No hay datos en {$letter}{$row_number} en {$sheetobs}.";
+					// }
                     if (strpos($newobscolumn, 'iden_foto') !== false){
                       if($obsvalue==NULL || $obsvalue==""  || $obsvalue=="00" || $obsvalue=="000" || $obsvalue=="0000"){
                         $obsvalue = "No Presentado";
@@ -240,7 +244,8 @@
 					
                     if($obscolumn=='cientifico'){
                       if ($obsvalue==NULL ){
-                        break;
+						$obspost["row{$true_row}*observacion_{$lifeform}*species"]='000';
+                        
                       }else{
                         $cientifico = $spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}{$row_number}")->getValue();
                         $obspost["row{$true_row}*observacion_{$lifeform}*species"]="Nuevo";
@@ -307,7 +312,10 @@
 					$obspost["row{$true_row}*observacion_{$lifeform}*{$newobscolumn}"] = $obsvalue;
                     
                     $letter = ++$letter;
-                  }
+				  }
+				  if(!isset($obspost["row{$true_row}*observacion_{$lifeform}*species"])){
+					$errorlist[]= "{$sheetobs}, {$true_row} is too no cien **";
+				  }
                   $true_row=$true_row+1;
                 
                 $row_number=$row_number+1;
@@ -364,16 +372,17 @@
 				if ($lifeform=="herpetofauna") $lifeformraw='HERP';
 				$transpuntoupper=ucfirst($transpunto);
 				$unitcolumns=buildcolumnsarray($currentobspost,"{$transpunto}_{$lifeform}", "row0",false);
+
 				foreach ($unitcolumns as $key => $value) {
 					if((substr($key,0,4) != 'iden')&&(!isset($currentobspost["row0*{$transpunto}_{$lifeform}*$key"]))){
 						$errorlist[]="No existe {$key} en {$lifeformraw}_LOC_{$currentobspost['select'.$transpuntoupper]}";
 					}
 				}
 				$unitcolumns=buildcolumnsarray($currentobspost,"observacion_{$lifeform}", "row0",false);
+				$unitcolumns['cientifico']='';
 				foreach ($unitcolumns as $key => $value) {
 					if((substr($key,0,4) != 'iden')&&($key!='notas')&&(!isset($currentobspost["row0*observacion_{$lifeform}*$key"]))){
 						$errorlist[]="No existe {$key} en {$lifeformraw}_OBS_{$currentobspost['select'.$transpuntoupper]}";
-						echo var_dump($currentobspost);
 					}
 				}
 			}
