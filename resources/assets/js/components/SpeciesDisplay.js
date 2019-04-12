@@ -8,7 +8,8 @@ class SpeciesDisplay extends React.Component {
     }
     render(){
 
-        const oldspeciesResult=this.props.speciesResult
+		const oldspeciesResult=this.props.speciesResult
+		//console.log(oldspeciesResult)
 
         //ADD (2) to prevent duplicate keys 
         const newA={}

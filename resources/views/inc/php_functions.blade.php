@@ -268,7 +268,7 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 
 		if (!(
 			is_numeric(substr($locvalue, 0, 2)) && intval(substr($locvalue, 0, 2))>=0 && intval(substr($locvalue, 0, 2))<24 &&
-			is_numeric(substr($locvalue, 3, 2)) && intval(substr($locvalue, 3, 2))>0 && intval(substr($locvalue, 3, 2))<60
+			is_numeric(substr($locvalue, 3, 2)) && intval(substr($locvalue, 3, 2))>=0 && intval(substr($locvalue, 3, 2))<60
 		)){
 			return array($locvalue, "La hora en {$letter}{$row_number} en {$sheet} es en formato incorrecto.");
 		}

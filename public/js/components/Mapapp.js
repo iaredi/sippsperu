@@ -19113,15 +19113,29 @@ var Mapapp = function (_React$Component) {
                         "div",
                         { id: "buttons1" },
                         this.state.lineaButton && _react2.default.createElement(
-                            "a",
-                            {
-                                className: "btn btn-primary m-2 btn-sm mapInfoButton",
-                                href: "/mostrarnormas/ae/" + this.state.currentLineaId + 'l',
-                                role: "button"
-                            },
-                            " ",
-                            "Attributos Ecologicos",
-                            " "
+                            "div",
+                            null,
+                            _react2.default.createElement(
+                                "a",
+                                {
+                                    className: "btn btn-primary m-2 btn-sm mapInfoButton",
+                                    href: "/mostrarnormas/ae/" + this.state.currentLineaId + 'l',
+                                    role: "button"
+                                },
+                                " ",
+                                "Attributos Ecologicos",
+                                " "
+                            ),
+                            _react2.default.createElement(
+                                "a",
+                                {
+                                    className: "btn btn-primary m-2 btn-sm mapInfoButton",
+                                    href: "/mostrarnormas/normas/" + this.state.currentUdpId + 'l',
+                                    role: "button"
+                                },
+                                " ",
+                                "Especies y Normas 059"
+                            )
                         ),
                         this.state.udpButton && _react2.default.createElement(
                             "div",
@@ -19141,7 +19155,7 @@ var Mapapp = function (_React$Component) {
                                 "a",
                                 {
                                     className: "btn btn-primary m-2 btn-sm mapInfoButton",
-                                    href: "/mostrarnormas/normas/" + this.state.currentUdpId,
+                                    href: "/mostrarnormas/normas/" + this.state.currentUdpId + 'u',
                                     role: "button"
                                 },
                                 " ",

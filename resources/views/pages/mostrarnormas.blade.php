@@ -8,6 +8,10 @@ if (!session('readpp')){
 $geojsonidennum=json_encode($idenudp);
 $geojsoninfotype=json_encode($infotype);
 $myheader= 'Especies y Normas 059 de UDP '. $idenudp;
+if ($infotype=='normas'){
+	$headertype= substr($idenudp, -1)=='u'?'UDP':'Linea MTP';
+  $myheader= 'Especies y Normas 059 de '.$headertype.' '. substr($idenudp, 0, -1);
+}
 if ($infotype=='ae'){
 	$headertype= substr($idenudp, -1)=='u'?'UDP':'Linea MTP';
   $myheader= 'Attributos Ecologicos de '.$headertype.' '. substr($idenudp, 0, -1);

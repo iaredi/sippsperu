@@ -12,8 +12,8 @@ class PagesController extends Controller
     public function login(){
         return view('pages/login');
 	}
-	public function linea(){
-        return view('pages/linea');
+	public function cambiarlinea(){
+        return view('pages/cambiarlinea');
     }
     public function admin(){
         return view('pages/admin');

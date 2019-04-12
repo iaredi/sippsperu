@@ -10,9 +10,10 @@
 		</a>
 		<div class="dropdown-content">
 		  <a href="/ingresardatos">Monitoreo de Biodiversidad</a>
-		  <a href="/ingresardatos">Monitoreo de Acciones</a>
+		  <a href="/mostrarmapas">Monitoreo de Acciones</a>
+		  <a href="/cambiarlinea">Cambiar Linea MTP</a>
 		</div>
-	  </div> 
+	  </div>
 
   <div class="collapse navbar-collapse" id="navbarText">
     <ul class="navbar-nav mr-auto">

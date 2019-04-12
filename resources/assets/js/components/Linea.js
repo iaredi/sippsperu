@@ -11,7 +11,7 @@ class Linea extends React.Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 
         this.state = {
-			linea:'',
+			linea_mtp:'',
 			lineaList:[],
 			email:useremail,
 			values:[],
@@ -33,12 +33,11 @@ class Linea extends React.Component {
 
 
 		fetchData('getList',{table:'linea_mtp', column:'*',where:'nombre_iden', wherevalue:wherevalue,limit:limit}).then(returnData => {
-			const filteredDate = returnData.map((row, rowId) => {
+			const filteredDate = returnData.map((row) => {
 				const newrow = {}
 				Object.keys(row).forEach(key => {
 					if(!key.includes('iden')){
 						newrow[key] = row[key]
-						newrow['rowId'] = rowId
 						if(choice==='Nueva'){
 							newrow[key] = ''
 						}
@@ -47,28 +46,23 @@ class Linea extends React.Component {
 				
 				return newrow
 			})
-			const arrayToObject = (arr, keyField) => Object.assign({}, ...arr.map(item => ({[item[keyField]]: item})))
+			const arrayToObject = (arr) => Object.assign({}, ...arr.map((item,i) => ({['row'+i]: item})))
 			this.setState({
 				values:{
-					[nameInState] : arrayToObject(filteredDate,'rowId')}
+					[nameInState] : arrayToObject(filteredDate)}
 			})
 		})
 	}
 
-	updateValue(nameInState, row,column, value){
-		
-		// this.setState({
-		// 	values:oldValues
-		// });
-		console.log(nameInState, row,column, value)
+	updateValue(nameInState, rowId,column, value){
 		this.setState((prevState) => (
 			{
 				values:{
 					...prevState.values,
 					[nameInState]:{
 						...prevState.values[nameInState],
-						[row]:{
-							...prevState.values[nameInState][row],
+						[rowId]:{
+							...prevState.values[nameInState][rowId],
 							[column]:value
 						}
 					}
@@ -99,7 +93,6 @@ class Linea extends React.Component {
                 <div className="h4 titleHeaders">
                     <h4>Cambiar Linea Existente</h4>
 				</div>
-				<form onSubmit={this.handleSubmit} id="measurementform" method="post">
 
 					<DBDropdown
 						items={this.state.lineaList}
@@ -120,7 +113,7 @@ class Linea extends React.Component {
 
 
 					<input type="submit" id="measurementlinea_mtpSubmit" className="border border-secondary btn btn-success mySubmit p-2 m-2"/>
-				</form>
+				
             </div>
         );
     }

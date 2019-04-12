@@ -273,17 +273,31 @@ class Mapapp extends React.Component {
 
 					<div id="buttons1">
 					{this.state.lineaButton && (
-						<a
-							className="btn btn-primary m-2 btn-sm mapInfoButton"
-							href={
-								"/mostrarnormas/ae/" + 
-								this.state.currentLineaId+'l'
-							}
-							role="button"
-						>
-							{" "}
-							Attributos Ecologicos{" "}
-						</a>
+						<div>
+							<a
+								className="btn btn-primary m-2 btn-sm mapInfoButton"
+								href={
+									"/mostrarnormas/ae/" + 
+									this.state.currentLineaId+'l'
+								}
+								role="button"
+							>
+								{" "}
+								Attributos Ecologicos{" "}
+							</a>
+							<a
+								className="btn btn-primary m-2 btn-sm mapInfoButton"
+								href={
+									"/mostrarnormas/normas/" +
+									this.state.currentUdpId +'l'
+								}
+								role="button"
+							>
+								{" "}
+								Especies y Normas 059
+							</a>
+						</div>
+						
 					)}
                         {this.state.udpButton && (
 							<div id="buttonContainer">
@@ -302,7 +316,7 @@ class Mapapp extends React.Component {
                                     className="btn btn-primary m-2 btn-sm mapInfoButton"
                                     href={
                                         "/mostrarnormas/normas/" +
-                                        this.state.currentUdpId
+                                        this.state.currentUdpId +'u'
                                     }
                                     role="button"
                                 >

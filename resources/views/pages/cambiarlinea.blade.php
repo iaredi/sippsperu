@@ -1,0 +1,52 @@
+@include('inc/php_functions')
+@include('inc/checkdata')
+@include('inc/savedatareact')
+
+<?php
+	if (!session('email')){
+		return redirect()->to('/login')->send();
+	}
+	if (!session('readpp')){
+		return redirect()->to('/privacidad')->send();
+	}
+	if ($_SERVER['REQUEST_METHOD']=="POST" && sizeof(session('error'))==0  && (!session('visitante'))){
+		$saveworked = savedatareact($_POST,session('email'));
+		if($saveworked=="true"){
+			redirect()->to('/thanks')->send();
+		}
+    
+	}
+?>
+
+	@include('inc/header')
+	@include('inc/nav')
+	@include('inc/checkdata')
+	<img src="{{ asset('img/popo.jpg') }}"  alt="Italian Trulli" style="height:250px; width:380px;">
+		<div class=" warnings">
+			<?php
+				$hintlist = [
+					"Si no hizo la observacion, ingrese 0000.",
+					"Si hiciera observacion y no hubiera especies, ingrese 000.",
+					"Si no sabe con certeza algún dato, ingrese 00.",
+					"Todos los medidas son de 3 grados de precision. Por ejemplo 1.792",
+					"Todos las coordenadas son de 4 grados de precision. Por ejemplo -110.8170"
+				];
+				foreach ($hintlist as $hint) {
+					echo "<p class='text-dark text-center'style='background-color: lightsteelblue;'>{$hint}</p>";
+				}
+				foreach (session('error') as $msg) {
+					echo "<p class='bg-danger2 text-center'>{$msg}</p>";
+				}
+			?>
+	</div>
+	<form id="measurementform" method="post">
+        {{ csrf_field() }}
+		<div id="app"></div>
+	</form>
+
+	<link rel="stylesheet" href="leaflet_assets/leaflet.css">
+	<script>
+		var infotype ='linea'
+	</script>
+	<script src="{{ asset('js/index.js') }}"></script>
+	@include('inc/footer')

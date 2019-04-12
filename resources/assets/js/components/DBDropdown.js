@@ -11,7 +11,6 @@ class DBDropdown extends React.Component {
 		  }
 	}
 	
-
     render() {
         return (
             <div>
@@ -20,7 +19,8 @@ class DBDropdown extends React.Component {
                     onChange={
 						e =>
                         this.props.setFromSelect(e.target.value, this.props.nameInState)
-                    }
+					}
+					name={this.props.nameInState}
                 >
                     {this.props.items.map(item => (
                         <option key={item} value={item}>
