@@ -229,9 +229,9 @@
 					  
 					$newobscolumn = $obscolumn; 
 					$obsvalue = trim($spreadsheet->getSheetByName($sheetobs)->getCell("{$letter}{$row_number}")->getValue());
-					// if ($obsvalue==NULL && $newobscolumn!='notas' && $newobscolumn!='iden_foto' ){
-					// 	$errorlist[]="No hay datos en {$letter}{$row_number} en {$sheetobs}.";
-					// }
+					if ($obsvalue==NULL && $newobscolumn!='notas' && $newobscolumn!='iden_foto' ){
+						$errorlist[]="No hay datos en {$letter}{$row_number} en {$sheetobs}.";
+					}
                     if (strpos($newobscolumn, 'iden_foto') !== false){
                       if($obsvalue==NULL || $obsvalue==""  || $obsvalue=="00" || $obsvalue=="000" || $obsvalue=="0000"){
                         $obsvalue = "No Presentado";
@@ -389,6 +389,7 @@
 		}
 	
 	  //save all if no errors
+	  
 
       if(sizeof($errorlist)==0){
 		$newmedicion = savedata($medicionpost,$_FILES, $useremail,true);

@@ -160,13 +160,18 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 		if ($locvalue=='00'||$locvalue=='000'||$locvalue=='0000'){
 			$locvalue='01-01-1900';
 		}
-		if (strlen($locvalue)<8){
-			return array($locvalue, "La fecha en {$letter}{$row_number} en {$sheet} es en 'date' formato.");
-		}
+		// if (strlen($locvalue)<8){
+		// 	return array($locvalue, "La fecha en {$letter}{$row_number} en {$sheet} es incorrecto.");
+		// }
 
 		//Add leading zero to day 
 		if (!is_numeric(substr($locvalue, 1, 1))){	
 			$locvalue="0".$locvalue;
+		}
+
+		//Add leading zero to day 
+		if (is_numeric($locvalue)){	
+			$locvalue=gmdate("d-m-Y", ($locvalue - 25569) * 86400);
 		}
 		
 		//Add leading zero to month 
@@ -228,7 +233,10 @@ function askforkey($mytable, $myprimary, $myfield,  $myvalue){
 			is_numeric(substr($newloc, 0, 2)) && intval(substr($newloc, 0, 2))>0 && intval(substr($newloc, 0, 2))<13 &&
 			is_numeric(substr($newloc, 6, 4)) && intval(substr($newloc, 6, 4))>1899 && intval(substr($newloc, 6, 4))<3000
 		)){
-			return array($locvalue, "La fecha en {$letter}{$row_number} en {$sheet} tiene numeros incorrectos.");
+			return array($newloc, "La fecha en {$letter}{$row_number} en {$sheet} tiene numeros incorrectos.");
+		}
+		if(!checkdate ( substr($newloc, 0, 2), substr($newloc, 3, 2), substr($newloc, 6, 4) )){
+			return array($locvalue, "La fecha en {$letter}{$row_number} en {$sheet} no aparece en el calendario");
 		}
 		return array($newloc,'');
 	}catch (Exception $e){

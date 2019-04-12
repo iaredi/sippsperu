@@ -46805,6 +46805,8 @@ Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _react = __webpack_require__(0);
@@ -46872,35 +46874,43 @@ var Linea = function (_React$Component) {
 			}
 
 			(0, _fetchData2.default)('getList', { table: 'linea_mtp', column: '*', where: 'nombre_iden', wherevalue: wherevalue, limit: limit }).then(function (returnData) {
-				console.log(returnData);
-				var filteredDate = returnData.map(function (row) {
+				var filteredDate = returnData.map(function (row, rowId) {
 					var newrow = {};
 					Object.keys(row).forEach(function (key) {
 						if (!key.includes('iden')) {
 							newrow[key] = row[key];
+							newrow['rowId'] = rowId;
 							if (choice === 'Nueva') {
 								newrow[key] = '';
 							}
 						}
 					});
+
 					return newrow;
 				});
+				var arrayToObject = function arrayToObject(arr, keyField) {
+					return Object.assign.apply(Object, [{}].concat(_toConsumableArray(arr.map(function (item) {
+						return _defineProperty({}, item[keyField], item);
+					}))));
+				};
 				_this2.setState({
-					values: filteredDate
+					values: _defineProperty({}, nameInState, arrayToObject(filteredDate, 'rowId'))
 				});
 			});
-			console.log(this.state.values);
 		}
 	}, {
 		key: "updateValue",
-		value: function updateValue(row, column, value) {
-			var oldValues = this.state.values;
-			oldValues[row][column] = value;
-			this.setState({
-				values: oldValues
-			});
+		value: function updateValue(nameInState, row, column, value) {
 
-			this.checkValues();
+			// this.setState({
+			// 	values:oldValues
+			// });
+			console.log(nameInState, row, column, value);
+			this.setState(function (prevState) {
+				return {
+					values: _extends({}, prevState.values, _defineProperty({}, nameInState, _extends({}, prevState.values[nameInState], _defineProperty({}, row, _extends({}, prevState.values[nameInState][row], _defineProperty({}, column, value))))))
+				};
+			});
 		}
 	}, {
 		key: "handleSubmit",
@@ -46943,16 +46953,16 @@ var Linea = function (_React$Component) {
 					{ onSubmit: this.handleSubmit, id: "measurementform", method: "post" },
 					_react2.default.createElement(_DBDropdown2.default, {
 						items: this.state.lineaList,
-						nameInState: "linea",
+						nameInState: "linea_mtp",
 						setFromSelect: this.setFromSelect,
 						selectedItem: this.state.linea
 					}),
-					this.state.values !== [] && _react2.default.createElement(_Editable2.default, {
-						table: "linea_mtp",
+					this.state.values.linea_mtp && _react2.default.createElement(_Editable2.default, {
+						nameInState: "linea_mtp",
 						selectedColumn: "nombre_iden",
 						selectedValue: this.state.linea,
 						updateValue: this.updateValue,
-						values: this.state.values
+						rows: this.state.values['linea_mtp']
 					}),
 					_react2.default.createElement("input", { type: "submit", id: "measurementlinea_mtpSubmit", className: "border border-secondary btn btn-success mySubmit p-2 m-2" })
 				)
@@ -47060,10 +47070,6 @@ var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _MakeRow = __webpack_require__(128);
-
-var _MakeRow2 = _interopRequireDefault(_MakeRow);
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -47078,25 +47084,75 @@ var Editable = function (_React$Component) {
 	function Editable(props) {
 		_classCallCheck(this, Editable);
 
-		return _possibleConstructorReturn(this, (Editable.__proto__ || Object.getPrototypeOf(Editable)).call(this, props));
+		var _this = _possibleConstructorReturn(this, (Editable.__proto__ || Object.getPrototypeOf(Editable)).call(this, props));
+
+		_this.handleChange = _this.handleChange.bind(_this);
+		return _this;
 	}
 
 	_createClass(Editable, [{
-		key: "render",
+		key: 'handleChange',
+		value: function handleChange(event) {
+			this.props.updateValue(this.props.nameInState, event.target.name.split('*')[0], event.target.name.split('*')[1], event.target.value);
+		}
+	}, {
+		key: 'render',
 		value: function render() {
 			var _this2 = this;
 
+			var keyColumns = Object.keys(this.props.rows["0"]);
+			keyColumns.sort(function (a, b) {
+				if (a.includes('fin')) return 1;
+				if (b.includes('fin')) return -1;
+			});
+			console.log(keyColumns);
+			keyColumns.filter(function (keyColumn) {
+				return keyColumn != 'rowId';
+			});
+
 			return _react2.default.createElement(
-				"div",
+				'div',
 				null,
-				this.props.values.map(function (row, i) {
-					return _react2.default.createElement(_MakeRow2.default, {
-						key: i,
-						row: row,
-						i: i,
-						updateValue: _this2.props.updateValue
-					});
-				})
+				_react2.default.createElement(
+					'div',
+					null,
+					_react2.default.createElement(
+						'span',
+						{ className: 'overflowSpan' },
+						keyColumns.map(function (keyColumn) {
+							return _react2.default.createElement(
+								'label',
+								{
+									key: keyColumn,
+									className: 'reactColumns'
+								},
+								keyColumn
+							);
+						})
+					)
+				),
+				_react2.default.createElement(
+					'div',
+					null,
+					Object.entries(this.props.rows).map(function (row) {
+						return _react2.default.createElement(
+							'span',
+							{ className: 'overflowSpan', key: row[0] },
+							keyColumns.map(function (keyColumn) {
+								var notNullValue = row[1][keyColumn] == null ? '' : row[1][keyColumn];
+								return _react2.default.createElement('input', {
+									key: row[0] + keyColumn,
+									type: 'text',
+									className: 'reactColumns '
+									//className={runValidator(this.props.row[keyColumn])}
+									, name: row[0] + '*' + keyColumn,
+									value: notNullValue,
+									onChange: _this2.handleChange
+								});
+							})
+						);
+					})
+				)
 			);
 		}
 	}]);
@@ -47107,89 +47163,7 @@ var Editable = function (_React$Component) {
 exports.default = Editable;
 
 /***/ }),
-/* 128 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-Object.defineProperty(exports, "__esModule", {
-	value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _react = __webpack_require__(0);
-
-var _react2 = _interopRequireDefault(_react);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var MakeRow = function (_React$Component) {
-	_inherits(MakeRow, _React$Component);
-
-	function MakeRow(props) {
-		_classCallCheck(this, MakeRow);
-
-		var _this = _possibleConstructorReturn(this, (MakeRow.__proto__ || Object.getPrototypeOf(MakeRow)).call(this, props));
-
-		_this.handleChange = _this.handleChange.bind(_this);
-		return _this;
-	}
-
-	_createClass(MakeRow, [{
-		key: 'handleChange',
-		value: function handleChange(event) {
-			this.props.updateValue(this.props.i, event.target.name, event.target.value);
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var _this2 = this;
-
-			var rowKeys = Object.keys(this.props.row);
-			rowKeys.sort(function (a, b) {
-				if (a.includes('fin')) return 1;
-				if (b.includes('fin')) return -1;
-			});
-
-			return _react2.default.createElement(
-				'div',
-				null,
-				rowKeys.map(function (keyColumn, i2) {
-					var notNullValue = _this2.props.row[keyColumn] == null ? '' : _this2.props.row[keyColumn];
-					return _react2.default.createElement(
-						'div',
-						{ key: _this2.props.i + keyColumn },
-						_react2.default.createElement(
-							'label',
-							null,
-							keyColumn
-						),
-						_react2.default.createElement('input', {
-							type: 'text',
-							name: keyColumn,
-							value: notNullValue,
-							onChange: _this2.handleChange
-						})
-					);
-				})
-			);
-		}
-	}]);
-
-	return MakeRow;
-}(_react2.default.Component);
-
-exports.default = MakeRow;
-
-/***/ }),
+/* 128 */,
 /* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 

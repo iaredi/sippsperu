@@ -7,25 +7,30 @@ class MakeRow extends React.Component {
 	}
 
 	handleChange (event) {
-		this.props.updateValue(this.props.i, event.target.name, event.target.value)
+		//updateValidation(runValidator(this.props.row[keyColumn]))
+		this.props.updateValue(this.props.nameInState,this.props.rowId, event.target.name, event.target.value)
 	  };
 
     render() {
-		const rowKeys = Object.keys(this.props.row)
-		rowKeys.sort((a,b)=>{
+		const keyColumns = Object.keys(this.props.row)
+		keyColumns.sort((a,b)=>{
 			if(a.includes('fin')) return 1;
 			if(b.includes('fin')) return -1;
+		})
+		keyColumns.filter((keyColumn)=>{
+			return !keyColumn.includes('rowId')
 		})
 	
         return (
 			<div>
-				{rowKeys.map((keyColumn,i2)=>{ 
+				{keyColumns.map((keyColumn,i2)=>{ 
 					const notNullValue = this.props.row[keyColumn]==null?'':this.props.row[keyColumn]						
 					return(
-						<div key={this.props.i+keyColumn}>
+						<div key={this.props.rowId+keyColumn}>
 							<label >{keyColumn}</label>
 							<input 
 								type='text' 
+								//className={runValidator(this.props.row[keyColumn])}
 								name={keyColumn}
 								value={notNullValue}
 								onChange={this.handleChange}

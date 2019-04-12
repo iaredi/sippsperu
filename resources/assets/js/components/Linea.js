@@ -10,7 +10,6 @@ class Linea extends React.Component {
 		this.updateValue = this.updateValue.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 
-
         this.state = {
 			linea:'',
 			lineaList:[],
@@ -32,35 +31,51 @@ class Linea extends React.Component {
 			limit='1'
 		}
 
+
 		fetchData('getList',{table:'linea_mtp', column:'*',where:'nombre_iden', wherevalue:wherevalue,limit:limit}).then(returnData => {
-			console.log(returnData)
-			const filteredDate = returnData.map((row) => {
+			const filteredDate = returnData.map((row, rowId) => {
 				const newrow = {}
 				Object.keys(row).forEach(key => {
 					if(!key.includes('iden')){
 						newrow[key] = row[key]
+						newrow['rowId'] = rowId
 						if(choice==='Nueva'){
 							newrow[key] = ''
 						}
 					}
 				});
+				
 				return newrow
 			})
+			const arrayToObject = (arr, keyField) => Object.assign({}, ...arr.map(item => ({[item[keyField]]: item})))
 			this.setState({
-				values:filteredDate,
+				values:{
+					[nameInState] : arrayToObject(filteredDate,'rowId')}
 			})
 		})
-		console.log(this.state.values)
 	}
 
-	updateValue(row,column, value){
-		const oldValues = this.state.values
-		oldValues[row][column]=value
-		this.setState({
-			values:oldValues
-		});
+	updateValue(nameInState, row,column, value){
+		
+		// this.setState({
+		// 	values:oldValues
+		// });
+		console.log(nameInState, row,column, value)
+		this.setState((prevState) => (
+			{
+				values:{
+					...prevState.values,
+					[nameInState]:{
+						...prevState.values[nameInState],
+						[row]:{
+							...prevState.values[nameInState][row],
+							[column]:value
+						}
+					}
+				}
+		  	}
+		  ));
 
-		this.checkValues()
 	}
 
 	handleSubmit(e){
@@ -88,18 +103,18 @@ class Linea extends React.Component {
 
 					<DBDropdown
 						items={this.state.lineaList}
-						nameInState='linea'
+						nameInState='linea_mtp'
 						setFromSelect={this.setFromSelect}
 						selectedItem={this.state.linea}
 					/>
 
-					{this.state.values!==[] &&
+					{this.state.values.linea_mtp &&
 						<Editable
-							table='linea_mtp'
+							nameInState='linea_mtp'
 							selectedColumn='nombre_iden'
 							selectedValue={this.state.linea}
 							updateValue={this.updateValue}
-							values={this.state.values}
+							rows={this.state.values['linea_mtp']}
 						/>
 					}
 

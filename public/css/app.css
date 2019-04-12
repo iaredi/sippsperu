@@ -10865,3 +10865,12 @@ img {
   display: block;
 }
 
+.reactColumns {
+  width: 200px;
+}
+
+.overflowSpan {
+  overflow: visible;
+  white-space: nowrap;
+}
+
