@@ -7,7 +7,7 @@ class Editable extends React.Component {
 	}
 
 	handleChange (event) {
-		this.props.updateValue(this.props.nameInState,event.target.name.split('*')[0], event.target.name.split('*')[2], event.target.value)
+		this.props.updateValue(event.target.name.split('*')[0], event.target.name.split('*')[2], event.target.value)
 	  };
 	
     render() {
@@ -18,25 +18,26 @@ class Editable extends React.Component {
 		})
 
         return (
-			<div>
-			<input type="hidden" name="mode" value={this.props.selectedValue==='Nuevo'?'Datos Nuevos':'Datos Existentes'}/>
-			<input type="hidden" name="table" value={this.props.nameInState}/>
-			<input type="hidden" name="selectedcolumn" value={this.props.selectedColumn}/>
+			<div className='p-2'>
+				<input type="hidden" name="mode" value={this.props.selectedItem==='Nuevo'?'Datos Nuevos':'Datos Existentes'}/>
+				<input type="hidden" name="table" value={this.props.table}/>
+				<input type="hidden" name="selectedcolumn" value={this.props.selectedColumn}/>
+				<input type="hidden" name="_token" value={csrf_token}/>
 
-			<div>
-				<span className='overflowSpan'>
-					{
-						keyColumns.map((keyColumn) => {
-							return(
-								<label 
-									key={keyColumn}
-									className='reactColumns'
-								>{keyColumn}</label>
-							)
-						})
-					}
-				</span>
-			</div>
+				<div>
+					<span className='overflowSpan'>
+						{
+							keyColumns.map((keyColumn) => {
+								return(
+									<label 
+										key={keyColumn}
+										className='reactColumns'
+									>{keyColumn}</label>
+								)
+							})
+						}
+					</span>
+				</div>
 			<div>
 				{Object.entries(this.props.rows).map((row) => 
 					(
@@ -50,7 +51,7 @@ class Editable extends React.Component {
 									type='text'
 									className='reactColumns '
 									//className={runValidator(this.props.row[keyColumn])}
-									name={row[0]+'*'+this.props.nameInState+'*'+keyColumn}
+									name={row[0]+'*'+this.props.table+'*'+keyColumn}
 									value={notNullValue}
 									onChange={this.handleChange}
 									>

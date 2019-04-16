@@ -1,5 +1,4 @@
 import React from "react";
-import fetchData from "../fetchData";
 
 class DBDropdown extends React.Component {
     constructor(props) {
@@ -12,18 +11,21 @@ class DBDropdown extends React.Component {
 	}
 	
     render() {
+
         return (
-            <div>
+			<div className='p-2'>
+				<label className='pr-2'>{this.props.table}</label>
                 <select
-                    value={this.props.selectedItem}
+					value={this.props.selectedItem}
+					selected={this.props.selectedItem}
                     onChange={
 						e =>
-                        this.props.setFromSelect(e.target.value, this.props.nameInState)
+                        this.props.setFromSelect(this.props.table,e.target.value)
 					}
-					name={this.props.nameInState}
+					name={"select"+this.props.table}
                 >
-                    {this.props.items.map(item => (
-                        <option key={item} value={item}>
+                    { this.props.items.map(item => (
+                        <option key={item} value={item===''?'notselected':item}>
                             {item}
                         </option>
                     ))}

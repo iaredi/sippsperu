@@ -25088,9 +25088,9 @@ var _udpMapapp = __webpack_require__(118);
 
 var _udpMapapp2 = _interopRequireDefault(_udpMapapp);
 
-var _Linea = __webpack_require__(125);
+var _UpdateBuilder = __webpack_require__(125);
 
-var _Linea2 = _interopRequireDefault(_Linea);
+var _UpdateBuilder2 = _interopRequireDefault(_UpdateBuilder);
 
 __webpack_require__(128);
 
@@ -25100,13 +25100,18 @@ __webpack_require__(135);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+var upstreamLinea = { estado: 'nombre', municipio: 'nombre', predio: 'nombre' };
 var components = {
-				udp: _react2.default.createElement(_udpMapapp2.default, null),
-				in: _react2.default.createElement(_Intersection2.default, null),
-				normas: _react2.default.createElement(_Normaapp2.default, null),
-				map: _react2.default.createElement(_Mapapp2.default, null),
-				ae: _react2.default.createElement(_Normaapp2.default, null),
-				linea: _react2.default.createElement(_Linea2.default, null)
+	udp: _react2.default.createElement(_udpMapapp2.default, null),
+	in: _react2.default.createElement(_Intersection2.default, null),
+	normas: _react2.default.createElement(_Normaapp2.default, null),
+	map: _react2.default.createElement(_Mapapp2.default, null),
+	ae: _react2.default.createElement(_Normaapp2.default, null),
+	linea: _react2.default.createElement(_UpdateBuilder2.default, {
+		table: "linea_mtp",
+		displayColumn: "nombre_iden",
+		upstreamTables: upstreamLinea
+	})
 };
 
 _reactDom2.default.render(components[infotype], document.getElementById("app"));
@@ -45242,7 +45247,6 @@ var Normaapp = function (_React$Component) {
                     (0, _fetchData2.default)('getspecies', { lifeform: item.toLowerCase(), idtype: idtype, idnumber: idennumforapi, useremail: document.getElementById("useremail").textContent }).then(function (myspeciesResult) {
                       var newObject = {};
                       newObject["speciesResult" + item] = myspeciesResult;
-                      console.log({ lifeform: item.toLowerCase(), idtype: idtype, idnumber: idennumforapi, useremail: document.getElementById("useremail").textContent });
                       _this2.setState(function (prevState) {
                         return newObject;
                       });
@@ -45446,7 +45450,6 @@ var SpeciesDisplay = function (_React$Component) {
     value: function render() {
 
       var oldspeciesResult = this.props.speciesResult;
-      //console.log(oldspeciesResult)
 
       //ADD (2) to prevent duplicate keys 
       var newA = {};
@@ -46853,133 +46856,220 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Linea = function (_React$Component) {
-	_inherits(Linea, _React$Component);
+var UpdateBuilder = function (_React$Component) {
+	_inherits(UpdateBuilder, _React$Component);
 
-	function Linea(props) {
-		_classCallCheck(this, Linea);
+	function UpdateBuilder(props) {
+		_classCallCheck(this, UpdateBuilder);
 
-		var _this = _possibleConstructorReturn(this, (Linea.__proto__ || Object.getPrototypeOf(Linea)).call(this, props));
+		var _this = _possibleConstructorReturn(this, (UpdateBuilder.__proto__ || Object.getPrototypeOf(UpdateBuilder)).call(this, props));
 
 		_this.setFromSelect = _this.setFromSelect.bind(_this);
 		_this.updateValue = _this.updateValue.bind(_this);
 		_this.handleSubmit = _this.handleSubmit.bind(_this);
+		_this.getDropDownChoices = _this.getDropDownChoices.bind(_this);
 
 		_this.state = {
-			linea_mtp: '',
-			lineaList: [],
+			choiceList: _defineProperty({}, _this.props.table, []),
+			selectedItem: _defineProperty({}, _this.props.table, ''),
+			values: {},
 			email: useremail,
-			values: [],
-			submitDisabled: true
+			submitDisabled: true,
+			upstreamLoaded: false
+
 		};
 		return _this;
 	}
 
-	_createClass(Linea, [{
+	_createClass(UpdateBuilder, [{
 		key: "setFromSelect",
-		value: function setFromSelect(choice, nameInState) {
+		value: function setFromSelect(table, choice) {
 			var _this2 = this;
 
-			this.setState(_defineProperty({}, nameInState, choice));
-
-			var wherevalue = choice;
-			var limit = 'null';
-			if (choice === 'Nueva') {
-				wherevalue = '%';
-				limit = '1';
-			}
-
-			(0, _fetchData2.default)('getList', { table: 'linea_mtp', column: '*', where: 'nombre_iden', wherevalue: wherevalue, limit: limit }).then(function (returnData) {
-				var filteredDate = returnData.map(function (row) {
-					var newrow = {};
-					Object.keys(row).forEach(function (key) {
-						if (!key.includes('iden')) {
-							newrow[key] = row[key];
-							if (choice === 'Nueva') {
-								newrow[key] = '';
-							}
-						}
-					});
-
-					return newrow;
-				});
-				var arrayToObject = function arrayToObject(arr) {
-					return Object.assign.apply(Object, [{}].concat(_toConsumableArray(arr.map(function (item, i) {
-						return _defineProperty({}, 'row' + i, item);
-					}))));
+			this.setState(function (prevState) {
+				return {
+					selectedItem: _extends({}, prevState.selectedItem, _defineProperty({}, table, choice))
 				};
-				_this2.setState({
-					values: _defineProperty({}, nameInState, arrayToObject(filteredDate))
-				});
 			});
+			if (table == this.props.table) {
+				var wherevalue = choice;
+				var limit = 'null';
+				if (choice === 'Nuevo') {
+					wherevalue = '%';
+					limit = '1';
+					if (!this.state.upstreamLoaded) {
+						Object.entries(this.props.upstreamTables).forEach(function (keyValue, i, array) {
+							var lastInArray = i + 1 == array.length ? true : false;
+							_this2.getDropDownChoices(keyValue[0], keyValue[1], true, lastInArray);
+						});
+					}
+				}
+				(0, _fetchData2.default)('getList', { table: this.props.table, column: '*', where: this.props.displayColumn, wherevalue: wherevalue, limit: limit }).then(function (returnData) {
+					var filteredDate = returnData.map(function (row) {
+						var newrow = {};
+						Object.keys(row).forEach(function (key) {
+							if (!key.includes('iden')) {
+								newrow[key] = row[key];
+								if (choice === 'Nuevo') {
+									newrow[key] = '';
+								}
+							}
+						});
+						return newrow;
+					});
+					var arrayToObject = function arrayToObject(arr) {
+						return Object.assign.apply(Object, [{}].concat(_toConsumableArray(arr.map(function (item, i) {
+							return _defineProperty({}, 'row' + i, item);
+						}))));
+					};
+					_this2.setState({
+						values: arrayToObject(filteredDate)
+					});
+				});
+			}
 		}
 	}, {
 		key: "updateValue",
-		value: function updateValue(nameInState, rowId, column, value) {
+		value: function updateValue(rowId, column, value) {
 			this.setState(function (prevState) {
 				return {
-					values: _extends({}, prevState.values, _defineProperty({}, nameInState, _extends({}, prevState.values[nameInState], _defineProperty({}, rowId, _extends({}, prevState.values[nameInState][rowId], _defineProperty({}, column, value))))))
+					values: _extends({}, prevState.values, _defineProperty({}, rowId, _extends({}, prevState.values[rowId], _defineProperty({}, column, value))))
 				};
 			});
 		}
 	}, {
 		key: "handleSubmit",
 		value: function handleSubmit(e) {
-			console.log('submitted');
-			e.preventDefault();
+			//const local ={[this.state.currentSelect]:this.state.values}
+			localStorage.setItem(this.props.table, JSON.stringify(_defineProperty({}, this.state.selectedItem[this.props.table], this.state.values)));
+			localStorage.setItem('upstream', JSON.stringify(this.state.selectedItem));
+		}
+	}, {
+		key: "getDropDownChoices",
+		value: function getDropDownChoices(table, displayColumn) {
+			var _this3 = this;
+
+			var upstream = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+			var lastInArray = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
+
+			var emailvalue = admin == 1 ? '%' : useremail;
+			var requestObject = { table: table, column: displayColumn };
+			if (!upstream) {
+				requestObject['where'] = 'iden_email';
+				requestObject['wherevalue'] = emailvalue;
+			}
+			(0, _fetchData2.default)('getList', requestObject).then(function (returnData) {
+				var dataArray = returnData.map(function (row) {
+					return row[displayColumn];
+				});
+				if (!upstream) {
+					dataArray.unshift('Nuevo');
+				}
+				_this3.setState(function (prevState) {
+					return {
+						choiceList: _extends({}, prevState.choiceList, _defineProperty({}, table, [''].concat(_toConsumableArray(dataArray))))
+					};
+				});
+				if (lastInArray) {
+					_this3.setState({ upstreamLoaded: true });
+				}
+
+				if (!upstream) {
+					//Deal with local storage
+					var oldSelectionObject = localStorage.getItem(_this3.props.table) ? JSON.parse(localStorage.getItem(_this3.props.table)) : null;
+					var oldSelectionName = oldSelectionObject ? Object.keys(oldSelectionObject)[0] : null;
+					var oldValues = oldSelectionName && dataArray.includes(oldSelectionName) ? oldSelectionObject[oldSelectionName] : {};
+					if (oldSelectionObject) {
+						Object.entries(_this3.props.upstreamTables).forEach(function (keyValue, i, array) {
+							var lastInArray = i + 1 == array.length ? true : false;
+							_this3.getDropDownChoices(keyValue[0], keyValue[1], true, lastInArray);
+						});
+						_this3.setState(function (prevState) {
+							return {
+								selectedItem: JSON.parse(localStorage.getItem('upstream')),
+								values: oldValues
+							};
+						});
+					}
+					// this.setState((prevState) => (
+					// 	{
+					// 		selectedItem:{
+					// 			...prevState.selectedItem,
+					// 			[this.props.table]:oldSelectionName 
+					// 		},
+					// 		values:oldValues
+					// 	}
+					// ));
+				}
+			});
 		}
 	}, {
 		key: "componentDidMount",
 		value: function componentDidMount() {
-			var _this3 = this;
-
-			var emailvalue = admin == 1 ? '%' : useremail;
-			(0, _fetchData2.default)('getList', { table: 'linea_mtp', column: 'nombre_iden', where: 'iden_email', wherevalue: emailvalue }).then(function (returnData) {
-				var dataArray = returnData.map(function (row) {
-					return row.nombre_iden;
-				});
-				_this3.setState({
-					lineaList: [''].concat(_toConsumableArray(dataArray))
-				});
-			});
+			this.getDropDownChoices(this.props.table, this.props.displayColumn, false);
 		}
 	}, {
 		key: "render",
 		value: function render() {
+			var _this4 = this;
+
 			return _react2.default.createElement(
 				"div",
 				null,
 				_react2.default.createElement(
-					"div",
-					{ className: "h4 titleHeaders" },
-					_react2.default.createElement(
-						"h4",
+					"form",
+					{
+						id: "measurementform",
+						method: "post",
+						onSubmit: this.handleSubmit
+					},
+					this.state.choiceList[this.props.table].length > 0 && _react2.default.createElement(_DBDropdown2.default, {
+						key: this.props.table,
+						items: this.state.choiceList[this.props.table],
+						table: this.props.table,
+						setFromSelect: this.setFromSelect,
+						selectedItem: this.state.selectedItem[this.props.table]
+					}),
+					this.state.selectedItem[this.props.table] === 'Nuevo' && this.state.upstreamLoaded && _react2.default.createElement(
+						"div",
 						null,
-						"Cambiar Linea Existente"
+						Object.keys(this.props.upstreamTables).map(function (upstreamTable) {
+
+							return _this4.state.choiceList[upstreamTable] && _react2.default.createElement(_DBDropdown2.default, {
+								key: upstreamTable,
+								table: upstreamTable,
+								items: _this4.state.choiceList[upstreamTable],
+								setFromSelect: _this4.setFromSelect,
+								selectedItem: _this4.state.selectedItem[upstreamTable]
+							});
+						})
+					),
+					Object.keys(this.state.values).length > 0 && !(this.state.selectedItem[this.props.table] === 'Nuevo' && !this.state.upstreamLoaded) && _react2.default.createElement(
+						"div",
+						null,
+						_react2.default.createElement(_Editable2.default, {
+
+							table: this.props.table,
+							selectedColumn: this.props.displayColumn,
+							selectedItem: this.state.selectedItem[this.props.table],
+							updateValue: this.updateValue,
+							handleSubmit: this.handleSubmit,
+							rows: this.state.values
+						}),
+						_react2.default.createElement("input", {
+							type: "submit",
+							className: "border border-secondary btn btn-success mySubmit p-2 m-2"
+						})
 					)
-				),
-				_react2.default.createElement(_DBDropdown2.default, {
-					items: this.state.lineaList,
-					nameInState: "linea_mtp",
-					setFromSelect: this.setFromSelect,
-					selectedItem: this.state.linea
-				}),
-				this.state.values.linea_mtp && _react2.default.createElement(_Editable2.default, {
-					nameInState: "linea_mtp",
-					selectedColumn: "nombre_iden",
-					selectedValue: this.state.linea,
-					updateValue: this.updateValue,
-					rows: this.state.values['linea_mtp']
-				}),
-				_react2.default.createElement("input", { type: "submit", id: "measurementlinea_mtpSubmit", className: "border border-secondary btn btn-success mySubmit p-2 m-2" })
+				)
 			);
 		}
 	}]);
 
-	return Linea;
+	return UpdateBuilder;
 }(_react2.default.Component);
 
-exports.default = Linea;
+exports.default = UpdateBuilder;
 
 /***/ }),
 /* 126 */
@@ -46997,10 +47087,6 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = __webpack_require__(0);
 
 var _react2 = _interopRequireDefault(_react);
-
-var _fetchData = __webpack_require__(6);
-
-var _fetchData2 = _interopRequireDefault(_fetchData);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47033,20 +47119,26 @@ var DBDropdown = function (_React$Component) {
 
             return _react2.default.createElement(
                 "div",
-                null,
+                { className: "p-2" },
+                _react2.default.createElement(
+                    "label",
+                    { className: "pr-2" },
+                    this.props.table
+                ),
                 _react2.default.createElement(
                     "select",
                     {
                         value: this.props.selectedItem,
+                        selected: this.props.selectedItem,
                         onChange: function onChange(e) {
-                            return _this2.props.setFromSelect(e.target.value, _this2.props.nameInState);
+                            return _this2.props.setFromSelect(_this2.props.table, e.target.value);
                         },
-                        name: this.props.nameInState
+                        name: "select" + this.props.table
                     },
                     this.props.items.map(function (item) {
                         return _react2.default.createElement(
                             "option",
-                            { key: item, value: item },
+                            { key: item, value: item === '' ? 'notselected' : item },
                             item
                         );
                     })
@@ -47100,7 +47192,7 @@ var Editable = function (_React$Component) {
 	_createClass(Editable, [{
 		key: 'handleChange',
 		value: function handleChange(event) {
-			this.props.updateValue(this.props.nameInState, event.target.name.split('*')[0], event.target.name.split('*')[2], event.target.value);
+			this.props.updateValue(event.target.name.split('*')[0], event.target.name.split('*')[2], event.target.value);
 		}
 	}, {
 		key: 'render',
@@ -47115,10 +47207,11 @@ var Editable = function (_React$Component) {
 
 			return _react2.default.createElement(
 				'div',
-				null,
-				_react2.default.createElement('input', { type: 'hidden', name: 'mode', value: this.props.selectedValue === 'Nuevo' ? 'Datos Nuevos' : 'Datos Existentes' }),
-				_react2.default.createElement('input', { type: 'hidden', name: 'table', value: this.props.nameInState }),
+				{ className: 'p-2' },
+				_react2.default.createElement('input', { type: 'hidden', name: 'mode', value: this.props.selectedItem === 'Nuevo' ? 'Datos Nuevos' : 'Datos Existentes' }),
+				_react2.default.createElement('input', { type: 'hidden', name: 'table', value: this.props.table }),
 				_react2.default.createElement('input', { type: 'hidden', name: 'selectedcolumn', value: this.props.selectedColumn }),
+				_react2.default.createElement('input', { type: 'hidden', name: '_token', value: csrf_token }),
 				_react2.default.createElement(
 					'div',
 					null,
@@ -47151,7 +47244,7 @@ var Editable = function (_React$Component) {
 									type: 'text',
 									className: 'reactColumns '
 									//className={runValidator(this.props.row[keyColumn])}
-									, name: row[0] + '*' + _this2.props.nameInState + '*' + keyColumn,
+									, name: row[0] + '*' + _this2.props.table + '*' + keyColumn,
 									value: notNullValue,
 									onChange: _this2.handleChange
 								});

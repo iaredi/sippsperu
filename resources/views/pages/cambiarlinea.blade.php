@@ -1,6 +1,7 @@
 @include('inc/php_functions')
 @include('inc/checkdata')
-@include('inc/savedatareact')
+@include('inc/savedata')
+
 
 <?php
 	if (!session('email')){
@@ -10,7 +11,7 @@
 		return redirect()->to('/privacidad')->send();
 	}
 	if ($_SERVER['REQUEST_METHOD']=="POST" && sizeof(session('error'))==0  && (!session('visitante'))){
-		$saveworked = savedatareact($_POST,session('email'));
+		$saveworked = savedata($_POST,session('email'));
 		if($saveworked=="true"){
 			redirect()->to('/thanks')->send();
 		}
@@ -39,14 +40,17 @@
 				}
 			?>
 	</div>
-	<form id="measurementform" method="post">
-        {{ csrf_field() }}
+		<script> 
+
+			var csrf_token = '<?php echo csrf_token(); ?>'; 
+		</script>
 		<div id="app"></div>
-	</form>
+		
 
 	<link rel="stylesheet" href="leaflet_assets/leaflet.css">
 	<script>
 		var infotype ='linea'
 	</script>
 	<script src="{{ asset('js/index.js') }}"></script>
+
 	@include('inc/footer')

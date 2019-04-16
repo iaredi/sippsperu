@@ -55,7 +55,7 @@ $layer3->category='Monitoreo Activo';
 
 
 $layer4 = new layer();
-$layer4->tableName = 'municipio_puebla_4326';
+$layer4->tableName = 'municipio';
 $layer4->displayName = 'Municipios';
 $layer4->featureColumn = 'nomgeo';
 $layer4->color = 'black';

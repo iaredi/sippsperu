@@ -14,8 +14,11 @@
 		}
 	}
 
-    if (sizeof(session('error'))>0 && isset($_POST['mode']) ) {
-        echo '<script>var newold='.json_encode($_POST['mode']).'</script>';
+    if (sizeof(session('error'))>0 && (isset($_POST['mode'])||$_POST['selectlinea_mtp']=='Nuevo') ) {
+		if(isset($_POST['mode'])){
+			echo '<script>var newold='.json_encode($_POST['mode']).'</script>';
+		}
+
         if (isset($_POST['hiddenlocation'])){
             echo '<script>var hiddenlocationvalue='.json_encode($_POST['hiddenlocation']).'</script>';
         }

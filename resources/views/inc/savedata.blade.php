@@ -4,7 +4,52 @@
 	$resultofquery=[];
 
     if ($_SERVER['REQUEST_METHOD']=="POST" && sizeof(session('error'))==0  && (!session('visitante'))){
-      $mtpchoice =$newpost['selectlinea_mtp'];    
+		if(isset($newpost['table']) && $newpost['select'.$newpost['table']] != 'Nuevo'){
+			$table = $newpost['table'];
+			$selection = $newpost['select'.$table];
+			$selectedcolumn = $newpost['selectedcolumn'];
+			$rowarray=[];
+			
+			foreach ($newpost as $key => $value) {
+				if (substr($key,0,3) =='row'){
+					$rowandnum = explode('*',$key)[0];
+					$rowarray[$rowandnum][$key]=$value;
+				}
+			}
+			//echo var_dump($columnarray); 
+			$columnsarray=[];
+			$valuearray=[];
+			foreach ($rowarray as $row => $keyandvalue) {
+				foreach ($keyandvalue as $key2 => $value2) {
+					$columnsarray[]=explode('*',$key2)[2];
+					$valuearray[]=$value2;
+				}
+			
+				$columnsarraystring = implode(',',$columnsarray);
+				$valuearraystring = implode(',',$valuearray);
+				if($table=='linea_mtp'){
+					$name = explode("(" , $selection)[0];
+					$arraytopass =['selectedvalue'=>$selection];
+					
+					$new_iden_nombre = "{$name}({$newpost['row0*linea_mtp*comienzo_latitud']},{$newpost['row0*linea_mtp*comienzo_longitud']}) ({$newpost['row0*linea_mtp*fin_latitud']},{$newpost['row0*linea_mtp*fin_longitud']})";
+					$completesql = "UPDATE {$table} SET ({$columnsarraystring},{$selectedcolumn}) = ({$valuearraystring},'{$new_iden_nombre}') WHERE {$selectedcolumn} = :selectedvalue";
+					$results = DB::update($completesql, $arraytopass);
+
+					$updatesql = "UPDATE linea_mtp set iden_geom = (SELECT ST_GeomFromText('MultiLineString((
+						{$newpost['row0*linea_mtp*comienzo_longitud']} {$newpost['row0*linea_mtp*comienzo_latitud']},
+						{$newpost['row0*linea_mtp*punto_2_longitud']} {$newpost['row0*linea_mtp*punto_2_latitud']},
+						{$newpost['row0*linea_mtp*punto_3_longitud']} {$newpost['row0*linea_mtp*punto_3_latitud']},
+						{$newpost['row0*linea_mtp*punto_4_longitud']} {$newpost['row0*linea_mtp*punto_4_latitud']}, 
+						{$newpost['row0*linea_mtp*fin_longitud']} {$newpost['row0*linea_mtp*fin_latitud']}
+						))',4326)) WHERE {$selectedcolumn} = :selectedvalue";
+					  $updatedgeom = DB::update($updatesql, ['selectedvalue'=>$new_iden_nombre]);
+					  return true;
+				}
+			}
+		
+		}else{
+
+		$mtpchoice =$newpost['selectlinea_mtp'];    
         if ($mtpchoice=="Nuevo") {
 
           //Save New Estado Data
@@ -35,7 +80,7 @@
 
             //Save New Predio Data
             if ($newpost['selectpredio']=="Nuevo") { 
-              $prediofkey=askforkey("municipio_puebla_4326", "gid", "nomgeo", $newpost['selectmunicipio']); 
+              $prediofkey=askforkey("municipio", "gid", "nombre", $newpost['selectmunicipio']); 
               $prediocolumns=array(
                 "nombre"=> $newpost['row0*predio*nombre'],
                 "nombre_de_duenio_o_technico"=> $newpost['row0*predio*nombre_de_duenio_o_technico'],
@@ -311,5 +356,12 @@
         return "false";
       }
     }
+
+
+
+
+
+		}
+
   }
 ?>

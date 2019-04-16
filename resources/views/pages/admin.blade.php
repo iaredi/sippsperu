@@ -251,7 +251,6 @@ $geojson=json_encode($allcolumns);
 	   	mySelection.addEventListener("change", function (){
 			var tableName = mySelection.value
 			if (tableName=='notselected') return
-			console.log(allcolumns)
 			let frag = document.createDocumentFragment(),elOption;
 			for (let i = 0; i<allcolumns[tableName].length; i++){
 				elOption = frag.appendChild(document.createElement('option'));

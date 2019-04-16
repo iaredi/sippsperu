@@ -93,7 +93,7 @@ function selectOptionsCreate(tableName, menu, preApproved=true, jsTable="Form",a
     if (tableName==="municipio") {
         withNuevo=false
         const newmuninames= muninames.map((muniname)=>{
-            return muniname['nomgeo']
+            return muniname['nombre']
         })
         completetitlevallist[tableName]=newmuninames
         
@@ -105,7 +105,6 @@ function selectOptionsCreate(tableName, menu, preApproved=true, jsTable="Form",a
         if (tableName.split('_')[0]==="observacion") tableName = tableName.replace("observacion", "especie");
         
 		let mycurrentlist=completetitlevallist[tableName];
-		if(tableName=='medicion') console.log(mycurrentlist)
 
         mycurrentlist= tableName==="observaciones"? ['ave','arbol','arbusto','mamifero','herpetofauna','hierba']:mycurrentlist
 
@@ -789,7 +788,6 @@ function clickReadyButton(e){
     if (e.offsetX>0){
         
         //getData().then(dataResult =>{
-			console.log(selectedPunto,selectedTransecto)
 		fetchData('getudp',
 			{
 				"lineamtp": document.getElementById("measurementlinea_mtpSelect").value,
@@ -801,7 +799,6 @@ function clickReadyButton(e){
 			}).then(dataResult =>{
             clearForm(menu,"Form")
             if (dataResult[0].length>0){
-				console.log(dataResult)
               
                 const myTBody = document.getElementById(menu+"TBody"+'Form')
                 const hiddenLocation = document.createElement('input')

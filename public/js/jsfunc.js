@@ -197,7 +197,7 @@ function selectOptionsCreate(tableName, menu) {
     if (tableName === "municipio") {
         withNuevo = false;
         var newmuninames = muninames.map(function (muniname) {
-            return muniname['nomgeo'];
+            return muniname['nombre'];
         });
         completetitlevallist[tableName] = newmuninames;
     };

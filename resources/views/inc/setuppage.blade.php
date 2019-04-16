@@ -12,7 +12,7 @@ $pcolumnname='column_name';
 $constraitdef= 'pg_get_constraintdef';
 $tablefrom= 'table_from';
 $titlessql='SELECT name_table, name_column FROM titulos;';
-$munisql='SELECT nomgeo FROM municipio_puebla_4326;';
+$munisql='SELECT nombre FROM municipio;';
 
 $keyssql='SELECT conrelid::regclass AS '.$tablefrom.'
 , conname
