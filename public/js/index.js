@@ -45246,6 +45246,7 @@ var Normaapp = function (_React$Component) {
                   _loop = function _loop(item) {
                     (0, _fetchData2.default)('getspecies', { lifeform: item.toLowerCase(), idtype: idtype, idnumber: idennumforapi, useremail: document.getElementById("useremail").textContent }).then(function (myspeciesResult) {
                       var newObject = {};
+                      console.log(myspeciesResult);
                       newObject["speciesResult" + item] = myspeciesResult;
                       _this2.setState(function (prevState) {
                         return newObject;

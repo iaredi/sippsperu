@@ -287,10 +287,17 @@
 					//Handle Radio
 					if($obscolumn=='radio_0_30m'){
 						$newobscolumn = 'cantidad';
+						if(!is_numeric($obsvalue)){
+							$obsvalue = 1;
+						}
+
 						$obspost["row{$true_row}*observacion_{$lifeform}*radio"] = 'menos de 30m';
 					}
 					if($obscolumn=='radio_30m_o_mas'){
 						$newobscolumn = 'cantidad';
+						if(!is_numeric($obsvalue)){
+							$obsvalue = 1;
+						}
 						$obspost["row{$true_row}*observacion_{$lifeform}*radio"] = 'mas de 30m';
 					}
 
@@ -304,6 +311,25 @@
 						$newobscolumn = 'cantidad';
 					}
 
+					$numarray=['dn'=>'3','m'=>'3','a'=>'0','dc1'=>'3',
+                  'dc2'=>'3','acc1'=>'3','acc2'=>'3','acc3'=>'3',
+                  'altura'=>'3','distancia'=>'3','azimut'=>'3',
+                  'longitud_gps'=>'4', 'latitud_gps'=>'4',
+                  'comienzo_longitud'=>'4','comienzo_latitud'=>'4',
+                  'fin_longitud'=>'4','fin_latitud'=>'4',
+                  'anio_de_camara'=>'0', 'numero_de_photos_totales'=>'0', 
+				  'porcentaje_de_bateria'=>'0', 'anio'=>'0','i'=>'3','ind'=>'3'];
+				  
+				  foreach ($numarray as $key => $value) {
+					  if($newobscolumn==$key){
+						  if (is_numeric($obsvalue)){
+							
+						  }else{
+							$errorlist[]="No hay numero en {$letter}{$row_number} en {$sheetobs}.";
+						  }
+					  }
+				  }
+
 					if($lifeform=='ave'){
 						$obspost["row{$true_row}*observacion_{$lifeform}*especie_cactus"] = '000';
 					}
@@ -314,7 +340,7 @@
                     $letter = ++$letter;
 				  }
 				  if(!isset($obspost["row{$true_row}*observacion_{$lifeform}*species"])){
-					$errorlist[]= "{$sheetobs}, {$true_row} is too no cien **";
+					$errorlist[]= "{$sheetobs}, {$true_row} no tiene especie";
 				  }
                   $true_row=$true_row+1;
                 

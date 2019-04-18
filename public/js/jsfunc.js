@@ -208,7 +208,6 @@ function selectOptionsCreate(tableName, menu) {
         if (tableName.split('_')[0] === "observacion") tableName = tableName.replace("observacion", "especie");
 
         var mycurrentlist = completetitlevallist[tableName];
-        if (tableName == 'medicion') console.log(mycurrentlist);
 
         mycurrentlist = tableName === "observaciones" ? ['ave', 'arbol', 'arbusto', 'mamifero', 'herpetofauna', 'hierba'] : mycurrentlist;
 
@@ -914,7 +913,6 @@ function clickReadyButton(e) {
     if (e.offsetX > 0) {
 
         //getData().then(dataResult =>{
-        console.log(selectedPunto, selectedTransecto);
         (0, _fetchData2.default)('getudp', {
             "lineamtp": document.getElementById("measurementlinea_mtpSelect").value,
             "medicion": document.getElementById("measurementmedicionMedicion").value,
@@ -925,7 +923,6 @@ function clickReadyButton(e) {
         }).then(function (dataResult) {
             clearForm(menu, "Form");
             if (dataResult[0].length > 0) {
-                console.log(dataResult);
 
                 var myTBody = document.getElementById(menu + "TBody" + 'Form');
                 var hiddenLocation = document.createElement('input');

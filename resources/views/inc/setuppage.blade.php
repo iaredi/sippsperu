@@ -1,9 +1,4 @@
 
-
-
-
-
-
 <?php
 
 //include 'dbconfig.php';
