@@ -100,23 +100,13 @@ class SpeciesDisplay extends React.Component {
               )
             }
 
-
-
           }
-            
-            
-            
-        
-
-
-
-
 
         return(
         <div>
             <div className="container">
                 <div className='flex-column d-flex justify-content-around align-items-center p-3'>
-
+					<h5>No Invasores</h5>
                     <BootstrapTable 
                     keyField='cientifico' 
                     data={ speciesResultNoInvador } 
@@ -129,7 +119,7 @@ class SpeciesDisplay extends React.Component {
                     condensed
                     noDataIndication={ 'No hay datos' }
                     />
-                    <h6>Invasores</h6>
+                    <h5>Invasores</h5>
                     <BootstrapTable 
                     keyField='cientifico' 
                     data={ speciesResultInvador } 

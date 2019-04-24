@@ -24,7 +24,7 @@ class DBDropdown extends React.Component {
 					}
 					name={"select"+this.props.table}
                 >
-                    { this.props.items.map(item => (
+                    { this.props.items.sort().map(item => (
                         <option key={item} value={item===''?'notselected':item}>
                             {item}
                         </option>

@@ -25100,7 +25100,10 @@ __webpack_require__(135);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var upstreamLinea = { estado: 'nombre', municipio: 'nombre', predio: 'nombre' };
+var upstreamLinea = { estado: 'nombre', municipio: 'nombre', predio: 'iden_muni_predio' };
+var upstreamActividad = { estado: 'nombre', municipio: 'nombre' };
+var actividadSelectObject = { tipo: ['', 'taller', 'plactica', 'capacitacion', 'instalacion', 'reunion de coordinacion en torno', 'otro'],
+	tipo_geom: ['', 'punto', 'poligono'] };
 var components = {
 	udp: _react2.default.createElement(_udpMapapp2.default, null),
 	in: _react2.default.createElement(_Intersection2.default, null),
@@ -25110,7 +25113,14 @@ var components = {
 	linea: _react2.default.createElement(_UpdateBuilder2.default, {
 		table: "linea_mtp",
 		displayColumn: "nombre_iden",
-		upstreamTables: upstreamLinea
+		upstreamTables: upstreamLinea,
+		selectObject: {}
+	}),
+	actividad: _react2.default.createElement(_UpdateBuilder2.default, {
+		table: "actividad",
+		displayColumn: "descripcion",
+		upstreamTables: upstreamActividad,
+		selectObject: actividadSelectObject
 	})
 };
 
@@ -45542,6 +45552,11 @@ var SpeciesDisplay = function (_React$Component) {
           _react2.default.createElement(
             'div',
             { className: 'flex-column d-flex justify-content-around align-items-center p-3' },
+            _react2.default.createElement(
+              'h5',
+              null,
+              'No Invasores'
+            ),
             _react2.default.createElement(_reactBootstrapTableNext2.default, {
               keyField: 'cientifico',
               data: speciesResultNoInvador,
@@ -45555,7 +45570,7 @@ var SpeciesDisplay = function (_React$Component) {
               noDataIndication: 'No hay datos'
             }),
             _react2.default.createElement(
-              'h6',
+              'h5',
               null,
               'Invasores'
             ),
@@ -46883,6 +46898,15 @@ var UpdateBuilder = function (_React$Component) {
 	}
 
 	_createClass(UpdateBuilder, [{
+		key: "updateValue",
+		value: function updateValue(rowId, column, value) {
+			this.setState(function (prevState) {
+				return {
+					values: _extends({}, prevState.values, _defineProperty({}, rowId, _extends({}, prevState.values[rowId], _defineProperty({}, column, value))))
+				};
+			});
+		}
+	}, {
 		key: "setFromSelect",
 		value: function setFromSelect(table, choice) {
 			var _this2 = this;
@@ -46894,56 +46918,48 @@ var UpdateBuilder = function (_React$Component) {
 			});
 			if (table == this.props.table) {
 				var wherevalue = choice;
-				var limit = 'null';
 				if (choice === 'Nuevo') {
 					wherevalue = '%';
-					limit = '1';
 					if (!this.state.upstreamLoaded) {
 						Object.entries(this.props.upstreamTables).forEach(function (keyValue, i, array) {
 							var lastInArray = i + 1 == array.length ? true : false;
 							_this2.getDropDownChoices(keyValue[0], keyValue[1], true, lastInArray);
 						});
 					}
-				}
-				(0, _fetchData2.default)('getList', { table: this.props.table, column: '*', where: this.props.displayColumn, wherevalue: wherevalue, limit: limit }).then(function (returnData) {
-					var filteredDate = returnData.map(function (row) {
+
+					(0, _fetchData2.default)('getColumns', { table: this.props.table }).then(function (returnData) {
 						var newrow = {};
-						Object.keys(row).forEach(function (key) {
-							if (!key.includes('iden')) {
-								newrow[key] = row[key];
-								if (choice === 'Nuevo') {
-									newrow[key] = '';
-								}
+						var filteredData = returnData.map(function (row) {
+							if (!row['column_name'].includes('iden')) {
+								newrow[row['column_name']] = '';
 							}
 						});
-						return newrow;
+						_this2.setState({
+							values: { 'row0': newrow }
+						});
 					});
-					var arrayToObject = function arrayToObject(arr) {
-						return Object.assign.apply(Object, [{}].concat(_toConsumableArray(arr.map(function (item, i) {
-							return _defineProperty({}, 'row' + i, item);
-						}))));
-					};
-					_this2.setState({
-						values: arrayToObject(filteredDate)
+				} else {
+					(0, _fetchData2.default)('getList', { table: this.props.table, column: '*', where: this.props.displayColumn, wherevalue: wherevalue }).then(function (returnData) {
+						var filteredData = returnData.map(function (row) {
+							var newrow = {};
+							Object.keys(row).forEach(function (key) {
+								if (!key.includes('iden')) {
+									newrow[key] = row[key];
+								}
+							});
+							return newrow;
+						});
+						var arrayToObject = function arrayToObject(arr) {
+							return Object.assign.apply(Object, [{}].concat(_toConsumableArray(arr.map(function (item, i) {
+								return _defineProperty({}, 'row' + i, item);
+							}))));
+						};
+						_this2.setState({
+							values: arrayToObject(filteredData)
+						});
 					});
-				});
+				}
 			}
-		}
-	}, {
-		key: "updateValue",
-		value: function updateValue(rowId, column, value) {
-			this.setState(function (prevState) {
-				return {
-					values: _extends({}, prevState.values, _defineProperty({}, rowId, _extends({}, prevState.values[rowId], _defineProperty({}, column, value))))
-				};
-			});
-		}
-	}, {
-		key: "handleSubmit",
-		value: function handleSubmit(e) {
-			//const local ={[this.state.currentSelect]:this.state.values}
-			localStorage.setItem(this.props.table, JSON.stringify(_defineProperty({}, this.state.selectedItem[this.props.table], this.state.values)));
-			localStorage.setItem('upstream', JSON.stringify(this.state.selectedItem));
 		}
 	}, {
 		key: "getDropDownChoices",
@@ -46992,17 +47008,15 @@ var UpdateBuilder = function (_React$Component) {
 							};
 						});
 					}
-					// this.setState((prevState) => (
-					// 	{
-					// 		selectedItem:{
-					// 			...prevState.selectedItem,
-					// 			[this.props.table]:oldSelectionName 
-					// 		},
-					// 		values:oldValues
-					// 	}
-					// ));
 				}
 			});
+		}
+	}, {
+		key: "handleSubmit",
+		value: function handleSubmit(e) {
+			//const local ={[this.state.currentSelect]:this.state.values}
+			localStorage.setItem(this.props.table, JSON.stringify(_defineProperty({}, this.state.selectedItem[this.props.table], this.state.values)));
+			localStorage.setItem('upstream', JSON.stringify(this.state.selectedItem));
 		}
 	}, {
 		key: "componentDidMount",
@@ -47055,7 +47069,8 @@ var UpdateBuilder = function (_React$Component) {
 							selectedItem: this.state.selectedItem[this.props.table],
 							updateValue: this.updateValue,
 							handleSubmit: this.handleSubmit,
-							rows: this.state.values
+							rows: this.state.values,
+							selectObject: this.props.selectObject
 						}),
 						_react2.default.createElement("input", {
 							type: "submit",
@@ -47136,7 +47151,7 @@ var DBDropdown = function (_React$Component) {
                         },
                         name: "select" + this.props.table
                     },
-                    this.props.items.map(function (item) {
+                    this.props.items.sort().map(function (item) {
                         return _react2.default.createElement(
                             "option",
                             { key: item, value: item === '' ? 'notselected' : item },
@@ -47240,15 +47255,35 @@ var Editable = function (_React$Component) {
 							{ className: 'overflowSpan', key: row[0] },
 							keyColumns.map(function (keyColumn) {
 								var notNullValue = row[1][keyColumn] == null ? '' : row[1][keyColumn];
-								return _react2.default.createElement('input', {
-									key: row[0] + keyColumn,
-									type: 'text',
-									className: 'reactColumns '
-									//className={runValidator(this.props.row[keyColumn])}
-									, name: row[0] + '*' + _this2.props.table + '*' + keyColumn,
-									value: notNullValue,
-									onChange: _this2.handleChange
-								});
+								if (_this2.props.selectObject[keyColumn]) {
+									return _react2.default.createElement(
+										'select',
+										{
+											key: row[0] + keyColumn,
+											className: 'reactColumns ',
+											name: row[0] + '*' + _this2.props.table + '*' + keyColumn,
+											value: notNullValue,
+											onChange: _this2.handleChange
+										},
+										_this2.props.selectObject[keyColumn].map(function (item) {
+											return _react2.default.createElement(
+												'option',
+												{ key: item, value: item === '' ? 'notselected' : item },
+												item
+											);
+										})
+									);
+								} else {
+									return _react2.default.createElement('input', {
+										key: row[0] + keyColumn,
+										type: 'text',
+										className: 'reactColumns '
+										//className={runValidator(this.props.row[keyColumn])}
+										, name: row[0] + '*' + _this2.props.table + '*' + keyColumn,
+										value: notNullValue,
+										onChange: _this2.handleChange
+									});
+								}
 							})
 						);
 					})

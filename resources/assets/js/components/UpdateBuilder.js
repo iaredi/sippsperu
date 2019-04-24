@@ -22,50 +22,6 @@ class UpdateBuilder extends React.Component {
 		};
 	}
 	
-	setFromSelect(table,choice){ 
-		this.setState((prevState) => (
-			{
-				selectedItem:{
-					...prevState.selectedItem,
-					[table]:choice 
-				}
-			}
-		));
-		if(table==this.props.table){
-			let wherevalue = choice 
-			let limit = 'null'
-			if(choice==='Nuevo'){
-				wherevalue = '%'
-				limit='1'
-				if (!this.state.upstreamLoaded){
-					Object.entries(this.props.upstreamTables).forEach((keyValue,i,array)=>{
-						const lastInArray= (i+1)==array.length?true:false
-						this.getDropDownChoices(keyValue[0],keyValue[1],true,lastInArray)
-					})
-				}
-
-			}
-			fetchData('getList',{table:this.props.table, column:'*',where:this.props.displayColumn, wherevalue:wherevalue,limit:limit}).then(returnData => {
-				const filteredDate = returnData.map((row) => {
-					const newrow = {}
-					Object.keys(row).forEach(key => {
-						if(!key.includes('iden')){
-							newrow[key] = row[key]
-							if(choice==='Nuevo'){
-								newrow[key] = ''
-							}
-						}
-					});
-					return newrow
-				})
-				const arrayToObject = (arr) => Object.assign({}, ...arr.map((item,i) => ({['row'+i]: item})))
-				this.setState({
-					values : arrayToObject(filteredDate)
-				})
-			})
-		}
-	}
-
 	updateValue(rowId,column, value){
 		this.setState((prevState) => (
 			{
@@ -80,10 +36,56 @@ class UpdateBuilder extends React.Component {
 		));
 	}
 
-	handleSubmit(e){
-		//const local ={[this.state.currentSelect]:this.state.values}
-		localStorage.setItem(this.props.table, JSON.stringify({[this.state.selectedItem[this.props.table]]:this.state.values}));
-		localStorage.setItem('upstream', JSON.stringify(this.state.selectedItem));
+	setFromSelect(table,choice){ 
+		this.setState((prevState) => (
+			{
+				selectedItem:{
+					...prevState.selectedItem,
+					[table]:choice 
+				}
+			}
+		));
+		if(table==this.props.table){
+			let wherevalue = choice 
+			if(choice==='Nuevo'){
+				wherevalue = '%'
+				if (!this.state.upstreamLoaded){
+					Object.entries(this.props.upstreamTables).forEach((keyValue,i,array)=>{
+						const lastInArray= (i+1)==array.length?true:false
+						this.getDropDownChoices(keyValue[0],keyValue[1],true,lastInArray)
+					})
+				}
+
+				fetchData('getColumns',{table:this.props.table}).then(returnData => {
+					const newrow = {}
+					const filteredData = returnData.map((row) => {
+						if(!row['column_name'].includes('iden')){
+							newrow[row['column_name']] =''
+						}
+					})
+					this.setState({
+						values :{'row0':newrow}
+					})
+				})
+
+			}else{
+				fetchData('getList',{table:this.props.table, column:'*',where:this.props.displayColumn, wherevalue:wherevalue}).then(returnData => {
+					const filteredData = returnData.map((row) => {
+						const newrow = {}
+						Object.keys(row).forEach(key => {
+							if(!key.includes('iden')){
+								newrow[key] = row[key]
+							}
+						});
+						return newrow
+					})
+					const arrayToObject = (arr) => Object.assign({}, ...arr.map((item,i) => ({['row'+i]: item})))
+					this.setState({
+						values : arrayToObject(filteredData)
+					})
+				})
+			}
+		}
 	}
 
 	getDropDownChoices(table,displayColumn,upstream=false, lastInArray=false){
@@ -129,19 +131,15 @@ class UpdateBuilder extends React.Component {
 						}
 					));
 				}
-				// this.setState((prevState) => (
-				// 	{
-				// 		selectedItem:{
-				// 			...prevState.selectedItem,
-				// 			[this.props.table]:oldSelectionName 
-				// 		},
-				// 		values:oldValues
-				// 	}
-				// ));
 			}
 		})
 	}
-	
+
+	handleSubmit(e){
+		//const local ={[this.state.currentSelect]:this.state.values}
+		localStorage.setItem(this.props.table, JSON.stringify({[this.state.selectedItem[this.props.table]]:this.state.values}));
+		localStorage.setItem('upstream', JSON.stringify(this.state.selectedItem));
+	}
 
 	componentDidMount(){
 		this.getDropDownChoices(this.props.table, this.props.displayColumn, false)
@@ -155,8 +153,6 @@ class UpdateBuilder extends React.Component {
 				method="post"
 				onSubmit={this.handleSubmit} 
 			>
-
-               
 
 				{this.state.choiceList[this.props.table].length>0 &&
 					<DBDropdown
@@ -196,6 +192,7 @@ class UpdateBuilder extends React.Component {
 							updateValue={this.updateValue}
 							handleSubmit={this.handleSubmit}
 							rows={this.state.values} 
+							selectObject={this.props.selectObject}
 						/>
 						<input 
 							type="submit" 

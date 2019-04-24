@@ -17,6 +17,8 @@ class Editable extends React.Component {
 			if(b.includes('fin')) return -1;
 		})
 
+
+
         return (
 			<div className='p-2'>
 				<input type="hidden" name="mode" value={this.props.selectedItem==='Nuevo'?'Datos Nuevos':'Datos Existentes'}/>
@@ -44,19 +46,37 @@ class Editable extends React.Component {
 					<span className='overflowSpan' key={row[0]}>
 						{
 							keyColumns.map((keyColumn)=>{ 
-							const notNullValue = row[1][keyColumn]==null?'':row[1][keyColumn]						
-							return(
-								<input 
-									key={row[0]+keyColumn}
-									type='text'
-									className='reactColumns '
-									//className={runValidator(this.props.row[keyColumn])}
-									name={row[0]+'*'+this.props.table+'*'+keyColumn}
-									value={notNullValue}
-									onChange={this.handleChange}
-									>
-								</input>
-							) 
+							const notNullValue = row[1][keyColumn]==null?'':row[1][keyColumn]
+							if(this.props.selectObject[keyColumn]){
+								return( 
+									<select 
+										key={row[0]+keyColumn}
+										className='reactColumns '
+										name={row[0]+'*'+this.props.table+'*'+keyColumn}
+										value={notNullValue}
+										onChange={this.handleChange}
+										>
+										{this.props.selectObject[keyColumn].map(item => (
+											<option key={item} value={item===''?'notselected':item}>
+												{item}
+											</option>
+										))}
+									</select>
+								) 
+							}else{						
+								return( 
+									<input 
+										key={row[0]+keyColumn}
+										type='text'
+										className='reactColumns '
+										//className={runValidator(this.props.row[keyColumn])}
+										name={row[0]+'*'+this.props.table+'*'+keyColumn}
+										value={notNullValue}
+										onChange={this.handleChange}
+										>
+									</input>
+								) 
+							}
 							})
 						}
 					</span>	

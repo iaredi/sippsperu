@@ -9,7 +9,10 @@ import UpdateBuilder from "./components/UpdateBuilder";
 import "../../leaflet_assets/leaflet.css";
 import "../../leaflet_assets/images/marker-shadow.png";
 import "../../leaflet_assets/images/marker-icon-2x.png";
-const upstreamLinea = {estado:'nombre',municipio:'nombre',predio:'nombre'}
+const upstreamLinea = {estado:'nombre',municipio:'nombre',predio:'iden_muni_predio'}
+const upstreamActividad = {estado:'nombre',municipio:'nombre'}
+const actividadSelectObject={tipo:['','taller','plactica', 'capacitacion','instalacion','reunion de coordinacion en torno', 'otro'],
+	tipo_geom:['','punto','poligono']}
 const components = {
     udp: <UDPMapapp />,
     in: <Intersection />,
@@ -20,6 +23,13 @@ const components = {
 		table="linea_mtp"
 		displayColumn='nombre_iden'
 		upstreamTables={upstreamLinea}
+		selectObject={{}}
+	/>,
+	actividad:<UpdateBuilder
+		table="actividad"
+		displayColumn='descripcion'
+		upstreamTables={upstreamActividad}
+		selectObject={actividadSelectObject}
 	/>,
 };
 

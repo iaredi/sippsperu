@@ -28,6 +28,7 @@ Route::get('/cargarshapes', 'PagesController@cargarshapes');
 Route::get('/cargarshapesadmin', 'PagesController@cargarshapesadmin');
 Route::get('/privacidad', 'PagesController@privacy');
 Route::get('/cambiarlinea', 'PagesController@cambiarlinea');
+Route::get('/actividad', 'PagesController@actividad');
 
 
 Route::get('/mostrarnormas/{infotype}/{idenudpraw}', function ($infotype,$idenudpraw){
@@ -54,6 +55,8 @@ Route::post('/ingresarexcel', 'PagesController@ingresarexcel');
 Route::post('/mostrarnormas', 'PagesController@mostrarnormas');
 Route::post('/privacidad', 'PagesController@privacy');
 Route::post('/cambiarlinea', 'PagesController@cambiarlinea');
+Route::post('/actividad', 'PagesController@actividad');
+
 
 
 

@@ -49,7 +49,7 @@
 
 <link rel="stylesheet" href="leaflet_assets/leaflet.css">
 <script>
-	var infotype ='linea'
+	var infotype ='actividad'
 </script>
 <script src="{{ asset('js/index.js') }}"></script>
 

@@ -14,6 +14,9 @@ class PagesController extends Controller
 	}
 	public function cambiarlinea(){
         return view('pages/cambiarlinea');
+	}
+	public function actividad(){
+        return view('pages/actividad');
     }
     public function admin(){
         return view('pages/admin');

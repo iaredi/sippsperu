@@ -333,6 +333,9 @@
 					if($lifeform=='ave'){
 						$obspost["row{$true_row}*observacion_{$lifeform}*especie_cactus"] = '000';
 					}
+					if($true_row==0 && $sheetobs=='ARBO_OBS_3'){
+						echo var_dump($newobscolumn);
+					}
 					
 					
 					$obspost["row{$true_row}*observacion_{$lifeform}*{$newobscolumn}"] = $obsvalue;
@@ -384,6 +387,7 @@
 
 		//Make sure all neccessary columns are present
 		if(sizeof($errorlist)==0){
+			
 			foreach ($obspostarray as $currentobspost) {
 				$transpunto="punto";
 				$lifeform = $currentobspost['selectobservaciones'];
@@ -401,15 +405,24 @@
 
 				foreach ($unitcolumns as $key => $value) {
 					if((substr($key,0,4) != 'iden')&&(!isset($currentobspost["row0*{$transpunto}_{$lifeform}*$key"]))){
-						$errorlist[]="No existe {$key} en {$lifeformraw}_LOC_{$currentobspost['select'.$transpuntoupper]}";
+						if ($lifeform=='arbol'||$lifeform=='arbusto'){
+							$errorlist[]="No existe {$key} en una de las hojas de  {$lifeformraw}_LOC}";
+						}else{
+							$errorlist[]="No existe {$key} en {$lifeformraw}_LOC_{$currentobspost['select'.$transpuntoupper]}";
+						}
 					}
 				}
 				$unitcolumns=buildcolumnsarray($currentobspost,"observacion_{$lifeform}", "row0",false);
 				$unitcolumns['cientifico']='';
 				foreach ($unitcolumns as $key => $value) {
 					if((substr($key,0,4) != 'iden')&&($key!='notas')&&(!isset($currentobspost["row0*observacion_{$lifeform}*$key"]))){
-						$errorlist[]="No existe {$key} en {$lifeformraw}_OBS_{$currentobspost['select'.$transpuntoupper]}";
-					}
+						echo "row0*observacion_{$lifeform}*$key";
+						if ($lifeform=='arbol'||$lifeform=='arbusto'){
+							$errorlist[]="No existe {$key} en una de las hojas de {$lifeformraw}_OBS";
+						}else{
+							$errorlist[]="No existe {$key} en {$lifeformraw}_OBS_{$currentobspost['select'.$transpuntoupper]}";
+						}
+					}	
 				}
 			}
 		}
