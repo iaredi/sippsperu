@@ -30,6 +30,7 @@ const components = {
 		displayColumn='descripcion'
 		upstreamTables={upstreamActividad}
 		selectObject={actividadSelectObject}
+		extra={true}
 	/>,
 };
 

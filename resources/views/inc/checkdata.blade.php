@@ -2,12 +2,21 @@
 $errorlist=[];
 if ($_SERVER['REQUEST_METHOD']=="POST") {
 
+	if(isset($_POST['row0*actividad*descripcion'])){
+		$result = DB::select("SELECT descripcion FROM actividad WHERE descripcion  = :value", [':value'=>$_POST['row0*actividad*descripcion']]);
+		if (sizeof($result)>0) {
+			$errorlist[]= "Un accion con este descripcion ya existe, por favor cambie el descripcion";
+		}
+	}
+
   foreach( $_FILES as $postkey2=> $postvalwithoutname) {
-        $tablename= explode("*" , $postkey2)[1];
-        $postval=$postvalwithoutname['name'];
-        if (DB::select("SELECT iden_foto FROM {$tablename} WHERE iden_foto  = :value", [':value'=>$postval])) {
-            $errorlist[]= "El foto {$postval} ya existe, por favor cambie el nombre del foto";
-        }
+	 	if (sizeof(explode("*" , $postkey2))>1){
+			$tablename= explode("*" , $postkey2)[1];
+			$postval=$postvalwithoutname['name'];
+			if (DB::select("SELECT iden_foto FROM {$tablename} WHERE iden_foto  = :value", [':value'=>$postval])) {
+				$errorlist[]= "El foto {$postval} ya existe, por favor cambie el nombre del foto";
+			}
+		}
     }
     foreach( $_POST as $postkey=> $postval) {
         if ($postval=='notselected') {
@@ -66,9 +75,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
                 if ($postval=='notselected' && $columnname !='notas') {
                     $errorlist[]= "{$tablename} esta vacio";
                 }
-                if (strpos($columnname, 'latitud') !== false && (!($postval>14) || !($postval<34))) {
-                    $errorlist[]= "El campo '{$columnname}' de {$tablename} tiene que ser entre 14 y 34 grados";
-                }
+               
                 $listnumcol=array(
                   'dn'=>'3','m'=>'3','a'=>'0','dc1'=>'3',
                   'dc2'=>'3','acc1'=>'3','acc2'=>'3','acc3'=>'3',

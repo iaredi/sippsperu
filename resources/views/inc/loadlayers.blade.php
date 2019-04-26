@@ -66,7 +66,31 @@ $layer4->fillOpacity = 0.5;
 $layer4->sql = "SELECT geometry_id,nomgeo, ST_AsGeoJSON(level_3, 5) AS geojson FROM muni_geometries_simplified";
 $layer4->category='Referencial';
 
-$layersArray = array($layer1, $layer2, $layer3, $layer4);
+$layer5 = new layer();
+$layer5->tableName = 'actividad';
+$layer5->displayName = 'Acciones_punto';
+$layer5->featureColumn = 'descripcion';
+$layer5->color = 'black';
+$layer5->fillColor = 'yellow';
+$layer5->opacity = 0.9;
+$layer5->weight = 1;
+$layer5->fillOpacity = 0.5;
+$layer5->sql = "SELECT descripcion,iden_geom, ST_AsGeoJSON(iden_geom, 5) AS geojson FROM actividad where tipo_geom='punto'";
+$layer5->category='Referencial';
+
+$layer6 = new layer();
+$layer6->tableName = 'actividad';
+$layer6->displayName = 'Acciones_poli';
+$layer6->featureColumn = 'descripcion';
+$layer6->color = 'black';
+$layer6->fillColor = 'yellow';
+$layer6->opacity = 0.9;
+$layer6->weight = 1;
+$layer6->fillOpacity = 0.5;
+$layer6->sql = "SELECT descripcion,iden_geom, ST_AsGeoJSON(iden_geom, 5) AS geojson FROM actividad where tipo_geom='poligono'";
+$layer6->category='Referencial';
+
+$layersArray = array($layer1, $layer2, $layer3, $layer4, $layer5, $layer6);
 $addlayers = DB::select("SELECT * FROM additional_layers",[]);
 
 foreach($addlayers as $singlerow) {

@@ -15911,6 +15911,7 @@ var Map = function (_React$Component) {
             var processArray = function processArray(array, mymap, mybaseMaps, getColor, getOutline) {
                 var dynamicLayer = "notset";
                 var overlayMaps = _this2.overlayMaps || {};
+                var actividadArray = [];
                 array.forEach(function (item) {
                     var myLayer = get_shp(item, mymap, getColor, getOutline);
                     if (item.tableName == "udp_puebla_4326") {
@@ -15928,7 +15929,16 @@ var Map = function (_React$Component) {
                     if (myLayer.category == 'Gestion del Territorio') {
                         overlayMaps["Placeholder_Gestion del Territorio"] = myLayer;
                     }
-                    overlayMaps[item.displayName] = myLayer;
+                    if (item.displayName.includes('Acciones')) {
+                        actividadArray.push(myLayer);
+                        if (actividadArray.length > 1) {
+                            var actividadLG = _leaflet2.default.layerGroup(actividadArray);
+                            actividadLG['category'] = 'Referencial';
+                            overlayMaps['Acciones'] = actividadLG;
+                        }
+                    } else {
+                        overlayMaps[item.displayName] = myLayer;
+                    }
                 });
 
                 var tempraster = _leaflet2.default.tileLayer("temptiles/{z}/{x}/{y}.png", { enable: true, tms: true, opacity: 0.8, attribution: "" });
@@ -19123,7 +19133,7 @@ var Mapapp = function (_React$Component) {
                                     role: "button"
                                 },
                                 " ",
-                                "Attributos Ecologicos",
+                                "Atributos Ecologicos",
                                 " "
                             ),
                             _react2.default.createElement(

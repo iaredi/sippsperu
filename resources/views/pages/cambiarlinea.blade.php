@@ -13,7 +13,7 @@
 	if ($_SERVER['REQUEST_METHOD']=="POST" && sizeof(session('error'))==0  && (!session('visitante'))){
 		$saveworked = savedata($_POST,session('email'));
 		if($saveworked=="true"){
-			redirect()->to('/thanks')->send();
+			//redirect()->to('/thanks')->send();
 		}
     
 	}

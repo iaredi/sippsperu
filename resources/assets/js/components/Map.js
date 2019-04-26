@@ -119,7 +119,8 @@ class Map extends React.Component {
 
         const processArray = ( array, mymap, mybaseMaps, getColor, getOutline ) => {
             var dynamicLayer = "notset";
-            const overlayMaps = this.overlayMaps || {};
+			const overlayMaps = this.overlayMaps || {};
+			var actividadArray=[]
             array.forEach(function(item) {
                 let myLayer = get_shp(item, mymap, getColor, getOutline);
                 if (item.tableName == "udp_puebla_4326") {
@@ -137,7 +138,17 @@ class Map extends React.Component {
 				if (myLayer.category=='Gestion del Territorio'){
 					overlayMaps["Placeholder_Gestion del Territorio"] = myLayer;
 				}
-                overlayMaps[item.displayName] = myLayer;
+				if(item.displayName.includes('Acciones')){
+					actividadArray.push(myLayer)
+					if (actividadArray.length>1){
+						const actividadLG = L.layerGroup(actividadArray)
+						actividadLG['category'] = 'Referencial'
+						overlayMaps['Acciones'] =  actividadLG;
+					}
+				}else{
+					overlayMaps[item.displayName] = myLayer; 
+				}
+
 			});
 
 			var tempraster = L.tileLayer("temptiles/{z}/{x}/{y}.png", { enable: true, tms: true, opacity: 0.8, attribution: "" });

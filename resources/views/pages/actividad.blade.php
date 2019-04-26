@@ -1,7 +1,6 @@
 @include('inc/php_functions')
 @include('inc/checkdata')
-@include('inc/savedata')
-
+@include('inc/saveactividad')
 
 <?php
 	if (!session('email')){
@@ -11,23 +10,20 @@
 		return redirect()->to('/privacidad')->send();
 	}
 	if ($_SERVER['REQUEST_METHOD']=="POST" && sizeof(session('error'))==0  && (!session('visitante'))){
-		$saveworked = savedata($_POST,session('email'));
-		if($saveworked=="true"){
-			redirect()->to('/thanks')->send();
-		}
+		$saveworked = saveactividad($_POST,session('email'));
+		// if($saveworked=="true"){
+		// 	redirect()->to('/thanks')->send();
+		// }
     
 	}
 ?>
 
 @include('inc/header')
 @include('inc/nav')
-@include('inc/checkdata')
 <img src="{{ asset('img/popo.jpg') }}"  alt="Italian Trulli" style="height:250px; width:380px;">
 	<div class=" warnings">
 		<?php
 			$hintlist = [
-				"Si no hizo la observacion, ingrese 0000.",
-				"Si hiciera observacion y no hubiera especies, ingrese 000.",
 				"Si no sabe con certeza algún dato, ingrese 00.",
 				"Todos los medidas son de 3 grados de precision. Por ejemplo 1.792",
 				"Todos las coordenadas son de 4 grados de precision. Por ejemplo -110.8170"

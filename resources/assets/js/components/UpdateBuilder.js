@@ -2,6 +2,7 @@ import React from "react";
 import fetchData from "../fetchData";
 import DBDropdown from "./DBDropdown";
 import Editable from "./Editable";
+import GeomEditable from "./GeomEditable";
 
 class UpdateBuilder extends React.Component {
     constructor(props) {
@@ -18,7 +19,6 @@ class UpdateBuilder extends React.Component {
 			email:useremail,
 			submitDisabled:true,
 			upstreamLoaded:false
-			
 		};
 	}
 	
@@ -152,6 +152,7 @@ class UpdateBuilder extends React.Component {
 				id="measurementform" 
 				method="post"
 				onSubmit={this.handleSubmit} 
+				encType="multipart/form-data"
 			>
 
 				{this.state.choiceList[this.props.table].length>0 &&
@@ -185,7 +186,6 @@ class UpdateBuilder extends React.Component {
 				{Object.keys(this.state.values).length>0 && !(this.state.selectedItem[this.props.table]==='Nuevo' && !this.state.upstreamLoaded) &&
 					<div>
 						<Editable
-							
 							table={this.props.table}
 							selectedColumn={this.props.displayColumn}
 							selectedItem={this.state.selectedItem[this.props.table]}
@@ -194,12 +194,21 @@ class UpdateBuilder extends React.Component {
 							rows={this.state.values} 
 							selectObject={this.props.selectObject}
 						/>
+
+						{this.props.extra &&
+							<GeomEditable
+							tipo_geom={this.state.values['row0']["tipo_geom"]}
+							/>
+						}
+
 						<input 
 							type="submit" 
 							className="border border-secondary btn btn-success mySubmit p-2 m-2"
 						/>
 					</div>
 				}
+
+				
 			</form>
 
             </div>

@@ -283,7 +283,7 @@ class Mapapp extends React.Component {
 								role="button"
 							>
 								{" "}
-								Attributos Ecologicos{" "}
+								Atributos Ecologicos{" "}
 							</a>
 							<a
 								className="btn btn-primary m-2 btn-sm mapInfoButton"

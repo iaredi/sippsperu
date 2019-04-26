@@ -128,7 +128,7 @@
                 "nombre_iden"=> "{$linea_mtppredioname} ({$comienzo_latitud},{$comienzo_longitud}) ({$fin_latitud},{$fin_longitud})",
                 "iden_predio"=> $linea_mtpfkey,
                 "iden_unidad_de_paisaje"=> "notset"
-              );
+			  );
               $resultofquery[]= savenewentry("linea_mtp", $linea_mtpcolumns);
               $max_line = getserialmax( "linea_mtp");
 

@@ -499,8 +499,10 @@ Route::post('getspecies', function(Request $request) {
       $row8->abundancia_relativa=round(100*($row8->total_cientifico)/$numeroindiviudos,2).'%';
       $transpuntoresult = DB::select($transpuntosql, []);
       $pointtotal = sizeof($transpuntoresult);
-      $row8->frequencia= round(($row8->sitios)/$pointtotal,4);
-      $row8->dominancia= round(pow(($row8->total_cientifico)/$numeroindiviudos,2),4);
+	  $row8->frequencia= round(($row8->sitios)/$pointtotal,4);
+      if (!($lifeform=="arbusto" || $lifeform=="arbol")) {
+		  $row8->dominancia= round(pow(($row8->total_cientifico)/$numeroindiviudos,2),4);
+      }
 
   } 
 
