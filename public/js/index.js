@@ -47416,7 +47416,7 @@ var GeomEditable = function (_React$Component) {
 						{ htmlFor: 'dbf' },
 						'.dbf'
 					),
-					_react2.default.createElement('input', { type: 'file', required: true, name: 'dbj', id: 'dbj' }),
+					_react2.default.createElement('input', { type: 'file', required: true, name: 'dbf', id: 'dbf' }),
 					_react2.default.createElement('br', null),
 					_react2.default.createElement(
 						'label',
