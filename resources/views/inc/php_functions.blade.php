@@ -32,7 +32,7 @@
             $results = DB::insert($completesql, $arraytopass);
             return ("{$mytable} ha sido guardado con exito");
         } catch(PDOException $e) {
-            Log::info('savenewentry_fail:',$e->getMessage(), ['email'=>$useremail,'completesql' => $completesql,'arraytopass'=>$arraytopass ]);
+            Log::info('savenewentry_fail:', [$e->getMessage(),'email'=>$useremail,'completesql' => $completesql,'arraytopass'=>$arraytopass ]);
             return ("{$mytable} failed to save with error ". $e->getMessage());
         }
     }
