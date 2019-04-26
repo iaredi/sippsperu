@@ -47,7 +47,7 @@ class GeomEditable extends React.Component {
 				<br/>
 
 				<label htmlFor='dbf'>.dbf</label>
-				<input type="file" required name="dbj" id="dbj"></input>
+				<input type="file" required name="dbf" id="dbj"></input>
 				<br/>
 
 				<label htmlFor='prj'>.prj</label>
