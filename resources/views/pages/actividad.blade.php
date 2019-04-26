@@ -11,9 +11,9 @@
 	}
 	if ($_SERVER['REQUEST_METHOD']=="POST" && sizeof(session('error'))==0  && (!session('visitante'))){
 		$saveworked = saveactividad($_POST,session('email'));
-		// if($saveworked=="true"){
-		// 	redirect()->to('/thanks')->send();
-		// }
+		if($saveworked=="true"){
+			redirect()->to('/thanks')->send();
+		}
     
 	}
 ?>

@@ -1,5 +1,6 @@
 <?php
 	function saveactividad($newpost, $useremail){
+		$errorlist=[];
 		$resultofquery=[];
 			if ($_POST['selectactividad']!='Nuevo'){
 				//Delete old one
@@ -64,7 +65,9 @@
 					  
 			
 
-	
+		if (sizeof($errorlist)==0){
+			return 'true';
+		}
 	}
   
 ?>
