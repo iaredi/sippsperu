@@ -3,6 +3,8 @@
 		$resultofquery=[];
 			if ($_POST['selectactividad']!='Nuevo'){
 				//Delete old one
+				$sql = "DELETE FROM actividad WHERE descripcion= ?";
+                $numrows =DB::delete($sql, [$_POST['selectactividad']]);
 			}
 
 
@@ -25,7 +27,7 @@
 							)',4326)) WHERE iden = ?";
 				$updatedgeom = DB::update($updatesql, [$actividadkey]); 
 			}
-			if($newpost['row0*actividad*tipo_geom']=='poligono' &&false){
+			if($newpost['row0*actividad*tipo_geom']=='poligono'){
 				uploadshape('shp');
 				uploadshape('shx');
 				uploadshape('dbf');
