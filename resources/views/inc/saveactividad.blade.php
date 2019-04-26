@@ -34,7 +34,7 @@
 				uploadshape('prj');
 				$shpfile=$_FILES['shp']["name"];
 				$sridshell= shell_exec("ogr2ogr -t_srs EPSG:4326 ../storage/shp/{$shpfile}2 ../storage/shp/{$shpfile}");
-				$shapenombre=$_POST['shapenombre'];
+				$shapenombre='temp_geom';
 				if (env("APP_ENV", "somedefaultvalue")=='production'){
 				
 					//load to temp table 
