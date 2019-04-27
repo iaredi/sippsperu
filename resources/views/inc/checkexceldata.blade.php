@@ -436,7 +436,7 @@
 		  $saveworked = savedata($currentobspost,$useremail,true);
 		  if ($saveworked=='false'){
 			$errorlist[]="Hubo problema guardando datos.";
-			echo(session('error');
+			echo(session('error'));
 		  }
           
         }
