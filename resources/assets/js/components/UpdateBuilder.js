@@ -114,12 +114,13 @@ class UpdateBuilder extends React.Component {
 			
 			if(!upstream){
 				//Deal with local storage
+				const errorPresent =document.getElementsByClassName( "bg-danger2" ).length>0
 				const oldSelectionObject = localStorage.getItem(this.props.table)
 					? JSON.parse(localStorage.getItem(this.props.table))
 					:null
 				const oldSelectionName= oldSelectionObject ? Object.keys(oldSelectionObject)[0]:null
 				const oldValues = oldSelectionName && dataArray.includes(oldSelectionName) ? oldSelectionObject[oldSelectionName] : {}
-				if (oldSelectionObject){
+				if (oldSelectionObject && errorPresent){
 					Object.entries(this.props.upstreamTables).forEach((keyValue,i,array)=>{
 						const lastInArray= (i+1)==array.length?true:false
 						this.getDropDownChoices(keyValue[0],keyValue[1],true,lastInArray)

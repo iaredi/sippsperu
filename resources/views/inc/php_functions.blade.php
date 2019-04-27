@@ -27,7 +27,8 @@
         
             $sql2=substr_replace($columnarray ,"", -1);
             $sql4=substr_replace($placeholder ,"", -1);
-            $completesql=$sql1.$sql2.$sql3.$sql4.$sql5;
+			$completesql=$sql1.$sql2.$sql3.$sql4.$sql5;
+			
             Log::info('savenewentry_attempt:', ['email'=>$useremail,'completesql' => $completesql,'arraytopass'=>$arraytopass ]);
             $results = DB::insert($completesql, $arraytopass);
             return ("{$mytable} ha sido guardado con exito");

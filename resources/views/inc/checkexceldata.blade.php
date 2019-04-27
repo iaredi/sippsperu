@@ -334,7 +334,6 @@
 						$obspost["row{$true_row}*observacion_{$lifeform}*especie_cactus"] = '000';
 					}
 					if($true_row==0 && $sheetobs=='ARBO_OBS_3'){
-						echo var_dump($newobscolumn);
 					}
 					
 					
@@ -416,7 +415,6 @@
 				$unitcolumns['cientifico']='';
 				foreach ($unitcolumns as $key => $value) {
 					if((substr($key,0,4) != 'iden')&&($key!='notas')&&(!isset($currentobspost["row0*observacion_{$lifeform}*$key"]))){
-						echo "row0*observacion_{$lifeform}*$key";
 						if ($lifeform=='arbol'||$lifeform=='arbusto'){
 							$errorlist[]="No existe {$key} en una de las hojas de {$lifeformraw}_OBS";
 						}else{

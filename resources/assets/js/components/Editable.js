@@ -33,7 +33,7 @@ class Editable extends React.Component {
 								return(
 									<label 
 										key={keyColumn}
-										className='reactColumns'
+										className={keyColumn.length<20?'reactColumns':'reactColumnsWide'}
 									>{keyColumn}</label>
 								)
 							})
@@ -51,7 +51,7 @@ class Editable extends React.Component {
 								return( 
 									<select 
 										key={row[0]+keyColumn}
-										className='reactColumns '
+										className={keyColumn.length<20?'reactColumns':'reactColumnsWide'}
 										name={row[0]+'*'+this.props.table+'*'+keyColumn}
 										value={notNullValue}
 										onChange={this.handleChange}
@@ -68,7 +68,7 @@ class Editable extends React.Component {
 									<input 
 										key={row[0]+keyColumn}
 										type='text'
-										className='reactColumns '
+										className={keyColumn.length<20?'reactColumns':'reactColumnsWide'}
 										//className={runValidator(this.props.row[keyColumn])}
 										name={row[0]+'*'+this.props.table+'*'+keyColumn}
 										value={notNullValue}

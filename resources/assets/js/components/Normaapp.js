@@ -49,42 +49,58 @@ class Normaapp extends React.Component {
             speciesResult={this.state.speciesResultAve}
             lifeform="ave"
           />
-        </div>
+		</div>
+		<br/>
+		
         <div className="speciesdisplay">
           <h4 className="normaTitles">Mamifero</h4>
           <SpeciesDisplay
             speciesResult={this.state.speciesResultMamifero}
             lifeform="mamifero"
           />
-        </div>
+		</div>
+		<br/>
+		
         <div className="speciesdisplay">
           <h4 className="normaTitles">Herpetofauna</h4>
           <SpeciesDisplay
             speciesResult={this.state.speciesResultHerpetofauna}
             lifeform="herpetofauna"
           />
-        </div>
+		</div>
+		<br/>
+		
         <div className="speciesdisplay">
           <h4 className="normaTitles">Arbol</h4>
           <SpeciesDisplay
             speciesResult={this.state.speciesResultArbol}
             lifeform="arbol"
           />
-        </div>
+		</div>
+		<br/>
+		
         <div className="speciesdisplay">
           <h4 className="normaTitles">Arbusto</h4>
           <SpeciesDisplay
             speciesResult={this.state.speciesResultArbusto}
             lifeform="arbusto"
           />
-        </div>
+		</div>
+		<br/>
         <div className="speciesdisplay">
           <h4 className="normaTitles">Hierba</h4>
           <SpeciesDisplay
             speciesResult={this.state.speciesResultHierba}
             lifeform="hierba"
           />
-        </div>
+		</div>
+
+		<p>*Promedio</p>
+		<p>**En base a la muestra</p>
+		<p>***En base al promedio de las distancias</p>
+		<p>****En base a una Ha y las abundancias detectadas en la muestra</p>
+
+
       </div>
     );
   }

@@ -210,7 +210,7 @@ function selectOptionsCreate(tableName, menu) {
         var mycurrentlist = completetitlevallist[tableName];
 
         mycurrentlist = tableName === "observaciones" ? ['ave', 'arbol', 'arbusto', 'mamifero', 'herpetofauna', 'hierba'] : mycurrentlist;
-
+        mycurrentlist.sort();
         var frag = document.createDocumentFragment(),
             elOption = void 0;
         elOption = frag.appendChild(document.createElement('option'));

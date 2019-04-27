@@ -14238,9 +14238,9 @@ var Map = function (_React$Component) {
                     }
                     if (item.displayName.includes('Acciones')) {
                         actividadArray.push(myLayer);
-                        if (actividadArray.length > 1) {
+                        if (actividadArray.length == 2) {
                             var actividadLG = _leaflet2.default.layerGroup(actividadArray);
-                            actividadLG['category'] = 'Referencial';
+                            actividadLG['category'] = 'Monitoreo Activo';
                             overlayMaps['Acciones'] = actividadLG;
                         }
                     } else {

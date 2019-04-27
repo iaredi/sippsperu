@@ -107,7 +107,7 @@ function selectOptionsCreate(tableName, menu, preApproved=true, jsTable="Form",a
 		let mycurrentlist=completetitlevallist[tableName];
 
         mycurrentlist= tableName==="observaciones"? ['ave','arbol','arbusto','mamifero','herpetofauna','hierba']:mycurrentlist
-
+		mycurrentlist.sort()
         let frag = document.createDocumentFragment(),elOption;
         elOption = frag.appendChild(document.createElement('option'));
             elOption.value = "notselected";

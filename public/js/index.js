@@ -15931,9 +15931,9 @@ var Map = function (_React$Component) {
                     }
                     if (item.displayName.includes('Acciones')) {
                         actividadArray.push(myLayer);
-                        if (actividadArray.length > 1) {
+                        if (actividadArray.length == 2) {
                             var actividadLG = _leaflet2.default.layerGroup(actividadArray);
-                            actividadLG['category'] = 'Referencial';
+                            actividadLG['category'] = 'Monitoreo Activo';
                             overlayMaps['Acciones'] = actividadLG;
                         }
                     } else {
@@ -45351,6 +45351,7 @@ var Normaapp = function (_React$Component) {
             lifeform: "ave"
           })
         ),
+        _react2.default.createElement("br", null),
         _react2.default.createElement(
           "div",
           { className: "speciesdisplay" },
@@ -45364,6 +45365,7 @@ var Normaapp = function (_React$Component) {
             lifeform: "mamifero"
           })
         ),
+        _react2.default.createElement("br", null),
         _react2.default.createElement(
           "div",
           { className: "speciesdisplay" },
@@ -45377,6 +45379,7 @@ var Normaapp = function (_React$Component) {
             lifeform: "herpetofauna"
           })
         ),
+        _react2.default.createElement("br", null),
         _react2.default.createElement(
           "div",
           { className: "speciesdisplay" },
@@ -45390,6 +45393,7 @@ var Normaapp = function (_React$Component) {
             lifeform: "arbol"
           })
         ),
+        _react2.default.createElement("br", null),
         _react2.default.createElement(
           "div",
           { className: "speciesdisplay" },
@@ -45403,6 +45407,7 @@ var Normaapp = function (_React$Component) {
             lifeform: "arbusto"
           })
         ),
+        _react2.default.createElement("br", null),
         _react2.default.createElement(
           "div",
           { className: "speciesdisplay" },
@@ -45415,6 +45420,26 @@ var Normaapp = function (_React$Component) {
             speciesResult: this.state.speciesResultHierba,
             lifeform: "hierba"
           })
+        ),
+        _react2.default.createElement(
+          "p",
+          null,
+          "*Promedio"
+        ),
+        _react2.default.createElement(
+          "p",
+          null,
+          "**En base a la muestra"
+        ),
+        _react2.default.createElement(
+          "p",
+          null,
+          "***En base al promedio de las distancias"
+        ),
+        _react2.default.createElement(
+          "p",
+          null,
+          "****En base a una Ha y las abundancias detectadas en la muestra"
         )
       );
     }
@@ -45433,7 +45458,7 @@ exports.default = Normaapp;
 
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+    value: true
 });
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -45459,151 +45484,164 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var SpeciesDisplay = function (_React$Component) {
-  _inherits(SpeciesDisplay, _React$Component);
+    _inherits(SpeciesDisplay, _React$Component);
 
-  function SpeciesDisplay(props) {
-    _classCallCheck(this, SpeciesDisplay);
+    function SpeciesDisplay(props) {
+        _classCallCheck(this, SpeciesDisplay);
 
-    return _possibleConstructorReturn(this, (SpeciesDisplay.__proto__ || Object.getPrototypeOf(SpeciesDisplay)).call(this, props));
-  }
-
-  _createClass(SpeciesDisplay, [{
-    key: 'render',
-    value: function render() {
-
-      var oldspeciesResult = this.props.speciesResult;
-
-      //ADD (2) to prevent duplicate keys 
-      var newA = {};
-      var speciesResult = oldspeciesResult.map(function (spec) {
-        var newObject = _extends({}, spec);
-        if (newA[spec.cientifico]) {
-          if (newA[spec.cientifico] == 2) {
-            newObject = _extends({}, spec, { cientifico: spec.cientifico + '(2)' });
-          } else {
-            newObject = _extends({}, spec, { cientifico: spec.cientifico.slice(0, -3) + '(' + String(newA[spec.cientifico]) + ')' });
-          }
-          newA[spec.cientifico]++;
-        } else {
-          newA[spec.cientifico] = 2;
-        }
-        return newObject;
-      });
-
-      var speciesResultInvador = speciesResult.filter(function (item) {
-        return item.invasor == 'true';
-      });
-
-      var speciesResultNoInvador = speciesResult.filter(function (item) {
-        return item.invasor == 'false';
-      });
-
-      var columns = [{
-        dataField: 'comun',
-        text: 'Comun'
-      }, {
-        dataField: 'cientifico',
-        text: 'Cientifico'
-      }];
-      if (infotype == 'normas') {
-        columns.push({
-          dataField: 'total_cientifico',
-          text: 'Cantidad'
-        }, {
-          dataField: 'subespecie',
-          text: 'Subespecie Enlistada'
-        }, {
-          dataField: 'categoria',
-          text: 'Categoria '
-        }, {
-          dataField: 'distribution',
-          text: 'Distribution '
-        });
-      } else {
-        columns.push({
-          dataField: 'abundancia',
-          text: 'Abundancia'
-        }, {
-          dataField: 'abundancia_relativa',
-          text: 'Abundancia Relativa'
-        }, {
-          dataField: 'dominancia',
-          text: 'Dominancia '
-        }, {
-          dataField: 'frequencia',
-          text: 'Frequencia '
-        });
-        //This could be combined with the part below
-        if (this.props.lifeform == 'hierba' || this.props.lifeform == 'arbol' || this.props.lifeform == 'arbusto') {
-          columns.push({
-            dataField: 'ivi100',
-            text: 'Valor de Importancia'
-          }, {
-            dataField: 'densidad',
-            text: 'Densidad '
-          });
-        }
-        if (this.props.lifeform == 'arbol' || this.props.lifeform == 'arbusto') {
-          columns.push({
-            dataField: 'dn',
-            text: 'Diametro'
-          }, {
-            dataField: 'altura',
-            text: 'Altura'
-          });
-        }
-      }
-
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          'div',
-          { className: 'container' },
-          _react2.default.createElement(
-            'div',
-            { className: 'flex-column d-flex justify-content-around align-items-center p-3' },
-            _react2.default.createElement(
-              'h5',
-              null,
-              'No Invasores'
-            ),
-            _react2.default.createElement(_reactBootstrapTableNext2.default, {
-              keyField: 'cientifico',
-              data: speciesResultNoInvador,
-              columns: columns,
-              bootstrap4: true,
-              bordered: true,
-              classes: 'speciesTable',
-              striped: true,
-              hover: true,
-              condensed: true,
-              noDataIndication: 'No hay datos'
-            }),
-            _react2.default.createElement(
-              'h5',
-              null,
-              'Invasores'
-            ),
-            _react2.default.createElement(_reactBootstrapTableNext2.default, {
-              keyField: 'cientifico',
-              data: speciesResultInvador,
-              columns: columns,
-              bootstrap4: true,
-              bordered: true,
-              classes: 'speciesTable',
-              striped: true,
-              hover: true,
-              condensed: true,
-              noDataIndication: 'No hay datos'
-            })
-          )
-        )
-      );
+        return _possibleConstructorReturn(this, (SpeciesDisplay.__proto__ || Object.getPrototypeOf(SpeciesDisplay)).call(this, props));
     }
-  }]);
 
-  return SpeciesDisplay;
+    _createClass(SpeciesDisplay, [{
+        key: 'render',
+        value: function render() {
+
+            var oldspeciesResult = this.props.speciesResult;
+
+            //ADD (2) to prevent duplicate keys 
+            var newA = {};
+            var speciesResult = oldspeciesResult.map(function (spec) {
+                var newObject = _extends({}, spec);
+                if (newA[spec.cientifico]) {
+                    if (newA[spec.cientifico] == 2) {
+                        newObject = _extends({}, spec, { cientifico: spec.cientifico + '(2)' });
+                    } else {
+                        newObject = _extends({}, spec, { cientifico: spec.cientifico.slice(0, -3) + '(' + String(newA[spec.cientifico]) + ')' });
+                    }
+                    newA[spec.cientifico]++;
+                } else {
+                    newA[spec.cientifico] = 2;
+                }
+                return newObject;
+            });
+
+            var speciesResultInvador = speciesResult.filter(function (item) {
+                return item.invasor == 'true';
+            });
+
+            var speciesResultNoInvador = speciesResult.filter(function (item) {
+                return item.invasor == 'false';
+            });
+
+            var columns = [{
+                dataField: 'comun',
+                text: 'Comun'
+            }, {
+                dataField: 'cientifico',
+                text: 'Cientifico'
+            }];
+            if (infotype == 'normas') {
+                columns.push({
+                    dataField: 'total_cientifico',
+                    text: 'Cantidad'
+                }, {
+                    dataField: 'subespecie',
+                    text: 'Subespecie Enlistada'
+                }, {
+                    dataField: 'categoria',
+                    text: 'Categoria '
+                }, {
+                    dataField: 'distribution',
+                    text: 'Distribution '
+                });
+            } else {
+                if (this.props.lifeform == 'arbol' || this.props.lifeform == 'arbusto') {
+                    columns.push({
+                        dataField: 'dn',
+                        text: 'Diametro *'
+                    }, {
+                        dataField: 'altura',
+                        text: 'Altura *'
+                    });
+                }
+                columns.push({
+                    dataField: 'abundancia',
+                    text: 'Abundancia'
+                }, {
+                    dataField: 'abundancia_relativa',
+                    text: 'Abundancia Relativa'
+                }, {
+                    dataField: 'frequencia',
+                    text: 'Frequencia '
+                });
+                //This could be combined with the part below
+                if (this.props.lifeform == 'hierba' || this.props.lifeform == 'arbol' || this.props.lifeform == 'arbusto') {
+                    columns.push({
+                        dataField: 'dominancia',
+                        text: 'Dominancia **'
+                    }, {
+                        dataField: 'densidad_relativa',
+                        text: 'Densidad Relativa ***'
+                    }, {
+                        dataField: 'ivi100',
+                        text: 'Valor de Importancia'
+                    });
+                }
+            }
+
+            return _react2.default.createElement(
+                'div',
+                null,
+                _react2.default.createElement(
+                    'div',
+                    { className: 'container' },
+                    _react2.default.createElement(
+                        'div',
+                        { className: 'flex-column d-flex justify-content-around align-items-center p-3' },
+                        _react2.default.createElement(
+                            'h5',
+                            null,
+                            'No Invasores'
+                        ),
+                        _react2.default.createElement(_reactBootstrapTableNext2.default, {
+                            keyField: 'cientifico',
+                            data: speciesResultNoInvador,
+                            columns: columns,
+                            bootstrap4: true,
+                            bordered: true,
+                            classes: 'speciesTable',
+                            striped: true,
+                            hover: true,
+                            condensed: true,
+                            noDataIndication: 'No hay datos'
+                        }),
+                        _react2.default.createElement(
+                            'h5',
+                            null,
+                            'Invasores'
+                        ),
+                        _react2.default.createElement(_reactBootstrapTableNext2.default, {
+                            keyField: 'cientifico',
+                            data: speciesResultInvador,
+                            columns: columns,
+                            bootstrap4: true,
+                            bordered: true,
+                            classes: 'speciesTable',
+                            striped: true,
+                            hover: true,
+                            condensed: true,
+                            noDataIndication: 'No hay datos'
+                        })
+                    ),
+                    (this.props.lifeform == 'hierba' || this.props.lifeform == 'arbol' || this.props.lifeform == 'arbusto') && this.props.speciesResult.length > 0 && _react2.default.createElement(
+                        'div',
+                        { id: 'densidadTotalDiv' },
+                        _react2.default.createElement(
+                            'h6',
+                            { id: 'densidadTotalHeader' },
+                            'Densidad total de ',
+                            this.props.lifeform,
+                            ': ',
+                            this.props.speciesResult[0]['densidad_total'],
+                            ' ****'
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return SpeciesDisplay;
 }(_react2.default.Component);
 
 exports.default = SpeciesDisplay;
@@ -47007,10 +47045,11 @@ var UpdateBuilder = function (_React$Component) {
 
 				if (!upstream) {
 					//Deal with local storage
+					var errorPresent = document.getElementsByClassName("bg-danger2").length > 0;
 					var oldSelectionObject = localStorage.getItem(_this3.props.table) ? JSON.parse(localStorage.getItem(_this3.props.table)) : null;
 					var oldSelectionName = oldSelectionObject ? Object.keys(oldSelectionObject)[0] : null;
 					var oldValues = oldSelectionName && dataArray.includes(oldSelectionName) ? oldSelectionObject[oldSelectionName] : {};
-					if (oldSelectionObject) {
+					if (oldSelectionObject && errorPresent) {
 						Object.entries(_this3.props.upstreamTables).forEach(function (keyValue, i, array) {
 							var lastInArray = i + 1 == array.length ? true : false;
 							_this3.getDropDownChoices(keyValue[0], keyValue[1], true, lastInArray);
@@ -47156,7 +47195,7 @@ var DBDropdown = function (_React$Component) {
                 _react2.default.createElement(
                     "label",
                     { className: "pr-2" },
-                    this.props.table
+                    this.props.table == 'actividad' ? 'accion' : this.props.table
                 ),
                 _react2.default.createElement(
                     "select",
@@ -47256,7 +47295,7 @@ var Editable = function (_React$Component) {
 								'label',
 								{
 									key: keyColumn,
-									className: 'reactColumns'
+									className: keyColumn.length < 20 ? 'reactColumns' : 'reactColumnsWide'
 								},
 								keyColumn
 							);
@@ -47277,7 +47316,7 @@ var Editable = function (_React$Component) {
 										'select',
 										{
 											key: row[0] + keyColumn,
-											className: 'reactColumns ',
+											className: keyColumn.length < 20 ? 'reactColumns' : 'reactColumnsWide',
 											name: row[0] + '*' + _this2.props.table + '*' + keyColumn,
 											value: notNullValue,
 											onChange: _this2.handleChange
@@ -47294,7 +47333,7 @@ var Editable = function (_React$Component) {
 									return _react2.default.createElement('input', {
 										key: row[0] + keyColumn,
 										type: 'text',
-										className: 'reactColumns '
+										className: keyColumn.length < 20 ? 'reactColumns' : 'reactColumnsWide'
 										//className={runValidator(this.props.row[keyColumn])}
 										, name: row[0] + '*' + _this2.props.table + '*' + keyColumn,
 										value: notNullValue,

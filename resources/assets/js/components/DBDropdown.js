@@ -14,7 +14,7 @@ class DBDropdown extends React.Component {
 
         return (
 			<div className='p-2'>
-				<label className='pr-2'>{this.props.table}</label>
+				<label className='pr-2'>{this.props.table=='actividad'?'accion':this.props.table}</label>
                 <select
 					value={this.props.selectedItem}
 					selected={this.props.selectedItem}

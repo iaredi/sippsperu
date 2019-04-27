@@ -60,17 +60,26 @@ class SpeciesDisplay extends React.Component {
               }
             )
           }else{
+			if(this.props.lifeform=='arbol'||this.props.lifeform=='arbusto'){
+				columns.push(
+				  {
+					dataField: 'dn',
+					text: 'Diametro *'
+				  }, {
+					dataField: 'altura',
+					text: 'Altura *'
+				  },
+				)
+			  }
             columns.push(
+				
               {
                 dataField: 'abundancia',
                 text: 'Abundancia'
               }, {
                 dataField: 'abundancia_relativa',
                 text: 'Abundancia Relativa'
-              },  {
-                dataField: 'dominancia',
-                text: 'Dominancia '
-              }, {
+              },   {
                 dataField: 'frequencia',
                 text: 'Frequencia '
               },
@@ -78,27 +87,22 @@ class SpeciesDisplay extends React.Component {
             //This could be combined with the part below
             if(this.props.lifeform=='hierba'||this.props.lifeform=='arbol'||this.props.lifeform=='arbusto'){
               columns.push(
+                
+				{
+					dataField: 'dominancia',
+					text: 'Dominancia **'
+				  },
                 {
-                  dataField: 'ivi100',
-                  text: 'Valor de Importancia'
-                },
-                {
-                  dataField: 'densidad',
-                  text: 'Densidad '
-                }
+                  dataField: 'densidad_relativa',
+                  text: 'Densidad Relativa ***'
+				},
+				{
+					dataField: 'ivi100',
+					text: 'Valor de Importancia'
+				  }
                 )
             }
-            if(this.props.lifeform=='arbol'||this.props.lifeform=='arbusto'){
-              columns.push(
-                {
-                  dataField: 'dn',
-                  text: 'Diametro'
-                }, {
-                  dataField: 'altura',
-                  text: 'Altura'
-                },
-              )
-            }
+            
 
           }
 
@@ -132,7 +136,12 @@ class SpeciesDisplay extends React.Component {
                     condensed
                     noDataIndication={ 'No hay datos' }
                     />
-                </div>
+				</div>
+				{(this.props.lifeform=='hierba'||this.props.lifeform=='arbol'||this.props.lifeform=='arbusto')&&this.props.speciesResult.length>0&&
+				<div id='densidadTotalDiv'>
+					<h6 id ='densidadTotalHeader'>Densidad total de {this.props.lifeform}: {this.props.speciesResult[0]['densidad_total']} ****</h6>
+				</div>
+				}
             </div>                
         </div>
         )

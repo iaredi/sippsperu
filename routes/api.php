@@ -514,25 +514,31 @@ Route::post('getspecies', function(Request $request) {
         foreach ($obresult as $row){
           $row->dn= round(($row->dn_raw),4);
           $row->altura= round(($row->altura_raw),4);
-          $distsum+=$row->total_cientifico*$row->distancia;
+          $distsum+=$row->distancia;
           $numeroindiviudos+=$row->total_cientifico;
         } 
         if ($numeroindiviudos>0){
             $sumivi=0;
-            $distanciamedia=$distsum/$numeroindiviudos;
+			$distanciamedia=$distsum/$numeroindiviudos;
+			
             
             
             $sumdensidad=0;
             $sumfrequencia=0;
             $sumdominancia=0;
             foreach ($obresult as $row2){
+				//$distanciamedia=$row2->distancia/$row2->total_cientifico;
                 $row2->densidad= ($row2->total_cientifico)/($distanciamedia*$distanciamedia);
                 $row2->frequencia= ($row2->sitios)/$pointtotal;
                 $sumdensidad += ($row2->total_cientifico)/($distanciamedia*$distanciamedia);
                 $sumfrequencia += ($row2->sitios)/$pointtotal;
                 $sumdominancia += $row2->dominancia;
-            } 
+            }
             foreach ($obresult as $row3){
+				$row3->densidad_relativa = round(100*($row3->densidad )/$sumdensidad ,2).'%';
+				$row3->densidad_total = round(100*(10000)/($distsum*$distsum),2);
+
+				//$row3->densidad_relativa = $row3->densidad;
                 $row3->ivi= ($row3->densidad*100)/$sumdensidad+($row3->frequencia*100)/$sumfrequencia+($row3->dominancia*100)/$sumdominancia;
                 $sumivi += $row3->ivi;
             } 
@@ -567,6 +573,8 @@ Route::post('getspecies', function(Request $request) {
             } 
             $sumivi=0;
             foreach ($obresult as $row3){
+				$row3->densidad_relativa= round(100*($row3->densidad)/$sumdensidad,2).'%';
+
                 $row3->ivi= ($row3->densidad*100)/$sumdensidad+($row3->frequencia*100)/$sumfrequencia+($row3->dominancia*100)/$sumdominancia;
                 $sumivi += $row3->ivi;
                 

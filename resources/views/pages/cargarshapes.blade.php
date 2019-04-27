@@ -39,7 +39,7 @@
             //load to temp table 
             $db = env("DB_PASSWORD", "somedefaultvalue");
             $dbname = env("DB_DATABASE", "somedefaultvalue");
-            $loadshp="shp2pgsql -I -s 4326:4326 ../storage/shp/{$shpfile}2 {$shapenombre} | PGPASSWORD='{$db}' psql -U postgres -h localhost -d {$dbname}";
+            $loadshp="shp2pgsql -I -s 4326:4326 ../storage/shp/{$shpfile}2 {$shapenombre} | PGPASSWORD='{$db}' psql -U plataforma -h localhost -d {$dbname}";
             
             $output= shell_exec($loadshp);
             $output2= shell_exec("rm -rf ../storage/shp/*");

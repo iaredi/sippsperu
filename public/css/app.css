@@ -10869,8 +10869,24 @@ img {
   width: 200px;
 }
 
+.reactColumnsWide {
+  width: 250px;
+}
+
 .overflowSpan {
   overflow: visible;
   white-space: nowrap;
+}
+
+#densidadTotalDiv {
+  text-align: center;
+}
+
+#densidadTotalHeader {
+  display: inline-block;
+  padding: 5px;
+  border: 1px solid black;
+  font-weight: bold;
+  background-color: #42d660;
 }
 
