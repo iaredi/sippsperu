@@ -24,16 +24,15 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
 	with ( format CSV, HEADER)";
 
 	
-	$db = env("DB_PASSWORD", "somedefaultvalue");
-    $dbname = env("DB_DATABASE", "somedefaultvalue");
+	// $db = env("DB_PASSWORD", "somedefaultvalue");
+    // $dbname = env("DB_DATABASE", "somedefaultvalue");
 	
-	$sql=
-	"\copy (SELECT * FROM {$targetob} 
-	WHERE iden_email = '{$email}') to '{$myfile}' with ( format CSV, HEADER) | PGPASSWORD='{$db}' psql -U plataforma -h localhost -d {$dbname}";
+	// $sql=
+	// "\copy (SELECT * FROM {$targetob} 
+	// WHERE iden_email = '{$email}') to '{$myfile}' with ( format CSV, HEADER) | PGPASSWORD='{$db}' psql -U plataforma -h localhost -d {$dbname}";
 	
-	$sridshell= shell_exec($sql);
-	echo $sridshell;
-    //$result = DB::statement($sql, []);
+	// $sridshell= shell_exec($sql);
+    $result = DB::statement($sql, []);
     
 
     if (file_exists($myfile)) {
@@ -47,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
         readfile($myfile);
         exit;
     }
-    echo "!!!!ahora es admin";
 
 
 
