@@ -18,12 +18,22 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
     
 
     
-    $sql = "COPY (SELECT * FROM {$targetob} 
+    $sql = "\COPY (SELECT * FROM {$targetob} 
     WHERE iden_email = '{$email}') 
     TO '{$myfile}'
-    with ( format CSV, HEADER)";
+	with ( format CSV, HEADER)";
 
-    $result = DB::select($sql, []);
+	
+	$db = env("DB_PASSWORD", "somedefaultvalue");
+    $dbname = env("DB_DATABASE", "somedefaultvalue");
+	
+	$sql=
+	"\copy (SELECT * FROM {$targetob} 
+	WHERE iden_email = '{$email}') to '{$myfile}' with ( format CSV, HEADER) | PGPASSWORD='{$db}' psql -U plataforma -h localhost -d {$dbname}";
+	
+	$sridshell= shell_exec($sql);
+	echo $sridshell;
+    //$result = DB::statement($sql, []);
     
 
     if (file_exists($myfile)) {
