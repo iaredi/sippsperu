@@ -42,7 +42,7 @@ Route::get('/udpmapa/{maptype}/{idennum}/{shannon}', function ($maptype,$idennum
 
 Route::post('/', 'PagesController@login');
 Route::post('/admin', 'PagesController@admin');
-Route::post('/descargar', 'PagesController@descargar');
+Route::post('/descargarfile', 'PagesController@descargarfile');
 Route::post('/login', 'PagesController@login');
 Route::post('/register', 'PagesController@register');
 Route::post('/ingresardatos', 'PagesController@ingresardatos');

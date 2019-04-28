@@ -32,6 +32,9 @@ class PagesController extends Controller
     }
     public function descargar(){
         return view('pages/descargar');
+	}
+	public function descargarfile(){
+        return view('pages/descargarfile');
     }
     public function descargarespecie(){
       return view('pages/descargarespecie');
