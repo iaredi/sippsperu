@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
     
 
     
-    $sql = "\COPY (SELECT * FROM {$targetob} 
+    $sql = "COPY (SELECT * FROM {$targetob} 
     WHERE iden_email = '{$email}') 
     TO '{$myfile}'
 	with ( format CSV, HEADER)";
