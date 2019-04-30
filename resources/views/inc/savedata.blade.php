@@ -16,7 +16,6 @@
 					$rowarray[$rowandnum][$key]=$value;
 				}
 			}
-			//echo var_dump($columnarray); 
 			$columnsarray=[];
 			$valuearray=[];
 			foreach ($rowarray as $row => $keyandvalue) {
@@ -282,7 +281,8 @@
 
                 $unitcolumns["iden_medicion"]= $medicionkey;
             //Handle observaciones
-                $obscolumnarray=[];
+				$obscolumnarray=[];
+				
                 for($i=0; $i<countrows($newpost,$obstype); $i++){
                   //Handle fotos
                   $postid = "row{$i}*{$obstype}*iden_foto";
@@ -314,7 +314,7 @@
                   
                   if($iden_foto=='No Presentado' || explode("_" , $iden_foto)[0]=='observacion'){
                     $numero=1;
-                    if (isset($newpost["row{$i}*{$obstype}*cantidad"])){
+                    if (isset($newpost["row{$i}*{$obstype}*cantidad"]) && intval($newpost["row{$i}*{$obstype}*cantidad"])>0){
                       $numero=$newpost["row{$i}*{$obstype}*cantidad"];
                     }
                     for ($i2=0; $i2 <$numero; $i2++) { 
@@ -329,8 +329,10 @@
                 if (sizeof($resultofquery)==0){
 
                   $resultofquery[] = savenewentry("{$transpunto}_{$speciestype}", $unitcolumns);
-                  $unitmax=getserialmax("{$transpunto}_{$speciestype}"); 
+				  $unitmax=getserialmax("{$transpunto}_{$speciestype}");
+				  echo('pp');
                   foreach ($obscolumnarray as $obscolumn) {
+					  echo('hi');
                     $obscolumn["iden_{$transpunto}"]= $unitmax;
                     $resultofquery[] = savenewentry( $obstype, $obscolumn); 
                   }
@@ -348,7 +350,10 @@
           $errorarray[]=$result;
         }
 	  }
-	  
+	  /////////////////////////////////////////////////////////////////////////
+	  //return "false";
+	  /////////////////////////////////////////////////////////////////////////
+
       if(!$failed && $saved>0){
         return "true";
       }else{

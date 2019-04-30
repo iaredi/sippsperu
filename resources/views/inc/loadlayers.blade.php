@@ -114,7 +114,12 @@ foreach($addlayers as $singlerow) {
       $layersArray[]=$templayer;
     }
 }
+$udpprocessed=[];
+$lineaprocessed=[];
+$incompletelines['test']=false;
+ 
 foreach ($layersArray as $layer) {
+
     $features=[];
     $dslist=[];
     $tolist=[];
@@ -123,9 +128,11 @@ foreach ($layersArray as $layer) {
     if (session('admin') && $layer->tableName=='usershapes'){
         $layer->sql = "SELECT nombre, ST_AsGeoJSON(geom, 5) AS geojson FROM usershapes";
     }
-    $result = DB::select($layer->sql,[]);
-
+	$result = DB::select($layer->sql,[]);
 	$categorylist=['ave','arbol', 'arbusto', 'mamifero', 'herpetofauna', 'hierba'];
+	$minpuntos=['ave'=>5,'arbol'=>32, 'arbusto'=>32, 'mamifero'=>5, 'herpetofauna'=>4, 'hierba'=>4];
+
+	$displayList=['total_observaciones', 'distinct_species', 'shannon', 'dominancia'];
 	foreach($categorylist as $cat){
 		$dslist[]="distinct_species_{$cat}";
 		$tolist[]="total_observaciones_{$cat}";
@@ -143,10 +150,6 @@ foreach ($layersArray as $layer) {
 			$row->displayName=$layer->displayName;
 			$row->featureColumn=$layer->featureColumn;
 			if ($layer->tableName=='udp_puebla_4326'){
-
-
-
-
 				foreach($dslist as $ds){
 					if($defaultmax[$ds]<$row->$ds){
 					$defaultmax[$ds]=$row->$ds;
@@ -159,6 +162,81 @@ foreach ($layersArray as $layer) {
 				}
 			}
 
+			if ($layer->tableName=='udp_puebla_4326' && !in_array($row->iden, $udpprocessed)){
+				foreach ($categorylist as $empty_lifeform) {
+
+
+					$complete_life="complete_{$empty_lifeform}";
+					$row->$complete_life='true'; 
+					$row->complete_life='true'; 
+
+
+
+					$emptysql="SELECT count(iden) from empty_medida_{$empty_lifeform} where iden=?";
+					$emptyresult= DB::select($emptysql,[$row->iden]);
+					$distinct_species="distinct_species_{$empty_lifeform}"; 
+					if(intval($row->$distinct_species)==0 && $emptyresult[0]->count==0){ 
+						foreach ($displayList as $displaycolumn) {
+							$column_to_change= "{$displaycolumn}_{$empty_lifeform}";
+							$row->$column_to_change='NM';
+						}
+					}
+				}
+				$udpprocessed[]=$row->iden;
+			}
+
+			if ($layer->tableName=='linea_mtp' && !in_array($row->iden, $lineaprocessed)){
+				foreach ($categorylist as $empty_lifeform) {
+					$emptysql="SELECT count(iden) from empty_medida_linea_{$empty_lifeform} where iden=?";
+					$emptyresult= DB::select($emptysql,[$row->iden]);
+					$distinct_species="distinct_species_{$empty_lifeform}"; 
+					if(intval($row->$distinct_species)==0 && $emptyresult[0]->count==0){ 
+						foreach ($displayList as $displaycolumn) {
+							$column_to_change= "{$displaycolumn}_{$empty_lifeform}";
+							$row->$column_to_change='NM';
+						}
+					}
+					$complete_life="complete_{$empty_lifeform}";
+					$row->$complete_life='false';
+
+					$transpunto='punto';
+					if ($empty_lifeform=='hierba'||$empty_lifeform=='herpetofauna'){
+						$transpunto='transecto';
+					}
+					$arbolextra="";
+
+					if($empty_lifeform=='arbol' ||$empty_lifeform=='arbusto'){
+						$arbolextra=",punto_{$empty_lifeform}.iden_numero_punto62";
+					}
+					
+					$iscompletesql= "SELECT 
+					count(DISTINCT(observacion_{$empty_lifeform}.iden_{$transpunto}{$arbolextra}))
+					FROM especie_{$empty_lifeform}
+						JOIN
+					observacion_{$empty_lifeform} ON especie_{$empty_lifeform}.iden = observacion_{$empty_lifeform}.iden_especie
+						JOIN
+						{$transpunto}_{$empty_lifeform} ON observacion_{$empty_lifeform}.iden_{$transpunto} = {$transpunto}_{$empty_lifeform}.iden
+						JOIN medicion ON {$transpunto}_{$empty_lifeform}.iden_medicion = medicion.iden
+					where iden_linea_mtp=? and especie_{$empty_lifeform}.cientifico!='0000'";
+
+					$emptyresult= DB::select($iscompletesql,[$row->iden]);
+					
+					if(sizeof($emptyresult)>0 && $emptyresult[0]->count >= $minpuntos[$empty_lifeform]){
+						$row->$complete_life='true'; 
+					}else{
+						$row->$complete_life='false'; 
+						$udpsql = "SELECT udp_puebla_4326.iden, udp_puebla_4326.geom FROM udp_puebla_4326 WHERE 
+						ST_Intersects(udp_puebla_4326.geom, (SELECT iden_geom from linea_mtp where iden = ?))";
+						$udpresult= DB::select($udpsql,[$row->iden]);
+						foreach ($udpresult as $udp) {
+							$incompletelines[$udp->iden] = "false";
+						}
+
+					}
+				}
+				$lineaprocessed[]=$row->iden;
+			}
+
 			$feature=["type"=>"Feature", "geometry"=>$geometry, "properties"=>$row];
 			array_push($features, $feature);
 			$featureCollection=["type"=>"FeatureCollection", "features"=>$features];
@@ -168,7 +246,23 @@ foreach ($layersArray as $layer) {
 	unset($featureCollection);
 	$defaultmaxjson[$layer->tableName]=json_encode($defaultmax);
 	}
+
+
+	
+		
+
+	
 }
+
+
+foreach($layersArray[0]->geom['features'] as $row4) {
+	$currentiden = $row4['properties']->iden;
+	if (isset($incompletelines[$currentiden])){
+		$row4['properties']->complete_life='false';
+	}
+}
+
+	
 
 $geojson=json_encode($layersArray);
 

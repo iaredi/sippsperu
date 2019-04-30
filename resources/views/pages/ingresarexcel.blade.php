@@ -23,7 +23,7 @@
       header('Content-Transfer-Encoding: binary');
       header('Pragma: public');
       readfile($myfile);
-      exit;
+      exit();
     }
   }
 ?>

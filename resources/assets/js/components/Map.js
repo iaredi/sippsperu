@@ -13,19 +13,20 @@ class Map extends React.Component {
 
     }
     getColor(x) {
-        return x < this.props.mapSettings.maxValue * (1 / 6)
-            ? "#edf8fb"
-            : x < this.props.mapSettings.maxValue * (2 / 6)
+		return isNaN(x)? "#ffffff"
+			: x < this.props.mapSettings.maxValue * (1 / 6)
             ? "#ccece6"
-            : x < this.props.mapSettings.maxValue * (3 / 6)
+            : x < this.props.mapSettings.maxValue * (2 / 6)
             ? "#99d8c9"
-            : x < this.props.mapSettings.maxValue * (4 / 6)
+            : x < this.props.mapSettings.maxValue * (3 / 6)
             ? "#66c2a4"
-            : x < this.props.mapSettings.maxValue * (5 / 6)
+            : x < this.props.mapSettings.maxValue * (4 / 6)
             ? "#41ae76"
-            : x < this.props.mapSettings.maxValue
+            : x < this.props.mapSettings.maxValue * (5 / 6)
             ? "#238b45"
-            : "#005824";
+            : x < this.props.mapSettings.maxValue
+            ? "#006d2c"
+            : "#00441b";
 	}
 	
 	handleOverlayChange(name,type) {

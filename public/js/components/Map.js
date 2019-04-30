@@ -14133,7 +14133,7 @@ var Map = function (_React$Component) {
     _createClass(Map, [{
         key: "getColor",
         value: function getColor(x) {
-            return x < this.props.mapSettings.maxValue * (1 / 6) ? "#edf8fb" : x < this.props.mapSettings.maxValue * (2 / 6) ? "#ccece6" : x < this.props.mapSettings.maxValue * (3 / 6) ? "#99d8c9" : x < this.props.mapSettings.maxValue * (4 / 6) ? "#66c2a4" : x < this.props.mapSettings.maxValue * (5 / 6) ? "#41ae76" : x < this.props.mapSettings.maxValue ? "#238b45" : "#005824";
+            return isNaN(x) ? "#ffffff" : x < this.props.mapSettings.maxValue * (1 / 6) ? "#ccece6" : x < this.props.mapSettings.maxValue * (2 / 6) ? "#99d8c9" : x < this.props.mapSettings.maxValue * (3 / 6) ? "#66c2a4" : x < this.props.mapSettings.maxValue * (4 / 6) ? "#41ae76" : x < this.props.mapSettings.maxValue * (5 / 6) ? "#238b45" : x < this.props.mapSettings.maxValue ? "#006d2c" : "#00441b";
         }
     }, {
         key: "handleOverlayChange",

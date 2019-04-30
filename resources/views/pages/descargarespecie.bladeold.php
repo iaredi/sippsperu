@@ -109,7 +109,7 @@ if($size>0){
         header('Pragma: public');
         header('Content-Length: ' . filesize($finalfile));
         readfile($finalfile);
-        exit;
+        exit();
     }
 }else{
   $nospecies = "No hay especies para {$orignallifeform}";

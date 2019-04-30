@@ -26,7 +26,7 @@ class MapControl extends React.Component {
     return (
       <div>
         <div className="form-group row  justify-content-start align-items-center p-1 mx-3">
-          <div className="p-3">
+          <div className="p-2">
             <label className="table_option"> Clase</label>
             <select
               name="table_option"
@@ -42,7 +42,7 @@ class MapControl extends React.Component {
               <option value="mamifero">Mamifero</option>
             </select>
           </div>
-          <div className="p-3">
+          <div className="p-2">
             <label className="table_option">Especies</label>
             <select
               name="table_option"
@@ -52,9 +52,10 @@ class MapControl extends React.Component {
             >
               <option value="total_observaciones">Total</option>
               <option value="distinct_species">Distincto</option>
-            </select>
-          </div>
-          <div className="p-3">
+			</select>
+			
+		  </div>
+          <div className="p-2">
             <label className="style_option">Max Numero por colores</label>
             <input
               name="maxNumber"
@@ -66,7 +67,7 @@ class MapControl extends React.Component {
               className="table_option form-control "
             />
           </div>
-          <div className="p-3">
+          <div className="p-2">
             <label className="style_option">Opacidad</label>
             <select
               name="table_option"
@@ -80,8 +81,17 @@ class MapControl extends React.Component {
               <option value="0.6">0.6</option>
               <option value="0.4">0.4</option>
               <option value="0.2">0.2</option>
-            </select>
-          </div>
+			</select>
+			</div>
+			<div className="pt-4">
+				<a
+					className="btn btn-info btn-sm m-2"
+					href="/cargarshapes"
+					role="button"
+				>
+					Cargar Shapefile de Predio
+				</a>
+			</div>
         </div>
       </div>
     );

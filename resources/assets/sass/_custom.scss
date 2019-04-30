@@ -47,7 +47,7 @@ body {
 }
 
 .bodycontainer {
-  padding: 15px;
+  padding: 10px;
   padding-bottom:0px;
   padding-right:0px;
 
@@ -265,10 +265,9 @@ img {
   text-decoration: underline;
 }
 
-#buttonContainer {
+.buttonContainer {
   display: flex;
   justify-content: center;
-
 }
 
 .mapInfoButton {
@@ -412,4 +411,12 @@ position:relative;
     border: 1px solid black;
     font-weight: bold;
     background-color: $main-green;
+}
+
+.centeralign{
+	text-align: center;
+}
+
+.makeBold{
+	font-weight: bold;
 }

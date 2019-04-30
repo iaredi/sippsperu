@@ -26,7 +26,7 @@ class Mapapp extends React.Component {
             udp: 0,
 			udpButton: false,
 			lineaButton: false,
-            clickLocation: { lat: 99.9, lng: 99.9 },
+            clickLocation: { lat: 999.9, lng: 999.9 },
             mapSettings: {
                 distinctOrTotal: "total_observaciones",
                 myObsType: "ave",
@@ -256,7 +256,7 @@ class Mapapp extends React.Component {
                         <FeatureInfoDisplay
                             clickLocation={this.state.clickLocation}
                             featureInfo={this.state.featureInfo}
-                            clicked={this.state.clickLocation.lat != 99.9}
+                            clicked={this.state.clickLocation.lat != 999.9}
                         />
                     </div>
                     <div id="mapcontrol">
@@ -300,42 +300,77 @@ class Mapapp extends React.Component {
 						
 					)}
                         {this.state.udpButton && (
-							<div id="buttonContainer">
-								<a
-									className="btn btn-primary m-2 btn-sm mapInfoButton"
-									href={
-										"/mostrarnormas/in/" +
-										this.state.currentUdpId
-									}
-									role="button"
-								>
+							<div>
+							<div>
+							<a
+								className="btn btn-primary m-2 btn-sm mapInfoButton"
+								href={
+									"/mostrarnormas/ae/" +
+									this.state.currentUdpId +'u'
+								}
+								role="button"
+							>
 								{" "}
-								Instrumentos de Gestion Territorial{" "}
+								Attributos Ecologicos{" "}
 							</a>
-                                <a
-                                    className="btn btn-primary m-2 btn-sm mapInfoButton"
-                                    href={
-                                        "/mostrarnormas/normas/" +
-                                        this.state.currentUdpId +'u'
-                                    }
-                                    role="button"
-                                >
-                                    {" "}
-                                    Especies y Normas 059
-                                </a>
-
-                                <a
-                                    className="btn btn-primary m-2 btn-sm mapInfoButton"
-                                    href={
-                                        "/mostrarnormas/ae/" +
-                                        this.state.currentUdpId +'u'
-                                    }
-                                    role="button"
-                                >
-                                    {" "}
-                                    Attributos Ecologicos{" "}
-                                </a>
-
+							<a
+							className="btn btn-primary m-2 btn-sm mapInfoButton"
+							href={
+								"/mostrarnormas/normas/" +
+								this.state.currentUdpId +'u'
+							}
+							role="button"
+							>
+							{" "}
+							Especies y Normas 059
+							</a>
+							
+							<a
+								className="btn btn-primary m-2 btn-sm mapInfoButton"
+								href={
+									"/udpmapa/inf/" +
+									this.state.currentUdpId +
+									"/" +
+									`${
+										this.state.featureInfo.properties
+											.shannon_arbol
+									}*${
+										this.state.featureInfo.properties
+											.shannon_arbusto
+									}*${
+										this.state.featureInfo.properties
+											.shannon_ave
+									}*${
+										this.state.featureInfo.properties
+											.shannon_hierba
+									}*${
+										this.state.featureInfo.properties
+											.shannon_herpetofauna
+									}*${
+										this.state.featureInfo.properties
+											.shannon_mamifero
+									}`
+								}
+								role="button"
+							>
+								{" "}
+								Infrastructura{" "}
+							</a>
+							</div>
+							<div>
+							
+							<a
+								className="btn btn-primary m-2 btn-sm mapInfoButton"
+								href={
+									"/mostrarnormas/in/" +
+									this.state.currentUdpId
+								}
+								role="button"
+							>
+							{" "}
+							Instrumentos de Gestion Territorial{" "}
+						</a>
+							
                                 <a
                                     className="btn btn-primary m-2 btn-sm mapInfoButton"
                                     href={
@@ -367,49 +402,12 @@ class Mapapp extends React.Component {
                                     {" "}
                                     Fragmentación Ambiental{" "}
                                 </a>
-                                <a
-                                    className="btn btn-primary m-2 btn-sm mapInfoButton"
-                                    href={
-                                        "/udpmapa/inf/" +
-                                        this.state.currentUdpId +
-                                        "/" +
-                                        `${
-                                            this.state.featureInfo.properties
-                                                .shannon_arbol
-                                        }*${
-                                            this.state.featureInfo.properties
-                                                .shannon_arbusto
-                                        }*${
-                                            this.state.featureInfo.properties
-                                                .shannon_ave
-                                        }*${
-                                            this.state.featureInfo.properties
-                                                .shannon_hierba
-                                        }*${
-                                            this.state.featureInfo.properties
-                                                .shannon_herpetofauna
-                                        }*${
-                                            this.state.featureInfo.properties
-                                                .shannon_mamifero
-                                        }`
-                                    }
-                                    role="button"
-                                >
-                                    {" "}
-                                    Infrastructura{" "}
-                                </a>
+								
+							</div>
                             </div>
+							
                         )}
-                    </div>
-                    <div id="buttons2">
-                        <a
-                            className="btn btn-info btn-sm m-2"
-                            href="/cargarshapes"
-                            role="button"
-                        >
-                            Cargar Shapefile de Predio
-                        </a>
-                    </div>
+                    </div> 
                 </div>
             </div>
         );
