@@ -24,10 +24,15 @@
 
 
 
+			echo var_dump($to, $subject, $body, implode("\r\n",$headers));
 
-			mail($to, $subject, $body, implode("\r\n",$headers));
+			if(mail($to, $subject, $body, implode("\r\n",$headers))){
+
+				session(['mailmessage' => "Se hemos mandado un correo a {$to}. Buscalo en su archivo de spam!"]);
+			}else{
+				session(['mailmessage' => "Email no ha mandado"]);
+			}
 			
-            session(['mailmessage' => "Se hemos mandado un correo a {$to}. Buscalo en su archivo de spam!"]);
 
             session(['token' => $token]);
             session(['emailreset' => $email]);
