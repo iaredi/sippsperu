@@ -10,12 +10,23 @@
             $token = bin2hex(random_bytes($length));
 
             $from_email = "admin@pueblabiodiversidad.com";
-            $reply_email = "norespuesta@pueblabiodiversidad.com";
+            $reply_email = "norespuesta@biodiversidadpuebla.com";
             $to=$email;
             $subject='Biodiversity Puebla - Reiniciar su contraseña';
             $body = "Code is : {$token}";
-            $headers = "From: {$from_email}"."\r\n"."Reply-To: {$reply_email} "." \r\n "."X-Mailer: PHP/".phpversion();
-            mail($to, $subject, $body, $headers);
+			//$headers = "From: {$from_email}"."\r\n"."Reply-To: {$reply_email} "." \r\n "."X-Mailer: PHP/".phpversion();
+			
+			$headers   = array();
+			$headers[] = "MIME-Version: 1.0";
+			$headers[] = "Content-type: text/plain; charset=utf-8";
+			$headers[] = "From: {$from_email}";
+			$headers[] = "X-Mailer: PHP/".phpversion();
+
+
+
+
+			mail($to, $subject, $body, implode("\r\n",$headers));
+			
             session(['mailmessage' => "Se hemos mandado un correo a {$to}. Buscalo en su archivo de spam!"]);
 
             session(['token' => $token]);
