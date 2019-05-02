@@ -58,17 +58,30 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
 				$delresultloc=0;
 				$delresultobs=0;
 				$locList=['punto_ave','punto_arbol','punto_arbusto','punto_mamifero', 'transecto_hierba','transecto_herpetofauna'];
+
+
+				//$medicion_empty=true;
+				$delete_all = $_POST['borrar_forma_de_vida'] == 'medicion_completa';
 				foreach ($locList as $loc) {
 					$expoldeloc=explode("_" , $loc );
-
-					$sql="SELECT iden FROM {$loc} WHERE iden_medicion=:value";
-					$stmnt= DB::select($sql,[':value'=>$targetkey]);
-					foreach ($stmnt as $row) { 
-						$delresultobs=$delresultobs + DB::delete("DELETE FROM observacion_{$expoldeloc[1]} WHERE iden_{$expoldeloc[0]}=:value",[':value'=>$row->iden]); 
+					if (($expoldeloc[1] == $_POST['borrar_forma_de_vida']) || $delete_all){
+						$sql="SELECT iden FROM {$loc} WHERE iden_medicion=:value";
+						$stmnt= DB::select($sql,[':value'=>$targetkey]);
+						foreach ($stmnt as $row) { 
+							$delresultobs=$delresultobs + DB::delete("DELETE FROM observacion_{$expoldeloc[1]} WHERE iden_{$expoldeloc[0]}=:value",[':value'=>$row->iden]); 
+						}
+						$delresultloc=$delresultloc + DB::delete("DELETE FROM {$loc} WHERE iden_medicion=:value",[':value'=>$targetkey]);
 					}
-					$delresultloc=$delresultloc + DB::delete("DELETE FROM {$loc} WHERE iden_medicion=:value",[':value'=>$targetkey]);
+					// $points_in_medicion = DB::SELECT("SELECT iden_{$expoldeloc[0]} FROM {$loc} where WHERE iden_medicion=:value",[':value'=>$targetkey]);
+					// if (sizeof($points_in_medicion)>0){
+					// 	$medicion_empty=false;
+					// }
+
 				}
-				$delmedicion=DB::delete("DELETE FROM medicion WHERE iden_nombre=:value",[':value'=>$target]);
+
+				if ($delete_all){
+					$delmedicion=DB::delete("DELETE FROM medicion WHERE iden_nombre=:value",[':value'=>$target]);
+				}
 				session(['adminerror'=>  "{$delresultloc} puntos/transectos borrados y {$delresultobs} observaciones borrados"]);
 			}
           

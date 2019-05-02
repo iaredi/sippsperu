@@ -1,7 +1,7 @@
 # Biodiversity in Puebla
 
 This project provides a web platform to capture, analyze, and display biodiversity data in the state of Puebla, Mexico. The web platform provides an intuitive user interface for field technicians throughout the state to enter data collected via the MTP biodiversity monitoring protocol. The site is live at
-* [https//:biodiversidadpuebla.online](https//:biodiversidadpuebla.online)
+* [https//:biodiversidadpuebla.online](https//:biodiversidadpuebla.online). If you woud like visitor login permission, send me and email at forest.carter@gmail.com.
 
 ### User Interface
 
@@ -34,6 +34,6 @@ The website runs on a Debian 9 (Stretch) droplet from Digital Ocean. Encryption 
 
 Jesús Hernández Castán
 
-* **Jesús Hernández Castán** - *Project Director* - [Jesús Hernández Castán](https://www.linkedin.com/in/jes%C3%BAs-hern%C3%A1ndez-cast%C3%A1n-144752ab/?originalSubdomain=mx)
+* **Jesús Hernández Castán** - *Project Director* - [LinkedIn](https://www.linkedin.com/in/jes%C3%BAs-hern%C3%A1ndez-cast%C3%A1n-144752ab/?originalSubdomain=mx)
 
-* **Forest Carter** - *Developer* - [Forest Carter](https://forestcarter.github.io/)
+* **Forest Carter** - *Developer* - [Portfolio](https://forestcarter.github.io/)

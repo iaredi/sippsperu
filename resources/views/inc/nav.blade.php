@@ -11,7 +11,7 @@
 		<div class="dropdown-content">
 		  <a href="/ingresardatos">Monitoreo de Biodiversidad</a>
 		  <a href="/actividad">Monitoreo de Acciones</a>
-		  <a href="/cambiarlinea">Cambiar Linea MTP</a>
+		  <a href="/cambiarlinea">Linea MTP</a>
 		</div>
 	  </div>
 

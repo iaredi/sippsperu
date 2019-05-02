@@ -330,9 +330,7 @@
 
                   $resultofquery[] = savenewentry("{$transpunto}_{$speciestype}", $unitcolumns);
 				  $unitmax=getserialmax("{$transpunto}_{$speciestype}");
-				  echo('pp');
                   foreach ($obscolumnarray as $obscolumn) {
-					  echo('hi');
                     $obscolumn["iden_{$transpunto}"]= $unitmax;
                     $resultofquery[] = savenewentry( $obstype, $obscolumn); 
                   }

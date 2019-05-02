@@ -100,8 +100,17 @@ $geojson=json_encode($allcolumns);
 			<tbody id="measurementTBodyborrarmedicion">
 			</tbody>
 		  </table>
-  
-		  
+		  <select name='borrar_forma_de_vida' class='p-2 narrowSelect form-control'>
+			<option value="not_selected"></option>
+			<option value="ave">ave</option>
+			<option value="arbol">arbol</option>
+			<option value="arbusto">arbusto</option>
+			<option value="heirba">heirba</option>
+			<option value="mamifero">mamifero</option>
+			<option value="herpetofauna">herpetofauna</option>
+			<option value="medicion_completa">medicion completa</option>
+		  </select>
+		  <br>
 		  <input type="hidden" name="action" value="borrarmedicion">
 		  <input type="submit" value= 'Borrar' id="measurementlinea_mtpSubmit" class="mySubmit">
 		</form>

@@ -18,12 +18,22 @@
                 }
             }
             //Add user email function
-            
             $useremail=session('email');
             $columnarray.='iden_email,';
             $placeholdername=':value'.'iden_email';
             $placeholder.="{$placeholdername},";
-            $arraytopass[$placeholdername]=$useremail;
+			$arraytopass[$placeholdername]=$useremail;
+			//Assign serial max to iden 
+
+			$iden_sql = "SELECT column_name from INFORMATION_SCHEMA.COLUMNS where table_name = ? and column_name = ?";
+			$iden_results = DB::select($iden_sql, [$mytable,"iden"]);
+			if(sizeof($iden_results)>0){
+				$columnarray.='iden,';
+				$placeholdername_iden=':value'.'iden';
+				$placeholder.="{$placeholdername_iden},";
+				$current_max = getserialmax($mytable);
+				$arraytopass[$placeholdername_iden]=$current_max+1;
+			}
         
             $sql2=substr_replace($columnarray ,"", -1);
             $sql4=substr_replace($placeholder ,"", -1);
