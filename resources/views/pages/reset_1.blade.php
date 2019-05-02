@@ -19,7 +19,7 @@
 			$headers   = array();
 			$headers[] = "MIME-Version: 1.0";
 			$headers[] = "Content-type: text/plain; charset=utf-8";
-			$headers[] = "From: {$from_email}";
+			
 			$headers[] = "X-Mailer: PHP/".phpversion();
 
 
@@ -36,7 +36,7 @@
 
             session(['token' => $token]);
             session(['emailreset' => $email]);
-            return redirect()->to('/reset_2')->send();
+            //return redirect()->to('/reset_2')->send();
 
         } else {
             session(['error' => ['email no existe']]);
