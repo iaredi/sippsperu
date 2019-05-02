@@ -15,6 +15,8 @@ class Editable extends React.Component {
 		keyColumns.sort((a,b)=>{
 			if(a.includes('fin')) return 1;
 			if(b.includes('fin')) return -1;
+			if(a.includes('tipo_geom')) return -1;
+			if(b.includes('tipo_geom')) return 1;
 		})
 
 

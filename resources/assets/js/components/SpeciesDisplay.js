@@ -23,7 +23,8 @@ class SpeciesDisplay extends React.Component {
                 newA[spec.cientifico]++;
             }else{  
                  newA[spec.cientifico]=2;
-            }
+			}
+			
             return newObject
         })
 
@@ -33,9 +34,22 @@ class SpeciesDisplay extends React.Component {
 
         const speciesResultNoInvador =  speciesResult.filter((item) => {
             return item.invasor=='false'
+		})
+		const finalSpeciesResultInvador = speciesResultInvador.map((spec,ind) => {
+			spec['numero']=ind+1;
+            return spec
+		})
+		const finalSpeciesResultNoInvador = speciesResultNoInvador.map((spec,ind) => {
+			spec['numero']=ind+1;
+            return spec
         })
         
-        const columns = [{
+        const columns = [
+			{
+			dataField: 'numero',
+			text: '#',
+			},
+			{
             dataField: 'comun',
             text: 'Comun',
             },{
@@ -113,7 +127,7 @@ class SpeciesDisplay extends React.Component {
 					<h5>No Invasores</h5>
                     <BootstrapTable 
                     keyField='cientifico' 
-                    data={ speciesResultNoInvador } 
+                    data={ finalSpeciesResultNoInvador } 
                     columns={ columns } 
                     bootstrap4={ true }
                     bordered={ true }
@@ -126,7 +140,7 @@ class SpeciesDisplay extends React.Component {
                     <h5>Invasores</h5>
                     <BootstrapTable 
                     keyField='cientifico' 
-                    data={ speciesResultInvador } 
+                    data={ finalSpeciesResultInvador } 
                     columns={ columns } 
                     bootstrap4={ true }
                     bordered={ true }

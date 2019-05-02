@@ -45546,6 +45546,7 @@ var SpeciesDisplay = function (_React$Component) {
                 } else {
                     newA[spec.cientifico] = 2;
                 }
+
                 return newObject;
             });
 
@@ -45556,8 +45557,19 @@ var SpeciesDisplay = function (_React$Component) {
             var speciesResultNoInvador = speciesResult.filter(function (item) {
                 return item.invasor == 'false';
             });
+            var finalSpeciesResultInvador = speciesResultInvador.map(function (spec, ind) {
+                spec['numero'] = ind + 1;
+                return spec;
+            });
+            var finalSpeciesResultNoInvador = speciesResultNoInvador.map(function (spec, ind) {
+                spec['numero'] = ind + 1;
+                return spec;
+            });
 
             var columns = [{
+                dataField: 'numero',
+                text: '#'
+            }, {
                 dataField: 'comun',
                 text: 'Comun'
             }, {
@@ -45629,7 +45641,7 @@ var SpeciesDisplay = function (_React$Component) {
                         ),
                         _react2.default.createElement(_reactBootstrapTableNext2.default, {
                             keyField: 'cientifico',
-                            data: speciesResultNoInvador,
+                            data: finalSpeciesResultNoInvador,
                             columns: columns,
                             bootstrap4: true,
                             bordered: true,
@@ -45646,7 +45658,7 @@ var SpeciesDisplay = function (_React$Component) {
                         ),
                         _react2.default.createElement(_reactBootstrapTableNext2.default, {
                             keyField: 'cientifico',
-                            data: speciesResultInvador,
+                            data: finalSpeciesResultInvador,
                             columns: columns,
                             bootstrap4: true,
                             bordered: true,
@@ -47309,6 +47321,8 @@ var Editable = function (_React$Component) {
 			keyColumns.sort(function (a, b) {
 				if (a.includes('fin')) return 1;
 				if (b.includes('fin')) return -1;
+				if (a.includes('tipo_geom')) return -1;
+				if (b.includes('tipo_geom')) return 1;
 			});
 
 			return _react2.default.createElement(

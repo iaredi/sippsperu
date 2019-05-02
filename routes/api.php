@@ -583,10 +583,10 @@ Route::post('getspecies', function(Request $request) {
     }
     foreach ($obresult as $row4){
         if (isset($sumivi)){
-            $row4->ivi100= round( ($row4->ivi*100)/$sumivi,2);
-            $row4->dominancia= round($row4->dominancia,2);
-            $row4->densidad= round($row4->densidad,2);
-            $row4->frequencia= round($row4->frequencia,2);
+            $row4->ivi100= round( ($row4->ivi*100)/$sumivi,4);
+            $row4->dominancia= round($row4->dominancia,4);
+            $row4->densidad= round($row4->densidad,4);
+            $row4->frequencia= round($row4->frequencia,4);
         }else{
             $row4->ivi100='';
         } 
