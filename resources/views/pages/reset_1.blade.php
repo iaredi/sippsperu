@@ -26,7 +26,7 @@
 
 			echo var_dump($to, $subject, $body, implode("\r\n",$headers));
 			ini_set('sendmail_from', $from_email);
-			if(mail($to, $subject, $body, implode("\r\n",$headers, "-f admin@biodiversidadpuebla.online"))){
+			if(mail($to, $subject, $body, implode("\r\n",$headers), "-f admin@biodiversidadpuebla.online")){
 				
 				session(['mailmessage' => "Se hemos mandado un correo a {$to}. Buscalo en su archivo de spam!"]);
 			}else{
