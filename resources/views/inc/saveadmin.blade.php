@@ -20,6 +20,12 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
                 $results = DB::update($sql, $user_data);
                 session(['adminerror'=>  "{$targetuser} ahora no es admin"]);
 
+			}
+			if($_POST['admin_option']=='cambio'){
+                $sql = "UPDATE usuario set cambio_permitido ='si' WHERE email = :targetuser";
+                $user_data = [':targetuser'=>$targetuser];
+                $results = DB::delete($sql, $user_data);
+                session(['adminerror'=>  "{$targetuser} se puede cambio su contraseña una vez (dile que su código  es su email)"]);
             }
             if($_POST['admin_option']=='delete_user'){
                 $sql = "DELETE FROM usuario WHERE email = :targetuser";

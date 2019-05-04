@@ -455,8 +455,8 @@ Route::post('getspecies', function(Request $request) {
 		SUM(1/(NULLIF(observacion_hierba.m::real,0))::real) as summ,";
     }
     $sql= "SELECT
-        especie_{$lifeform}.comun,
-        especie_{$lifeform}.cientifico,
+        lower(especie_{$lifeform}.comun) as comun,
+        lower(especie_{$lifeform}.cientifico) as cientifico ,
         especie_{$lifeform}.invasor,
         riesgo_{$lifeform_riesgo}.categoria,
         riesgo_{$lifeform_riesgo}.distribution,
@@ -464,7 +464,7 @@ Route::post('getspecies', function(Request $request) {
         count(DISTINCT(observacion_{$lifeform}.iden_{$transpunto})) as sitios,
         {$arbolarbustoextra}
         {$hierbaextra}
-        count(especie_{$lifeform}.cientifico) AS total_cientifico
+        count(lower(especie_{$lifeform}.cientifico)) AS total_cientifico
         FROM especie_{$lifeform}
             JOIN
         observacion_{$lifeform} ON especie_{$lifeform}.iden = observacion_{$lifeform}.iden_especie
@@ -474,7 +474,7 @@ Route::post('getspecies', function(Request $request) {
             left JOIN
         riesgo_{$lifeform_riesgo} ON trim(lower(especie_{$lifeform}.cientifico)) = lower(CONCAT(trim(riesgo_{$lifeform_riesgo}.genero),' ',trim(riesgo_{$lifeform_riesgo}.especie)))
         where iden_{$idtype}={$idnumber} and observacion_{$lifeform}.iden_email like '{$useremailval}' and especie_{$lifeform}.cientifico!='0000' and especie_{$lifeform}.cientifico!='000' and especie_{$lifeform}.cientifico!='00'
-        GROUP BY especie_{$lifeform}.comun,especie_{$lifeform}.cientifico,riesgo_{$lifeform_riesgo}.categoria, riesgo_{$lifeform_riesgo}.distribution,especie_{$lifeform}.invasor, riesgo_{$lifeform_riesgo}.subespecie";
+        GROUP BY lower(especie_{$lifeform}.cientifico),lower(especie_{$lifeform}.comun),riesgo_{$lifeform_riesgo}.categoria, riesgo_{$lifeform_riesgo}.distribution,especie_{$lifeform}.invasor, riesgo_{$lifeform_riesgo}.subespecie";
  
     $obresult = DB::select($sql, []);
 
@@ -499,7 +499,7 @@ Route::post('getspecies', function(Request $request) {
       $row8->abundancia_relativa=round(100*($row8->total_cientifico)/$numeroindiviudos,2).'%';
       $transpuntoresult = DB::select($transpuntosql, []);
       $pointtotal = sizeof($transpuntoresult);
-	  $row8->frequencia= round(($row8->sitios)/$pointtotal,4);
+	  $row8->frequencia= (100*$row8->sitios)/$pointtotal;
       if (!($lifeform=="arbusto" || $lifeform=="arbol")) {
 		  $row8->dominancia= round(pow(($row8->total_cientifico)/$numeroindiviudos,2),4);
       }
@@ -520,7 +520,8 @@ Route::post('getspecies', function(Request $request) {
         if ($numeroindiviudos>0){
             $sumivi=0;
 			$distanciamedia=$distsum/$numeroindiviudos;
-			
+			$area_deseada = 10000;
+			$densidad_total= $area_deseada /($distanciamedia*$distanciamedia);
             
             
             $sumdensidad=0;
@@ -528,10 +529,10 @@ Route::post('getspecies', function(Request $request) {
             $sumdominancia=0;
             foreach ($obresult as $row2){
 				//$distanciamedia=$row2->distancia/$row2->total_cientifico;
-                $row2->densidad= ($row2->total_cientifico)/($distanciamedia*$distanciamedia);
-                $row2->frequencia= ($row2->sitios)/$pointtotal;
-                $sumdensidad += ($row2->total_cientifico)/($distanciamedia*$distanciamedia);
-                $sumfrequencia += ($row2->sitios)/$pointtotal;
+                $row2->densidad= ($row2->total_cientifico / $numeroindiviudos) * $densidad_total;
+                //$row2->frequencia= ($row2->sitios)/$pointtotal;
+                $sumdensidad += ($row2->total_cientifico / $numeroindiviudos) * $densidad_total;
+                $sumfrequencia += $row2->frequencia;
                 $sumdominancia += $row2->dominancia;
             }
             foreach ($obresult as $row3){
@@ -550,22 +551,28 @@ Route::post('getspecies', function(Request $request) {
         $numeroindiviudos=0;
         foreach ($obresult as $row){
             $numeroindiviudos+=$row->total_cientifico;
-            $sumdelong+=$row->sumi;
+            //$sumdelong+=$row->sumi;
         } 
         if ($numeroindiviudos>0){
             
             $transpuntoresult = DB::select($transpuntosql, []);
-            $pointtotal = sizeof($transpuntoresult);
+			$pointtotal = sizeof($transpuntoresult);
+			$meterstotal=15;
+			$area_deseada = 10000;
+			$sumdelong=$pointtotal * $meterstotal;
+
             $sumdensidad=0;
             $sumdominancia=0;
             $sumfrequencia=0;
             foreach ($obresult as $row2){
-                $row2->densidad= ($row2->summ)*(10000*$sumdelong);
-                $row2->dominancia= ($row2->sumi)/$sumdelong;
+                $row2->densidad= ($row2->summ)/(10000/$sumdelong);
+                $row2->dominancia= ($row2->sumi)/$sumdelong *100;
+                $row2->ponderacion= ($row2->summ)/($row2->total_cientifico);
+				$row2->frequencia= ($row2->ponderacion)*$pointtotal;
                 $row2->sv= (($sumdelong-$row2->dominancia)/$sumdelong)*100;
                 $row2->cv= (($row2->dominancia)/$sumdelong)*100;
-                $row2->ponderacion= ($row2->summ)/($row2->total_cientifico);
-                $row2->frequencia= ($row2->ponderacion)*$pointtotal;
+                //$row2->frequencia= $row2->summ;
+				
                 $sumdensidad += $row2->densidad;
                 $sumdominancia += $row2->dominancia;
                 $sumfrequencia += ($row2->frequencia);
@@ -585,16 +592,24 @@ Route::post('getspecies', function(Request $request) {
         if (isset($sumivi)){
             $row4->ivi100= round( ($row4->ivi*100)/$sumivi,4);
             $row4->dominancia= round($row4->dominancia,4);
-            $row4->densidad= round($row4->densidad,4);
-            $row4->frequencia= round($row4->frequencia,4);
+			$row4->densidad= round($row4->densidad,4);
+            if ($lifeform!="hierba") {
+				$row4->frequencia= round($row4->frequencia,2) . '%';
+            }else{
+				$row4->frequencia= round($row4->frequencia,4);
+
+			}
         }else{
-            $row4->ivi100='';
+			$row4->ivi100='';
+			$row4->frequencia= round($row4->frequencia,2) . '%';
+			
+			
         } 
         
         
     }
     
-    return json_encode($obresult);
+    return json_encode([$obresult,$sql]);
 });
 
 

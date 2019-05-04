@@ -15,24 +15,37 @@ $resultofusuariosquery =[];
         $pword_conf = $_POST['password'];
        
         if (strlen( $_POST['password'])<6) {
-            $error[] = "contrasenia tiene que ser minimo de 6 caracteres ";
+            $error[] = "Contraseña tiene que ser minimo de 6 caracteres ";
         }
         if ($_POST['password'] !=  $_POST['password_confirm']) {
-            $error[] = "Las contrasenias no son iguales";
-        }
-        if ($_POST['token'] !=  session('token')) {
-            $error[] = "El codigo no es correcto";
-        }
+            $error[] = "Las contraseñas no son iguales";
+		}
+		$changed_via_admin = false;
+		$emailsmatching = DB::SELECT("SELECT iden_email FROM usuario where cambio_permitido = 'si' and email = ?",[$_POST['token']]);
+		if (sizeof($emailsmatching)>0) {
+			$changed_via_admin = true;
+			session(['emailreset' => $_POST['token']]);
+        }else{
+			if ($_POST['token'] !=  session('token')) {
+				$error[] = "El codigo no es correcto";
+			}
+		}
 
         if (!$error) {
-            $email= session('emailreset');
+            $email = session('emailreset');
             $password = password_hash($_POST['password'],PASSWORD_BCRYPT);
-            $sql = "update usuario set hash_password = :password WHERE email = :email";
+            $sql = "UPDATE usuario set hash_password = :password WHERE email = :email";
             $user_data = [':email'=>$email,':password'=>$password];
-            $results = DB::update($sql, $user_data);
-            
-            $resultofusuariosquery[]="Su contraseña ha sido cambiado";
-
+			$results = DB::update($sql, $user_data);
+			if($changed_via_admin){
+				$sql2 = "UPDATE usuario set cambio_permitido = 'no' WHERE email = :email";
+				$results2 = DB::update($sql2, [':email'=>$email]);
+			}
+			if($results==1){
+				$resultofusuariosquery[]="Su contraseña ha sido cambiado";
+			}else{
+				$resultofusuariosquery[]="Su contraseña no ha sido cambiado";
+			}
         }
         
         
@@ -59,11 +72,11 @@ $resultofusuariosquery =[];
                             foreach ($error as $msg) {
                                 echo "<h4 class='bg-danger2 text-center'>{$msg}</h4>";
                             }
-                        }
+						}
+						echo "<p class='text-dark text-center' style='background-color: lightsteelblue;'>Si no receibes el email, se puede pedir accesso a jesus.castan@semarnat.gob.mx </p>";
                         if (isset($resultofusuariosquery)) {
                             foreach ($resultofusuariosquery as $msg) {
                                 echo "<p class='text-dark text-center' style='background-color: lightsteelblue;'>{$msg}</p>";
-
                             }
                         }
                     ?>

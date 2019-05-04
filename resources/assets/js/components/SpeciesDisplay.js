@@ -78,10 +78,10 @@ class SpeciesDisplay extends React.Component {
 				columns.push(
 				  {
 					dataField: 'dn',
-					text: 'Diametro *'
+					text: '*Diametro'
 				  }, {
 					dataField: 'altura',
-					text: 'Altura *'
+					text: '*Altura'
 				  },
 				)
 			  }
@@ -104,11 +104,11 @@ class SpeciesDisplay extends React.Component {
                 
 				{
 					dataField: 'dominancia',
-					text: 'Dominancia **'
+					text: '**Dominancia'
 				  },
                 {
-                  dataField: 'densidad_relativa',
-                  text: 'Densidad Relativa ***'
+                  dataField: 'densidad',
+                  text: '***Densidad'
 				},
 				{
 					dataField: 'ivi100',
@@ -153,7 +153,7 @@ class SpeciesDisplay extends React.Component {
 				</div>
 				{(this.props.lifeform=='hierba'||this.props.lifeform=='arbol'||this.props.lifeform=='arbusto')&&this.props.speciesResult.length>0&&
 				<div id='densidadTotalDiv'>
-					<h6 id ='densidadTotalHeader'>Densidad total de {this.props.lifeform}: {this.props.speciesResult[0]['densidad_total']} ****</h6>
+					<h6 id ='densidadTotalHeader'> Densidad total de {this.props.lifeform}: {this.props.speciesResult[0]['densidad_total']} </h6>
 				</div>
 				}
             </div>                

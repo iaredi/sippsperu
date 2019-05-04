@@ -45301,8 +45301,8 @@ var Normaapp = function (_React$Component) {
                   _loop = function _loop(item) {
                     (0, _fetchData2.default)('getspecies', { lifeform: item.toLowerCase(), idtype: idtype, idnumber: idennumforapi, useremail: document.getElementById("useremail").textContent }).then(function (myspeciesResult) {
                       var newObject = {};
-                      console.log(myspeciesResult);
-                      newObject["speciesResult" + item] = myspeciesResult;
+                      console.log(myspeciesResult[1]);
+                      newObject["speciesResult" + item] = myspeciesResult[0];
                       _this2.setState(function (prevState) {
                         return newObject;
                       });
@@ -45594,10 +45594,10 @@ var SpeciesDisplay = function (_React$Component) {
                 if (this.props.lifeform == 'arbol' || this.props.lifeform == 'arbusto') {
                     columns.push({
                         dataField: 'dn',
-                        text: 'Diametro *'
+                        text: '*Diametro'
                     }, {
                         dataField: 'altura',
-                        text: 'Altura *'
+                        text: '*Altura'
                     });
                 }
                 columns.push({
@@ -45614,10 +45614,10 @@ var SpeciesDisplay = function (_React$Component) {
                 if (this.props.lifeform == 'hierba' || this.props.lifeform == 'arbol' || this.props.lifeform == 'arbusto') {
                     columns.push({
                         dataField: 'dominancia',
-                        text: 'Dominancia **'
+                        text: '**Dominancia'
                     }, {
-                        dataField: 'densidad_relativa',
-                        text: 'Densidad Relativa ***'
+                        dataField: 'densidad',
+                        text: '***Densidad'
                     }, {
                         dataField: 'ivi100',
                         text: 'Valor de Importancia'
@@ -45675,11 +45675,11 @@ var SpeciesDisplay = function (_React$Component) {
                         _react2.default.createElement(
                             'h6',
                             { id: 'densidadTotalHeader' },
-                            'Densidad total de ',
+                            ' Densidad total de ',
                             this.props.lifeform,
                             ': ',
                             this.props.speciesResult[0]['densidad_total'],
-                            ' ****'
+                            ' '
                         )
                     )
                 )

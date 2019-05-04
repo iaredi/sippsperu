@@ -58,7 +58,8 @@ $geojson=json_encode($allcolumns);
           </tbody>
         </table>
         <input type="radio" name="admin_option" value="add_admin"> Dar Privilegio Admin<br>
-        <input type="radio" name="admin_option" value="remove_admin"> Borrar Privilegio Admin<br>
+		<input type="radio" name="admin_option" value="remove_admin"> Borrar Privilegio Admin<br>
+		<input type="radio" name="admin_option" value="cambio"> Permitir cambio de contraseña (dile que su código  es su email)<br>
         <input type="radio" name="admin_option" value="delete_user"> Borrar Ususario
         <br>
         <br>

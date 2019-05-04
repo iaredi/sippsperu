@@ -23,8 +23,8 @@ class Normaapp extends React.Component {
       for (const item of array) {
         fetchData('getspecies',{lifeform:item.toLowerCase(), idtype:idtype, idnumber:idennumforapi,useremail: document.getElementById("useremail").textContent}).then(myspeciesResult => {
 			const newObject = {};
-			console.log(myspeciesResult)
-		  newObject["speciesResult" + item] = myspeciesResult;
+			console.log(myspeciesResult[1])
+		  newObject["speciesResult" + item] = myspeciesResult[0];
           this.setState(prevState => newObject);
 		});
 		
