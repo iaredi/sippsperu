@@ -11,6 +11,8 @@ class UpdateBuilder extends React.Component {
 		this.updateValue = this.updateValue.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.getDropDownChoices = this.getDropDownChoices.bind(this);
+		this.excluded = this.excluded.bind(this);
+
 
         this.state = {
 			choiceList:{[this.props.table]:[]},
@@ -36,6 +38,18 @@ class UpdateBuilder extends React.Component {
 		));
 	}
 
+	excluded(str){
+		let excluded=false
+		const exclusionList=this.props.exclusions || [] ; 
+		exclusionList.push('iden')
+		exclusionList.forEach((exclusion)=>{
+			if (str.includes(exclusion)){
+				excluded = true
+			}
+		})
+		return excluded
+	}
+
 	setFromSelect(table,choice){ 
 		this.setState((prevState) => (
 			{
@@ -46,7 +60,7 @@ class UpdateBuilder extends React.Component {
 			}
 		));
 		if(table==this.props.table){
-			let wherevalue = choice 
+			let wherevalue = choice; 
 			if(choice==='Nuevo'){
 				wherevalue = '%'
 				if (!this.state.upstreamLoaded){
@@ -59,7 +73,7 @@ class UpdateBuilder extends React.Component {
 				fetchData('getColumns',{table:this.props.table}).then(returnData => {
 					const newrow = {}
 					const filteredData = returnData.map((row) => {
-						if(!row['column_name'].includes('iden')){
+						if(!this.excluded(row['column_name'])){
 							newrow[row['column_name']] =''
 						}
 					})
@@ -73,7 +87,7 @@ class UpdateBuilder extends React.Component {
 					const filteredData = returnData.map((row) => {
 						const newrow = {}
 						Object.keys(row).forEach(key => {
-							if(!key.includes('iden')){
+							if(!this.excluded(key)){
 								newrow[key] = row[key]
 							}
 						});
@@ -89,6 +103,10 @@ class UpdateBuilder extends React.Component {
 	}
 
 	getDropDownChoices(table,displayColumn,upstream=false, lastInArray=false){
+		let lastInArray2 = lastInArray
+		if(Object.keys(this.props.upstreamTables).length === 0) {
+			lastInArray2 =true
+		}
 		const emailvalue = admin==1 ? '%' : useremail
 		const requestObject ={table:table, column:displayColumn}
 		if (!upstream){
@@ -108,7 +126,7 @@ class UpdateBuilder extends React.Component {
 					}
 				}
 			));
-			if(lastInArray){
+			if(lastInArray2){
 				this.setState({upstreamLoaded:true})
 			}
 			
@@ -166,7 +184,7 @@ class UpdateBuilder extends React.Component {
 					/>
 				}
 				
-				{this.state.selectedItem[this.props.table]==='Nuevo' && this.state.upstreamLoaded &&
+				{this.state.selectedItem[this.props.table]==='Nuevo' && this.state.upstreamLoaded  &&
 					<div>
 					{Object.keys(this.props.upstreamTables).map((upstreamTable) => {
 						

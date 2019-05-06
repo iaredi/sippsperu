@@ -25166,8 +25166,19 @@ var components = {
 		upstreamTables: upstreamActividad,
 		selectObject: actividadSelectObject,
 		extra: true
+
 	})
 };
+
+['ave', 'arbol', 'arbusto', 'hierba', 'herpetofauna', 'mamifero'].forEach(function (lifeForm) {
+	components["especie_" + lifeForm] = _react2.default.createElement(_UpdateBuilder2.default, {
+		table: "especie_" + lifeForm,
+		displayColumn: "cientifico",
+		upstreamTables: {},
+		selectObject: {},
+		exclusions: ['comun_cientifico']
+	});
+});
 
 _reactDom2.default.render(components[infotype], document.getElementById("app"));
 
@@ -46983,6 +46994,7 @@ var UpdateBuilder = function (_React$Component) {
 		_this.updateValue = _this.updateValue.bind(_this);
 		_this.handleSubmit = _this.handleSubmit.bind(_this);
 		_this.getDropDownChoices = _this.getDropDownChoices.bind(_this);
+		_this.excluded = _this.excluded.bind(_this);
 
 		_this.state = {
 			choiceList: _defineProperty({}, _this.props.table, []),
@@ -47003,6 +47015,19 @@ var UpdateBuilder = function (_React$Component) {
 					values: _extends({}, prevState.values, _defineProperty({}, rowId, _extends({}, prevState.values[rowId], _defineProperty({}, column, value))))
 				};
 			});
+		}
+	}, {
+		key: "excluded",
+		value: function excluded(str) {
+			var excluded = false;
+			var exclusionList = this.props.exclusions || [];
+			exclusionList.push('iden');
+			exclusionList.forEach(function (exclusion) {
+				if (str.includes(exclusion)) {
+					excluded = true;
+				}
+			});
+			return excluded;
 		}
 	}, {
 		key: "setFromSelect",
@@ -47028,7 +47053,7 @@ var UpdateBuilder = function (_React$Component) {
 					(0, _fetchData2.default)('getColumns', { table: this.props.table }).then(function (returnData) {
 						var newrow = {};
 						var filteredData = returnData.map(function (row) {
-							if (!row['column_name'].includes('iden')) {
+							if (!_this2.excluded(row['column_name'])) {
 								newrow[row['column_name']] = '';
 							}
 						});
@@ -47041,7 +47066,7 @@ var UpdateBuilder = function (_React$Component) {
 						var filteredData = returnData.map(function (row) {
 							var newrow = {};
 							Object.keys(row).forEach(function (key) {
-								if (!key.includes('iden')) {
+								if (!_this2.excluded(key)) {
 									newrow[key] = row[key];
 								}
 							});
@@ -47067,6 +47092,10 @@ var UpdateBuilder = function (_React$Component) {
 			var upstream = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
 			var lastInArray = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : false;
 
+			var lastInArray2 = lastInArray;
+			if (Object.keys(this.props.upstreamTables).length === 0) {
+				lastInArray2 = true;
+			}
 			var emailvalue = admin == 1 ? '%' : useremail;
 			var requestObject = { table: table, column: displayColumn };
 			if (!upstream) {
@@ -47085,7 +47114,7 @@ var UpdateBuilder = function (_React$Component) {
 						choiceList: _extends({}, prevState.choiceList, _defineProperty({}, table, [''].concat(_toConsumableArray(dataArray))))
 					};
 				});
-				if (lastInArray) {
+				if (lastInArray2) {
 					_this3.setState({ upstreamLoaded: true });
 				}
 

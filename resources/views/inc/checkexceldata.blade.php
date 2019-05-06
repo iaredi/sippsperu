@@ -378,7 +378,7 @@
 	  //Check if Medicion already exist
 		if(sizeof($errorlist)==0){
 			$spanishdate = substr($medicionpost['row0*medicion*fecha'], 3, 2) .'-'.  substr($medicionpost['row0*medicion*fecha'], 0, 2) .'-'. substr($medicionpost['row0*medicion*fecha'], 6);
-			$checkold =trim(explode("(" , $medicionpost['selectlinea_mtp'])[0]).'*'.$spanishdate;
+			$checkold =trim(explode("*" , $medicionpost['selectlinea_mtp'])[0]).'*'.$spanishdate;
 			if (sizeof(DB::select("Select iden from medicion where iden_nombre=?", [$checkold]))>0){
 				$errorlist[]="Ya existe una medicion para esta linea y fecha.";
 			}

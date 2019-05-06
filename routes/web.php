@@ -27,9 +27,11 @@ Route::get('/reset_2', 'PagesController@reset_2');
 Route::get('/cargarshapes', 'PagesController@cargarshapes');
 Route::get('/cargarshapesadmin', 'PagesController@cargarshapesadmin');
 Route::get('/privacidad', 'PagesController@privacy');
-Route::get('/cambiarlinea', 'PagesController@cambiarlinea');
 Route::get('/actividad', 'PagesController@actividad');
 
+Route::get('/cambiar/{infotype}', function ($infotype){
+	return view('pages/cambiar',['infotype'=>$infotype]);
+  });
 
 Route::get('/mostrarnormas/{infotype}/{idenudpraw}', function ($infotype,$idenudpraw){
   return view('pages/mostrarnormas',['infotype'=>$infotype,'idenudp'=>$idenudpraw]);
@@ -54,9 +56,11 @@ Route::post('/udpmapa', 'PagesController@udpmapa');
 Route::post('/ingresarexcel', 'PagesController@ingresarexcel');
 Route::post('/mostrarnormas', 'PagesController@mostrarnormas');
 Route::post('/privacidad', 'PagesController@privacy');
-Route::post('/cambiarlinea', 'PagesController@cambiarlinea');
+//Route::post('/cambiarlinea', 'PagesController@cambiarlinea');
 Route::post('/actividad', 'PagesController@actividad');
-
+Route::post('/cambiar/{infotype}', function ($infotype){
+	return view('pages/cambiar',['infotype'=>$infotype]);
+  });
 
 
 

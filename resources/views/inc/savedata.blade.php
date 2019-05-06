@@ -4,7 +4,7 @@
 	$resultofquery=[];
 
     if ($_SERVER['REQUEST_METHOD']=="POST" && sizeof(session('error'))==0  && (!session('visitante'))){
-		if(isset($newpost['table']) && $newpost['select'.$newpost['table']] != 'Nuevo'){
+		if(isset($newpost['table']) && ($newpost['select'.$newpost['table']] != 'Nuevo' || strpos($newpost['table'],'especie')!==false)){
 			$table = $newpost['table'];
 			$selection = $newpost['select'.$table];
 			$selectedcolumn = $newpost['selectedcolumn'];
@@ -26,8 +26,30 @@
 			
 				$columnsarraystring = implode(',',$columnsarray);
 				$valuearraystring = implode(',',$valuearray);
+				
+				if(strpos($table,'especie')!==false){	
+					$columnsarray[]='comun_cientifico';
+					$columnsarraystring = implode(',',$columnsarray);
+					$valuearray[]= $valuearray[0]."*".$valuearray[1];
+					if ($selection=='Nuevo'){
+						savenewspecies($table,$newpost["row0*{$table}*comun"],$newpost["row0*{$table}*cientifico"], $newpost["row0*{$table}*invasor"]);
+						return true;
+					}
+					$selectedcolumn="cientifico";				
+					$arraytopass =['selectedvalue'=>$selection];
+					$sql_build='';
+					$sql1 = "UPDATE {$table} SET ({$columnsarraystring}) = (";
+					foreach ($valuearray as $value) {
+						$sql_build=$sql_build."'{$value}',";
+					}
+					$sql2 =substr_replace($sql_build ,"", -1);
+					$sql3 =	") WHERE {$selectedcolumn} = :selectedvalue";
+					$completesql = $sql1.$sql2.$sql3;
+					$results = DB::update($completesql, $arraytopass);
+					return true;
+				}
 				if($table=='linea_mtp'){
-					$name = explode("(" , $selection)[0];
+					$name = explode("*" , $selection)[0];
 					$arraytopass =['selectedvalue'=>$selection];
 					
 					$new_iden_nombre = "{$name}({$newpost['row0*linea_mtp*comienzo_latitud']},{$newpost['row0*linea_mtp*comienzo_longitud']}) ({$newpost['row0*linea_mtp*fin_latitud']},{$newpost['row0*linea_mtp*fin_longitud']})";
@@ -124,7 +146,7 @@
                 "punto_3_longitud"=> $punto_3_longitud,
                 "punto_4_latitud"=> $punto_4_latitud,
                 "punto_4_longitud"=> $punto_4_longitud,
-                "nombre_iden"=> "{$linea_mtppredioname} ({$comienzo_latitud},{$comienzo_longitud}) ({$fin_latitud},{$fin_longitud})",
+                "nombre_iden"=> "{$linea_mtppredioname}*({$comienzo_latitud},{$comienzo_longitud}) ({$fin_latitud},{$fin_longitud})",
                 "iden_predio"=> $linea_mtpfkey,
                 "iden_unidad_de_paisaje"=> "notset"
 			  );

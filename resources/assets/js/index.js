@@ -31,7 +31,19 @@ const components = {
 		upstreamTables={upstreamActividad}
 		selectObject={actividadSelectObject}
 		extra={true}
+		
 	/>,
 };
+
+['ave','arbol','arbusto','hierba','herpetofauna','mamifero'].forEach((lifeForm)=>{
+	components[`especie_${lifeForm}`] = <UpdateBuilder
+	table={`especie_${lifeForm}`}
+	displayColumn='cientifico'
+	upstreamTables={{}}
+	selectObject={{}}
+	exclusions={['comun_cientifico']}
+/>
+
+})
 
 ReactDOM.render(components[infotype], document.getElementById("app"));

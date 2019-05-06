@@ -54,7 +54,6 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
                 $results = DB::delete($sql, $user_data);
                 session(['adminerror'=>  "{$targetuser} ha sido borrado de los permitidos"]);
             }
-
 		}
 		
 		if ($_POST['action']=="borrarmedicion") {
@@ -127,7 +126,12 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
                 $layerresult= DB::update("UPDATE additional_layers set (displayname,featurecolumn,color,fillcolor,fillopacity,opacity,weight,category) = (?,?,?,?,?,?,?,?) where tablename = ?", $arraytopass);            
                 session(['adminerror'=> "{$cargartablename} ha cambiado"]);
             }
-        }
+		}
+		
+		if ($_POST['action']=="cambiar_especie") {
+				$targettable=$_POST['cambiar_especie'];
+				return redirect()->to("/cambiar/{$targettable}")->send();
+            }
 
         
 

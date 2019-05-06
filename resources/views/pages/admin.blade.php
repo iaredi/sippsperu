@@ -59,7 +59,7 @@ $geojson=json_encode($allcolumns);
         </table>
         <input type="radio" name="admin_option" value="add_admin"> Dar Privilegio Admin<br>
 		<input type="radio" name="admin_option" value="remove_admin"> Borrar Privilegio Admin<br>
-		<input type="radio" name="admin_option" value="cambio"> Permitir cambio de contraseña (dile que su código  es su email)<br>
+		<input type="radio" name="admin_option" value="cambio"> Permitir cambio de contraseña (dile que su código es su email)<br>
         <input type="radio" name="admin_option" value="delete_user"> Borrar Ususario
         <br>
         <br>
@@ -119,6 +119,31 @@ $geojson=json_encode($allcolumns);
 		  <br>
 		  <input type="hidden" name="action" value="borrarmedicion">
 		  <input type="submit" value= 'Borrar' id="measurementlinea_mtpSubmit" class="mySubmit">
+		</form>
+	  </div>
+    <br>
+	<br>
+
+	<div class='border border-dark p-2 m-2'>
+		<form id="measurementform" method="post">
+		  {{ csrf_field() }}
+  
+		  <h3 id="measurement3">Cambiar Especie</h3>
+		 
+		  <label  > <span class='dropDownTitles' style="white-space:nowrap">Tipo</span>
+		  <select id='cambiar_especie' name='cambiar_especie' class='p-2 narrowSelect'>
+			<option value="not_selected"></option>
+			<option value="especie_ave">ave</option>
+			<option value="especie_arbol">arbol</option>
+			<option value="especie_arbusto">arbusto</option>
+			<option value="especie_heirba">heirba</option>
+			<option value="especie_mamifero">mamifero</option>
+			<option value="especie_herpetofauna">herpetofauna</option>
+		  </select>
+		</label>
+		  <br>
+		  <input type="hidden" name="action" value="cambiar_especie">
+		  <input type="submit" value= 'cambiar_especie' class="mySubmit">
 		</form>
 	  </div>
     <br>

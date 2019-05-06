@@ -4,6 +4,7 @@
 
 
 <?php
+$jsoninfotype=json_encode($infotype);
 	if (!session('email')){
 		return redirect()->to('/login')->send();
 	}
@@ -13,7 +14,7 @@
 	if ($_SERVER['REQUEST_METHOD']=="POST" && sizeof(session('error'))==0  && (!session('visitante'))){
 		$saveworked = savedata($_POST,session('email'));
 		if($saveworked=="true"){
-			redirect()->to('/thanks')->send();
+			//redirect()->to('/thanks')->send();
 		}
     
 	}
@@ -26,9 +27,6 @@
 	<div class=" warnings">
 		<?php
 			$hintlist = [
-				"Si no hizo la observacion, ingrese 0000.",
-				"Si hiciera observacion y no hubiera especies, ingrese 000.",
-				"Si no sabe con certeza algún dato, ingrese 00.",
 				"Todos los medidas son de 3 grados de precision. Por ejemplo 1.792",
 				"Todos las coordenadas son de 4 grados de precision. Por ejemplo -110.8170"
 			];
@@ -49,7 +47,7 @@
 
 <link rel="stylesheet" href="leaflet_assets/leaflet.css">
 <script>
-	var infotype ='linea'
+	var infotype = {!! $jsoninfotype !!};
 </script>
 <script src="{{ asset('js/index.js') }}"></script>
 

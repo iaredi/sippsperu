@@ -19,7 +19,7 @@ if ($infotype=='normas'){
 		Si se muestra una especie sin categoría es porque no se haya presente en la NOM.';
 }
 if ($infotype=='ae'){
-	$headertype= substr($idenudp, -1)=='u'?'UDP '.substr($idenudp, 0, -1):'Linea MTP ' . explode('(',askforkey('linea_mtp','nombre_iden', 'iden', substr($idenudp, 0, -1)))[0];
+	$headertype= substr($idenudp, -1)=='u'?'UDP '.substr($idenudp, 0, -1):'Linea MTP ' . explode("*",askforkey('linea_mtp','nombre_iden', 'iden', substr($idenudp, 0, -1)))[0];
 
   $myheader= 'Atributos Ecologicos de '.$headertype;
 

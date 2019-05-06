@@ -443,8 +443,8 @@ Route::post('getspecies', function(Request $request) {
     }
     $arbolarbustoextra='';
     if ($lifeform=="arbusto" || $lifeform=="arbol" ){
-        $arbolarbustoextra="AVG((observacion_{$lifeform}.dn)::real)*count(especie_{$lifeform}.cientifico) as dominancia,
-        sum((observacion_{$lifeform}.distancia)::real) as distancia,
+        $arbolarbustoextra="AVG(pi() * (((observacion_{$lifeform}.dn)::real) / 2 ) ^2 )as ab,
+		sum((observacion_{$lifeform}.distancia)::real) as distancia,
         AVG((observacion_{$lifeform}.dn)::real) as dn_raw,
         AVG((observacion_{$lifeform}.altura)::real) as altura_raw,
         ";
@@ -518,10 +518,12 @@ Route::post('getspecies', function(Request $request) {
           $numeroindiviudos+=$row->total_cientifico;
         } 
         if ($numeroindiviudos>0){
+			//$distsum= 3406.223;
             $sumivi=0;
 			$distanciamedia=$distsum/$numeroindiviudos;
 			$area_deseada = 10000;
 			$densidad_total= $area_deseada /($distanciamedia*$distanciamedia);
+			
             
             
             $sumdensidad=0;
@@ -529,6 +531,7 @@ Route::post('getspecies', function(Request $request) {
             $sumdominancia=0;
             foreach ($obresult as $row2){
 				//$distanciamedia=$row2->distancia/$row2->total_cientifico;
+				$row2->dominancia= ($row2->ab)*$row2->total_cientifico;
                 $row2->densidad= ($row2->total_cientifico / $numeroindiviudos) * $densidad_total;
                 //$row2->frequencia= ($row2->sitios)/$pointtotal;
                 $sumdensidad += ($row2->total_cientifico / $numeroindiviudos) * $densidad_total;
@@ -537,7 +540,7 @@ Route::post('getspecies', function(Request $request) {
             }
             foreach ($obresult as $row3){
 				$row3->densidad_relativa = round(100*($row3->densidad )/$sumdensidad ,2).'%';
-				$row3->densidad_total = round(100*(10000)/($distsum*$distsum),2);
+				$row3->densidad_total = $densidad_total;
 
 				//$row3->densidad_relativa = $row3->densidad;
                 $row3->ivi= ($row3->densidad*100)/$sumdensidad+($row3->frequencia*100)/$sumfrequencia+($row3->dominancia*100)/$sumdominancia;
