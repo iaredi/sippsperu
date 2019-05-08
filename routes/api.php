@@ -583,9 +583,11 @@ Route::post('getspecies', function(Request $request) {
 
     if ($lifeform=="hierba"){
         $sumdelong=0;
-        $numeroindiviudos=0;
+		$numeroindiviudos=0;
+		$numerointervalos=0;
         foreach ($obresult as $row){
-            $numeroindiviudos+=$row->cientifico_hierba;
+			$numeroindiviudos+=$row->cientifico_hierba;
+			$numerointervalos+=$row->intervalo;
             //$sumdelong+=$row->sumi;
         } 
         if ($numeroindiviudos>0){
@@ -604,6 +606,8 @@ Route::post('getspecies', function(Request $request) {
                 $row2->dominancia= ($row2->sumi)/$sumdelong *100;
                 $row2->ponderacion= ($row2->summ)/($row2->cientifico_hierba);
 				$row2->frequencia= ($row2->ponderacion)*$row2->intervalo;
+				$row2->cobertura =100 * $row2->intervalo /  $numerointervalos;
+
                 $row2->sv= (($sumdelong-$row2->dominancia)/$sumdelong)*100;
                 $row2->cv= (($row2->dominancia)/$sumdelong)*100;
                 //$row2->frequencia= $row2->summ; 
@@ -632,7 +636,14 @@ Route::post('getspecies', function(Request $request) {
             $row4->dominancia= round($row4->dominancia,4);
 			$row4->densidad= round($row4->densidad,4);
             if ($lifeform=="hierba") {
+				
 				$row4->frequencia= round($row4->frequencia,4);
+				$row4->cobertura= round($row4->cobertura,2) . '%'; 
+				if($row4->frequencia=='0%'){
+					$row4->frequencia='NA';
+					$row4->dominancia='NA';
+					$row4->densidad='NA';
+				}
             }else{
 				$row4->frequencia= round($row4->frequencia,2) . '%'; 
 			}

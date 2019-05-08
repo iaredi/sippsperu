@@ -98,7 +98,8 @@ class SpeciesDisplay extends React.Component {
                 text: 'Frequencia '
               },
             )
-            //This could be combined with the part below
+			//This could be combined with the part below
+				
             if(this.props.lifeform=='hierba'||this.props.lifeform=='arbol'||this.props.lifeform=='arbusto'){
               columns.push(
                 
@@ -109,13 +110,26 @@ class SpeciesDisplay extends React.Component {
                 {
                   dataField: 'densidad',
                   text: '***Densidad'
-				},
-				{
-					dataField: 'ivi100',
-					text: 'Valor de Importancia Relativa'
+				}
+				)
+				if(this.props.lifeform=='hierba'){
+					columns.push(
+					  {
+						  dataField: 'cobertura',
+						  text: 'Cobertura'
+						}
+					  )
 				  }
-                )
-            }
+
+				columns.push(
+					{
+						dataField: 'ivi100',
+						text: 'Valor de Importancia Relativa'
+					  }
+				)
+			}
+
+		
             
 
           }

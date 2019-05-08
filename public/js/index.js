@@ -45504,7 +45504,7 @@ exports.default = Normaapp;
 
 
 Object.defineProperty(exports, "__esModule", {
-    value: true
+  value: true
 });
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
@@ -45530,176 +45530,185 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var SpeciesDisplay = function (_React$Component) {
-    _inherits(SpeciesDisplay, _React$Component);
+  _inherits(SpeciesDisplay, _React$Component);
 
-    function SpeciesDisplay(props) {
-        _classCallCheck(this, SpeciesDisplay);
+  function SpeciesDisplay(props) {
+    _classCallCheck(this, SpeciesDisplay);
 
-        return _possibleConstructorReturn(this, (SpeciesDisplay.__proto__ || Object.getPrototypeOf(SpeciesDisplay)).call(this, props));
-    }
+    return _possibleConstructorReturn(this, (SpeciesDisplay.__proto__ || Object.getPrototypeOf(SpeciesDisplay)).call(this, props));
+  }
 
-    _createClass(SpeciesDisplay, [{
-        key: 'render',
-        value: function render() {
+  _createClass(SpeciesDisplay, [{
+    key: 'render',
+    value: function render() {
 
-            var oldspeciesResult = this.props.speciesResult;
+      var oldspeciesResult = this.props.speciesResult;
 
-            //ADD (2) to prevent duplicate keys 
-            var newA = {};
-            var speciesResult = oldspeciesResult.map(function (spec) {
-                var newObject = _extends({}, spec);
-                if (newA[spec.cientifico]) {
-                    if (newA[spec.cientifico] == 2) {
-                        newObject = _extends({}, spec, { cientifico: spec.cientifico + '(2)' });
-                    } else {
-                        newObject = _extends({}, spec, { cientifico: spec.cientifico.slice(0, -3) + '(' + String(newA[spec.cientifico]) + ')' });
-                    }
-                    newA[spec.cientifico]++;
-                } else {
-                    newA[spec.cientifico] = 2;
-                }
-
-                return newObject;
-            });
-
-            var speciesResultInvador = speciesResult.filter(function (item) {
-                return item.invasor == 'true';
-            });
-
-            var speciesResultNoInvador = speciesResult.filter(function (item) {
-                return item.invasor == 'false';
-            });
-            var finalSpeciesResultInvador = speciesResultInvador.map(function (spec, ind) {
-                spec['numero'] = ind + 1;
-                return spec;
-            });
-            var finalSpeciesResultNoInvador = speciesResultNoInvador.map(function (spec, ind) {
-                spec['numero'] = ind + 1;
-                return spec;
-            });
-
-            var columns = [{
-                dataField: 'numero',
-                text: '#'
-            }, {
-                dataField: 'comun',
-                text: 'Comun'
-            }, {
-                dataField: 'cientifico',
-                text: 'Cientifico'
-            }];
-            if (infotype == 'normas') {
-                columns.push({
-                    dataField: 'total_cientifico',
-                    text: 'Cantidad'
-                }, {
-                    dataField: 'subespecie',
-                    text: 'Subespecie Enlistada'
-                }, {
-                    dataField: 'categoria',
-                    text: 'Categoria '
-                }, {
-                    dataField: 'distribution',
-                    text: 'Distribution '
-                });
-            } else {
-                if (this.props.lifeform == 'arbol' || this.props.lifeform == 'arbusto') {
-                    columns.push({
-                        dataField: 'dn',
-                        text: '*Diametro'
-                    }, {
-                        dataField: 'altura',
-                        text: '*Altura'
-                    });
-                }
-                columns.push({
-                    dataField: 'abundancia',
-                    text: 'Abundancia'
-                }, {
-                    dataField: 'abundancia_relativa',
-                    text: 'Abundancia Relativa'
-                }, {
-                    dataField: 'frequencia',
-                    text: 'Frequencia '
-                });
-                //This could be combined with the part below
-                if (this.props.lifeform == 'hierba' || this.props.lifeform == 'arbol' || this.props.lifeform == 'arbusto') {
-                    columns.push({
-                        dataField: 'dominancia',
-                        text: '**Dominancia'
-                    }, {
-                        dataField: 'densidad',
-                        text: '***Densidad'
-                    }, {
-                        dataField: 'ivi100',
-                        text: 'Valor de Importancia Relativa'
-                    });
-                }
-            }
-
-            return _react2.default.createElement(
-                'div',
-                null,
-                _react2.default.createElement(
-                    'div',
-                    { className: 'container' },
-                    _react2.default.createElement(
-                        'div',
-                        { className: 'flex-column d-flex justify-content-around align-items-center p-3' },
-                        _react2.default.createElement(
-                            'h5',
-                            null,
-                            'No Invasores'
-                        ),
-                        _react2.default.createElement(_reactBootstrapTableNext2.default, {
-                            keyField: 'cientifico',
-                            data: finalSpeciesResultNoInvador,
-                            columns: columns,
-                            bootstrap4: true,
-                            bordered: true,
-                            classes: 'speciesTable',
-                            striped: true,
-                            hover: true,
-                            condensed: true,
-                            noDataIndication: 'No hay datos'
-                        }),
-                        _react2.default.createElement(
-                            'h5',
-                            null,
-                            'Invasores'
-                        ),
-                        _react2.default.createElement(_reactBootstrapTableNext2.default, {
-                            keyField: 'cientifico',
-                            data: finalSpeciesResultInvador,
-                            columns: columns,
-                            bootstrap4: true,
-                            bordered: true,
-                            classes: 'speciesTable',
-                            striped: true,
-                            hover: true,
-                            condensed: true,
-                            noDataIndication: 'No hay datos'
-                        })
-                    ),
-                    (this.props.lifeform == 'arbol' || this.props.lifeform == 'arbusto') && this.props.speciesResult.length > 0 && _react2.default.createElement(
-                        'div',
-                        { id: 'densidadTotalDiv' },
-                        _react2.default.createElement(
-                            'h6',
-                            { id: 'densidadTotalHeader' },
-                            ' Densidad total de ',
-                            this.props.lifeform,
-                            ': ',
-                            this.props.speciesResult[0]['densidad_total'],
-                            ' '
-                        )
-                    )
-                )
-            );
+      //ADD (2) to prevent duplicate keys 
+      var newA = {};
+      var speciesResult = oldspeciesResult.map(function (spec) {
+        var newObject = _extends({}, spec);
+        if (newA[spec.cientifico]) {
+          if (newA[spec.cientifico] == 2) {
+            newObject = _extends({}, spec, { cientifico: spec.cientifico + '(2)' });
+          } else {
+            newObject = _extends({}, spec, { cientifico: spec.cientifico.slice(0, -3) + '(' + String(newA[spec.cientifico]) + ')' });
+          }
+          newA[spec.cientifico]++;
+        } else {
+          newA[spec.cientifico] = 2;
         }
-    }]);
 
-    return SpeciesDisplay;
+        return newObject;
+      });
+
+      var speciesResultInvador = speciesResult.filter(function (item) {
+        return item.invasor == 'true';
+      });
+
+      var speciesResultNoInvador = speciesResult.filter(function (item) {
+        return item.invasor == 'false';
+      });
+      var finalSpeciesResultInvador = speciesResultInvador.map(function (spec, ind) {
+        spec['numero'] = ind + 1;
+        return spec;
+      });
+      var finalSpeciesResultNoInvador = speciesResultNoInvador.map(function (spec, ind) {
+        spec['numero'] = ind + 1;
+        return spec;
+      });
+
+      var columns = [{
+        dataField: 'numero',
+        text: '#'
+      }, {
+        dataField: 'comun',
+        text: 'Comun'
+      }, {
+        dataField: 'cientifico',
+        text: 'Cientifico'
+      }];
+      if (infotype == 'normas') {
+        columns.push({
+          dataField: 'total_cientifico',
+          text: 'Cantidad'
+        }, {
+          dataField: 'subespecie',
+          text: 'Subespecie Enlistada'
+        }, {
+          dataField: 'categoria',
+          text: 'Categoria '
+        }, {
+          dataField: 'distribution',
+          text: 'Distribution '
+        });
+      } else {
+        if (this.props.lifeform == 'arbol' || this.props.lifeform == 'arbusto') {
+          columns.push({
+            dataField: 'dn',
+            text: '*Diametro'
+          }, {
+            dataField: 'altura',
+            text: '*Altura'
+          });
+        }
+        columns.push({
+          dataField: 'abundancia',
+          text: 'Abundancia'
+        }, {
+          dataField: 'abundancia_relativa',
+          text: 'Abundancia Relativa'
+        }, {
+          dataField: 'frequencia',
+          text: 'Frequencia '
+        });
+        //This could be combined with the part below
+
+        if (this.props.lifeform == 'hierba' || this.props.lifeform == 'arbol' || this.props.lifeform == 'arbusto') {
+          columns.push({
+            dataField: 'dominancia',
+            text: '**Dominancia'
+          }, {
+            dataField: 'densidad',
+            text: '***Densidad'
+          });
+          if (this.props.lifeform == 'hierba') {
+            columns.push({
+              dataField: 'cobertura',
+              text: 'Cobertura'
+            });
+          }
+
+          columns.push({
+            dataField: 'ivi100',
+            text: 'Valor de Importancia Relativa'
+          });
+        }
+      }
+
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'div',
+          { className: 'container' },
+          _react2.default.createElement(
+            'div',
+            { className: 'flex-column d-flex justify-content-around align-items-center p-3' },
+            _react2.default.createElement(
+              'h5',
+              null,
+              'No Invasores'
+            ),
+            _react2.default.createElement(_reactBootstrapTableNext2.default, {
+              keyField: 'cientifico',
+              data: finalSpeciesResultNoInvador,
+              columns: columns,
+              bootstrap4: true,
+              bordered: true,
+              classes: 'speciesTable',
+              striped: true,
+              hover: true,
+              condensed: true,
+              noDataIndication: 'No hay datos'
+            }),
+            _react2.default.createElement(
+              'h5',
+              null,
+              'Invasores'
+            ),
+            _react2.default.createElement(_reactBootstrapTableNext2.default, {
+              keyField: 'cientifico',
+              data: finalSpeciesResultInvador,
+              columns: columns,
+              bootstrap4: true,
+              bordered: true,
+              classes: 'speciesTable',
+              striped: true,
+              hover: true,
+              condensed: true,
+              noDataIndication: 'No hay datos'
+            })
+          ),
+          (this.props.lifeform == 'arbol' || this.props.lifeform == 'arbusto') && this.props.speciesResult.length > 0 && _react2.default.createElement(
+            'div',
+            { id: 'densidadTotalDiv' },
+            _react2.default.createElement(
+              'h6',
+              { id: 'densidadTotalHeader' },
+              ' Densidad total de ',
+              this.props.lifeform,
+              ': ',
+              this.props.speciesResult[0]['densidad_total'],
+              ' '
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return SpeciesDisplay;
 }(_react2.default.Component);
 
 exports.default = SpeciesDisplay;
