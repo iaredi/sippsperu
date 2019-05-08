@@ -40,13 +40,23 @@ class UpdateBuilder extends React.Component {
 
 	excluded(str){
 		let excluded=false
+		let included=false
+
 		const exclusionList=this.props.exclusions || [] ; 
-		exclusionList.push('iden')
-		exclusionList.forEach((exclusion)=>{
-			if (str.includes(exclusion)){
-				excluded = true
+		const incusionList=this.props.inclusions || [] ;
+		incusionList.forEach((inclusion)=>{
+			if (str==inclusion){
+				included = true
 			}
-		})
+		}) 
+		if (!included){
+			exclusionList.push('iden')
+			exclusionList.forEach((exclusion)=>{
+				if (str.includes(exclusion)){
+					excluded = true
+				}
+			})
+		}
 		return excluded
 	}
 

@@ -414,6 +414,35 @@ Route::post('getudp', function(Request $request) {
     return json_encode($finalresults);
 });
 
+Route::post('getList', function(Request $request) {
+    $table = $request->table;
+	$column = $request->column;
+
+	$wheresql='';
+	if(isset($request->where)){
+		$wheresql="WHERE {$request->where} LIKE '{$request->wherevalue}'";
+	}
+
+	$sql = "SELECT {$column} FROM {$table} {$wheresql} ";
+	$result = DB::select($sql, []);
+    return json_encode($result);
+});
+
+Route::post('getColumns', function(Request $request) {
+    $table = $request->table;
+
+	$sql = "SELECT column_name
+		FROM information_schema.columns
+		WHERE table_schema = 'public'
+		AND table_name   = ?";
+
+	$result = DB::select($sql, [$table]);
+	
+    return json_encode($result);
+});
+
+
+
 
 Route::post('getspecies', function(Request $request) {
     $lifeform = $request->lifeform;
@@ -452,7 +481,10 @@ Route::post('getspecies', function(Request $request) {
     $hierbaextra='';
     if ($lifeform=="hierba"){
         $hierbaextra="SUM((observacion_hierba.i)::real) as sumi,
-		SUM(1/(NULLIF(observacion_hierba.m::real,0))::real) as summ,";
+		SUM(1/(NULLIF(observacion_hierba.m::real,0))::real) as summ,
+		count(lower(especie_hierba.cientifico)) AS intervalo,
+        count(DISTINCT(observacion_hierba.iden_especie, observacion_hierba.iden_transecto,observacion_hierba.ind)) as cientifico_hierba,
+        ";
     }
     $sql= "SELECT
         lower(especie_{$lifeform}.comun) as comun,
@@ -518,7 +550,7 @@ Route::post('getspecies', function(Request $request) {
           $numeroindiviudos+=$row->total_cientifico;
         } 
         if ($numeroindiviudos>0){
-			//$distsum= 3406.223;
+			$distsum= 3406.223;
             $sumivi=0;
 			$distanciamedia=$distsum/$numeroindiviudos;
 			$area_deseada = 10000;
@@ -534,16 +566,16 @@ Route::post('getspecies', function(Request $request) {
 				$row2->dominancia= ($row2->ab)*$row2->total_cientifico;
                 $row2->densidad= ($row2->total_cientifico / $numeroindiviudos) * $densidad_total;
                 //$row2->frequencia= ($row2->sitios)/$pointtotal;
-                $sumdensidad += ($row2->total_cientifico / $numeroindiviudos) * $densidad_total;
+                $sumdensidad += $row2->densidad;
                 $sumfrequencia += $row2->frequencia;
                 $sumdominancia += $row2->dominancia;
             }
             foreach ($obresult as $row3){
 				$row3->densidad_relativa = round(100*($row3->densidad )/$sumdensidad ,2).'%';
-				$row3->densidad_total = $densidad_total;
+				$row3->densidad_total = round($densidad_total,2);
 
 				//$row3->densidad_relativa = $row3->densidad;
-                $row3->ivi= ($row3->densidad*100)/$sumdensidad+($row3->frequencia*100)/$sumfrequencia+($row3->dominancia*100)/$sumdominancia;
+                $row3->ivi= ($row3->densidad*100)/$sumdensidad + ($row3->frequencia*100)/$sumfrequencia + ($row3->dominancia*100)/$sumdominancia;
                 $sumivi += $row3->ivi;
             } 
         }
@@ -553,7 +585,7 @@ Route::post('getspecies', function(Request $request) {
         $sumdelong=0;
         $numeroindiviudos=0;
         foreach ($obresult as $row){
-            $numeroindiviudos+=$row->total_cientifico;
+            $numeroindiviudos+=$row->cientifico_hierba;
             //$sumdelong+=$row->sumi;
         } 
         if ($numeroindiviudos>0){
@@ -570,46 +602,45 @@ Route::post('getspecies', function(Request $request) {
             foreach ($obresult as $row2){
                 $row2->densidad= ($row2->summ)/(10000/$sumdelong);
                 $row2->dominancia= ($row2->sumi)/$sumdelong *100;
-                $row2->ponderacion= ($row2->summ)/($row2->total_cientifico);
-				$row2->frequencia= ($row2->ponderacion)*$pointtotal;
+                $row2->ponderacion= ($row2->summ)/($row2->cientifico_hierba);
+				$row2->frequencia= ($row2->ponderacion)*$row2->intervalo;
                 $row2->sv= (($sumdelong-$row2->dominancia)/$sumdelong)*100;
                 $row2->cv= (($row2->dominancia)/$sumdelong)*100;
-                //$row2->frequencia= $row2->summ;
-				
+                //$row2->frequencia= $row2->summ; 
                 $sumdensidad += $row2->densidad;
                 $sumdominancia += $row2->dominancia;
-                $sumfrequencia += ($row2->frequencia);
+                $sumfrequencia += $row2->frequencia;
                 
             } 
             $sumivi=0;
             foreach ($obresult as $row3){
-				$row3->densidad_relativa= round(100*($row3->densidad)/$sumdensidad,2).'%';
-
-                $row3->ivi= ($row3->densidad*100)/$sumdensidad+($row3->frequencia*100)/$sumfrequencia+($row3->dominancia*100)/$sumdominancia;
-                $sumivi += $row3->ivi;
-                
+				$row3->densidad_relativa= round(100*($row3->densidad)/$sumdensidad,2).'%'; 
+                $row3->ivi= ($row3->densidad*100)/$sumdensidad + ($row3->frequencia*100)/$sumfrequencia + ($row3->dominancia*100)/$sumdominancia;
+                $sumivi += $row3->ivi; 
             }
         }
     }
     foreach ($obresult as $row4){
+		$row4->cientifico= ucwords($row4->cientifico);
+		$row4->comun= ucwords($row4->comun);
+
         if (isset($sumivi)){
-            $row4->ivi100= round( ($row4->ivi*100)/$sumivi,4);
+			$row4->ivi100= round( ($row4->ivi*100)/$sumivi,4);
+			$row4->ivi100= round($row4->ivi100,2) . '%';
+            //if ($lifeform=="arbol") $row4->ivi100= $row4->ab;
+			
             $row4->dominancia= round($row4->dominancia,4);
 			$row4->densidad= round($row4->densidad,4);
-            if ($lifeform!="hierba") {
-				$row4->frequencia= round($row4->frequencia,2) . '%';
-            }else{
+            if ($lifeform=="hierba") {
 				$row4->frequencia= round($row4->frequencia,4);
-
+            }else{
+				$row4->frequencia= round($row4->frequencia,2) . '%'; 
 			}
         }else{
 			$row4->ivi100='';
-			$row4->frequencia= round($row4->frequencia,2) . '%';
-			
-			
-        } 
-        
-        
+			$row4->frequencia= round($row4->frequencia,2) . '%'; 
+        }
+ 
     }
     
     return json_encode([$obresult,$sql]);
@@ -617,29 +648,6 @@ Route::post('getspecies', function(Request $request) {
 
 
 
-Route::post('getList', function(Request $request) {
-    $table = $request->table;
-	$column = $request->column;
 
-	$wheresql='';
-	if(isset($request->where)){
-		$wheresql="WHERE {$request->where} LIKE '{$request->wherevalue}'";
-	}
 
-	$sql = "SELECT {$column} FROM {$table} {$wheresql} ";
-	$result = DB::select($sql, []);
-    return json_encode($result);
-});
 
-Route::post('getColumns', function(Request $request) {
-    $table = $request->table;
-
-	$sql = "SELECT column_name
-		FROM information_schema.columns
-		WHERE table_schema = 'public'
-		AND table_name   = ?";
-
-	$result = DB::select($sql, [$table]);
-	
-    return json_encode($result);
-});

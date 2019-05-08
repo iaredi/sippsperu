@@ -236,6 +236,11 @@ function selectOptionsCreate(tableName, menu) {
                     elOption.value = mycurrentlist[_i];
                     elOption.innerHTML = mycurrentlist[_i];
                 }
+                if (tableName == 'medicion' || jsTable == 'borrarmedicion' || mycurrentlist[_i].split('*')[0] == document.getElementById('measurementlinea_mtpSelect').value.split(' (')[0]) {
+                    elOption = frag.appendChild(document.createElement('option'));
+                    elOption.value = mycurrentlist[_i];
+                    elOption.innerHTML = mycurrentlist[_i];
+                }
             }
         }
         while (mySelection.hasChildNodes()) {
@@ -1017,6 +1022,9 @@ function clickReadyButton(e) {
                             if (myElem[0] && !_cat.includes('foto')) {
 
                                 myElem[0].value = _val;
+                                if (_cat == 'cantidad') {
+                                    myElem[0].value = '1';
+                                }
 
                                 if (_cat == 'invasor' && myElem[0].value == "true") {
                                     myElem[0].disabled = false;

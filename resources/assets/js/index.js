@@ -42,6 +42,7 @@ const components = {
 	upstreamTables={{}}
 	selectObject={{}}
 	exclusions={['comun_cientifico']}
+	inclusions={['iden_cactus']}
 />
 
 })

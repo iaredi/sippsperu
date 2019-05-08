@@ -25176,7 +25176,8 @@ var components = {
 		displayColumn: "cientifico",
 		upstreamTables: {},
 		selectObject: {},
-		exclusions: ['comun_cientifico']
+		exclusions: ['comun_cientifico'],
+		inclusions: ['iden_cactus']
 	});
 });
 
@@ -45631,7 +45632,7 @@ var SpeciesDisplay = function (_React$Component) {
                         text: '***Densidad'
                     }, {
                         dataField: 'ivi100',
-                        text: 'Valor de Importancia'
+                        text: 'Valor de Importancia Relativa'
                     });
                 }
             }
@@ -45680,7 +45681,7 @@ var SpeciesDisplay = function (_React$Component) {
                             noDataIndication: 'No hay datos'
                         })
                     ),
-                    (this.props.lifeform == 'hierba' || this.props.lifeform == 'arbol' || this.props.lifeform == 'arbusto') && this.props.speciesResult.length > 0 && _react2.default.createElement(
+                    (this.props.lifeform == 'arbol' || this.props.lifeform == 'arbusto') && this.props.speciesResult.length > 0 && _react2.default.createElement(
                         'div',
                         { id: 'densidadTotalDiv' },
                         _react2.default.createElement(
@@ -47020,13 +47021,23 @@ var UpdateBuilder = function (_React$Component) {
 		key: "excluded",
 		value: function excluded(str) {
 			var excluded = false;
+			var included = false;
+
 			var exclusionList = this.props.exclusions || [];
-			exclusionList.push('iden');
-			exclusionList.forEach(function (exclusion) {
-				if (str.includes(exclusion)) {
-					excluded = true;
+			var incusionList = this.props.inclusions || [];
+			incusionList.forEach(function (inclusion) {
+				if (str == inclusion) {
+					included = true;
 				}
 			});
+			if (!included) {
+				exclusionList.push('iden');
+				exclusionList.forEach(function (exclusion) {
+					if (str.includes(exclusion)) {
+						excluded = true;
+					}
+				});
+			}
 			return excluded;
 		}
 	}, {

@@ -171,6 +171,9 @@
                 $linea_mtpclave_predio=askforkey("linea_mtp", "iden_predio", "nombre_iden", $mtpchoice);
 				$predioname=askforkey("predio", "nombre", "iden", $linea_mtpclave_predio);
 				$spanishdate = substr($newpost['row0*medicion*fecha'], 3, 2) .'-'.  substr($newpost['row0*medicion*fecha'], 0, 2) .'-'. substr($newpost['row0*medicion*fecha'], 6);
+				if(!$fromexcel){
+					$spanishdate =substr($newpost['row0*medicion*fecha'], 8, 2) .'-'.  substr($newpost['row0*medicion*fecha'], 5, 2) .'-'. substr($newpost['row0*medicion*fecha'], 0,4);
+                }
 				$medicioncolumns=array(
                   "iden_linea_mtp"=>$medicionfkey,
                   "fecha"=> $newpost['row0*medicion*fecha'],

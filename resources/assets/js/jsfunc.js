@@ -132,6 +132,11 @@ function selectOptionsCreate(tableName, menu, preApproved=true, jsTable="Form",a
                     elOption = frag.appendChild(document.createElement('option'));
                     elOption.value = mycurrentlist[i];
                     elOption.innerHTML =mycurrentlist[i];
+				}
+				if((tableName=='medicion' || jsTable=='borrarmedicion') || mycurrentlist[i].split('*')[0]==document.getElementById('measurementlinea_mtpSelect').value.split(' (')[0]){
+                    elOption = frag.appendChild(document.createElement('option'));
+                    elOption.value = mycurrentlist[i];
+                    elOption.innerHTML =mycurrentlist[i];
                 }
             }
         }
@@ -833,7 +838,7 @@ function clickReadyButton(e){
                     if (myElem){
                         myElem.value=newValue
                     }
-                }
+				}
                 dataResult[1].forEach((row,ind) => {
                     if (ind>0){
                         //make new row
@@ -855,14 +860,17 @@ function clickReadyButton(e){
                         let myElem=document.getElementsByName("row"+ind+"*"+myChoice +"*"+cat)
                         if (myElem[0] && !cat.includes('foto')){
 
-                          myElem[0].value=val 
+						  myElem[0].value=val 
+						  if (cat=='cantidad'){
+							myElem[0].value='1';
+						}
 
-                            
                             if (cat=='invasor' && myElem[0].value=="true"){
                                 myElem[0].disabled = false
                                 myElem[0].checked=true 
                                 myElem[0].disabled = true
-                            }
+							}
+							
                         }
                     }
                 })

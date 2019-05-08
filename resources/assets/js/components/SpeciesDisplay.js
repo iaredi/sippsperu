@@ -112,7 +112,7 @@ class SpeciesDisplay extends React.Component {
 				},
 				{
 					dataField: 'ivi100',
-					text: 'Valor de Importancia'
+					text: 'Valor de Importancia Relativa'
 				  }
                 )
             }
@@ -151,7 +151,7 @@ class SpeciesDisplay extends React.Component {
                     noDataIndication={ 'No hay datos' }
                     />
 				</div>
-				{(this.props.lifeform=='hierba'||this.props.lifeform=='arbol'||this.props.lifeform=='arbusto')&&this.props.speciesResult.length>0&&
+				{(this.props.lifeform=='arbol'||this.props.lifeform=='arbusto')&&this.props.speciesResult.length>0&&
 				<div id='densidadTotalDiv'>
 					<h6 id ='densidadTotalHeader'> Densidad total de {this.props.lifeform}: {this.props.speciesResult[0]['densidad_total']} </h6>
 				</div>
