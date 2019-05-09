@@ -27,7 +27,9 @@
 							{$newpost['row0*actividad*longitud']} {$newpost['row0*actividad*latitud']}
 							)',4326)) WHERE iden = ?";
 				$updatedgeom = DB::update($updatesql, [$actividadkey]); 
+				echo $updatedgeom;
 			}
+
 			if($newpost['row0*actividad*tipo_geom']=='poligono'){
 				uploadshape('shp');
 				uploadshape('shx');

@@ -1,7 +1,7 @@
 import React from "react";
 import L from "leaflet";
 import fetchData from "../fetchData";
-
+var addLast=[]
 const style = {
   width: "98%",
   height: "100%"
@@ -104,9 +104,12 @@ class UDPMapa extends React.Component {
         c2 = L.geoJson(item.geom, {
           style: myStyle
         });
-      }
-
-      c2.addTo(mymap);
+	  }
+	  if (item.tableName=='udp_puebla_4326'){
+		addLast.push(c2)
+	  }else{
+		  c2.addTo(mymap);
+	  }
       return c2;
     };
 
@@ -134,22 +137,36 @@ class UDPMapa extends React.Component {
 			west: bounds._southWest.lng,
 			udpiden: udpiden
 		  }).then(returnData => {
-            setMuni(JSON.parse(returnData[returnData.length-1]))
-
+			setMuni(JSON.parse(returnData[returnData.length-1]))
+			
+			const addLastToMap = (array)=>{
+				array.forEach((lastLayer)=>{
+					lastLayer.addTo(mymap)
+				})
+			}
+			
             if (maptype=='sue'){
-              setSoils(JSON.parse(returnData[0]), JSON.parse(returnData[1]));
+			  setSoils(JSON.parse(returnData[0]), JSON.parse(returnData[1]));
+
               let myLayer = get_shp(item, mymap);
               overlayMaps[item.displayName] = myLayer;
               [JSON.parse(returnData[2]), JSON.parse(returnData[3]), JSON.parse(returnData[4]) ].forEach(item => {
                 if (item.geom) {
-                  get_shp(item, mymap);
-                }
+					get_shp(item, mymap);
+					addLastToMap(addLast)    
+					addLast.length=0;           
+				}
               });
-            }
+            }else{
+				addLastToMap(addLast)    
+				addLast.length=0;  
+			}
 
             if (maptype=='inf'){
               setInfra(JSON.parse(returnData[0]))
-            }
+			}
+			
+			
 
           });
         }

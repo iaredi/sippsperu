@@ -139,7 +139,7 @@ class Map extends React.Component {
 				if (myLayer.category=='Gestion del Territorio'){
 					overlayMaps["Placeholder_Gestion del Territorio"] = myLayer;
 				}
-				if(item.displayName.includes('Acciones')){
+				if(item.displayName.includes('Acciones_punto') || item.displayName.includes('Acciones_poli')){
 					actividadArray.push(myLayer)
 					if (actividadArray.length==2){
 						const actividadLG = L.layerGroup(actividadArray)

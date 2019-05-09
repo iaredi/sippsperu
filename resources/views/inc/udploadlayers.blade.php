@@ -19,7 +19,7 @@
   $layer1->opacity = 1;
   $layer1->weight = 2;
   $layer1->fillOpacity = 0;
-  $layer1->sql ="SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count6_email where iden = '{$idennum}'";
+  $layer1->sql ="SELECT *, ST_AsGeoJSON(geom, 5) AS geojson FROM geom_count62 where iden = '{$idennum}'";
 
   $layer2 = new layer();
   $layer2->tableName = 'infra_punto';
@@ -31,7 +31,7 @@
   $layer2->weight = 1;
   $layer2->fillOpacity = 1;
   $layer2->sql ="SELECT tipo, ST_AsGeoJSON(geom, 5) AS geojson FROM infra_punto
-  WHERE ST_Intersects(geom,  (select geom FROM geom_count6_email where iden = '{$idennum}'))";
+  WHERE ST_Intersects(geom,  (select geom FROM geom_count62 where iden = '{$idennum}'))";
 
   $layer3 = new layer();
   $layer3->tableName = 'infra_linea';
@@ -43,7 +43,7 @@
   $layer3->weight = 0.1;
   $layer3->fillOpacity = 1;
   $layer3->sql ="SELECT color, dash, weight, tipo, ST_AsGeoJSON(geom, 5) AS geojson FROM infra_linea
-  WHERE ST_Intersects(geom,  (select geom FROM geom_count6_email where iden = '{$idennum}'))
+  WHERE ST_Intersects(geom,  (select geom FROM geom_count62 where iden = '{$idennum}'))
   and geografico IN ('LINEA DE TRANSMISION','CALLE', 'CAMINO','CARRETERA', 'BORDO')
   ";
 
@@ -71,7 +71,6 @@
       }
     }
   }
-  
   foreach ($layersArray as $layer) {
     $features=[];
     $result = DB::select($layer->sql,[]);      

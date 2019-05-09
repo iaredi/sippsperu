@@ -15929,7 +15929,7 @@ var Map = function (_React$Component) {
                     if (myLayer.category == 'Gestion del Territorio') {
                         overlayMaps["Placeholder_Gestion del Territorio"] = myLayer;
                     }
-                    if (item.displayName.includes('Acciones')) {
+                    if (item.displayName.includes('Acciones_punto') || item.displayName.includes('Acciones_poli')) {
                         actividadArray.push(myLayer);
                         if (actividadArray.length == 2) {
                             var actividadLG = _leaflet2.default.layerGroup(actividadArray);
@@ -46076,6 +46076,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var addLast = [];
 var style = {
   width: "98%",
   height: "100%"
@@ -46193,8 +46194,11 @@ var UDPMapa = function (_React$Component) {
             style: myStyle
           });
         }
-
-        c2.addTo(mymap);
+        if (item.tableName == 'udp_puebla_4326') {
+          addLast.push(c2);
+        } else {
+          c2.addTo(mymap);
+        }
         return c2;
       };
 
@@ -46223,15 +46227,27 @@ var UDPMapa = function (_React$Component) {
             }).then(function (returnData) {
               setMuni(JSON.parse(returnData[returnData.length - 1]));
 
+              var addLastToMap = function addLastToMap(array) {
+                array.forEach(function (lastLayer) {
+                  lastLayer.addTo(mymap);
+                });
+              };
+
               if (maptype == 'sue') {
                 setSoils(JSON.parse(returnData[0]), JSON.parse(returnData[1]));
+
                 var _myLayer = get_shp(item, mymap);
                 overlayMaps[item.displayName] = _myLayer;
                 [JSON.parse(returnData[2]), JSON.parse(returnData[3]), JSON.parse(returnData[4])].forEach(function (item) {
                   if (item.geom) {
                     get_shp(item, mymap);
+                    addLastToMap(addLast);
+                    addLast.length = 0;
                   }
                 });
+              } else {
+                addLastToMap(addLast);
+                addLast.length = 0;
               }
 
               if (maptype == 'inf') {
