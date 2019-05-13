@@ -128,16 +128,16 @@ function selectOptionsCreate(tableName, menu, preApproved=true, jsTable="Form",a
 
             
             for (let i = 0; i<mycurrentlist.length; i++){
-                if((tableName!='medicion' || jsTable=='borrarmedicion') || mycurrentlist[i].split('*')[0]==document.getElementById('measurementlinea_mtpSelect').value.split(' (')[0]){
+                //if((tableName!='medicion' || jsTable=='borrarmedicion') || mycurrentlist[i].split('*')[0]==document.getElementById('measurementmedicionborrarmedicion').value.split('*')[0]){
                     elOption = frag.appendChild(document.createElement('option'));
                     elOption.value = mycurrentlist[i];
                     elOption.innerHTML =mycurrentlist[i];
-				}
-				if((tableName=='medicion' || jsTable=='borrarmedicion') || mycurrentlist[i].split('*')[0]==document.getElementById('measurementlinea_mtpSelect').value.split(' (')[0]){
-                    elOption = frag.appendChild(document.createElement('option'));
-                    elOption.value = mycurrentlist[i];
-                    elOption.innerHTML =mycurrentlist[i];
-                }
+				//}
+				//else if(!(tableName=='medicion' || jsTable=='borrarmedicion') || mycurrentlist[i].split('*')[0]==document.getElementById('measurementmedicionborrarmedicion').value.split('*')[0]){
+                    // elOption = frag.appendChild(document.createElement('option'));
+                    // elOption.value = mycurrentlist[i];
+                    // elOption.innerHTML =mycurrentlist[i];
+                //}
             }
         }
         while (mySelection.hasChildNodes()) {
@@ -961,8 +961,11 @@ function buildCustomForm(obName,menu, mode){
     if (obName=='observacion_arbol'||obName=='observacion_arbusto'){
         const getSelectionAdd = document.getElementById(`addElementRow${obName}`)
         const getSelectionSubtract = document.getElementById('subtractElementRow')
-        let getCuadrante0 = document.getElementById(`row${0}cuadrante`)
-        getCuadrante0.setAttribute("readonly", true);
+		let getCuadrante0 = document.getElementById(`row${0}cuadrante`)
+		getCuadrante0.setAttribute("readonly", true);
+        let getCuadnum0 = document.getElementById(`row${0}cuadnum`)		
+		getCuadnum0.setAttribute("readonly", true);
+
         for(let i=0;i<7;i++) {
             getSelectionAdd.onclick()
             let getCuadrante = document.getElementById(`row${i+1}cuadrante`)
@@ -970,7 +973,7 @@ function buildCustomForm(obName,menu, mode){
             getCuadrante.setAttribute("readonly", true);
             let getCuadnum = document.getElementById(`row${i+1}cuadnum`)
             getCuadnum.value=i+2
-            getCuadnum.setAttribute("readonly", true);
+			getCuadnum.setAttribute("readonly", true);
         }
         numRows=0
         getSelectionAdd.disabled=true;
@@ -1016,7 +1019,8 @@ function addOnChangeAdminTable(){
 var numRows=0;
 if(window.location.href.substr(-5)==='admin'){
     buildDropdowns( "usuario", "measurement", "Select" );
-    selectOptionsCreate( "usuario",  "measurement",  true,  "Select", [],  false,  false);
+	selectOptionsCreate( "usuario",  "measurement",  true,  "Select", [],  false,  false);
+	
     buildDropdowns( "usuario_permitido", "measurement", "Medicion" );
 	selectOptionsCreate( "usuario_permitido",  "measurement",  true,  "Medicion", [],  false, false);
 

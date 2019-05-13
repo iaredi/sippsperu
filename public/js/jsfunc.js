@@ -231,16 +231,16 @@ function selectOptionsCreate(tableName, menu) {
         } else {
 
             for (var _i = 0; _i < mycurrentlist.length; _i++) {
-                if (tableName != 'medicion' || jsTable == 'borrarmedicion' || mycurrentlist[_i].split('*')[0] == document.getElementById('measurementlinea_mtpSelect').value.split(' (')[0]) {
-                    elOption = frag.appendChild(document.createElement('option'));
-                    elOption.value = mycurrentlist[_i];
-                    elOption.innerHTML = mycurrentlist[_i];
-                }
-                if (tableName == 'medicion' || jsTable == 'borrarmedicion' || mycurrentlist[_i].split('*')[0] == document.getElementById('measurementlinea_mtpSelect').value.split(' (')[0]) {
-                    elOption = frag.appendChild(document.createElement('option'));
-                    elOption.value = mycurrentlist[_i];
-                    elOption.innerHTML = mycurrentlist[_i];
-                }
+                //if((tableName!='medicion' || jsTable=='borrarmedicion') || mycurrentlist[i].split('*')[0]==document.getElementById('measurementmedicionborrarmedicion').value.split('*')[0]){
+                elOption = frag.appendChild(document.createElement('option'));
+                elOption.value = mycurrentlist[_i];
+                elOption.innerHTML = mycurrentlist[_i];
+                //}
+                //else if(!(tableName=='medicion' || jsTable=='borrarmedicion') || mycurrentlist[i].split('*')[0]==document.getElementById('measurementmedicionborrarmedicion').value.split('*')[0]){
+                // elOption = frag.appendChild(document.createElement('option'));
+                // elOption.value = mycurrentlist[i];
+                // elOption.innerHTML =mycurrentlist[i];
+                //}
             }
         }
         while (mySelection.hasChildNodes()) {
@@ -1129,6 +1129,9 @@ function buildCustomForm(obName, menu, mode) {
         var getSelectionSubtract = document.getElementById('subtractElementRow');
         var getCuadrante0 = document.getElementById("row" + 0 + "cuadrante");
         getCuadrante0.setAttribute("readonly", true);
+        var getCuadnum0 = document.getElementById("row" + 0 + "cuadnum");
+        getCuadnum0.setAttribute("readonly", true);
+
         for (var i = 0; i < 7; i++) {
             getSelectionAdd.onclick();
             var getCuadrante = document.getElementById("row" + (i + 1) + "cuadrante");
@@ -1184,6 +1187,7 @@ var numRows = 0;
 if (window.location.href.substr(-5) === 'admin') {
     buildDropdowns("usuario", "measurement", "Select");
     selectOptionsCreate("usuario", "measurement", true, "Select", [], false, false);
+
     buildDropdowns("usuario_permitido", "measurement", "Medicion");
     selectOptionsCreate("usuario_permitido", "measurement", true, "Medicion", [], false, false);
 

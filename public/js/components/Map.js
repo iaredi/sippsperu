@@ -14236,7 +14236,7 @@ var Map = function (_React$Component) {
                     if (myLayer.category == 'Gestion del Territorio') {
                         overlayMaps["Placeholder_Gestion del Territorio"] = myLayer;
                     }
-                    if (item.displayName.includes('Acciones_punto') || item.displayName.includes('Acciones_poli')) {
+                    if (item.displayName.includes('Acciones_')) {
                         actividadArray.push(myLayer);
                         if (actividadArray.length == 2) {
                             var actividadLG = _leaflet2.default.layerGroup(actividadArray);
