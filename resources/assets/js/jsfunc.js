@@ -759,32 +759,6 @@ function clickReadyButton(e){
         return
     }
     
-    
-    async function getData(){
-        //let myapi ='http://localhost:3000/api/getudp'
-        let myapi ='https://biodiversidadpuebla.online/api/getudp'
-
-        if (window.location.host=='localhost:3000') myapi ='http://localhost:3000/api/getudp'
-
-        const rawResponse = await fetch(myapi, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                "Content-Type": "application/json;",
-                mode: 'cors',
-            },
-            body: JSON.stringify({
-                "lineamtp": document.getElementById("measurementlinea_mtpSelect").value,
-                "medicion":document.getElementById("measurementmedicionMedicion").value,
-                "observacion":myChoice,
-                "punto":selectedPunto? selectedPunto.value:"0",
-                "transecto":selectedTransecto? selectedTransecto.value:"0",
-                "useremail":useremail
-            })
-        });
-        let dataResult = await rawResponse.json()
-        return dataResult
-    }
 
 
 
@@ -792,7 +766,6 @@ function clickReadyButton(e){
     
     if (e.offsetX>0){
         
-        //getData().then(dataResult =>{
 		fetchData('getudp',
 			{
 				"lineamtp": document.getElementById("measurementlinea_mtpSelect").value,

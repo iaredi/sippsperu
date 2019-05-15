@@ -79,10 +79,6 @@ module.exports = __webpack_require__(104);
 "use strict";
 
 
-var _regenerator = __webpack_require__(12);
-
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
 var _fetchData = __webpack_require__(6);
@@ -90,8 +86,6 @@ var _fetchData = __webpack_require__(6);
 var _fetchData2 = _interopRequireDefault(_fetchData);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 function buildDropdowns(tableName, menu) {
     var jsTable = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "Form";
@@ -838,59 +832,6 @@ function addOnChangeObservaciones(menu) {
 
 
 function clickReadyButton(e) {
-    var getData = function () {
-        var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee() {
-            var myapi, rawResponse, dataResult;
-            return _regenerator2.default.wrap(function _callee$(_context) {
-                while (1) {
-                    switch (_context.prev = _context.next) {
-                        case 0:
-                            //let myapi ='http://localhost:3000/api/getudp'
-                            myapi = 'https://biodiversidadpuebla.online/api/getudp';
-
-
-                            if (window.location.host == 'localhost:3000') myapi = 'http://localhost:3000/api/getudp';
-
-                            _context.next = 4;
-                            return fetch(myapi, {
-                                method: 'POST',
-                                headers: {
-                                    'Accept': 'application/json',
-                                    "Content-Type": "application/json;",
-                                    mode: 'cors'
-                                },
-                                body: JSON.stringify({
-                                    "lineamtp": document.getElementById("measurementlinea_mtpSelect").value,
-                                    "medicion": document.getElementById("measurementmedicionMedicion").value,
-                                    "observacion": myChoice,
-                                    "punto": selectedPunto ? selectedPunto.value : "0",
-                                    "transecto": selectedTransecto ? selectedTransecto.value : "0",
-                                    "useremail": useremail
-                                })
-                            });
-
-                        case 4:
-                            rawResponse = _context.sent;
-                            _context.next = 7;
-                            return rawResponse.json();
-
-                        case 7:
-                            dataResult = _context.sent;
-                            return _context.abrupt("return", dataResult);
-
-                        case 9:
-                        case "end":
-                            return _context.stop();
-                    }
-                }
-            }, _callee, this);
-        }));
-
-        return function getData() {
-            return _ref.apply(this, arguments);
-        };
-    }();
-
     var menu = "measurement";
     var myChoice = 'observacion_' + document.getElementById("measurementobservacionesObservaciones").value;
     var newExist = document.getElementById("measurementdatosNumero");
@@ -917,7 +858,6 @@ function clickReadyButton(e) {
 
     if (e.offsetX > 0) {
 
-        //getData().then(dataResult =>{
         (0, _fetchData2.default)('getudp', {
             "lineamtp": document.getElementById("measurementlinea_mtpSelect").value,
             "medicion": document.getElementById("measurementmedicionMedicion").value,
@@ -950,12 +890,12 @@ function clickReadyButton(e) {
 
                 try {
                     for (var _iterator = puntoEntries[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-                        var _ref2 = _step.value;
+                        var _ref = _step.value;
 
-                        var _ref3 = _slicedToArray(_ref2, 2);
+                        var _ref2 = _slicedToArray(_ref, 2);
 
-                        var cat = _ref3[0];
-                        var val = _ref3[1];
+                        var cat = _ref2[0];
+                        var val = _ref2[1];
 
                         var myElem = document.getElementById(formtranspunto + "_" + lifeForm + cat);
                         var newValue = val;
@@ -1004,12 +944,12 @@ function clickReadyButton(e) {
 
                     try {
                         for (var _iterator2 = obsEntries[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                            var _ref4 = _step2.value;
+                            var _ref3 = _step2.value;
 
-                            var _ref5 = _slicedToArray(_ref4, 2);
+                            var _ref4 = _slicedToArray(_ref3, 2);
 
-                            var _cat = _ref5[0];
-                            var _val = _ref5[1];
+                            var _cat = _ref4[0];
+                            var _val = _ref4[1];
 
                             if (_cat == 'comun_cientifico') {
                                 var myElemSpecies = document.getElementsByName("row" + ind + "*" + myChoice + "*species");
@@ -1208,7 +1148,7 @@ if (window.location.href.substr(-5) === 'admin') {
 
 /***/ }),
 
-/***/ 12:
+/***/ 18:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(21);
@@ -2002,7 +1942,7 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _regenerator = __webpack_require__(12);
+var _regenerator = __webpack_require__(18);
 
 var _regenerator2 = _interopRequireDefault(_regenerator);
 
