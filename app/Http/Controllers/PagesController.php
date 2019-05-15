@@ -20,6 +20,9 @@ class PagesController extends Controller
     }
     public function admin(){
         return view('pages/admin');
+	}
+	public function dlexample(){
+        return view('pages/dlexample');
     }
     public function logout(){
         return view('pages/logout');

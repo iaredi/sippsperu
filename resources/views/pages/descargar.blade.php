@@ -10,6 +10,15 @@
 
    
    <img src="{{ asset('img/popo.jpg') }}"  alt="Italian Trulli" style="height:250px; width:380px;">
+   <div class=" warnings">
+	<?php
+	
+			foreach (session('error') as $msg) {
+				echo "<p class='bg-danger2 text-center'>{$msg}</p>";
+			}
+		?>
+   </div>
+
    <div>
         
 

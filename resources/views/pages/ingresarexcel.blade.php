@@ -9,23 +9,25 @@
   
  
 
-  if ($_SERVER['REQUEST_METHOD']=="POST" && isset($_POST['descargarexcel'])) {
-    $myfile= "C:\\wamp64\\www\\lsapp3\\public\\storage\\ingresarexcel.xlsx";
-    if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
-      $myfile= "/var/www/html/lsapp3/public/storage/ingresarexcel.xlsx";
-    } 
-    if (file_exists($myfile)) {
-      header('Content-Description: File Transfer');
-      header('Content-Disposition: attachment; filename=ingresarexcel.xlsx');
-      header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-      header('Expires: 0');
-      header('Content-Length: ' . filesize($myfile));
-      header('Content-Transfer-Encoding: binary');
-      header('Pragma: public');
-      readfile($myfile);
-      exit();
-    }
-  }
+//   if ($_SERVER['REQUEST_METHOD']=="POST" && isset($_POST['descargarexcel'])) {
+//     $myfile= "C:\\wamp64\\www\\lsapp3\\public\\storage\\ingresarexcel.xlsx";
+//     if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
+//       $myfile= "/var/www/html/lsapp3/public/storage/ingresarexcel.xlsx";
+//     } 
+//     if (file_exists($myfile)) {
+// 		echo($myfile);
+//       header('Content-Description: File Transfer');
+//       header('Content-Disposition: attachment; filename=ingresarexcel.xlsx');
+//       header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+// 	  header('Expires: 0');
+// 	  header('Cache-Control: must-revalidate');
+//       header('Content-Length: ' . filesize($myfile));
+//       header('Content-Transfer-Encoding: binary');
+//       header('Pragma: public');
+//       readfile($myfile);
+//       exit();
+//     }
+//   }
 ?>
   <script>
     var useremail = {!! $useremail !!};
@@ -60,7 +62,7 @@
   </div>
 
   <div class="wrapper2" id="startMenuDiv">
-    <form id="measurementform" method="post" , enctype="multipart/form-data">
+    <form id="measurementform" method="post" , action="/dlexample">
       {{ csrf_field() }}
       <input type="submit" id="excelSubmit" name="descargarexcel" class="border border-secondary btn btn-success mySubmit p-2 m-2"
         value="Descargar Excel Ejemplo">
