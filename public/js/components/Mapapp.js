@@ -290,7 +290,7 @@ exports.default = function () {
                     case 0:
                         myapi = "https://biodiversidadpuebla.online/api/" + url;
 
-                        if (window.location.host != "biodiversidadpuebla.online") myapi = "http://localhost:3000/api/" + url;
+                        if (window.location.host != "biodiversidadpuebla.online") myapi = "http://" + window.location.host + "/api/" + url;
                         _context.next = 4;
                         return fetch(myapi, {
                             method: "POST",
