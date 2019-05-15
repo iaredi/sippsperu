@@ -288,10 +288,8 @@ exports.default = function () {
             while (1) {
                 switch (_context.prev = _context.next) {
                     case 0:
-                        myapi = "https://biodiversidadpuebla.online/api/" + url;
-
-                        if (window.location.host != "biodiversidadpuebla.online") myapi = "http://" + window.location.host + "/api/" + url;
-                        _context.next = 4;
+                        myapi = location.protocol + "//" + window.location.host + "/api/" + url;
+                        _context.next = 3;
                         return fetch(myapi, {
                             method: "POST",
                             headers: {
@@ -302,16 +300,16 @@ exports.default = function () {
                             body: JSON.stringify(body)
                         });
 
-                    case 4:
+                    case 3:
                         rawResponse = _context.sent;
-                        _context.next = 7;
+                        _context.next = 6;
                         return rawResponse.json();
 
-                    case 7:
+                    case 6:
                         dataResult = _context.sent;
                         return _context.abrupt("return", dataResult);
 
-                    case 9:
+                    case 8:
                     case "end":
                         return _context.stop();
                 }
