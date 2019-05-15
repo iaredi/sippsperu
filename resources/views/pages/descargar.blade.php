@@ -12,6 +12,12 @@
    <img src="{{ asset('img/popo.jpg') }}"  alt="Italian Trulli" style="height:250px; width:380px;">
    <div class=" warnings">
 	<?php
+		$hintlist = [
+				"Si su resulto sale en HTML, intentalo de nuevo."
+			];
+			foreach ($hintlist as $hint) {
+				echo "<p class='text-dark text-center'style='background-color: lightsteelblue;'>{$hint}</p>";
+			}
 	
 			foreach (session('error') as $msg) {
 				echo "<p class='bg-danger2 text-center'>{$msg}</p>";

@@ -17,7 +17,8 @@ if ($_SERVER['REQUEST_METHOD']=="POST" && isset($_POST['descargarexcel'])) {
       header('Content-Transfer-Encoding: binary');
       header('Pragma: public');
       readfile($myfile);
-      exit();
+	  exit();
+	  ob_clean();
     }
   }
 ?>

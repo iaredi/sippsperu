@@ -2019,7 +2019,7 @@ exports.default = function () {
                     case 0:
                         myapi = "https://biodiversidadpuebla.online/api/" + url;
 
-                        if (window.location.host == "localhost:3000" || "10.53.1.217:8080") myapi = "http://localhost:3000/api/" + url;
+                        if (window.location.host != "biodiversidadpuebla.online") myapi = "http://localhost:3000/api/" + url;
                         _context.next = 4;
                         return fetch(myapi, {
                             method: "POST",

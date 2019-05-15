@@ -1,6 +1,6 @@
 export default async function fetchData(url, body) {
     let myapi = `https://biodiversidadpuebla.online/api/${url}`;
-    if (window.location.host == "localhost:3000" || "10.53.1.217:8080")
+    if (window.location.host != "biodiversidadpuebla.online")
         myapi = `http://localhost:3000/api/${url}`;
     const rawResponse = await fetch(myapi, {
         method: "POST",

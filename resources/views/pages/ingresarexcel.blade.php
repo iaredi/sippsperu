@@ -50,7 +50,8 @@
 					"Todos las coordenadas son de 4 grados de precision. Por ejemplo -110.8170.",
 					"No usa la palabra 'false'. Se puede usar 'falso' o 'no'.",
 					"Solo 'notas' y 'iden_fotos' se puede dejar vacios.",
-					"Hay que usar nombres de columnos exactos."
+					"Hay que usar nombres de columnos exactos.",
+					"Si hace click en Descargar Excel Ejemplo y sale en HTML, haga un click de nuevo."
 				];
 				foreach ($hintlist as $hint) {
 					echo "<p class='text-dark text-center'style='background-color: lightsteelblue;'>{$hint}</p>";
