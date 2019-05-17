@@ -5,7 +5,6 @@ if (!session('email')){
 }
 
 if ($_SERVER['REQUEST_METHOD']=="POST"){
-    
 	$lifeform=$_POST['dl_option'];
     $targetob='observacion_'.$lifeform;
     $email = session('email');
@@ -16,26 +15,13 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
         $myfile= "/postgres/{$name}_{$_POST['dl_option']}.csv";
     } 
     
-
-    
     $sql = "COPY (SELECT * FROM {$targetob} 
     WHERE iden_email = '{$email}')
     TO '{$myfile}'
 	with ( format CSV, HEADER)";
 
-	
-	// $db = env("DB_PASSWORD", "somedefaultvalue");
-    // $dbname = env("DB_DATABASE", "somedefaultvalue");
-	
-	// $sql=
-	// "\copy (SELECT * FROM {$targetob} 
-	// WHERE iden_email = '{$email}') to '{$myfile}' with ( format CSV, HEADER) | PGPASSWORD='{$db}' psql -U plataforma -h localhost -d {$dbname}";
-	
-	// $sridshell= shell_exec($sql);
     $result = DB::select($sql, []);
-	// echo $result;
-	// echo $myfile;
-	// echo 'wha';
+	
     if (file_exists($myfile) && sizeof($result)>0) {
         header('Content-Description: File Transfer');
         header('Content-Type: Document');
@@ -50,13 +36,5 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
 		session(['error' => ["No hay datos de {$lifeform}"]]);
 		return redirect()->to('/descargar')->send();
 	}
-
-
-
-
-
-
 }
-
-
 ?>

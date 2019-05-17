@@ -66,7 +66,9 @@
             }else{
                 $errorlist[]= "Por favor, cambie el nombre de su shape ";
             }
-        }
+        }else{
+			echo "This is not production";
+		}
     }
 ?>
 

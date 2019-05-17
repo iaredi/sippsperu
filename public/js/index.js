@@ -25164,7 +25164,6 @@ var components = {
 		upstreamTables: upstreamActividad,
 		selectObject: actividadSelectObject,
 		extra: true
-
 	})
 };
 

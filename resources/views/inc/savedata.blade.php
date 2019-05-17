@@ -52,7 +52,7 @@
 					$name = explode("*" , $selection)[0];
 					$arraytopass =['selectedvalue'=>$selection];
 					
-					$new_iden_nombre = "{$name}({$newpost['row0*linea_mtp*comienzo_latitud']},{$newpost['row0*linea_mtp*comienzo_longitud']}) ({$newpost['row0*linea_mtp*fin_latitud']},{$newpost['row0*linea_mtp*fin_longitud']})";
+					$new_iden_nombre = "{$name}*({$newpost['row0*linea_mtp*comienzo_latitud']},{$newpost['row0*linea_mtp*comienzo_longitud']}) ({$newpost['row0*linea_mtp*fin_latitud']},{$newpost['row0*linea_mtp*fin_longitud']})";
 					$completesql = "UPDATE {$table} SET ({$columnsarraystring},{$selectedcolumn}) = ({$valuearraystring},'{$new_iden_nombre}') WHERE {$selectedcolumn} = :selectedvalue";
 					$results = DB::update($completesql, $arraytopass);
 
