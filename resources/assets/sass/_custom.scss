@@ -50,8 +50,7 @@ body {
   padding: 10px;
   padding-bottom:0px;
   padding-right:0px;
-
-  height: 100vh;
+  height: 94vh;
 }
 
 tbody tr td:first-child {
@@ -226,6 +225,7 @@ nav a:hover {
 .mynavbar {
   color: rgb(39, 22, 0);
   background-color: $main-green;
+  height: 6vh;
 }
 
 img {

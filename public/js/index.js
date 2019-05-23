@@ -19485,12 +19485,12 @@ function FeatureInfoDisplay(props) {
 		var lifeForms = ["arbol", "arbusto", "hierba", "ave", "herpetofauna", "mamifero", "Dato acumulado"];
 		var categoryList = ["total_observaciones", "distinct_species", "dominancia", "shannon", "biodiversidad_verdadera"];
 		var myIcons = {
-			ave: "🦅",
+			ave: "🐦",
 			arbol: "🌲",
 			arbusto: "🌳",
 			hierba: "🌱",
 			herpetofauna: "🐍",
-			mamifero: "🦌"
+			mamifero: "🐇"
 		};
 
 		lifeForms.map(function (life) {
@@ -46875,7 +46875,7 @@ function Alist(props) {
   );
 }
 function UdpDiversity(props) {
-  var bigArray = [{ type: "arbol", icon: "🌲", shannon: shannon.split("*")[0] }, { type: "arbusto", icon: "🌳", shannon: shannon.split("*")[1] }, { type: "ave", icon: "🦅", shannon: shannon.split("*")[2] }, { type: "hierba", icon: "🌱", shannon: shannon.split("*")[3] }, { type: "herpetofauna", icon: "🐍", shannon: shannon.split("*")[4] }, { type: "mamifero", icon: "🦌", shannon: shannon.split("*")[5] }];
+  var bigArray = [{ type: "arbol", icon: "🌲", shannon: parseFloat(shannon.split("*")[0]).toFixed(2) }, { type: "arbusto", icon: "🌳", shannon: parseFloat(shannon.split("*")[1]).toFixed(2) }, { type: "ave", icon: "🐦", shannon: parseFloat(shannon.split("*")[2]).toFixed(2) }, { type: "hierba", icon: "🌱", shannon: parseFloat(shannon.split("*")[3]).toFixed(2) }, { type: "herpetofauna", icon: "🐍", shannon: parseFloat(shannon.split("*")[4]).toFixed(2) }, { type: "mamifero", icon: "🐇", shannon: parseFloat(shannon.split("*")[5]).toFixed(2) }];
   function compare(a, b) {
     if (parseFloat(a.shannon) < parseFloat(b.shannon)) return -1;
     if (parseFloat(a.shannon) > parseFloat(b.shannon)) return 1;
@@ -46899,7 +46899,7 @@ function UdpDiversity(props) {
   var svgLines = bigArray.map(function (animal, ind) {
     if (animal.shannon > 0) {
       previousAnimal++;
-      var x1my = 37 + previousAnimal * 45;
+      var x1my = 37 + previousAnimal * 52;
       var x2my = 44.0 + +animal.shannon * 2.72;
       return _react2.default.createElement("line", {
         key: animal.type,

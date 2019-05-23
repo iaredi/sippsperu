@@ -10522,7 +10522,7 @@ body {
   padding: 10px;
   padding-bottom: 0px;
   padding-right: 0px;
-  height: 100vh;
+  height: 94vh;
 }
 
 tbody tr td:first-child {
@@ -10698,6 +10698,7 @@ nav a:hover {
 .mynavbar {
   color: #271600;
   background-color: #42d660;
+  height: 6vh;
 }
 
 img {

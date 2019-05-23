@@ -13,12 +13,12 @@ function Alist(props) {
 }
 function UdpDiversity(props) {
   const bigArray = [
-    { type: "arbol", icon: "🌲", shannon: shannon.split("*")[0] },
-    { type: "arbusto", icon: "🌳", shannon: shannon.split("*")[1] },
-    { type: "ave", icon: "🦅", shannon: shannon.split("*")[2] },
-    { type: "hierba", icon: "🌱", shannon: shannon.split("*")[3] },
-    { type: "herpetofauna", icon: "🐍", shannon: shannon.split("*")[4] },
-    { type: "mamifero", icon: "🦌", shannon: shannon.split("*")[5] }
+    { type: "arbol", icon: "🌲", shannon: parseFloat(shannon.split("*")[0]).toFixed(2) },
+    { type: "arbusto", icon: "🌳", shannon: parseFloat(shannon.split("*")[1]).toFixed(2) },
+    { type: "ave", icon: "🐦", shannon: parseFloat(shannon.split("*")[2]).toFixed(2) },
+    { type: "hierba", icon: "🌱", shannon: parseFloat(shannon.split("*")[3]).toFixed(2) },
+    { type: "herpetofauna", icon: "🐍", shannon: parseFloat(shannon.split("*")[4]).toFixed(2) },
+    { type: "mamifero", icon: "🐇", shannon: parseFloat(shannon.split("*")[5]).toFixed(2) }
   ];
   function compare(a, b) {
     if (parseFloat(a.shannon) < parseFloat(b.shannon)) return -1;
@@ -45,7 +45,7 @@ function UdpDiversity(props) {
   const svgLines = bigArray.map((animal, ind) => {
     if (animal.shannon > 0) {
       previousAnimal++;
-      const x1my = 37 + previousAnimal * 45;
+      const x1my = 37 + previousAnimal * 52;
       const x2my = 44.0 + +animal.shannon * 2.72;
       return (
         <line

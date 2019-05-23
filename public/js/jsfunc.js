@@ -215,12 +215,16 @@ function selectOptionsCreate(tableName, menu) {
             elOption.value = "Nuevo";
             elOption.innerHTML = "Nuevo";
         }
+        console.log(tableName);
+        console.log(completetitlevallist);
 
-        if (preApproved === false) {
-            for (var i = 0; i < approvedList[tableName].length; i++) {
-                elOption = frag.appendChild(document.createElement('option'));
-                elOption.value = mycurrentlist[approvedList[tableName][i]];
-                elOption.innerHTML = mycurrentlist[approvedList[tableName][i]];
+        if (tableName == 'medicion' && window.location.href.substr(-5) != 'admin') {
+            for (var i = 0; i < mycurrentlist.length; i++) {
+                if (completetitlevallist['medicion_linea'][mycurrentlist[i]] == document.getElementById('measurementlinea_mtpSelect').value) {
+                    elOption = frag.appendChild(document.createElement('option'));
+                    elOption.value = mycurrentlist[i];
+                    elOption.innerHTML = mycurrentlist[i];
+                }
             }
         } else {
 

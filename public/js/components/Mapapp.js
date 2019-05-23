@@ -19485,12 +19485,12 @@ function FeatureInfoDisplay(props) {
 		var lifeForms = ["arbol", "arbusto", "hierba", "ave", "herpetofauna", "mamifero", "Dato acumulado"];
 		var categoryList = ["total_observaciones", "distinct_species", "dominancia", "shannon", "biodiversidad_verdadera"];
 		var myIcons = {
-			ave: "🦅",
+			ave: "🐦",
 			arbol: "🌲",
 			arbusto: "🌳",
 			hierba: "🌱",
 			herpetofauna: "🐍",
-			mamifero: "🦌"
+			mamifero: "🐇"
 		};
 
 		lifeForms.map(function (life) {

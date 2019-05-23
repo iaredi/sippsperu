@@ -95,11 +95,10 @@
 		<h6 class='titleHeaders'>
 			<strong>Desarrollo conceptual y conducción de grupos de trabajo:</strong> <br/> Jesús Hernández Castán, Alfredo Gámez,
 			<br/> Daniel Espinoza, Tonatiuh González <br/>
-			<br/> SEMARNAT Delegación Puebla, CONAFOR Gerencia estatal Puebla<br/>
 
 		</h6>
 		<h6 class='titleHeaders'>
-			<strong>Programación: </strong> <br/> Forest Carter - Peace Corps
+			<strong>Programación: </strong> <br/> Forest Carter
 			</h6>
 	</div>
 </div>

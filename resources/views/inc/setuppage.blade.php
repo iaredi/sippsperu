@@ -39,6 +39,15 @@ foreach($alltitles as $r){
 }
 unset($r);
 
+$linesql="select medicion.iden_nombre, linea_mtp.nombre_iden  from medicion
+left join linea_mtp on medicion.iden_linea_mtp= linea_mtp.iden";
+$linearesults = DB::select($linesql);
+
+$med_linea_list=[];
+foreach ($linearesults as $linearow) {
+	$med_linea_list[$linearow->iden_nombre]=$linearow->nombre_iden;
+}
+$completetitlevallist['medicion_linea']=$med_linea_list;
 
 foreach ($titlenamesarray as $key=>$value) {
     $titlevaluessql='SELECT '.$value.' FROM '.$key.';';

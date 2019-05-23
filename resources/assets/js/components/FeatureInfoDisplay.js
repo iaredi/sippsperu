@@ -30,12 +30,12 @@ function FeatureInfoDisplay(props) {
 		"biodiversidad_verdadera"
 	];
 	let myIcons = {
-		ave: "🦅",
+		ave: "🐦",
 		arbol: "🌲",
 		arbusto: "🌳",
 		hierba: "🌱",
 		herpetofauna: "🐍",
-		mamifero: "🦌"
+		mamifero: "🐇"
 	};
 
 	lifeForms.map(life => {
