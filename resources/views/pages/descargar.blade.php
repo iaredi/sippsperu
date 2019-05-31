@@ -18,9 +18,10 @@
 			foreach ($hintlist as $hint) {
 				echo "<p class='text-dark text-center'style='background-color: lightsteelblue;'>{$hint}</p>";
 			}
-	
-			foreach (session('error') as $msg) {
-				echo "<p class='bg-danger2 text-center'>{$msg}</p>";
+			if (null !== session('error') && is_array(session('error'))){
+				foreach (session('error') as $msg) {
+					echo "<p class='bg-danger2 text-center'>{$msg}</p>";
+				}
 			}
 		?>
    </div>

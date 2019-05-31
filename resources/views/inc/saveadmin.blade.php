@@ -5,7 +5,7 @@ if ($_SERVER['REQUEST_METHOD']=="POST"){
     $resultofquery=[];
 
     try {
-        if ($_POST['action']=="activo") {
+        if (isset($_POST['action']) && $_POST['action']=="activo") {
             $targetuser=$_POST['selectusuario'];
             if($_POST['admin_option']=='add_admin'){
                 $sql = "UPDATE usuario SET administrador = true WHERE email = :targetuser";
