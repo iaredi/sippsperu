@@ -27,7 +27,7 @@
         $emailvisitante=DB::select('select email from usuario_permitido where email = ?', [$useremail.'*']);
 
         if (!$email && !$emailvisitante) {
-            $error[] = "Email '{$_POST['email']}' no es aprovado. Contáctenos en forest.carter@gmail.com ";
+            $error[] = "Email '{$_POST['email']}' no es aprovado. Contáctenos en jesus.castan@gmail.com ";
         }
         
         if (DB::select('select email from usuario where email = ?', [$useremail])) {

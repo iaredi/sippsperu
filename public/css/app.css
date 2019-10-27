@@ -10699,6 +10699,7 @@ nav a:hover {
   color: #271600;
   background-color: #42d660;
   height: 6vh;
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.05);
 }
 
 img {
@@ -10784,7 +10785,10 @@ img {
   display: grid;
   grid-template-columns: auto 550px;
   grid-template-rows: auto 100px 45px 45px;
-  grid-template-areas: "mapdiv mapinfodisplay" "mapdiv mapcontol" "buttons1 mapcontol" "buttons2 mapcontol";
+  grid-template-areas: "mapdiv mapinfodisplay"
+ "mapdiv mapcontol"
+ "buttons1 mapcontol"
+ "buttons2 mapcontol";
 }
 
 #app {
