@@ -1,5 +1,5 @@
 {
-    "/js/index.js": "/js/index.js",
+    "/js/index.js": "/public/js/index.js",
     "/js/components/Mapapp.js": "/js/components/Mapapp.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",

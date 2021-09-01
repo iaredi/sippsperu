@@ -98,7 +98,7 @@ function buildDropdowns(tableName, menu) {
     var selectList = document.createElement("select");
     selectList.id = menu + tableName + jsTable;
     selectList.name = "select" + tableName;
-    selectList.className = 'form-control';
+    /*selectList.className = 'form-control';*/
     var newTR = document.createElement("tr");
     newTR.id = "row" + tableName;
 
@@ -109,6 +109,11 @@ function buildDropdowns(tableName, menu) {
         dataLabel.textContent = '#';
     } else {
         dataLabel.textContent = lowerCaseTitle.charAt(0).toUpperCase() + lowerCaseTitle.slice(1);
+        if(dataLabel.textContent=='Estado'){
+            dataLabel.textContent='Provincia';
+        }else if(dataLabel.textContent=='Municipio'){
+            dataLabel.textContent='Distrito';
+        }
     }
     dataLabel.className = "dropDownTitles";
 
@@ -122,7 +127,7 @@ function buildDropdowns(tableName, menu) {
 
         var myCols = tabletoColumns[tableName];
         var newColRows = createRows(tableName, menu, myCols, 0);
-        var spacer1 = document.createElement("td");
+        /*var spacer1 = document.createElement("td");
         spacer1.innerHTML = "&nbsp;";
         var spacer2 = document.createElement("td");
         spacer2.innerHTML = "&nbsp;";
@@ -142,14 +147,14 @@ function buildDropdowns(tableName, menu) {
         }
         var spacerTR2 = document.createElement("tr");
         spacerTR2.appendChild(spacer1.cloneNode(true));
-
+        */
         newColRows[1].id = tableName + "inputrow";
         newColRows[0].id = tableName + "columnsrow";
         newColRows[1].className = newColRows[1].className + " hiddenrows";
         newColRows[0].className = newColRows[0].className + " hiddenrows";
 
-        myTBody.prepend(spacerTR2);
-        myTBody.prepend(spacerTR1);
+        /*myTBody.prepend(spacerTR2);
+        myTBody.prepend(spacerTR1);*/
         myTBody.prepend(newColRows[1]);
         myTBody.prepend(newColRows[0]);
         myTBody.prepend(newTR);
@@ -229,16 +234,9 @@ function selectOptionsCreate(tableName, menu) {
         } else {
 
             for (var _i = 0; _i < mycurrentlist.length; _i++) {
-                //if((tableName!='medicion' || jsTable=='borrarmedicion') || mycurrentlist[i].split('*')[0]==document.getElementById('measurementmedicionborrarmedicion').value.split('*')[0]){
                 elOption = frag.appendChild(document.createElement('option'));
                 elOption.value = mycurrentlist[_i];
-                elOption.innerHTML = mycurrentlist[_i];
-                //}
-                //else if(!(tableName=='medicion' || jsTable=='borrarmedicion') || mycurrentlist[i].split('*')[0]==document.getElementById('measurementmedicionborrarmedicion').value.split('*')[0]){
-                // elOption = frag.appendChild(document.createElement('option'));
-                // elOption.value = mycurrentlist[i];
-                // elOption.innerHTML =mycurrentlist[i];
-                //}
+                elOption.innerHTML = mycurrentlist[_i].charAt(0).toUpperCase() + mycurrentlist[_i].slice(1);
             }
         }
         while (mySelection.hasChildNodes()) {
@@ -269,12 +267,12 @@ function addOnChangeMTP(tableName, menu) {
         var myChoice = document.getElementById(menu + tableName + "Select").value;
         clearForm(menu, "Form");
         if (myChoice == "Nuevo") {
+            //document.getElementsByClassName("mytable").style.display="none";
             clearForm(menu, "Medicion");
             clearForm(menu, "Observaciones");
             clearForm(menu, "Numero");
             clearForm(menu, "Form");
-            //buildForm("linea_mtp", menu, "Coordenadas de Linea (si la linea es recta, puede ingresar 'recta' por puntos 2, 3, y 4)")
-            buildForm("linea_mtp", menu, "Coordenadas de Linea");
+            buildForm("linea_mtp", menu, "Coordenadas de Línea");
 
             var newMTPdropdowns = ["predio", "municipio", "estado"];
             newMTPdropdowns.forEach(function (newTable) {
@@ -286,9 +284,11 @@ function addOnChangeMTP(tableName, menu) {
             //This is when an old linea_mtp is selected
             clearForm(menu, "Observaciones");
             clearForm(menu, "Medicion");
-            buildDropdowns("medicion", menu, "Medicion");
-            selectOptionsCreate("medicion", menu);
-            addOnChangeMedicion('medicion', menu);
+            if (myChoice != "notselected") {
+                buildDropdowns("medicion", menu, "Medicion");
+                selectOptionsCreate("medicion", menu);
+                addOnChangeMedicion('medicion', menu);
+            }
         }
     };
     var currentOnChange = function currentOnChange() {
@@ -338,9 +338,11 @@ function addOnChangeMedicion(tableName, menu) {
             clearForm(menu, "Observaciones");
             clearForm(menu, "Numero");
             clearForm(menu, "Form");
-            buildDropdowns("observaciones", menu, "Observaciones");
-            selectOptionsCreate("observaciones", menu, true, "Form", [], false, false);
-            addOnChangeObservaciones(menu);
+            if(myChoice!="notselected"){
+                buildDropdowns("observaciones", menu, "Observaciones");
+                selectOptionsCreate("observaciones", menu, true, "Form", [], false, false);
+                addOnChangeObservaciones(menu);
+            }
         }
     };
     var currentOnChangeMedicion = function currentOnChangeMedicion() {
@@ -456,7 +458,7 @@ function createRows(tableName, menu, myCols, myNumRow) {
         speciesInput.id = "row" + myNumRow + tableName + "Form"; //this needs to
         speciesInput.setAttribute("class", _speciesTable);
         speciesInput.classList.add('allinputs');
-        speciesInput.classList.add('form-control');
+        /*speciesInput.classList.add('form-control');*/
 
         speciesInput.name = "row" + myNumRow + "*" + tableName + "*" + "species";
         var inputBox = document.createElement("td");
@@ -542,7 +544,7 @@ function createRows(tableName, menu, myCols, myNumRow) {
         speciesBoxComun.setAttribute("type", "text");
         speciesBoxComun.classList.add("row" + myNumRow + "disableme");
         speciesBoxComun.classList.add('allinputs');
-        speciesBoxComun.classList.add('form-control');
+        //speciesBoxComun.classList.add('form-control');
 
         speciesBoxComun.disabled = true;
         speciesBoxComun.name = "row" + myNumRow + "*" + tableName + "*" + "comun";
@@ -556,7 +558,7 @@ function createRows(tableName, menu, myCols, myNumRow) {
 
         speciesBoxCien.classList.add("row" + myNumRow + "disableme");
         speciesBoxCien.classList.add('allinputs');
-        speciesBoxCien.classList.add('form-control');
+        //speciesBoxCien.classList.add('form-control');
 
         speciesBoxCien.disabled = true;
         speciesBoxCien.name = "row" + myNumRow + "*" + tableName + "*" + "cientifico";
@@ -578,7 +580,7 @@ function createRows(tableName, menu, myCols, myNumRow) {
             nameBox.className = "formcolumnlabels";
 
             columnRowOld.appendChild(nameBox);
-            columnRowOld.className = tableName + "columnrow";
+            columnRowOld.className = tableName + "columnrow trheader";
             var textInput = document.createElement("INPUT");
             if (val.substring(0, 5).toLowerCase() == "fecha") {
                 textInput.classList.add('fechainputs');
@@ -596,7 +598,7 @@ function createRows(tableName, menu, myCols, myNumRow) {
                 textInput.classList.add("row" + myNumRow + "*" + tableName);
             }
             textInput.classList.add('allinputs');
-            textInput.classList.add('form-control');
+            //textInput.classList.add('form-control');
 
             textInput.name = ("row" + myNumRow + "*" + tableName + "*" + val).toLowerCase();
             var _inputBox = document.createElement("td");
@@ -646,7 +648,7 @@ function buildForm(tableName, menu, myTitle) {
     var mySubmit = document.createElement("INPUT");
     mySubmit.setAttribute("type", "submit");
     mySubmit.id = menu + tableName + "Submit";
-    mySubmit.className = "border border-secondary btn btn-success mySubmit p-2 m-2";
+    mySubmit.className = "mySubmit";
     mySubmit.value = 'Enviar';
     if (document.getElementsByClassName("mySubmit").length > 0) mySubmit = document.getElementsByClassName("mySubmit")[0];
     var newRows = createRows(tableName, menu, myCols, 0, obs, customList);
@@ -692,23 +694,22 @@ function buildForm(tableName, menu, myTitle) {
         myTBody.appendChild(mySubmit);
         myTBody.insertBefore(newRows[0], mySubmit);
         myTBody.insertBefore(newRows[1], mySubmit);
-        //myTBody.insertBefore(bottomSpacer, mySubmit);
+        myTBody.insertBefore(bottomSpacer, mySubmit);
     } else {
-
         if (spacers) {
-
+            myTBody.appendChild(spaceRow);
             myTBody.appendChild(mySubmit);
-            myTBody.insertBefore(spacerTR1, mySubmit);
-            myTBody.insertBefore(spacerTR2, mySubmit);
-            myTBody.insertBefore(spaceRow, mySubmit);
+            /*myTBody.insertBefore(spacerTR1, mySubmit);
+            myTBody.insertBefore(spacerTR2, mySubmit);*/
+            //myTBody.insertBefore(spaceRow, mySubmit);
             myTBody.insertBefore(buttonRow, mySubmit);
             myTBody.insertBefore(newRows[0], mySubmit);
             myTBody.insertBefore(newRows[1], mySubmit);
             myTBody.insertBefore(bottomSpacer, mySubmit);
         } else {
-
+            myTBody.appendChild(spaceRow);
             myTBody.appendChild(mySubmit);
-            myTBody.insertBefore(spaceRow, mySubmit);
+            //myTBody.insertBefore(spaceRow, mySubmit);
             myTBody.insertBefore(buttonRow, mySubmit);
             myTBody.insertBefore(newRows[0], mySubmit);
             myTBody.insertBefore(newRows[1], mySubmit);
@@ -770,7 +771,10 @@ function addOnChangeObservaciones(menu) {
             var transpunto = 'Transecto';
             if (myChoice == "observacion_ave" || myChoice == "observacion_mamifero") {
                 transpunto = 'Punto';
-                numberPoints = 5;
+                numberPoints = 3;
+                if(myChoice == "observacion_mamifero"){
+                    numberPoints = 2;
+                }
             }
             if (myChoice == "observacion_arbol" || myChoice == "observacion_arbusto") {
                 buildDropdowns("Punto", menu, "Numero");
@@ -784,7 +788,8 @@ function addOnChangeObservaciones(menu) {
                 _elOption = fragPunto.appendChild(document.createElement('option'));
                 _elOption.value = "notselected";
                 _elOption.innerHTML = " ";
-                for (var i = 1; i <= 8; i++) {
+                //numero de puntos en el transecto
+                    for (var i = 1; i <= 2; i++) {
                     _elOption = fragPunto.appendChild(document.createElement('option'));
                     _elOption.value = i;
                     _elOption.innerHTML = i;
@@ -816,13 +821,14 @@ function addOnChangeObservaciones(menu) {
 
             var readybutton = document.createElement("button");
             readybutton.textContent = 'Cargar Formulario';
-            readybutton.className = ' btn btn-primary border border-secondary p-2 m-2 cargarformulario';
+            readybutton.className = /*' btn btn-info border border-secondary p-2 m-2*/'cargarformulario';
             readybutton.type = "button";
             readybutton.id = "readybutton";
             readybutton.addEventListener('click', clickReadyButton);
             //readybutton.onclick=function(){return clickReadyButton() }; 
 
-            var myTBody = document.getElementById("measurementTBodyNumero");
+            var myTBody = document.getElementById("botonReady");
+            myTBody.innerHTML='';
             myTBody.append(readybutton);
         }
     };
@@ -844,7 +850,7 @@ function clickReadyButton(e) {
     var selectedlinea_mtp = document.getElementById("measurementlinea_mtpSelect");
     var selectedmedicion = document.getElementById("measurementmedicionMedicion");
     if (selectedlinea_mtp && selectedlinea_mtp.value == 'notselected') {
-        alert('Elige Linea MTP');
+        alert('Elige Linea TIM');
         return;
     }
     if (selectedPunto && selectedPunto.value == 'notselected') {
@@ -1091,13 +1097,14 @@ function buildCustomForm(obName, menu, mode) {
     }
     var myTBody = document.getElementById(menu + "TBody" + 'Form');
     var datosField = document.createElement('input');
-    datosField.setAttribute("type", "text");
+    datosField.setAttribute("type", "hidden");    
     datosField.name = 'mode';
     datosField.value = mode;
     datosField.id = 'mode';
     datosField.className = ' modeButton text-dark text-center';
-    datosField.setAttribute("readonly", true);
+    /*datosField.setAttribute("readonly", true);*/
     myTBody.prepend(datosField);
+    
 }
 
 function addOnChangeAdminTable() {

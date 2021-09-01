@@ -11,8 +11,8 @@
       if ($_POST['selectlinea_mtp']=='notselected') {
         $errorlist[]= "Los menus desplegables no deben estar vacios";
       }
+      
       //Upload fotos
-
       if(sizeof($errorlist)==0){
         $target_dir = "../storage/shp/";
         $target_file = $target_dir . basename($_FILES['excelFromUser']["name"]);
@@ -217,11 +217,11 @@
 
             while (true && sizeof($errorlist)==0){
 			  if ($spreadsheet->getSheetByName($sheetobs)->getCell("A{$row_number}")->getValue()==NULL &&
-			  $spreadsheet->getSheetByName($sheetobs)->getCell("B{$row_number}")->getValue()==NULL && 
-			  $spreadsheet->getSheetByName($sheetobs)->getCell("C{$row_number}")->getValue()==NULL && 
-			  $spreadsheet->getSheetByName($sheetobs)->getCell("D{$row_number}")->getValue()==NULL && 
-			  $spreadsheet->getSheetByName($sheetobs)->getCell("E{$row_number}")->getValue()==NULL){
-                break;
+                $spreadsheet->getSheetByName($sheetobs)->getCell("B{$row_number}")->getValue()==NULL && 
+                $spreadsheet->getSheetByName($sheetobs)->getCell("C{$row_number}")->getValue()==NULL && 
+                $spreadsheet->getSheetByName($sheetobs)->getCell("D{$row_number}")->getValue()==NULL && 
+                $spreadsheet->getSheetByName($sheetobs)->getCell("E{$row_number}")->getValue()==NULL){
+                    break;
               }else{
                   $letter = 'A';
                   //scan across columns
@@ -339,14 +339,13 @@
 					
 					$obspost["row{$true_row}*observacion_{$lifeform}*{$newobscolumn}"] = $obsvalue;
                     
-                    $letter = ++$letter;
+                    $letter++;
 				  }
 				  if(!isset($obspost["row{$true_row}*observacion_{$lifeform}*species"])){
 					$errorlist[]= "{$sheetobs}, {$true_row} no tiene especie";
 				  }
-                  $true_row=$true_row+1;
-                
-                $row_number=$row_number+1;
+                  $true_row++;
+                  $row_number++;
                 }
 			}//end scan rows of observacions
 			if (!$emptylocationsheet){
@@ -375,10 +374,11 @@
           $errorlist[]="{$fotonameexcel} no fue encontrado. Hay que subir fotos con los mismos nombres de los que estan en excel";
         }
       }
+
 	  //Check if Medicion already exist
 		if(sizeof($errorlist)==0){
-			$spanishdate = substr($medicionpost['row0*medicion*fecha'], 3, 2) .'-'.  substr($medicionpost['row0*medicion*fecha'], 0, 2) .'-'. substr($medicionpost['row0*medicion*fecha'], 6);
-			$checkold =trim(explode("*" , $medicionpost['selectlinea_mtp'])[0]).'*'.$spanishdate;
+            $spanishdate = date('d-m-Y', strtotime(str_replace('-','/',$medicionpost['row0*medicion*fecha'])));
+            $checkold =trim(explode("*" , $medicionpost['selectlinea_mtp'])[0]).'*'.$spanishdate;
 			if (sizeof(DB::select("Select iden from medicion where iden_nombre=?", [$checkold]))>0){
 				$errorlist[]="Ya existe una medicion para esta linea y fecha.";
 			}
@@ -386,7 +386,6 @@
 
 		//Make sure all neccessary columns are present
 		if(sizeof($errorlist)==0){
-			
 			foreach ($obspostarray as $currentobspost) {
 				$transpunto="punto";
 				$lifeform = $currentobspost['selectobservaciones'];
@@ -426,17 +425,15 @@
 		}
 	
 	  //save all if no errors
-	  
-
       if(sizeof($errorlist)==0){
-		$newmedicion = savedata($medicionpost,$_FILES, $useremail,true);
+        //$newmedicion = savedata($medicionpost,$_FILES, $useremail,true);
+        $newmedicion = savedata($medicionpost, $useremail,true);
         foreach ($obspostarray as $currentobspost) {
 		  $currentobspost['selectmedicion'] = $newmedicion;
 			
 		  $saveworked = savedata($currentobspost,$useremail,true);
 		  if ($saveworked=='false'){
 			$errorlist[]="Hubo problema guardando datos.";
-			echo var_dump(session('error'));
 		  }
           
         }

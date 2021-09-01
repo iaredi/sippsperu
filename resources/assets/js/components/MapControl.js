@@ -25,14 +25,14 @@ class MapControl extends React.Component {
   render() {
     return (
       <div>
-        <div className="form-group row  justify-content-start align-items-center p-1 mx-3">
+        <div className="form-group">
           <div className="p-2">
             <label className="table_option"> Clase</label>
             <select
               name="table_option"
               id="table_option"
               onChange={this.handleSpeciesChange}
-              className="table_option form-control "
+              className="table_option"/* form-control "*/
             >
               <option value="ave">Ave</option>
               <option value="hierba">Hierba</option>
@@ -48,7 +48,7 @@ class MapControl extends React.Component {
               name="table_option"
               id="table_option"
               onChange={this.handleTotalDistinctChange}
-              className="table_option form-control "
+              className="table_option"/* form-control "*/
             >
               <option value="total_observaciones">Total</option>
               <option value="distinct_species">Distincto</option>
@@ -56,7 +56,7 @@ class MapControl extends React.Component {
 			
 		  </div>
           <div className="p-2">
-            <label className="style_option">Max Numero por colores</label>
+            <label className="style_option">Max N&uacute;mero por colores</label>
             <input
               name="maxNumber"
               type="number"
@@ -64,7 +64,7 @@ class MapControl extends React.Component {
               value={this.props.mapSettings.maxValue}
               id="table_optionOpacity"
               onChange={this.handleMaxChange}
-              className="table_option form-control "
+              className="table_option"/* form-control "*/
             />
           </div>
           <div className="p-2">
@@ -74,7 +74,7 @@ class MapControl extends React.Component {
               id="table_optionOpacity"
               defaultValue="0.6"
               onChange={this.handleOpacityChange}
-              className="table_option form-control "
+              className="table_option"/* form-control "*/
             >
               <option value="1.0">1.0</option>
               <option value="0.8">0.8</option>

@@ -123,7 +123,7 @@ class UpdateBuilder extends React.Component {
 							/>
 							<input 
 								type="submit" 
-								className="border border-secondary btn btn-success mySubmit p-2 m-2"
+								className=""
 							/>
 						</div>
 					}

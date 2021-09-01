@@ -7,13 +7,6 @@
 				$sql = "DELETE FROM actividad WHERE descripcion= ?";
                 $numrows =DB::delete($sql, [$_POST['selectactividad']]);
 			}
-
-
-
-		// $actividadcolumns=array(
-		// 		"clave"=> $newpost['row0*estado*clave'],
-		// 		"nombre"=> $newpost['row0*estado*nombre']
-		// 	);
 			$unitcolumns=buildcolumnsarray($newpost,"actividad", "row0");
 			$unitcolumns["iden_estado"]=askforkey("estado", "clave", "nombre", $newpost['selectestado']);
 

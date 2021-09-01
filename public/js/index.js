@@ -5905,8 +5905,10 @@ Map.include({
 
 		function createCorner(vSide, hSide) {
 			var className = l + vSide + ' ' + l + hSide;
-
-			corners[vSide + hSide] = create$1('div', className, container);
+            if(vSide=="top" && hSide=="right"){
+                className += ' zindextop';   
+            }    
+            corners[vSide + hSide] = create$1('div', className, container);
 		}
 
 		createCorner('top', 'left');
@@ -15850,7 +15852,7 @@ var Map = function (_React$Component) {
 
             var imagery = _leaflet2.default.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
                 attribution: '&copy; <a href="http://www.esri.com/">Esri</a>i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-                maxZoom: 18
+                maxZoom: 18, zIndex:1000
             });
             imagery['category'] = 'Base';
 
@@ -15897,7 +15899,7 @@ var Map = function (_React$Component) {
                         style: myStyle
                     });
                 }
-                if (item.tableName == "linea_mtp" || item.tableName == "udp_puebla_4326") {
+                if (item.tableName == "linea_mtp" || item.tableName == "udp_puebla_4326" ) {
                     c2.addTo(mymap);
                 }
                 c2['category'] = item.category;
@@ -15910,9 +15912,10 @@ var Map = function (_React$Component) {
                 var dynamicLayer = "notset";
                 var overlayMaps = _this2.overlayMaps || {};
                 var actividadArray = [];
+                var cultivoArray = [];
                 array.forEach(function (item) {
                     var myLayer = get_shp(item, mymap, getColor, getOutline);
-                    if (item.tableName == "udp_puebla_4326") {
+                    if (item.tableName == "udp_puebla_4326" /*|| item.tableName=="usershapes"*/) {
                         dynamicLayer = myLayer;
                         mymap.fitBounds(myLayer.getBounds());
                         mymap.setZoom(7.5);
@@ -15934,14 +15937,21 @@ var Map = function (_React$Component) {
                             actividadLG['category'] = 'Monitoreo Activo';
                             overlayMaps['Acciones'] = actividadLG;
                         }
-                    } else {
+                    } else if(item.displayName.includes('Cultivos')){
+                        cultivoArray.push(myLayer);
+                        if (cultivoArray.length == 2) {
+                            var cultivoLG = _leaflet2.default.layerGroup(cultivoArray);
+                            cultivoLG['category'] = 'Monitoreo Activo';
+                            overlayMaps['Cultivos'] = cultivoLG;
+                        }
+                    }else{
                         overlayMaps[item.displayName] = myLayer;
                     }
                 });
 
-                var tempraster = _leaflet2.default.tileLayer("temptiles/{z}/{x}/{y}.png", { enable: true, tms: true, opacity: 0.8, attribution: "" });
+                /*var tempraster = _leaflet2.default.tileLayer("temptiles/{z}/{x}/{y}.png", { enable: true, tms: true, opacity: 0.8, attribution: "" });
                 tempraster.category = 'Referencial';
-                overlayMaps["Escenario85_2099_Temp_UNIATMOS_2015"] = tempraster;
+                overlayMaps["Escenario85_2099_Temp_UNIATMOS_2015"] = tempraster;*/
 
                 var compare = function compare(a, b) {
                     if (a.category == 'Base') {
@@ -15986,7 +15996,7 @@ var Map = function (_React$Component) {
             });
 
             //Sus Datos Legend
-            var susDatosLegend = _leaflet2.default.control({ position: "bottomleft" });
+            var susDatosLegend = _leaflet2.default.control({ position: "bottomleft",zIndex:10 });
             this.makeDiv = function () {
                 var div = _leaflet2.default.DomUtil.create("div", "info legend"),
                     grades = [],
@@ -18849,14 +18859,16 @@ var Mapapp = function (_React$Component) {
 		_this.setRasterValue = _this.setRasterValue.bind(_this);
 
 		_this.state = {
-			currentUdpId: -1,
+            currentUdpId: -1,
+            currentPoligonoId: -1,
 			currentLineaId: -1,
 			rasterOn: false,
 			speciesResult: [],
 			previous: 0,
 			udp: 0,
 			udpButton: false,
-			lineaButton: false,
+            lineaButton: false,
+            poligonoButton: false,
 			clickLocation: { lat: 999.9, lng: 999.9 },
 			mapSettings: {
 				distinctOrTotal: "total_observaciones",
@@ -18979,7 +18991,10 @@ var Mapapp = function (_React$Component) {
 			var _this3 = this;
 
 			if (!this.state.rasterOn) {
-				var idtype = event.target.feature.properties.name == "udp_puebla_4326" ? "udp" : event.target.feature.properties.name == "linea_mtp" ? "linea_mtp" : "other";
+                var idtype = event.target.feature.properties.name == "udp_puebla_4326" ? 
+                    "udp" : event.target.feature.properties.name == "linea_mtp" ? 
+                    "linea_mtp" : event.target.feature.properties.name == "usershapes" ? 
+                    "poligono" : "other";
 
 				this.setState(function () {
 					return {
@@ -18990,7 +19005,13 @@ var Mapapp = function (_React$Component) {
 					return {
 						lineaButton: idtype == "linea_mtp" ? true : false
 					};
+                });
+                this.setState(function () {
+					return {
+						poligonoButton: idtype == "poligono" ? true : false
+					};
 				});
+                               
 
 				this.setState(function () {
 					return {
@@ -19002,7 +19023,14 @@ var Mapapp = function (_React$Component) {
 					return {
 						currentUdpId: event.target.feature.properties.iden
 					};
-				});
+                });
+
+                this.setState(function () {
+					return {
+						currentPoligonoId: event.target.feature.properties.iden
+					};
+                });
+                
 
 				var myColor = "green";
 				var myWeight = 5;
@@ -19125,23 +19153,23 @@ var Mapapp = function (_React$Component) {
 							_react2.default.createElement(
 								"a",
 								{
-									className: "btn btn-primary m-2 btn-sm mapInfoButton",
+									className: "btn btn-info m-2 btn-sm button",
 									href: "/mostrarnormas/ae/" + this.state.currentLineaId + 'l',
 									role: "button"
 								},
 								" ",
-								"Atributos Ecologicos",
+								"Atributos Ecol\xF3gicos",
 								" "
 							),
 							_react2.default.createElement(
 								"a",
 								{
-									className: "btn btn-primary m-2 btn-sm mapInfoButton",
-									href: "/mostrarnormas/normas/" + this.state.currentUdpId + 'l',
+									className: "btn btn-info m-2 btn-sm button",
+									href: "/mostrarnormas/normas/" + this.state.currentLineaId + 'l',
 									role: "button"
 								},
 								" ",
-								"Especies y Normas 059"
+								"Especies en peligro de extinción"
 							)
 						),
 						this.state.udpButton && _react2.default.createElement(
@@ -19153,33 +19181,33 @@ var Mapapp = function (_React$Component) {
 								_react2.default.createElement(
 									"a",
 									{
-										className: "btn btn-primary m-2 btn-sm mapInfoButton",
+										className: "btn btn-info m-2 btn-sm button",
 										href: "/mostrarnormas/ae/" + this.state.currentUdpId + 'u',
 										role: "button"
 									},
 									" ",
-									"Attributos Ecologicos",
+									"Atributos Ecol\xF3gicos",
 									" "
 								),
 								_react2.default.createElement(
 									"a",
 									{
-										className: "btn btn-primary m-2 btn-sm mapInfoButton",
+										className: "btn btn-info m-2 btn-sm button",
 										href: "/mostrarnormas/normas/" + this.state.currentUdpId + 'u',
 										role: "button"
 									},
 									" ",
-									"Especies y Normas 059"
+									"Especies en peligro de extinción"
 								),
 								_react2.default.createElement(
 									"a",
 									{
-										className: "btn btn-primary m-2 btn-sm mapInfoButton",
+										className: "btn btn-info m-2 btn-sm button",
 										href: "/udpmapa/inf/" + this.state.currentUdpId + "/" + (this.state.featureInfo.properties.shannon_arbol + "*" + this.state.featureInfo.properties.shannon_arbusto + "*" + this.state.featureInfo.properties.shannon_ave + "*" + this.state.featureInfo.properties.shannon_hierba + "*" + this.state.featureInfo.properties.shannon_herpetofauna + "*" + this.state.featureInfo.properties.shannon_mamifero),
 										role: "button"
 									},
 									" ",
-									"Infrastructura",
+									"Infraestructura",
 									" "
 								)
 							),
@@ -19189,18 +19217,18 @@ var Mapapp = function (_React$Component) {
 								_react2.default.createElement(
 									"a",
 									{
-										className: "btn btn-primary m-2 btn-sm mapInfoButton",
+										className: "btn btn-info m-2 btn-sm button",
 										href: "/mostrarnormas/in/" + this.state.currentUdpId,
 										role: "button"
 									},
 									" ",
-									"Instrumentos de Gestion Territorial",
+									"Instrumentos de Gesti\xF3n Territorial",
 									" "
 								),
 								_react2.default.createElement(
 									"a",
 									{
-										className: "btn btn-primary m-2 btn-sm mapInfoButton",
+										className: "btn btn-info m-2 btn-sm button",
 										href: "/udpmapa/sue/" + this.state.currentUdpId + "/" + (this.state.featureInfo.properties.shannon_arbol + "*" + this.state.featureInfo.properties.shannon_arbusto + "*" + this.state.featureInfo.properties.shannon_ave + "*" + this.state.featureInfo.properties.shannon_hierba + "*" + this.state.featureInfo.properties.shannon_herpetofauna + "*" + this.state.featureInfo.properties.shannon_mamifero),
 										role: "button"
 									},
@@ -19209,8 +19237,74 @@ var Mapapp = function (_React$Component) {
 									" "
 								)
 							)
-						)
-					)
+                        ),
+                        this.state.poligonoButton && _react2.default.createElement(
+							"div",
+							null,
+							_react2.default.createElement(
+								"div",
+								null,
+								_react2.default.createElement(
+									"a",
+									{
+										className: "btn btn-info m-2 btn-sm button",
+										href: "/mostrarnormas/ae/" + this.state.currentPoligonoId + 'p',
+										role: "button"
+									},
+									" ",
+									"Atributos Ecol\xF3gicos",
+									" "
+								),
+								_react2.default.createElement(
+									"a",
+									{
+										className: "btn btn-info m-2 btn-sm button",
+										href: "/mostrarnormas/normas/" + this.state.currentPoligonoId + 'p',
+										role: "button"
+									},
+									" ",
+									"Especies en peligro de extinción"
+								),
+								_react2.default.createElement(
+									"a",
+									{//TODO - el id se repetirá para shapes y udps
+										className: "btn btn-info m-2 btn-sm button",
+										href: "/udpmapa/inf/" + this.state.currentPoligonoId + "p/" + (this.state.featureInfo.properties.shannon_arbol + "*" + this.state.featureInfo.properties.shannon_arbusto + "*" + this.state.featureInfo.properties.shannon_ave + "*" + this.state.featureInfo.properties.shannon_hierba + "*" + this.state.featureInfo.properties.shannon_herpetofauna + "*" + this.state.featureInfo.properties.shannon_mamifero),
+										role: "button"
+									},
+									" ",
+									"Infraestructura",
+									" "
+								)
+							),
+							_react2.default.createElement(
+								"div",
+								null,
+								_react2.default.createElement(
+									"a",
+									{
+										className: "btn btn-info m-2 btn-sm button",
+										href: "/mostrarnormas/in/" + this.state.currentPoligonoId + 'p',
+										role: "button"
+									},
+									" ",
+									"Instrumentos de Gesti\xF3n Territorial",
+									" "
+								),
+								_react2.default.createElement(
+									"a",
+									{
+										className: "btn btn-info m-2 btn-sm button",
+										href: "/udpmapa/sue/" + this.state.currentPoligonoId + "p/" + (this.state.featureInfo.properties.shannon_arbol + "*" + this.state.featureInfo.properties.shannon_arbusto + "*" + this.state.featureInfo.properties.shannon_ave + "*" + this.state.featureInfo.properties.shannon_hierba + "*" + this.state.featureInfo.properties.shannon_herpetofauna + "*" + this.state.featureInfo.properties.shannon_mamifero),
+										role: "button"
+									},
+									" ",
+									"Fragmentaci\xF3n Ambiental",
+									" "
+								)
+							)
+                        )
+                    )
 				)
 			);
 		}
@@ -19289,22 +19383,22 @@ var MapControl = function (_React$Component) {
         null,
         _react2.default.createElement(
           "div",
-          { className: "form-group row  justify-content-start align-items-center p-1 mx-3" },
+          { className: "form-group" },
           _react2.default.createElement(
             "div",
             { className: "p-2" },
             _react2.default.createElement(
               "label",
               { className: "table_option" },
-              " Clase"
+              "Clase: "
             ),
             _react2.default.createElement(
               "select",
               {
                 name: "table_option",
                 id: "table_option",
-                onChange: this.handleSpeciesChange,
-                className: "table_option form-control "
+                onChange: this.handleSpeciesChange/*,
+                className: "table_option form-control "*/
               },
               _react2.default.createElement(
                 "option",
@@ -19344,7 +19438,7 @@ var MapControl = function (_React$Component) {
             _react2.default.createElement(
               "label",
               { className: "table_option" },
-              "Especies"
+              "Especies: "
             ),
             _react2.default.createElement(
               "select",
@@ -19352,7 +19446,7 @@ var MapControl = function (_React$Component) {
                 name: "table_option",
                 id: "table_option",
                 onChange: this.handleTotalDistinctChange,
-                className: "table_option form-control "
+                className: "table_option"/* form-control "*/
               },
               _react2.default.createElement(
                 "option",
@@ -19372,7 +19466,7 @@ var MapControl = function (_React$Component) {
             _react2.default.createElement(
               "label",
               { className: "style_option" },
-              "Max Numero por colores"
+              "Max n\u00FAmero por colores: "
             ),
             _react2.default.createElement("input", {
               name: "maxNumber",
@@ -19381,7 +19475,7 @@ var MapControl = function (_React$Component) {
               value: this.props.mapSettings.maxValue,
               id: "table_optionOpacity",
               onChange: this.handleMaxChange,
-              className: "table_option form-control "
+              className: "table_option"/* form-control "*/
             })
           ),
           _react2.default.createElement(
@@ -19390,7 +19484,7 @@ var MapControl = function (_React$Component) {
             _react2.default.createElement(
               "label",
               { className: "style_option" },
-              "Opacidad"
+              "Opacidad: "
             ),
             _react2.default.createElement(
               "select",
@@ -19399,7 +19493,7 @@ var MapControl = function (_React$Component) {
                 id: "table_optionOpacity",
                 defaultValue: "0.6",
                 onChange: this.handleOpacityChange,
-                className: "table_option form-control "
+                className: "table_option"/* form-control "*/
               },
               _react2.default.createElement(
                 "option",
@@ -19430,15 +19524,15 @@ var MapControl = function (_React$Component) {
           ),
           _react2.default.createElement(
             "div",
-            { className: "pt-4" },
+            { className: "pt-4 centered" },
             _react2.default.createElement(
               "a",
               {
-                className: "btn btn-info btn-sm m-2",
+                className: "button",
                 href: "/cargarshapes",
                 role: "button"
               },
-              "Cargar Shapefile de Predio"
+              "Cargar polígono"
             )
           )
         )
@@ -19480,7 +19574,10 @@ function FeatureInfoDisplay(props) {
 		allComplete = false;
 	}
 	var allTableRows = [];
-	if (props.featureInfo.properties.displayName == "Linea MTP" || props.featureInfo.properties.displayName == "Unidad de Paisaje") {
+    if (props.featureInfo.properties.displayName == "Linea TIM" 
+        || props.featureInfo.properties.displayName == "Unidad de Paisaje" 
+        || props.featureInfo.properties.displayName == "Poligonos"
+        || props.featureInfo.properties.displayName == "Microcuencas") {
 		var lifeForms = ["arbol", "arbusto", "hierba", "ave", "herpetofauna", "mamifero", "Dato acumulado"];
 		var categoryList = ["total_observaciones", "distinct_species", "dominancia", "shannon", "biodiversidad_verdadera"];
 		var myIcons = {
@@ -19587,7 +19684,7 @@ function FeatureInfoDisplay(props) {
 			{ className: "container" },
 			_react2.default.createElement(
 				"div",
-				{ className: "flex-column d-flex justify-content-around align-items-center p-1 centeralign" },
+				/*{ className: "flex-column d-flex justify-content-around align-items-center p-1 centeralign" }*/ null,
 				props.clicked && _react2.default.createElement(
 					"div",
 					null,
@@ -19619,13 +19716,16 @@ function FeatureInfoDisplay(props) {
 			condensed: true,
 			noDataIndication: "No hay datos"
 		}),
-		(props.featureInfo.properties.displayName == "Linea MTP" || props.featureInfo.properties.displayName == "Unidad de Paisaje") && !allComplete && _react2.default.createElement(
+		(props.featureInfo.properties.displayName == "Linea TIM" 
+            || props.featureInfo.properties.displayName == "Unidad de Paisaje" 
+            || props.featureInfo.properties.displayName == "Poligonos"
+            || props.featureInfo.properties.displayName == "Microcuencas") && !allComplete && _react2.default.createElement(
 			"div",
 			{ className: "centeralign" },
 			_react2.default.createElement(
 				"p",
 				{ className: "makeBold" },
-				props.featureInfo.properties.displayName == "Unidad de Paisaje" ? "*Hay lineas incompletas en esta UDP*" : '* significa que datos son de un linea MTP incompleta'
+				props.featureInfo.properties.displayName == "Unidad de Paisaje" ? "*Hay lineas incompletas en esta UDP*" : '* * estos datos son de una linea TIM incompleta'
 			)
 		)
 	);
@@ -25144,10 +25244,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var upstreamLinea = { estado: 'nombre', municipio: 'nombre', predio: 'iden_muni_predio' };
 var upstreamActividad = { estado: 'nombre', municipio: 'nombre' };
+var upstreamCultivo = { estado: 'nombre', municipio: 'nombre' };
 var actividadSelectObject = { tipo: ['', 'taller', 'plactica', 'capacitacion', 'instalacion', 'reunion de coordinacion en torno', 'otro'],
+    tipo_geom: ['', 'punto', 'poligono'] };
+var cultivoSelectObject = { tipo: ['', 'parcela', 'terreno', 'jardin', 'otro'],
 	tipo_geom: ['', 'punto', 'poligono'] };
 var components = {
 	udp: _react2.default.createElement(_udpMapapp2.default, null),
+    poligono: _react2.default.createElement(_udpMapapp2.default, null),
 	in: _react2.default.createElement(_Intersection2.default, null),
 	normas: _react2.default.createElement(_Normaapp2.default, null),
 	map: _react2.default.createElement(_Mapapp2.default, null),
@@ -25163,6 +25267,13 @@ var components = {
 		displayColumn: "descripcion",
 		upstreamTables: upstreamActividad,
 		selectObject: actividadSelectObject,
+		extra: true
+    }),
+    cultivo: _react2.default.createElement(_UpdateBuilder2.default, {
+		table: "cultivo",
+		displayColumn: "descripcion",
+		upstreamTables: upstreamCultivo,
+		selectObject: cultivoSelectObject,/*yared*/
 		extra: true
 	})
 };
@@ -45298,7 +45409,7 @@ var Normaapp = function (_React$Component) {
       var _this2 = this;
 
       var idennumforapi = idennum.slice(0, -1);
-      var idtype = idennum.slice(-1) == 'u' ? 'udp' : 'linea_mtp';
+      var idtype = idennum.slice(-1) == 'u' ? 'udp' : idennum.slice(-1) == 'p'? 'poligono':'linea_mtp';
       var processArray = function () {
         var _ref = _asyncToGenerator( /*#__PURE__*/_regenerator2.default.mark(function _callee(array) {
           var _loop, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step, item;
@@ -45308,14 +45419,20 @@ var Normaapp = function (_React$Component) {
               switch (_context.prev = _context.next) {
                 case 0:
                   _loop = function _loop(item) {
-                    (0, _fetchData2.default)('getspecies', { lifeform: item.toLowerCase(), idtype: idtype, idnumber: idennumforapi, useremail: document.getElementById("useremail").textContent }).then(function (myspeciesResult) {
-                      var newObject = {};
-                      console.log(myspeciesResult[1]);
-                      newObject["speciesResult" + item] = myspeciesResult[0];
-                      _this2.setState(function (prevState) {
-                        return newObject;
-                      });
-                    });
+                    (0, _fetchData2.default)('getspecies', { 
+                        lifeform: item.toLowerCase(), 
+                        idtype: idtype, 
+                        idnumber: idennumforapi, 
+                        useremail: document.getElementById("useremail").textContent 
+                    }).then(
+                            function (myspeciesResult) {
+                                var newObject = {};
+                                console.log(myspeciesResult[1]);
+                                newObject["speciesResult" + item] = myspeciesResult[0];
+                                _this2.setState(function (prevState) {
+                                    return newObject;
+                                });
+                            });
                   };
 
                   _iteratorNormalCompletion = true;
@@ -45580,10 +45697,10 @@ var SpeciesDisplay = function (_React$Component) {
         text: '#'
       }, {
         dataField: 'comun',
-        text: 'Comun'
+        text: 'Común'
       }, {
         dataField: 'cientifico',
-        text: 'Cientifico'
+        text: 'Científico'
       }];
       if (infotype == 'normas') {
         columns.push({
@@ -45594,11 +45711,14 @@ var SpeciesDisplay = function (_React$Component) {
           text: 'Subespecie Enlistada'
         }, {
           dataField: 'categoria',
-          text: 'Categoria '
+          text: 'Categoría '
         }, {
           dataField: 'distribution',
-          text: 'Distribution '
-        });
+          text: 'Distribución '
+        }, {
+            dataField: 'registrop',//registro previo
+            text: 'Registro Previo '
+          });
       } else {
         if (this.props.lifeform == 'arbol' || this.props.lifeform == 'arbusto') {
           columns.push({
@@ -45617,7 +45737,10 @@ var SpeciesDisplay = function (_React$Component) {
           text: 'Abundancia Relativa'
         }, {
           dataField: 'frequencia',
-          text: 'Frequencia '
+          text: 'Frecuencia '
+        },{
+          dataField: 'regPrevios',
+          text: 'Registros Previos '
         });
         //This could be combined with the part below
 
@@ -46191,7 +46314,7 @@ var UDPMapa = function (_React$Component) {
             style: myStyle
           });
         }
-        if (item.tableName == 'udp_puebla_4326') {
+        if (item.tableName == 'udp_puebla_4326'||item.tableName=='usershapes') {
           addLast.push(c2);
         } else {
           c2.addTo(mymap);
@@ -46207,9 +46330,9 @@ var UDPMapa = function (_React$Component) {
           if (item.tableName !== "usos_de_suelo4") {
             var myLayer = get_shp(item, mymap);
             overlayMaps[item.displayName] = myLayer;
-            if (item.tableName == "udp_puebla_4326") {
+            if (item.tableName == "udp_puebla_4326" || item.tableName == "usershapes") {
               mymap.fitBounds(myLayer.getBounds());
-              mymap.setZoom(13.6), bounds = mymap.getBounds();
+              /*mymap.setZoom(13.6), */bounds = mymap.getBounds();
               setStateBounds(mymap.getBounds());
               udpiden = item.sql.split("'")[1];
             }
@@ -46220,7 +46343,8 @@ var UDPMapa = function (_React$Component) {
               east: bounds._northEast.lng,
               south: bounds._southWest.lat,
               west: bounds._southWest.lng,
-              udpiden: udpiden
+              udpiden: udpiden,
+              headerType: item.headerType
             }).then(function (returnData) {
               setMuni(JSON.parse(returnData[returnData.length - 1]));
 
@@ -46256,8 +46380,8 @@ var UDPMapa = function (_React$Component) {
       };
 
       processArray(udpsomething, this.map, this.setStateBounds, this.setSoils, this.setInfra, this.setMuni);
-      this.map.scrollWheelZoom.disable();
-      _leaflet2.default.control.scale({ imperial: false }).addTo(this.map);
+      //this.map.scrollWheelZoom.disable();
+      //_leaflet2.default.control.scale({ imperial: false }).addTo(this.map);
 
       //Make map static
       var lyrcont = document.getElementsByClassName("leaflet-control-attribution")[0];
@@ -46330,7 +46454,7 @@ function Blist(props) {
       " ",
       _react2.default.createElement("circle", { cx: "10", cy: "5", r: "3", stroke: "black", strokeWidth: "1", fill: "yellow" }),
       " "
-    ) : _react2.default.createElement("div", { className: "legendlines", id: props.descripcio }),
+    ) : _react2.default.createElement("div", { className: "legendlines", id: props.descripcio.replaceAll(' ','_') }),
     _react2.default.createElement(
       "p",
       { className: "legendp" },
@@ -46348,7 +46472,7 @@ function Legend(props) {
     });
   });
   var finalItemsList = [];
-  finalItemsList = maptype == 'sue' ? ["CORRIENTE_DE_AGUA", "MANANTIAL"] : maptype == 'inf' ? ["CARRETERA", "CALLE", "CAMINO", "LINEA_DE_TRANSMISION", "BORDO", "EDIFICACION"] : null;
+  finalItemsList = maptype == 'sue' ? ["CORRIENTE_DE_AGUA", "MANANTIAL"] : maptype == 'inf' ? ["AFIRMADO", "ASFALTADO", "PAVIMENTO BASICO", "PAVIMENTO RIGIDO", "PROYECTADO", "SIN AFIRMAR","RED VECINAL SIN INFORMACION","TROCHA"] : null;
 
   var finalItems = finalItemsList.map(function (name) {
     return _react2.default.createElement(Blist, { key: name, descripcio: name });
@@ -46430,9 +46554,10 @@ var ParchesTable = function (_React$Component) {
       var maxname = "";
       var listofareas = {};
       var allParches = this.props.udpsoils.map(function (parche) {
+        parche.area/=10000;//se divide entre 10000 para obtener las hectáreas
         parche.continuidad = parche.aislado ? "Aislado" : "Continuo";
         parche.cobertura = (100 * parseFloat(parche.area) / parche.totalarea).toPrecision(4).toString() + "%";
-        parche.area = (parseFloat(parche.area) * (2500 / 0.00218206963154496)).toPrecision(4);
+        parche.area = (parseFloat(parche.area)).toPrecision(4);
 
         descripcioSet.add(parche.descripcio);
         if (parche.area > maxarea) {
@@ -46454,7 +46579,7 @@ var ParchesTable = function (_React$Component) {
         if (parchetotal[parche.descripcio] > largestTypeArea) {
           largestTypeName = parche.descripcio;
           largestTypeArea = parchetotal[parche.descripcio];
-          largestTypeCobertura = largestTypeArea / 25;
+          largestTypeCobertura = largestTypeArea / parche.totalarea*100;
         }
         if (!parche.aislado) continuoList.push(parche.descripcio);
         return parche;
@@ -46470,7 +46595,7 @@ var ParchesTable = function (_React$Component) {
       this.setState({ allParches: allParches });
 
       var allParchesSum = [{
-        name: "REQUEZA DE TIPOS DE PARCHE",
+        name: "RIQUEZA DE TIPOS DE PARCHE",
         number: descripcioSet.size,
         nombre: "-"
       }, { name: "ABUNDANCIA DE PARCHES", number: allParches.length, nombre: "-" }, { name: "PARCHES CONTINUOS", number: continuoList.length, nombre: "-" }, {
@@ -46479,11 +46604,11 @@ var ParchesTable = function (_React$Component) {
         nombre: "-"
       }, {
         name: "DOMINANCIA ENTRE TAMANOS DE PARCHE",
-        number: (maxarea / 2500).toPrecision(4),
+        number: (maxarea / allParches[0].totalarea).toPrecision(4),
         nombre: maxname
       }, {
         name: "DOMINANCIA ENTRE TIPOS DE PARCHE",
-        number: (largestTypeArea / 2500).toPrecision(4),
+        number: (largestTypeArea / allParches[0].totalarea).toPrecision(4),
         nombre: largestTypeName
       }];
       this.setState({ allParchesSum: allParchesSum });
@@ -46491,6 +46616,7 @@ var ParchesTable = function (_React$Component) {
       var agualength = (allParches[0].agualength / 1000).toPrecision(4);
       var aguacount = allParches[0].aguacount;
       var aguaarea = (allParches[0].aguaarea / 10000).toPrecision(4);
+          var dispersionH = agualength/allParches[0].totalarea;
 
       var dataAguaLinea = [{
         elemento: "Corriente  de agua",
@@ -46511,7 +46637,17 @@ var ParchesTable = function (_React$Component) {
 
       this.setState({ dataAguaLinea: dataAguaLinea });
 
-      var descriptionString = "La Unidad de Paisaje         (UP) " + idennum + "  presenta una riqueza de parches igual a " + descripcioSet.size + " y una abundancia de parches         igual a " + allParches.length + ". De estos parches, " + continuoList.length + " son continuos presentando         una raz\xF3n de continuidad de" + (continuoList.length / allParches.length).toPrecision(4) + ". Dentro de los aproximadamente 2500 hecatares que         conforman la UP , el Uso de Suelo y Vegetaci\xF3n (USV) m\xE1s dominante es " + largestTypeName + " \n        que representa el " + largestTypeCobertura.toPrecision(4) + "%  \n        del \xE1rea total de la unidad y est\xE1 dividido en         " + listofareas[largestTypeName].length + " parches de " + listofareas[largestTypeName] + " hect\xE1reas respectivamente. El parche de mayor         tama\xF1o corresponde al USV de " + maxname + " con un \xE1rea de        aproximadamente " + maxarea + " hect\xE1reas. La dominancia entre tama\xF1os de parche dentro de esta UP es         de " + (maxarea / 2500).toPrecision(4) + ", mientras que la dominancia entre tipos de parche es igual         a " + (largestTypeArea / 2500).toPrecision(4) + ". Esta UP presenta adem\xE1s una raz\xF3n de dispersi\xF3n h\xEDdrica de 0.00096         con corrientes de agua que cubren un total de " + agualength + " kilometros lineales; as\xED          como una densidad de cuerpos de agua de " + (aguaarea / 2500).toPrecision(4) + " y un \xE1rea de " + aguaarea + " hect\xE1reas.";
+      var uAnalisis=infotype=='udp'?'La unidad de Paisaje (UP) ':'El pol\xEDgono ';
+      var descriptionString = uAnalisis + idennum + "  presenta una riqueza de parches igual a " + descripcioSet.size + " y una abundancia de parches igual a " 
+        + allParches.length + ". De estos parches, " + continuoList.length + " son continuos presentando una raz\xF3n de continuidad de " 
+        + (continuoList.length / allParches.length).toPrecision(4) + ". Dentro de las aproximadamente "+Math.ceil(allParches[0].totalarea)+" hectáreas que conforman la UP , el Uso de Suelo y Vegetaci\xF3n (USV) m\xE1s dominante es " 
+        + largestTypeName + " \n que representa el " + largestTypeCobertura.toPrecision(4) + "%  \n del \xE1rea total de la unidad y est\xE1 dividido en " 
+        + listofareas[largestTypeName].length + " parches"/* de " + listofareas[largestTypeName] + " hect\xE1reas respectivamente*/+". El parche de mayor tama\xF1o corresponde al USV de " 
+        + maxname + " con un \xE1rea de aproximadamente " + maxarea + " hect\xE1reas. La dominancia entre tama\xF1os de parche dentro de esta UP es de " 
+        + (maxarea / allParches[0].totalarea).toPrecision(4) + ", mientras que la dominancia entre tipos de parche es igual a " + (largestTypeArea / allParches[0].totalarea).toPrecision(4) 
+        + ". Esta UP presenta adem\xE1s una raz\xF3n de dispersi\xF3n h\xEDdrica de "+dispersionH.toPrecision(4)+" con corrientes  de agua que cubren un total de " 
+        + agualength + " kilometros lineales; as\xED  como una densidad de cuerpos de agua de " + (aguaarea / allParches[0].totalarea).toPrecision(4) + " y un \xE1rea de " 
+        + aguaarea + " hect\xE1reas.";
 
       this.setText(descriptionString);
     }
@@ -46552,9 +46688,6 @@ var ParchesTable = function (_React$Component) {
       }, {
         dataField: "area",
         text: "AREA (h^2)"
-      }, {
-        dataField: "densidad",
-        text: "DENSIDAD (unidades)"
       }];
 
       return _react2.default.createElement(
@@ -46562,7 +46695,7 @@ var ParchesTable = function (_React$Component) {
         null,
         _react2.default.createElement(
           "div",
-          { className: "container" },
+          { className: "container usoSuelo" },
           _react2.default.createElement(
             "div",
             { className: "flex-column d-flex justify-content-around align-items-center p-3" },
@@ -46582,7 +46715,7 @@ var ParchesTable = function (_React$Component) {
         ),
         _react2.default.createElement(
           "div",
-          { className: "container" },
+          { className: "container usoSuelo" },
           _react2.default.createElement(
             "div",
             { className: "flex-column d-flex justify-content-around align-items-center p-3" },
@@ -46602,7 +46735,7 @@ var ParchesTable = function (_React$Component) {
         ),
         _react2.default.createElement(
           "div",
-          { className: "container" },
+          { className: "container usoSuelo" },
           _react2.default.createElement(
             "div",
             { className: "flex-column d-flex justify-content-around align-items-center p-3" },
@@ -46669,40 +46802,49 @@ var InfraTable = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (InfraTable.__proto__ || Object.getPrototypeOf(InfraTable)).call(this, props));
 
     _this.state = {
-      dataInfra: [{
-        elemento: "Bordo",
-        longitud: (_this.props.infraInfo.bordo / 1000).toPrecision(4),
-        densidad: "-"
-      }, {
-        elemento: "Calle",
-        longitud: (_this.props.infraInfo.calle / 1000).toPrecision(4),
-        densidad: "-"
-      }, {
-        elemento: "Camino",
-        longitud: (_this.props.infraInfo.camino / 1000).toPrecision(4),
-        densidad: "-"
-      }, {
-        elemento: "Carretera",
-        longitud: (_this.props.infraInfo.carretera / 1000).toPrecision(4),
-        densidad: "-"
-      }, {
-        elemento: "Edificion",
-        longitud: "-",
-        densidad: _this.props.infraInfo.infCount
-      }, {
-        elemento: "Linea de Transmision",
-        longitud: (_this.props.infraInfo["linea de transmision"] / 1000).toPrecision(4),
-        densidad: "-"
-      }, {
-        elemento: "TOTAL",
-        longitud: ((_this.props.infraInfo["linea de transmision"] + _this.props.infraInfo.bordo + _this.props.infraInfo.camino + _this.props.infraInfo.calle + _this.props.infraInfo.carretera) / 1000).toPrecision(4),
-        densidad: _this.props.infraInfo.infCount
-      }, {
-        elemento: "RAZÓN DE FRAGMENTACIÓN",
-        longitud: ((_this.props.infraInfo["linea de transmision"] + _this.props.infraInfo.bordo + _this.props.infraInfo.camino + _this.props.infraInfo.calle + _this.props.infraInfo.carretera) / 25000000).toPrecision(4),
-        densidad: "-"
-      }]
-    };
+          dataInfra: [
+            {
+                elemento: "Afirmado",
+                longitud: (_this.props.infraInfo.afirmado / 1000).toPrecision(4),
+                densidad: "-"
+              }, {
+                elemento: "Asfaltado",
+                longitud: (_this.props.infraInfo.asfaltado / 1000).toPrecision(4),
+                densidad: "-"
+              }, {
+                elemento: "Pavimento Basico",
+                longitud: (_this.props.infraInfo["pavimento basico"] / 1000).toPrecision(4),
+                densidad: "-"
+              },  {
+                elemento: "Pavimento Rigido",
+                longitud: (_this.props.infraInfo["pavimento rigido"] / 1000).toPrecision(4),
+                densidad: "-"
+              },{
+                elemento: "Proyectado",
+                longitud: (_this.props.infraInfo.proyectado / 1000).toPrecision(4),
+                densidad: "-"
+              },{
+                elemento: "Sin afirmar",
+                longitud: (_this.props.infraInfo["sin afirmar"]/ 1000).toPrecision(4),
+                densidad: "-"
+              }, {
+                elemento: "Red vecinal sin información",
+                longitud: (_this.props.infraInfo["red vecinal sin informacion"]/ 1000).toPrecision(4),
+                densidad: "-"
+              }, {
+                elemento: "Trocha",
+                longitud: (_this.props.infraInfo.trocha/ 1000).toPrecision(4),
+                densidad: "-"
+              },{
+            elemento: "TOTAL",
+            longitud: ((_this.props.infraInfo.afirmado + _this.props.infraInfo.asfaltado + _this.props.infraInfo["pavimento basico"] + _this.props.infraInfo["pavimento rigido"] + _this.props.infraInfo.proyectado + _this.props.infraInfo["sin afirmar"] + _this.props.infraInfo["red vecinal sin informacion"] + _this.props.infraInfo.trocha) / 1000).toPrecision(4),
+            densidad: _this.props.infraInfo.infCount
+          }, {
+            elemento: "RAZÓN DE FRAGMENTACIÓN",
+            longitud: (1/(  _this.props.infraInfo.afirmado + _this.props.infraInfo.asfaltado  + _this.props.infraInfo["pavimento basico"] + _this.props.infraInfo["pavimento rigido"] + _this.props.infraInfo.proyectado + _this.props.infraInfo['sin afirmar'] + _this.props.infraInfo['red vecinal sin informacion'] + _this.props.infraInfo.trocha)).toPrecision(8),
+            densidad: "-"
+          }]
+        };
     _this.setText = _this.setText.bind(_this);
     return _this;
   }
@@ -46733,9 +46875,21 @@ var InfraTable = function (_React$Component) {
         return acc;
       }, []);
 
-      var descriptionString = "En esta Unidad de Paisaje     (UP) " + idennum + " intervienen los siguintes elementos de infraestructura: " + existingNameList + " \n    La raz\xF3n de fragmentaci\xF3n\n    de esta UP es igual a " + this.state.dataInfra[7].longitud + ". De tipos de elementos lineales, lo m\xE1s\n    predominante es " + maxlinea[0] + " que ocupan " + maxlinea[1] + " kilometros\n    lineales. En esta UP intervienen tambi\xE9n aproximadamente " + this.props.infraInfo.infCount + "\n    edificaciones de diferentes tipos.";
+        var uAnalisisTxt='';
+        var este='';
+        if(infotype=='udp'){
+            uAnalisisTxt='En esta Unidad de Paisaje (UP) ';
+            este=' esta ';
+        }else{
+            uAnalisisTxt='En este Pol\xEDgono ';
+            este=' esta ';
+        }
+        var descriptionString = uAnalisisTxt + idennum + " intervienen los siguientes elementos de infraestructura: " 
+      + existingNameList + " \n. La raz\xF3n de fragmentaci\xF3n\n    de"+este+uAnalisis+"es igual a " + this.state.dataInfra[9].longitud 
+      + ". De tipos de elementos lineales, lo m\xE1s\n    predominante es " + maxlinea[0] + " que ocupan " + maxlinea[1] 
+      + " kilometros\n    lineales.";
 
-      this.setText(descriptionString);
+        this.setText(descriptionString);
     }
   }, {
     key: "render",
@@ -46746,9 +46900,6 @@ var InfraTable = function (_React$Component) {
       }, {
         dataField: "longitud",
         text: "LONGITUD (km)"
-      }, {
-        dataField: "densidad",
-        text: "DENSIDAD (unidades)"
       }];
 
       return _react2.default.createElement(
@@ -46802,7 +46953,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function UdpTitle(props) {
   var munilist = props.munilist.map(function (item) {
-    return item.toUpperCase();
+    return item.toUpperCase()+", ";
   });
 
   return _react2.default.createElement(
@@ -46812,7 +46963,7 @@ function UdpTitle(props) {
       "h6",
       { id: "updtitle" },
       " ",
-      "PROPUESTA DE MONITOREO ARTICULADO DE LA BIODIVERSIDAD (MTP + SMC): SECTOR FORESTAL"
+      "SISTEMA DE INFORMACIÓN PARA LA PLANEACIÓN DE LOS PAISAJES SOSTENIBLES PROVINCIA DE OXAPAMPA PERÚ"
     ),
     _react2.default.createElement(
       "div",
@@ -46827,9 +46978,9 @@ function UdpTitle(props) {
         "h6",
         { id: "muniudp" },
         " ",
-        "MUNICIPIO DE ",
+        "PROVINCIA DE ",
         munilist,
-        " PUEBLA, UNIDAD DE PAISAJE ",
+        " OXAPAMPA, "+uAnalisis.toUpperCase(),
         idennum
       )
     )
@@ -47238,7 +47389,9 @@ var UpdateBuilder = function (_React$Component) {
 						}),
 						_react2.default.createElement("input", {
 							type: "submit",
-							className: "border border-secondary btn btn-success mySubmit p-2 m-2"
+							className: "btnEnviar",
+                            name: "Enviar",
+                            value:"Guardar"
 						})
 					)
 				)
@@ -47299,11 +47452,15 @@ var DBDropdown = function (_React$Component) {
 
             return _react2.default.createElement(
                 "div",
-                { className: "p-2" },
+                { className: "p-2 divFormulario" },
                 _react2.default.createElement(
                     "label",
-                    { className: "pr-2" },
-                    this.props.table == 'actividad' ? 'accion' : this.props.table
+                    { className: "pr-2 cap" },
+                    this.props.table == 'actividad' ? 'accion' : 
+                            (this.props.table=='cultivo'?'Cadena':
+                                (this.props.table=='estado'?'Provincia':
+                                    (this.props.table=='municipio'?'Distrito':
+                                this.props.table)))
                 ),
                 _react2.default.createElement(
                     "select",
@@ -47396,7 +47553,7 @@ var Editable = function (_React$Component) {
 				_react2.default.createElement('input', { type: 'hidden', name: '_token', value: csrf_token }),
 				_react2.default.createElement(
 					'div',
-					null,
+					{ className: 'overflowDiv' },
 					_react2.default.createElement(
 						'span',
 						{ className: 'overflowSpan' },
@@ -47405,54 +47562,57 @@ var Editable = function (_React$Component) {
 								'label',
 								{
 									key: keyColumn,
-									className: keyColumn.length < 20 ? 'reactColumns' : 'reactColumnsWide'
+									className: (keyColumn.length < 20 ? 'reactColumns' : 'reactColumnsWide')+' cap'
 								},
-								keyColumn
+								keyColumn.replace(/_/g," ")
 							);
 						})
-					)
-				),
-				_react2.default.createElement(
-					'div',
-					null,
-					Object.entries(this.props.rows).map(function (row) {
-						return _react2.default.createElement(
-							'span',
-							{ className: 'overflowSpan', key: row[0] },
-							keyColumns.map(function (keyColumn) {
-								var notNullValue = row[1][keyColumn] == null ? '' : row[1][keyColumn];
-								if (_this2.props.selectObject[keyColumn]) {
-									return _react2.default.createElement(
-										'select',
-										{
-											key: row[0] + keyColumn,
-											className: keyColumn.length < 20 ? 'reactColumns' : 'reactColumnsWide',
-											name: row[0] + '*' + _this2.props.table + '*' + keyColumn,
-											value: notNullValue,
-											onChange: _this2.handleChange
-										},
-										_this2.props.selectObject[keyColumn].map(function (item) {
-											return _react2.default.createElement(
-												'option',
-												{ key: item, value: item === '' ? 'notselected' : item },
-												item
-											);
-										})
-									);
-								} else {
-									return _react2.default.createElement('input', {
-										key: row[0] + keyColumn,
-										type: 'text',
-										className: keyColumn.length < 20 ? 'reactColumns' : 'reactColumnsWide'
-										//className={runValidator(this.props.row[keyColumn])}
-										, name: row[0] + '*' + _this2.props.table + '*' + keyColumn,
-										value: notNullValue,
-										onChange: _this2.handleChange
-									});
-								}
-							})
-						);
-					})
+                    ),
+                    /*
+                    Modified by: Yared Sabinas
+                    Description: se mueve el elemento div dentro de un div padre para ponerle overflow al div padre*/
+                    _react2.default.createElement(
+                        'div',
+                        null,
+                        Object.entries(this.props.rows).map(function (row) {
+                            return _react2.default.createElement(
+                                'span',
+                                { className: 'overflowSpan', key: row[0] },
+                                keyColumns.map(function (keyColumn) {
+                                    var notNullValue = row[1][keyColumn] == null ? '' : row[1][keyColumn];
+                                    if (_this2.props.selectObject[keyColumn]) {
+                                        return _react2.default.createElement(
+                                            'select',
+                                            {
+                                                key: row[0] + keyColumn,
+                                                className: keyColumn.length < 20 ? 'reactColumns' : 'reactColumnsWide',
+                                                name: row[0] + '*' + _this2.props.table + '*' + keyColumn,
+                                                value: notNullValue,
+                                                onChange: _this2.handleChange
+                                            },
+                                            _this2.props.selectObject[keyColumn].map(function (item) {
+                                                return _react2.default.createElement(
+                                                    'option',
+                                                    { key: item, value: item === '' ? 'notselected' : item },
+                                                    item
+                                                );
+                                            })
+                                        );
+                                    } else {
+                                        return _react2.default.createElement('input', {
+                                            key: row[0] + keyColumn,
+                                            type: 'text',
+                                            className: keyColumn.length < 20 ? 'reactColumns' : 'reactColumnsWide'
+                                            //className={runValidator(this.props.row[keyColumn])}
+                                            , name: row[0] + '*' + _this2.props.table + '*' + keyColumn,
+                                            value: notNullValue,
+                                            onChange: _this2.handleChange
+                                        });
+                                    }
+                                })
+                            );
+                        })
+                    )
 				)
 			);
 		}
@@ -47514,12 +47674,12 @@ var GeomEditable = function (_React$Component) {
 							{ className: 'overflowSpan' },
 							_react2.default.createElement(
 								'label',
-								{ className: 'reactColumns' },
+								{ className: 'reactColumns cap' },
 								'longitud'
 							),
 							_react2.default.createElement(
 								'label',
-								{ className: 'reactColumns' },
+								{ className: 'reactColumns cap' },
 								'latitud'
 							)
 						)
@@ -47625,7 +47785,7 @@ exports = module.exports = __webpack_require__(30)(false);
 
 
 // module
-exports.push([module.i, "/* required styles */\r\n\r\n.leaflet-pane,\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-tile-container,\r\n.leaflet-pane > svg,\r\n.leaflet-pane > canvas,\r\n.leaflet-zoom-box,\r\n.leaflet-image-layer,\r\n.leaflet-layer {\r\n\tposition: absolute;\r\n\tleft: 0;\r\n\ttop: 0;\r\n\t}\r\n.leaflet-container {\r\n\toverflow: hidden;\r\n\t}\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\t-webkit-user-select: none;\r\n\t   -moz-user-select: none;\r\n\t        user-select: none;\r\n\t  -webkit-user-drag: none;\r\n\t}\r\n/* Safari renders non-retina tile on retina better with this, but Chrome is worse */\r\n.leaflet-safari .leaflet-tile {\r\n\timage-rendering: -webkit-optimize-contrast;\r\n\t}\r\n/* hack that prevents hw layers \"stretching\" when loading new tiles */\r\n.leaflet-safari .leaflet-tile-container {\r\n\twidth: 1600px;\r\n\theight: 1600px;\r\n\t-webkit-transform-origin: 0 0;\r\n\t}\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\tdisplay: block;\r\n\t}\r\n/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */\r\n/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */\r\n.leaflet-container .leaflet-overlay-pane svg,\r\n.leaflet-container .leaflet-marker-pane img,\r\n.leaflet-container .leaflet-shadow-pane img,\r\n.leaflet-container .leaflet-tile-pane img,\r\n.leaflet-container img.leaflet-image-layer,\r\n.leaflet-container .leaflet-tile {\r\n\tmax-width: none !important;\r\n\tmax-height: none !important;\r\n\t}\r\n\r\n.leaflet-container.leaflet-touch-zoom {\r\n\t-ms-touch-action: pan-x pan-y;\r\n\ttouch-action: pan-x pan-y;\r\n\t}\r\n.leaflet-container.leaflet-touch-drag {\r\n\t-ms-touch-action: pinch-zoom;\r\n\t/* Fallback for FF which doesn't support pinch-zoom */\r\n\ttouch-action: none;\r\n\ttouch-action: pinch-zoom;\r\n}\r\n.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {\r\n\t-ms-touch-action: none;\r\n\ttouch-action: none;\r\n}\r\n.leaflet-container {\r\n\t-webkit-tap-highlight-color: transparent;\r\n}\r\n.leaflet-container a {\r\n\t-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);\r\n}\r\n.leaflet-tile {\r\n\tfilter: inherit;\r\n\tvisibility: hidden;\r\n\t}\r\n.leaflet-tile-loaded {\r\n\tvisibility: inherit;\r\n\t}\r\n.leaflet-zoom-box {\r\n\twidth: 0;\r\n\theight: 0;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\tz-index: 800;\r\n\t}\r\n/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */\r\n.leaflet-overlay-pane svg {\r\n\t-moz-user-select: none;\r\n\t}\r\n\r\n.leaflet-pane         { z-index: 400; }\r\n\r\n.leaflet-tile-pane    { z-index: 200; }\r\n.leaflet-overlay-pane { z-index: 400; }\r\n.leaflet-shadow-pane  { z-index: 500; }\r\n.leaflet-marker-pane  { z-index: 600; }\r\n.leaflet-tooltip-pane   { z-index: 650; }\r\n.leaflet-popup-pane   { z-index: 700; }\r\n\r\n.leaflet-map-pane canvas { z-index: 100; }\r\n.leaflet-map-pane svg    { z-index: 200; }\r\n\r\n.leaflet-vml-shape {\r\n\twidth: 1px;\r\n\theight: 1px;\r\n\t}\r\n.lvml {\r\n\tbehavior: url(#default#VML);\r\n\tdisplay: inline-block;\r\n\tposition: absolute;\r\n\t}\r\n\r\n\r\n/* control positioning */\r\n\r\n.leaflet-control {\r\n\tposition: relative;\r\n\tz-index: 800;\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-top,\r\n.leaflet-bottom {\r\n\tposition: absolute;\r\n\tz-index: 1000;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-top {\r\n\ttop: 0;\r\n\t}\r\n.leaflet-right {\r\n\tright: 0;\r\n\t}\r\n.leaflet-bottom {\r\n\tbottom: 0;\r\n\t}\r\n.leaflet-left {\r\n\tleft: 0;\r\n\t}\r\n.leaflet-control {\r\n\tfloat: left;\r\n\tclear: both;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tfloat: right;\r\n\t}\r\n.leaflet-top .leaflet-control {\r\n\tmargin-top: 10px;\r\n\t}\r\n.leaflet-bottom .leaflet-control {\r\n\tmargin-bottom: 10px;\r\n\t}\r\n.leaflet-left .leaflet-control {\r\n\tmargin-left: 10px;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tmargin-right: 10px;\r\n\t}\r\n\r\n\r\n/* zoom and fade animations */\r\n\r\n.leaflet-fade-anim .leaflet-tile {\r\n\twill-change: opacity;\r\n\t}\r\n.leaflet-fade-anim .leaflet-popup {\r\n\topacity: 0;\r\n\t-webkit-transition: opacity 0.2s linear;\r\n\t   -moz-transition: opacity 0.2s linear;\r\n\t        transition: opacity 0.2s linear;\r\n\t}\r\n.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {\r\n\topacity: 1;\r\n\t}\r\n.leaflet-zoom-animated {\r\n\t-webkit-transform-origin: 0 0;\r\n\t    -ms-transform-origin: 0 0;\r\n\t        transform-origin: 0 0;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\twill-change: transform;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\t-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t}\r\n.leaflet-zoom-anim .leaflet-tile,\r\n.leaflet-pan-anim .leaflet-tile {\r\n\t-webkit-transition: none;\r\n\t   -moz-transition: none;\r\n\t        transition: none;\r\n\t}\r\n\r\n.leaflet-zoom-anim .leaflet-zoom-hide {\r\n\tvisibility: hidden;\r\n\t}\r\n\r\n\r\n/* cursors */\r\n\r\n.leaflet-interactive {\r\n\tcursor: pointer;\r\n\t}\r\n.leaflet-grab {\r\n\tcursor: -webkit-grab;\r\n\tcursor:    -moz-grab;\r\n\tcursor:         grab;\r\n\t}\r\n.leaflet-crosshair,\r\n.leaflet-crosshair .leaflet-interactive {\r\n\tcursor: crosshair;\r\n\t}\r\n.leaflet-popup-pane,\r\n.leaflet-control {\r\n\tcursor: auto;\r\n\t}\r\n.leaflet-dragging .leaflet-grab,\r\n.leaflet-dragging .leaflet-grab .leaflet-interactive,\r\n.leaflet-dragging .leaflet-marker-draggable {\r\n\tcursor: move;\r\n\tcursor: -webkit-grabbing;\r\n\tcursor:    -moz-grabbing;\r\n\tcursor:         grabbing;\r\n\t}\r\n\r\n/* marker & overlays interactivity */\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-image-layer,\r\n.leaflet-pane > svg path,\r\n.leaflet-tile-container {\r\n\tpointer-events: none;\r\n\t}\r\n\r\n.leaflet-marker-icon.leaflet-interactive,\r\n.leaflet-image-layer.leaflet-interactive,\r\n.leaflet-pane > svg path.leaflet-interactive {\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n\r\n/* visual tweaks */\r\n\r\n.leaflet-container {\r\n\tbackground: #ddd;\r\n\toutline: 0;\r\n\t}\r\n.leaflet-container a {\r\n\tcolor: #0078A8;\r\n\t}\r\n.leaflet-container a.leaflet-active {\r\n\toutline: 2px solid orange;\r\n\t}\r\n.leaflet-zoom-box {\r\n\tborder: 2px dotted #38f;\r\n\tbackground: rgba(255,255,255,0.5);\r\n\t}\r\n\r\n\r\n/* general typography */\r\n.leaflet-container {\r\n\tfont: 12px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif;\r\n\t}\r\n\r\n\r\n/* general toolbar styles */\r\n\r\n.leaflet-bar {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.65);\r\n\tborder-radius: 4px;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #fff;\r\n\tborder-bottom: 1px solid #ccc;\r\n\twidth: 26px;\r\n\theight: 26px;\r\n\tline-height: 26px;\r\n\tdisplay: block;\r\n\ttext-align: center;\r\n\ttext-decoration: none;\r\n\tcolor: black;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-control-layers-toggle {\r\n\tbackground-position: 50% 50%;\r\n\tbackground-repeat: no-repeat;\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #f4f4f4;\r\n\t}\r\n.leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 4px;\r\n\tborder-top-right-radius: 4px;\r\n\t}\r\n.leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 4px;\r\n\tborder-bottom-right-radius: 4px;\r\n\tborder-bottom: none;\r\n\t}\r\n.leaflet-bar a.leaflet-disabled {\r\n\tcursor: default;\r\n\tbackground-color: #f4f4f4;\r\n\tcolor: #bbb;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-bar a {\r\n\twidth: 30px;\r\n\theight: 30px;\r\n\tline-height: 30px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 2px;\r\n\tborder-top-right-radius: 2px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 2px;\r\n\tborder-bottom-right-radius: 2px;\r\n\t}\r\n\r\n/* zoom control */\r\n\r\n.leaflet-control-zoom-in,\r\n.leaflet-control-zoom-out {\r\n\tfont: bold 18px 'Lucida Console', Monaco, monospace;\r\n\ttext-indent: 1px;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {\r\n\tfont-size: 22px;\r\n\t}\r\n\r\n\r\n/* layers control */\r\n\r\n.leaflet-control-layers {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.4);\r\n\tbackground: #fff;\r\n\tborder-radius: 5px;\r\n\t}\r\n.leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + escape(__webpack_require__(132)) + ");\r\n\twidth: 36px;\r\n\theight: 36px;\r\n\t}\r\n.leaflet-retina .leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + escape(__webpack_require__(133)) + ");\r\n\tbackground-size: 26px 26px;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers-toggle {\r\n\twidth: 44px;\r\n\theight: 44px;\r\n\t}\r\n.leaflet-control-layers .leaflet-control-layers-list,\r\n.leaflet-control-layers-expanded .leaflet-control-layers-toggle {\r\n\tdisplay: none;\r\n\t}\r\n.leaflet-control-layers-expanded .leaflet-control-layers-list {\r\n\tdisplay: block;\r\n\tposition: relative;\r\n\t}\r\n.leaflet-control-layers-expanded {\r\n\tpadding: 6px 10px 6px 6px;\r\n\tcolor: #333;\r\n\tbackground: #fff;\r\n\t}\r\n.leaflet-control-layers-scrollbar {\r\n\toverflow-y: scroll;\r\n\toverflow-x: hidden;\r\n\tpadding-right: 5px;\r\n\t}\r\n.leaflet-control-layers-selector {\r\n\tmargin-top: 2px;\r\n\tposition: relative;\r\n\ttop: 1px;\r\n\t}\r\n.leaflet-control-layers label {\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-control-layers-separator {\r\n\theight: 0;\r\n\tborder-top: 1px solid #ddd;\r\n\tmargin: 5px -10px 5px -6px;\r\n\t}\r\n\r\n/* Default icon URLs */\r\n.leaflet-default-icon-path {\r\n\tbackground-image: url(" + escape(__webpack_require__(134)) + ");\r\n\t}\r\n\r\n\r\n/* attribution and scale controls */\r\n\r\n.leaflet-container .leaflet-control-attribution {\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.7);\r\n\tmargin: 0;\r\n\t}\r\n.leaflet-control-attribution,\r\n.leaflet-control-scale-line {\r\n\tpadding: 0 5px;\r\n\tcolor: #333;\r\n\t}\r\n.leaflet-control-attribution a {\r\n\ttext-decoration: none;\r\n\t}\r\n.leaflet-control-attribution a:hover {\r\n\ttext-decoration: underline;\r\n\t}\r\n.leaflet-container .leaflet-control-attribution,\r\n.leaflet-container .leaflet-control-scale {\r\n\tfont-size: 11px;\r\n\t}\r\n.leaflet-left .leaflet-control-scale {\r\n\tmargin-left: 5px;\r\n\t}\r\n.leaflet-bottom .leaflet-control-scale {\r\n\tmargin-bottom: 5px;\r\n\t}\r\n.leaflet-control-scale-line {\r\n\tborder: 2px solid #777;\r\n\tborder-top: none;\r\n\tline-height: 1.1;\r\n\tpadding: 2px 5px 1px;\r\n\tfont-size: 11px;\r\n\twhite-space: nowrap;\r\n\toverflow: hidden;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.5);\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child) {\r\n\tborder-top: 2px solid #777;\r\n\tborder-bottom: none;\r\n\tmargin-top: -2px;\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child):not(:last-child) {\r\n\tborder-bottom: 2px solid #777;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-attribution,\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tbox-shadow: none;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tborder: 2px solid rgba(0,0,0,0.2);\r\n\tbackground-clip: padding-box;\r\n\t}\r\n\r\n\r\n/* popup */\r\n\r\n.leaflet-popup {\r\n\tposition: absolute;\r\n\ttext-align: center;\r\n\tmargin-bottom: 20px;\r\n\t}\r\n.leaflet-popup-content-wrapper {\r\n\tpadding: 1px;\r\n\ttext-align: left;\r\n\tborder-radius: 12px;\r\n\t}\r\n.leaflet-popup-content {\r\n\tmargin: 13px 19px;\r\n\tline-height: 1.4;\r\n\t}\r\n.leaflet-popup-content p {\r\n\tmargin: 18px 0;\r\n\t}\r\n.leaflet-popup-tip-container {\r\n\twidth: 40px;\r\n\theight: 20px;\r\n\tposition: absolute;\r\n\tleft: 50%;\r\n\tmargin-left: -20px;\r\n\toverflow: hidden;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-popup-tip {\r\n\twidth: 17px;\r\n\theight: 17px;\r\n\tpadding: 1px;\r\n\r\n\tmargin: -10px auto 0;\r\n\r\n\t-webkit-transform: rotate(45deg);\r\n\t   -moz-transform: rotate(45deg);\r\n\t    -ms-transform: rotate(45deg);\r\n\t        transform: rotate(45deg);\r\n\t}\r\n.leaflet-popup-content-wrapper,\r\n.leaflet-popup-tip {\r\n\tbackground: white;\r\n\tcolor: #333;\r\n\tbox-shadow: 0 3px 14px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button {\r\n\tposition: absolute;\r\n\ttop: 0;\r\n\tright: 0;\r\n\tpadding: 4px 4px 0 0;\r\n\tborder: none;\r\n\ttext-align: center;\r\n\twidth: 18px;\r\n\theight: 14px;\r\n\tfont: 16px/14px Tahoma, Verdana, sans-serif;\r\n\tcolor: #c3c3c3;\r\n\ttext-decoration: none;\r\n\tfont-weight: bold;\r\n\tbackground: transparent;\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button:hover {\r\n\tcolor: #999;\r\n\t}\r\n.leaflet-popup-scrolled {\r\n\toverflow: auto;\r\n\tborder-bottom: 1px solid #ddd;\r\n\tborder-top: 1px solid #ddd;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-popup-content-wrapper {\r\n\tzoom: 1;\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\twidth: 24px;\r\n\tmargin: 0 auto;\r\n\r\n\t-ms-filter: \"progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)\";\r\n\tfilter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip-container {\r\n\tmargin-top: -1px;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-control-zoom,\r\n.leaflet-oldie .leaflet-control-layers,\r\n.leaflet-oldie .leaflet-popup-content-wrapper,\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\tborder: 1px solid #999;\r\n\t}\r\n\r\n\r\n/* div icon */\r\n\r\n.leaflet-div-icon {\r\n\tbackground: #fff;\r\n\tborder: 1px solid #666;\r\n\t}\r\n\r\n\r\n/* Tooltip */\r\n/* Base styles for the element that has a tooltip */\r\n.leaflet-tooltip {\r\n\tposition: absolute;\r\n\tpadding: 6px;\r\n\tbackground-color: #fff;\r\n\tborder: 1px solid #fff;\r\n\tborder-radius: 3px;\r\n\tcolor: #222;\r\n\twhite-space: nowrap;\r\n\t-webkit-user-select: none;\r\n\t-moz-user-select: none;\r\n\t-ms-user-select: none;\r\n\tuser-select: none;\r\n\tpointer-events: none;\r\n\tbox-shadow: 0 1px 3px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-tooltip.leaflet-clickable {\r\n\tcursor: pointer;\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-tooltip-top:before,\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\tposition: absolute;\r\n\tpointer-events: none;\r\n\tborder: 6px solid transparent;\r\n\tbackground: transparent;\r\n\tcontent: \"\";\r\n\t}\r\n\r\n/* Directions */\r\n\r\n.leaflet-tooltip-bottom {\r\n\tmargin-top: 6px;\r\n}\r\n.leaflet-tooltip-top {\r\n\tmargin-top: -6px;\r\n}\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-top:before {\r\n\tleft: 50%;\r\n\tmargin-left: -6px;\r\n\t}\r\n.leaflet-tooltip-top:before {\r\n\tbottom: 0;\r\n\tmargin-bottom: -12px;\r\n\tborder-top-color: #fff;\r\n\t}\r\n.leaflet-tooltip-bottom:before {\r\n\ttop: 0;\r\n\tmargin-top: -12px;\r\n\tmargin-left: -6px;\r\n\tborder-bottom-color: #fff;\r\n\t}\r\n.leaflet-tooltip-left {\r\n\tmargin-left: -6px;\r\n}\r\n.leaflet-tooltip-right {\r\n\tmargin-left: 6px;\r\n}\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\ttop: 50%;\r\n\tmargin-top: -6px;\r\n\t}\r\n.leaflet-tooltip-left:before {\r\n\tright: 0;\r\n\tmargin-right: -12px;\r\n\tborder-left-color: #fff;\r\n\t}\r\n.leaflet-tooltip-right:before {\r\n\tleft: 0;\r\n\tmargin-left: -12px;\r\n\tborder-right-color: #fff;\r\n\t}\r\n", ""]);
+exports.push([module.i, "/* required styles */\r\n\r\n.leaflet-pane,\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-tile-container,\r\n.leaflet-pane > svg,\r\n.leaflet-pane > canvas,\r\n.leaflet-zoom-box,\r\n.leaflet-image-layer,\r\n.leaflet-layer {\r\n\tposition: absolute;\r\n\tleft: 0;\r\n\ttop: 0;\r\n\t}\r\n.leaflet-container {\r\n\toverflow: hidden;\r\n\t}\r\n.leaflet-tile,\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\t-webkit-user-select: none;\r\n\t   -moz-user-select: none;\r\n\t        user-select: none;\r\n\t  -webkit-user-drag: none;\r\n\t}\r\n/* Safari renders non-retina tile on retina better with this, but Chrome is worse */\r\n.leaflet-safari .leaflet-tile {\r\n\timage-rendering: -webkit-optimize-contrast;\r\n\t}\r\n/* hack that prevents hw layers \"stretching\" when loading new tiles */\r\n.leaflet-safari .leaflet-tile-container {\r\n\twidth: 1600px;\r\n\theight: 1600px;\r\n\t-webkit-transform-origin: 0 0;\r\n\t}\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow {\r\n\tdisplay: block;\r\n\t}\r\n/* .leaflet-container svg: reset svg max-width decleration shipped in Joomla! (joomla.org) 3.x */\r\n/* .leaflet-container img: map is broken in FF if you have max-width: 100% on tiles */\r\n.leaflet-container .leaflet-overlay-pane svg,\r\n.leaflet-container .leaflet-marker-pane img,\r\n.leaflet-container .leaflet-shadow-pane img,\r\n.leaflet-container .leaflet-tile-pane img,\r\n.leaflet-container img.leaflet-image-layer,\r\n.leaflet-container .leaflet-tile {\r\n\tmax-width: none !important;\r\n\tmax-height: none !important;\r\n\t}\r\n\r\n.leaflet-container.leaflet-touch-zoom {\r\n\t-ms-touch-action: pan-x pan-y;\r\n\ttouch-action: pan-x pan-y;\r\n\t}\r\n.leaflet-container.leaflet-touch-drag {\r\n\t-ms-touch-action: pinch-zoom;\r\n\t/* Fallback for FF which doesn't support pinch-zoom */\r\n\ttouch-action: none;\r\n\ttouch-action: pinch-zoom;\r\n}\r\n.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom {\r\n\t-ms-touch-action: none;\r\n\ttouch-action: none;\r\n}\r\n.leaflet-container {\r\n\t-webkit-tap-highlight-color: transparent;\r\n}\r\n.leaflet-container a {\r\n\t-webkit-tap-highlight-color: rgba(51, 181, 229, 0.4);\r\n}\r\n.leaflet-tile {\r\n\tfilter: inherit;\r\n\tvisibility: hidden;\r\n\t}\r\n.leaflet-tile-loaded {\r\n\tvisibility: inherit;\r\n\t}\r\n.leaflet-zoom-box {\r\n\twidth: 0;\r\n\theight: 0;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\tz-index: 800;\r\n\t}\r\n/* workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=888319 */\r\n.leaflet-overlay-pane svg {\r\n\t-moz-user-select: none;\r\n\t}\r\n\r\n.leaflet-pane         { z-index: 400; }\r\n\r\n.leaflet-tile-pane    { z-index: 200; }\r\n.leaflet-overlay-pane { z-index: 400; }\r\n.leaflet-shadow-pane  { z-index: 500; }\r\n.leaflet-marker-pane  { z-index: 600; }\r\n.leaflet-tooltip-pane   { z-index: 650; }\r\n.leaflet-popup-pane   { z-index: 700; }\r\n\r\n.leaflet-map-pane canvas { z-index: 100; }\r\n.leaflet-map-pane svg    { z-index: 200; }\r\n\r\n.leaflet-vml-shape {\r\n\twidth: 1px;\r\n\theight: 1px;\r\n\t}\r\n.lvml {\r\n\tbehavior: url(#default#VML);\r\n\tdisplay: inline-block;\r\n\tposition: absolute;\r\n\t}\r\n\r\n\r\n/* control positioning */\r\n\r\n.leaflet-control {\r\n\tposition: relative;\r\n\tz-index: 800;\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-top,\r\n.leaflet-bottom {\r\n\tposition: absolute;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-top {\r\n\ttop: 0;\r\n\t}\r\n.leaflet-right {\r\n\tright: 0;\r\n\t}\r\n.leaflet-bottom {\r\n\tbottom: 0;\r\n\t}\r\n.leaflet-left {\r\n\tleft: 0;\r\n\t}\r\n.leaflet-control {\r\n\tfloat: left;\r\n\tclear: both;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tfloat: right;\r\n\t}\r\n.leaflet-top .leaflet-control {\r\n\tmargin-top: 10px;\r\n\t}\r\n.leaflet-bottom .leaflet-control {\r\n\tmargin-bottom: 10px;\r\n\t}\r\n.leaflet-left .leaflet-control {\r\n\tmargin-left: 10px;\r\n\t}\r\n.leaflet-right .leaflet-control {\r\n\tmargin-right: 10px;\r\n\t}\r\n\r\n\r\n/* zoom and fade animations */\r\n\r\n.leaflet-fade-anim .leaflet-tile {\r\n\twill-change: opacity;\r\n\t}\r\n.leaflet-fade-anim .leaflet-popup {\r\n\topacity: 0;\r\n\t-webkit-transition: opacity 0.2s linear;\r\n\t   -moz-transition: opacity 0.2s linear;\r\n\t        transition: opacity 0.2s linear;\r\n\t}\r\n.leaflet-fade-anim .leaflet-map-pane .leaflet-popup {\r\n\topacity: 1;\r\n\t}\r\n.leaflet-zoom-animated {\r\n\t-webkit-transform-origin: 0 0;\r\n\t    -ms-transform-origin: 0 0;\r\n\t        transform-origin: 0 0;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\twill-change: transform;\r\n\t}\r\n.leaflet-zoom-anim .leaflet-zoom-animated {\r\n\t-webkit-transition: -webkit-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t   -moz-transition:    -moz-transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t        transition:         transform 0.25s cubic-bezier(0,0,0.25,1);\r\n\t}\r\n.leaflet-zoom-anim .leaflet-tile,\r\n.leaflet-pan-anim .leaflet-tile {\r\n\t-webkit-transition: none;\r\n\t   -moz-transition: none;\r\n\t        transition: none;\r\n\t}\r\n\r\n.leaflet-zoom-anim .leaflet-zoom-hide {\r\n\tvisibility: hidden;\r\n\t}\r\n\r\n\r\n/* cursors */\r\n\r\n.leaflet-interactive {\r\n\tcursor: pointer;\r\n\t}\r\n.leaflet-grab {\r\n\tcursor: -webkit-grab;\r\n\tcursor:    -moz-grab;\r\n\tcursor:         grab;\r\n\t}\r\n.leaflet-crosshair,\r\n.leaflet-crosshair .leaflet-interactive {\r\n\tcursor: crosshair;\r\n\t}\r\n.leaflet-popup-pane,\r\n.leaflet-control {\r\n\tcursor: auto;\r\n\t}\r\n.leaflet-dragging .leaflet-grab,\r\n.leaflet-dragging .leaflet-grab .leaflet-interactive,\r\n.leaflet-dragging .leaflet-marker-draggable {\r\n\tcursor: move;\r\n\tcursor: -webkit-grabbing;\r\n\tcursor:    -moz-grabbing;\r\n\tcursor:         grabbing;\r\n\t}\r\n\r\n/* marker & overlays interactivity */\r\n.leaflet-marker-icon,\r\n.leaflet-marker-shadow,\r\n.leaflet-image-layer,\r\n.leaflet-pane > svg path,\r\n.leaflet-tile-container {\r\n\tpointer-events: none;\r\n\t}\r\n\r\n.leaflet-marker-icon.leaflet-interactive,\r\n.leaflet-image-layer.leaflet-interactive,\r\n.leaflet-pane > svg path.leaflet-interactive {\r\n\tpointer-events: visiblePainted; /* IE 9-10 doesn't have auto */\r\n\tpointer-events: auto;\r\n\t}\r\n\r\n/* visual tweaks */\r\n\r\n.leaflet-container {\r\n\tbackground: #ddd;\r\n\toutline: 0;\r\n\t}\r\n.leaflet-container a {\r\n\tcolor: #0078A8;\r\n\t}\r\n.leaflet-container a.leaflet-active {\r\n\toutline: 2px solid orange;\r\n\t}\r\n.leaflet-zoom-box {\r\n\tborder: 2px dotted #38f;\r\n\tbackground: rgba(255,255,255,0.5);\r\n\t}\r\n\r\n\r\n/* general typography */\r\n.leaflet-container {\r\n\tfont: 12px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif;\r\n\t}\r\n\r\n\r\n/* general toolbar styles */\r\n\r\n.leaflet-bar {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.65);\r\n\tborder-radius: 4px;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #fff;\r\n\tborder-bottom: 1px solid #ccc;\r\n\twidth: 26px;\r\n\theight: 26px;\r\n\tline-height: 26px;\r\n\tdisplay: block;\r\n\ttext-align: center;\r\n\ttext-decoration: none;\r\n\tcolor: black;\r\n\t}\r\n.leaflet-bar a,\r\n.leaflet-control-layers-toggle {\r\n\tbackground-position: 50% 50%;\r\n\tbackground-repeat: no-repeat;\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-bar a:hover {\r\n\tbackground-color: #f4f4f4;\r\n\t}\r\n.leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 4px;\r\n\tborder-top-right-radius: 4px;\r\n\t}\r\n.leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 4px;\r\n\tborder-bottom-right-radius: 4px;\r\n\tborder-bottom: none;\r\n\t}\r\n.leaflet-bar a.leaflet-disabled {\r\n\tcursor: default;\r\n\tbackground-color: #f4f4f4;\r\n\tcolor: #bbb;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-bar a {\r\n\twidth: 30px;\r\n\theight: 30px;\r\n\tline-height: 30px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:first-child {\r\n\tborder-top-left-radius: 2px;\r\n\tborder-top-right-radius: 2px;\r\n\t}\r\n.leaflet-touch .leaflet-bar a:last-child {\r\n\tborder-bottom-left-radius: 2px;\r\n\tborder-bottom-right-radius: 2px;\r\n\t}\r\n\r\n/* zoom control */\r\n\r\n.leaflet-control-zoom-in,\r\n.leaflet-control-zoom-out {\r\n\tfont: bold 18px 'Lucida Console', Monaco, monospace;\r\n\ttext-indent: 1px;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-zoom-in, .leaflet-touch .leaflet-control-zoom-out  {\r\n\tfont-size: 22px;\r\n\t}\r\n\r\n\r\n/* layers control */\r\n\r\n.leaflet-control-layers {\r\n\tbox-shadow: 0 1px 5px rgba(0,0,0,0.4);\r\n\tbackground: #fff;\r\n\tborder-radius: 5px;\r\n\t}\r\n.leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + escape(__webpack_require__(132)) + ");\r\n\twidth: 36px;\r\n\theight: 36px;\r\n\t}\r\n.leaflet-retina .leaflet-control-layers-toggle {\r\n\tbackground-image: url(" + escape(__webpack_require__(133)) + ");\r\n\tbackground-size: 26px 26px;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers-toggle {\r\n\twidth: 44px;\r\n\theight: 44px;\r\n\t}\r\n.leaflet-control-layers .leaflet-control-layers-list,\r\n.leaflet-control-layers-expanded .leaflet-control-layers-toggle {\r\n\tdisplay: none;\r\n\t}\r\n.leaflet-control-layers-expanded .leaflet-control-layers-list {\r\n\tdisplay: block;\r\n\tposition: relative;\r\n\t}\r\n.leaflet-control-layers-expanded {\r\n\tpadding: 6px 10px 6px 6px;\r\n\tcolor: #333;\r\n\tbackground: #fff;\r\n\t}\r\n.leaflet-control-layers-scrollbar {\r\n\toverflow-y: scroll;\r\n\toverflow-x: hidden;\r\n\tpadding-right: 5px;\r\n\t}\r\n.leaflet-control-layers-selector {\r\n\tmargin-top: 2px;\r\n\tposition: relative;\r\n\ttop: 1px;\r\n\t}\r\n.leaflet-control-layers label {\r\n\tdisplay: block;\r\n\t}\r\n.leaflet-control-layers-separator {\r\n\theight: 0;\r\n\tborder-top: 1px solid #ddd;\r\n\tmargin: 5px -10px 5px -6px;\r\n\t}\r\n\r\n/* Default icon URLs */\r\n.leaflet-default-icon-path {\r\n\tbackground-image: url(" + escape(__webpack_require__(134)) + ");\r\n\t}\r\n\r\n\r\n/* attribution and scale controls */\r\n\r\n.leaflet-container .leaflet-control-attribution {\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.7);\r\n\tmargin: 0;\r\n\t}\r\n.leaflet-control-attribution,\r\n.leaflet-control-scale-line {\r\n\tpadding: 0 5px;\r\n\tcolor: #333;\r\n\t}\r\n.leaflet-control-attribution a {\r\n\ttext-decoration: none;\r\n\t}\r\n.leaflet-control-attribution a:hover {\r\n\ttext-decoration: underline;\r\n\t}\r\n.leaflet-container .leaflet-control-attribution,\r\n.leaflet-container .leaflet-control-scale {\r\n\tfont-size: 11px;\r\n\t}\r\n.leaflet-left .leaflet-control-scale {\r\n\tmargin-left: 5px;\r\n\t}\r\n.leaflet-bottom .leaflet-control-scale {\r\n\tmargin-bottom: 5px;\r\n\t}\r\n.leaflet-control-scale-line {\r\n\tborder: 2px solid #777;\r\n\tborder-top: none;\r\n\tline-height: 1.1;\r\n\tpadding: 2px 5px 1px;\r\n\tfont-size: 11px;\r\n\twhite-space: nowrap;\r\n\toverflow: hidden;\r\n\t-moz-box-sizing: border-box;\r\n\t     box-sizing: border-box;\r\n\r\n\tbackground: #fff;\r\n\tbackground: rgba(255, 255, 255, 0.5);\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child) {\r\n\tborder-top: 2px solid #777;\r\n\tborder-bottom: none;\r\n\tmargin-top: -2px;\r\n\t}\r\n.leaflet-control-scale-line:not(:first-child):not(:last-child) {\r\n\tborder-bottom: 2px solid #777;\r\n\t}\r\n\r\n.leaflet-touch .leaflet-control-attribution,\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tbox-shadow: none;\r\n\t}\r\n.leaflet-touch .leaflet-control-layers,\r\n.leaflet-touch .leaflet-bar {\r\n\tborder: 2px solid rgba(0,0,0,0.2);\r\n\tbackground-clip: padding-box;\r\n\t}\r\n\r\n\r\n/* popup */\r\n\r\n.leaflet-popup {\r\n\tposition: absolute;\r\n\ttext-align: center;\r\n\tmargin-bottom: 20px;\r\n\t}\r\n.leaflet-popup-content-wrapper {\r\n\tpadding: 1px;\r\n\ttext-align: left;\r\n\tborder-radius: 12px;\r\n\t}\r\n.leaflet-popup-content {\r\n\tmargin: 13px 19px;\r\n\tline-height: 1.4;\r\n\t}\r\n.leaflet-popup-content p {\r\n\tmargin: 18px 0;\r\n\t}\r\n.leaflet-popup-tip-container {\r\n\twidth: 40px;\r\n\theight: 20px;\r\n\tposition: absolute;\r\n\tleft: 50%;\r\n\tmargin-left: -20px;\r\n\toverflow: hidden;\r\n\tpointer-events: none;\r\n\t}\r\n.leaflet-popup-tip {\r\n\twidth: 17px;\r\n\theight: 17px;\r\n\tpadding: 1px;\r\n\r\n\tmargin: -10px auto 0;\r\n\r\n\t-webkit-transform: rotate(45deg);\r\n\t   -moz-transform: rotate(45deg);\r\n\t    -ms-transform: rotate(45deg);\r\n\t        transform: rotate(45deg);\r\n\t}\r\n.leaflet-popup-content-wrapper,\r\n.leaflet-popup-tip {\r\n\tbackground: white;\r\n\tcolor: #333;\r\n\tbox-shadow: 0 3px 14px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button {\r\n\tposition: absolute;\r\n\ttop: 0;\r\n\tright: 0;\r\n\tpadding: 4px 4px 0 0;\r\n\tborder: none;\r\n\ttext-align: center;\r\n\twidth: 18px;\r\n\theight: 14px;\r\n\tfont: 16px/14px Tahoma, Verdana, sans-serif;\r\n\tcolor: #c3c3c3;\r\n\ttext-decoration: none;\r\n\tfont-weight: bold;\r\n\tbackground: transparent;\r\n\t}\r\n.leaflet-container a.leaflet-popup-close-button:hover {\r\n\tcolor: #999;\r\n\t}\r\n.leaflet-popup-scrolled {\r\n\toverflow: auto;\r\n\tborder-bottom: 1px solid #ddd;\r\n\tborder-top: 1px solid #ddd;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-popup-content-wrapper {\r\n\tzoom: 1;\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\twidth: 24px;\r\n\tmargin: 0 auto;\r\n\r\n\t-ms-filter: \"progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)\";\r\n\tfilter: progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678);\r\n\t}\r\n.leaflet-oldie .leaflet-popup-tip-container {\r\n\tmargin-top: -1px;\r\n\t}\r\n\r\n.leaflet-oldie .leaflet-control-zoom,\r\n.leaflet-oldie .leaflet-control-layers,\r\n.leaflet-oldie .leaflet-popup-content-wrapper,\r\n.leaflet-oldie .leaflet-popup-tip {\r\n\tborder: 1px solid #999;\r\n\t}\r\n\r\n\r\n/* div icon */\r\n\r\n.leaflet-div-icon {\r\n\tbackground: #fff;\r\n\tborder: 1px solid #666;\r\n\t}\r\n\r\n\r\n/* Tooltip */\r\n/* Base styles for the element that has a tooltip */\r\n.leaflet-tooltip {\r\n\tposition: absolute;\r\n\tpadding: 6px;\r\n\tbackground-color: #fff;\r\n\tborder: 1px solid #fff;\r\n\tborder-radius: 3px;\r\n\tcolor: #222;\r\n\twhite-space: nowrap;\r\n\t-webkit-user-select: none;\r\n\t-moz-user-select: none;\r\n\t-ms-user-select: none;\r\n\tuser-select: none;\r\n\tpointer-events: none;\r\n\tbox-shadow: 0 1px 3px rgba(0,0,0,0.4);\r\n\t}\r\n.leaflet-tooltip.leaflet-clickable {\r\n\tcursor: pointer;\r\n\tpointer-events: auto;\r\n\t}\r\n.leaflet-tooltip-top:before,\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\tposition: absolute;\r\n\tpointer-events: none;\r\n\tborder: 6px solid transparent;\r\n\tbackground: transparent;\r\n\tcontent: \"\";\r\n\t}\r\n\r\n/* Directions */\r\n\r\n.leaflet-tooltip-bottom {\r\n\tmargin-top: 6px;\r\n}\r\n.leaflet-tooltip-top {\r\n\tmargin-top: -6px;\r\n}\r\n.leaflet-tooltip-bottom:before,\r\n.leaflet-tooltip-top:before {\r\n\tleft: 50%;\r\n\tmargin-left: -6px;\r\n\t}\r\n.leaflet-tooltip-top:before {\r\n\tbottom: 0;\r\n\tmargin-bottom: -12px;\r\n\tborder-top-color: #fff;\r\n\t}\r\n.leaflet-tooltip-bottom:before {\r\n\ttop: 0;\r\n\tmargin-top: -12px;\r\n\tmargin-left: -6px;\r\n\tborder-bottom-color: #fff;\r\n\t}\r\n.leaflet-tooltip-left {\r\n\tmargin-left: -6px;\r\n}\r\n.leaflet-tooltip-right {\r\n\tmargin-left: 6px;\r\n}\r\n.leaflet-tooltip-left:before,\r\n.leaflet-tooltip-right:before {\r\n\ttop: 50%;\r\n\tmargin-top: -6px;\r\n\t}\r\n.leaflet-tooltip-left:before {\r\n\tright: 0;\r\n\tmargin-right: -12px;\r\n\tborder-left-color: #fff;\r\n\t}\r\n.leaflet-tooltip-right:before {\r\n\tleft: 0;\r\n\tmargin-left: -12px;\r\n\tborder-right-color: #fff;\r\n\t}\r\n", ""]);
 
 // exports
 

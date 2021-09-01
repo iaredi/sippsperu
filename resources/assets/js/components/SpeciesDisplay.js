@@ -51,10 +51,10 @@ class SpeciesDisplay extends React.Component {
 			},
 			{
             dataField: 'comun',
-            text: 'Comun',
+            text: 'Común',
             },{
             dataField: 'cientifico',
-            text: 'Cientifico'
+            text: 'Científico'
             }
           ]
           if (infotype=='normas'){
@@ -67,10 +67,10 @@ class SpeciesDisplay extends React.Component {
               text: 'Subespecie Enlistada'
               }, {
               dataField: 'categoria',
-              text: 'Categoria '
+              text: 'Categoría '
               }, {
               dataField: 'distribution',
-              text: 'Distribution '
+              text: 'Distribución '
               }
             )
           }else{
@@ -95,7 +95,7 @@ class SpeciesDisplay extends React.Component {
                 text: 'Abundancia Relativa'
               },   {
                 dataField: 'frequencia',
-                text: 'Frequencia '
+                text: 'Frecuencia '
               },
             )
 			//This could be combined with the part below
@@ -128,10 +128,6 @@ class SpeciesDisplay extends React.Component {
 					  }
 				)
 			}
-
-		
-            
-
           }
 
         return(

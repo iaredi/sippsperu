@@ -59,7 +59,7 @@ class Map extends React.Component {
             {
                 attribution:
                     '&copy; <a href="http://www.esri.com/">Esri</a>i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-                maxZoom: 18
+                maxZoom: 18, zIndex:1000
             }
         );
 		imagery['category']='Base'
@@ -121,7 +121,8 @@ class Map extends React.Component {
         const processArray = ( array, mymap, mybaseMaps, getColor, getOutline ) => {
             var dynamicLayer = "notset";
 			const overlayMaps = this.overlayMaps || {};
-			var actividadArray=[]
+            var actividadArray=[]
+            var cultivoArray = [];
             array.forEach(function(item) {
                 let myLayer = get_shp(item, mymap, getColor, getOutline);
                 if (item.tableName == "udp_puebla_4326") {
@@ -146,15 +147,21 @@ class Map extends React.Component {
 						actividadLG['category'] = 'Monitoreo Activo'
 						overlayMaps['Acciones'] =  actividadLG;
 					}
-				}else{
-					overlayMaps[item.displayName] = myLayer; 
-				}
-
+				} else if(item.displayName.includes('Cultivos')){
+                    cultivoArray.push(myLayer);
+                    if (cultivoArray.length == 2) {
+                        var cultivoLG = _leaflet2.default.layerGroup(cultivoArray);
+                        cultivoLG['category'] = 'Monitoreo Activo';
+                        overlayMaps['Cultivos'] = cultivoLG;
+                    }
+                }else{
+                    overlayMaps[item.displayName] = myLayer;
+                }
 			});
 
-			var tempraster = L.tileLayer("temptiles/{z}/{x}/{y}.png", { enable: true, tms: true, opacity: 0.8, attribution: "" });
+			/*var tempraster = L.tileLayer("temptiles/{z}/{x}/{y}.png", { enable: true, tms: true, opacity: 0.8, attribution: "" });
 			tempraster.category='Referencial'
-			overlayMaps["Escenario85_2099_Temp_UNIATMOS_2015"] = tempraster;
+			overlayMaps["Escenario85_2099_Temp_UNIATMOS_2015"] = tempraster;*/
 			
 			const compare =function(a, b) {
 				if (a.category=='Base') {

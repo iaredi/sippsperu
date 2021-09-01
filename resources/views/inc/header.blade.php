@@ -2,12 +2,16 @@
 <html lang="sp">
 
 <head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <link rel="icon" type="image/png" href="/plant.png">
   <meta charset="UTF-8">
-  <title>MTP Biodiversidad</title>
+  <title>TIM Biodiversidad</title>
 
   <link rel="stylesheet" href="{{asset('css/app.css')}}">
+  <link rel="stylesheet" href="{{asset('css/main.css')}}">
+  <link rel="stylesheet" href="{{asset('css/custom.css')}}">
+  
   <script src="/js/app.js"></script>
 
   <?php
@@ -25,4 +29,4 @@
   </script>
 </head>
 
-<body>
+<body class="is-preload">

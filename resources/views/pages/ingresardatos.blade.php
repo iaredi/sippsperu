@@ -1,9 +1,8 @@
 @include('inc/php_functions')
 @include('inc/checkdata')
 @include('inc/savedata')
-
-
 <?php
+
     if (!session('email')){
         return redirect()->to('/login')->send();
     }
@@ -25,59 +24,82 @@
 @include('inc/setuppage')
 @include('inc/header')
 @include('inc/nav')
+<div class='bodycontainer' id="main">
+    <section class="four">
+        <header><h2>Monitoreo de Biodiversidad</h2></header>
+        <div class="container">
+            <div class=" warnings">
+                <?php
+                    $hintlist = [
+                        "Si no hizo la observación, escriba 0000.",
+                        "Si hizo la observación y no hubo especies, escriba 000.",
+                        "Si no sabe con certeza algún dato, ingescriba 00.",
+                        "Escriba las medidas con 3 grados de precision. Ejemplo: 1.792.",
+                        "Escriba las coordenadas con 4 grados de precision. Ejemplo: -110.8170."
+                    ];
+                    
+                    foreach ($hintlist as $hint) {
+                        echo "<div>{$hint}</div>";
+                    }
+                ?>
+            
+                <?php
+                if(count(session('error'))>0){
+                ?>
+                    <div class="bg-danger2 text-center">
+                        <?php
+                            foreach (session('error') as $msg) {
+                                echo "<div>{$msg}</div>";
+                            } 
+                        ?>
+                    </div>
+                    
+                <?php
+                }
+                ?>
+            </div>
+            <div id="startMenuDiv">
+                <h3 id="measurement3">Eligir L&iacute;nea de Monitoreo Transecto Punto(MTP)</h3>
+                <div style="font-size:28px;">Metodología TIM Perú</div>
+                <form id="measurementform" method="post", enctype="multipart/form-data">
+                    {{ csrf_field() }}
 
-<img src="{{ asset('img/popo.jpg') }}"  alt="Italian Trulli" style="height:250px; width:380px;">
-		<div class=" warnings">
-			<?php
-				$hintlist = [
-					"Si no hizo la observacion, ingrese 0000.",
-					"Si hiciera observacion y no hubiera especies, ingrese 000.",
-					"Si no sabe con certeza algún dato, ingrese 00.",
-					"Todos los medidas son de 3 grados de precision. Por ejemplo 1.792",
-					"Todos las coordenadas son de 4 grados de precision. Por ejemplo -110.8170"
-				];
-				foreach ($hintlist as $hint) {
-					echo "<p class='text-dark text-center'style='background-color: lightsteelblue;'>{$hint}</p>";
-				}
-				foreach (session('error') as $msg) {
-					echo "<p class='bg-danger2 text-center'>{$msg}</p>";
-				}
-			?>
-	</div>
+                    <table class="mytable" >
+                        <tbody id="measurementTBodySelect">
+                        </tbody>
+                    </table>
+                    <table class="mytable">
+                        <tbody id="measurementTBodyMedicion">
+                        </tbody>
+                    </table>
 
-<div class="wrapper2" id="startMenuDiv">
-	<h3 id="measurement3">Eligir Linea MTP</h3>
-	<form id="measurementform" method="post", enctype="multipart/form-data">
-		{{ csrf_field() }}
+                    <table class="mytable">
+                        <tbody id="measurementTBodyObservaciones">
+                        </tbody>
+                    </table>
+                    
+                    <table class="mytable">
+                        <tbody id="measurementTBodyNumero">
+                        </tbody>
+                    </table>
+                    <table class="mytable">
+                        <tbody id="botonReady">
+                        </tbody>
+                    </table>
+            <br />
+                    <div class="overflowDiv">
+                        <table class="formtable">
+                            <tbody id="measurementTBodyForm">
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div >
 
-		<table class="mytable" >
-			<tbody id="measurementTBodySelect">
-			</tbody>
-		</table>
-		<table class="mytable">
-			<tbody id="measurementTBodyMedicion">
-			</tbody>
-		</table>
-
-		<table class="mytable">
-			<tbody id="measurementTBodyObservaciones">
-			</tbody>
-		</table>
-		
-		<table class="mytable">
-			<tbody id="measurementTBodyNumero">
-			</tbody>
-		</table>
-		<table class="formtable">
-			<tbody id="measurementTBodyForm">
-			</tbody>
-		</table>
-	</form>
-</div >
-
-<script src="{{ asset('js/jsfunc.js') }}" ></script>
-
-@include('inc/repopulate')
-@include('inc/footer')
+            <script src="{{ asset('js/jsfunc.js') }}" ></script>
+        </div>
+        @include('inc/repopulate')
+        @include('inc/footer')
+    </section>
 
 

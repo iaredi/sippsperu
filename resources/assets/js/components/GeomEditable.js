@@ -7,7 +7,7 @@ class GeomEditable extends React.Component {
 
     render() {
         return (
-			<div>
+			<div class="">
 
 			{this.props.tipo_geom==='punto' &&
 				<div>

@@ -164,33 +164,42 @@ tr:nth-child(odd) {
 }
 
 #MANANTIAL {
-  width: 15px;
-  padding-right: 5px;
-}
-
-#CARRETERA{
-  border-top: 6px solid black; 
-}
-
-#CALLE {
-  border-top: 3px solid black; 
-}
-
-#CAMINO {
-  border-top: 3px dashed black; 
-}
-#LINEA_DE_TRANSMISION {
-  border-top: 3px dashed orange; 
-}
-#BORDO {
-  border-top: 3px solid red; 
-}
-
-#CORRIENTE_DE_AGUA {
-  border-top: 3px solid blue;
-  width:15px; 
-}
-
+    width: 15px;
+    padding-right: 5px;
+  }
+  
+  #ASFALTADO{
+    border-top: 6px solid rgb(160, 160, 160); 
+  }
+  
+  #PAVIMENTO_RIGIDO {
+    border-top: 3px solid black; 
+  }
+  
+  #PAVIMENTO_BASICO {
+    border-top: 3px solid rgb(36, 136, 106); 
+  }
+  #AFIRMADO {
+    border-top: 3px solid rgb(245, 166, 20); 
+  }
+  #TROCHA {
+    border-top: 3px solid red; 
+  }
+  
+  #CORRIENTE_DE_AGUA {
+    border-top: 3px solid blue;
+    width:15px; 
+  }
+  #SIN_AFIRMAR{
+      border-top: 3px solid #916749; 
+  }
+  #PROYECTADO{
+      border-top: 3px solid #494e91; 
+  }
+  #RED_VECINAL_SIN_INFORMACION{
+    border-top: 3px solid rgb(134,52,235); 
+  }
+  
 .legendlines{
   margin-right: 5px;
   width: 20px;

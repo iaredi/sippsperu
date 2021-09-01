@@ -8,24 +8,20 @@ class InfraTable extends React.Component {
     this.state = {
       dataInfra : [
         {
-          elemento: "Bordo",
-          longitud: (this.props.infraInfo.bordo / 1000).toPrecision(4),
-          densidad: "-"
+          elemento: "Trocha",
+          longitud: (this.props.infraInfo.bordo / 1000).toPrecision(4)
         },
         {
-          elemento: "Calle",
-          longitud: (this.props.infraInfo.calle / 1000).toPrecision(4),
-          densidad: "-"
+          elemento: "Pavimento Rigido",
+          longitud: (this.props.infraInfo.pavimentoRigido / 1000).toPrecision(4)
         },
         {
-          elemento: "Camino",
-          longitud: (this.props.infraInfo.camino / 1000).toPrecision(4),
-          densidad: "-"
+          elemento: "Pavimento Basico",
+          longitud: (this.props.infraInfo.pavimentoBasico / 1000).toPrecision(4)
         },
         {
-          elemento: "Carretera",
-          longitud: (this.props.infraInfo.carretera / 1000).toPrecision(4),
-          densidad: "-"
+          elemento: "Asfaltado",
+          longitud: (this.props.infraInfo.asfaltado / 1000).toPrecision(4)
         }, 
         {
           elemento: "Edificion",
@@ -33,31 +29,32 @@ class InfraTable extends React.Component {
           densidad: this.props.infraInfo.infCount
         },
         {
-          elemento: "Linea de Transmision",
-          longitud: (this.props.infraInfo["linea de transmision"] / 1000).toPrecision(4),
-          densidad: "-"
+          elemento: "Afirmado",
+          longitud: (this.props.infraInfo["linea de transmision"] / 1000).toPrecision(4)
         },
         {
           elemento: "TOTAL",
           longitud: ((
             this.props.infraInfo["linea de transmision"]+
             this.props.infraInfo.bordo+
-            this.props.infraInfo.camino+
-            this.props.infraInfo.calle+
-            this.props.infraInfo.carretera
+            this.props.infraInfo.pavimentoBasico+
+            this.props.infraInfo.pavimentoRigido+
+            this.props.infraInfo.asfaltado
             ) / 1000).toPrecision(4),
           densidad: this.props.infraInfo.infCount
         },
         {
           elemento: "RAZÓN DE FRAGMENTACIÓN",
-          longitud: ((
-            this.props.infraInfo["linea de transmision"]+
-            this.props.infraInfo.bordo+
-            this.props.infraInfo.camino+
-            this.props.infraInfo.calle+
-            this.props.infraInfo.carretera
-            ) / 25000000).toPrecision(4),     
-          densidad: "-"
+          longitud: (1/(
+            this.props.infraInfo.afirmado+
+            this.props.infraInfo.asfaltado+
+            this.props.infraInfo["pavimento basico"]+
+            this.props.infraInfo["pavimento rigido"]+
+            this.props.infraInfo.proyectado+
+            this.props.infraInfo["sin afirmar"]+
+            this.props.infraInfo["red vecinal sin informacion"]+
+            this.props.infraInfo.trocha
+            )).toPrecision(4)
         }
       ]
     };
@@ -84,14 +81,20 @@ class InfraTable extends React.Component {
       return acc;
     }, []);
 
+        var uAnalisisTxt='';
+        var este='';
+        if(infotype=='udp'){
+            uAnalisisTxt='En esta Unidad de Paisaje (UP) ';
+            este=' esta ';
+        }else{
+            uAnalisisTxt='En este Pol\xEDgono ';
+            este=' esta ';
+        }
     
-    const descriptionString = `En esta Unidad de Paisaje \
-    (UP) ${idennum} intervienen los siguintes elementos de infraestructura: ${existingNameList} 
-    La razón de fragmentación
-    de esta UP es igual a ${this.state.dataInfra[7].longitud}. De tipos de elementos lineales, lo más
-    predominante es ${maxlinea[0]} que ocupan ${maxlinea[1]} kilometros
-    lineales. En esta UP intervienen también aproximadamente ${this.props.infraInfo.infCount}
-    edificaciones de diferentes tipos.`;
+        const descriptionString = uAnalisisTxt + idennum + " intervienen los siguientes elementos de infraestructura: " 
+        + existingNameList + " \n. La raz\xF3n de fragmentaci\xF3n\n    de"+este+uAnalisis+"es igual a " + this.state.dataInfra[9].longitud 
+        + ". De tipos de elementos lineales, lo m\xE1s\n    predominante es " + maxlinea[0] + " que ocupan " + maxlinea[1] 
+        + " kilometros\n    lineales.";
 
   this.setText(descriptionString);
 
@@ -106,11 +109,6 @@ class InfraTable extends React.Component {
       {
         dataField: "longitud",
         text: "LONGITUD (km)"
-      },
-      
-      {
-        dataField: "densidad",
-        text: "DENSIDAD (unidades)"
       }
     ];
 

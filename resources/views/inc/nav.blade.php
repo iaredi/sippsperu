@@ -1,55 +1,47 @@
-<nav class="mynavbar navbar navbar-expand-lg" style="background-color: rgb(66, 214, 96);">
-  <a class="navbar-brand" href="/mostrarmapas">MTP Biodiversidad</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText"
-    aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="dropdown">
-		<a class="dropbtn">Ingresar Datos 
-		  <i class="fa fa-caret-down"></i>
-		</a>
-		<div class="dropdown-content">
-		  <a href="/ingresardatos">Monitoreo de Biodiversidad</a>
-		  <a href="/actividad">Monitoreo de Acciones</a>
-		  <a href="/cambiar/linea">Linea MTP</a>
-		</div>
-	  </div>
-
-  <div class="collapse navbar-collapse" id="navbarText">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="/descargar">Descargar Datos</a>
-      </li> 
-      <li class="nav-item">
-        <a class="nav-link" href="/mostrarmapas">Mostrar Mapas</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="/ingresarexcel">Ingresar Excel</a>
-      </li>
-      
-    </ul>
-
-    <ul class="navbar-nav ml-auto">
-      <?php
+<!-- Header -->
+<div id="header">
+    <div class="top">
+        <!-- Logo -->
+        <div id="logo">
+            <?php
             $root_directory = "testdir";
-                echo "<li class='nav-item'><a class='nav-link' href='/privacidad'>Privacidad</a></li>";
-
-                if (session('email')) {
-                    $useremail=session('email');
-                    if (session('admin')){
-                      echo "<li class='nav-item'><a class='nav-link' href='/admin'>Admin</a></li>";
-                    }
-                    echo "<li class='nav-item'><a class='nav-link' id='useremail' >{$useremail}</a></li>";
-
-                    echo "<li class='nav-item'><a class='nav-link' href='/logout'>Logout</a></li>";
-
-                } else {
-                    echo "<li class='nav-item'><a class='nav-link' href='/login'>Login</a></li>";
-                    echo "<li class='nav-item'><a class='nav-link' href='/register'>Registro</a></li>";
+            if (session('email')) {
+                $useremail=session('email');
+                echo "<h1 id='title'><a class='top-link' id='useremail' href='/admin'>{$useremail}</a></h1>";
+                if (session('admin')){
+                    echo "<p><a class='top-link' id='useremail' href='/admin'>Herramientas de Admin</a></p>";
+                    echo "<p><a class='top-link' id='okp-top' target='_blank' href='https://satoxapampa.mooo.com'>Gestor de Aplicativos</a></p>";
                 }
-                
-        ?>
-    </ul>
-  </div>
-</nav>
-<div class='bodycontainer'>
+            }else{
+                echo "<h1 id='title'><a class='top-link' href='/login' style='font-size: 1.6em;'>Iniciar sesión</a></h1>";
+                echo "<p id='title'><a class='top-link' href='/register' style='font-size: 1.4em;'>Registro</a></p>";
+            }
+                ?>
+        </div><!-- logo -->
+
+        <!-- Nav -->
+        <nav id="nav">
+        <?php if (session('email')) {?>
+            <ul>
+                <li><a href="/mostrarmapas" id="mostrarmapas"><span class="icon solid fa-map-marked-alt">Mostrar Mapas</span></a></li>
+                <li><a href="/ingresardatos" id="ingresardatos-link"><span class="icon solid fa-crow">Monitoreo <br>de Biodiversidad</span></a></li>
+                <li><a href="/actividad" id="actividad-link"><span class="icon solid fa-clipboard-check">Monitoreo <br>de Acciones</span></a></li>
+                <li><a href="/cultivo" id="cultivo-link"><span class="icon solid fa-seedling">Monitoreo Productivo</span></a></li>
+                <li><a href="/cambiar/linea" id="cambiar-linea-link"><span class="icon solid fa-code-branch">Linea TIM</span></a></li>
+                <li><a href="/descargar" id="descargar-link"><span class="icon solid fa-download">Descargar Datos</span></a></li>
+                <li><a href="/ingresarexcel" id="ingresarexcel-link"><span class="icon solid fa-file-excel">Ingresar Excel</span></a></li>
+                <?php if (session('email')){?>
+                    <li><a href="/logout" id="logout-link"><span class="icon solid fa-sign-out-alt">Cerrar sesi&oacute;n</span></a></li>
+                <?php }?>
+            </ul>
+        <?php } ?>
+        </nav> <!-- nav -->
+    </div><!-- top -->
+
+    <div class="bottom">
+        <!-- Social Icons -->
+        <ul class="icons">
+            <?php echo "<li><a href='/privacidad' class='brands><span class='label'>Privacidad</span></a></li>"; ?>
+        </ul>
+    </div><!-- bottom -->
+</div><!-- header -->

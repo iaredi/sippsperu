@@ -121,7 +121,7 @@ class UDPMapa extends React.Component {
         if (item.tableName !== "usos_de_suelo4") {
           let myLayer = get_shp(item, mymap);
           overlayMaps[item.displayName] = myLayer;
-          if (item.tableName == "udp_puebla_4326") {
+          if (item.tableName == "udp_puebla_4326" || item.tableName == "usershapes") {
             mymap.fitBounds(myLayer.getBounds());
             mymap.setZoom(13.6),
             bounds = mymap.getBounds();

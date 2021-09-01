@@ -18,14 +18,16 @@ class Mapapp extends React.Component {
 		this.setRasterValue = this.setRasterValue.bind(this);
 
         this.state = {
-			currentUdpId: -1,
+            currentUdpId: -1,
+            currentPoligonoId: -1,
 			currentLineaId:-1,
 			rasterOn : false,
             speciesResult: [],
             previous: 0,
             udp: 0,
 			udpButton: false,
-			lineaButton: false,
+            lineaButton: false,
+            poligonoButton: false,
             clickLocation: { lat: 999.9, lng: 999.9 },
             mapSettings: {
                 distinctOrTotal: "total_observaciones",
@@ -141,18 +143,18 @@ class Mapapp extends React.Component {
 
     handleFeatureClick(event) {
 		if(!this.state.rasterOn){
-			const idtype =
-				event.target.feature.properties.name == "udp_puebla_4326"
-					? "udp"
-					: event.target.feature.properties.name == "linea_mtp"
-					? "linea_mtp"
-					:"other";
+            const idtype = event.target.feature.properties.name == "udp_puebla_4326" ? 
+                "udp": event.target.feature.properties.name == "linea_mtp" ?
+                "linea_mtp": event.target.feature.properties.name == "usershapes" ? "poligono": "other";
 
 			this.setState(() => ({
 				udpButton: idtype == "udp" ? true : false
 			}));
 			this.setState(() => ({
 				lineaButton: idtype == "linea_mtp" ? true : false
+            }));
+            this.setState(() => ({
+				poligonoButton: idtype == "poligono" ? true : false
 			}));
 
 
@@ -162,6 +164,9 @@ class Mapapp extends React.Component {
 
 			this.setState(() => ({
 				currentUdpId: event.target.feature.properties.iden
+            }));
+            this.setState(() => ({
+				currentPoligonoId: event.target.feature.properties.iden
 			}));
 
 			let myColor = "green";
@@ -275,7 +280,7 @@ class Mapapp extends React.Component {
 					{this.state.lineaButton && (
 						<div>
 							<a
-								className="btn btn-primary m-2 btn-sm mapInfoButton"
+								className="btn btn-info m-2 btn-sm button"
 								href={
 									"/mostrarnormas/ae/" + 
 									this.state.currentLineaId+'l'
@@ -286,7 +291,7 @@ class Mapapp extends React.Component {
 								Atributos Ecologicos{" "}
 							</a>
 							<a
-								className="btn btn-primary m-2 btn-sm mapInfoButton"
+								className="btn btn-info m-2 btn-sm button"
 								href={
 									"/mostrarnormas/normas/" +
 									this.state.currentUdpId +'l'
@@ -294,7 +299,7 @@ class Mapapp extends React.Component {
 								role="button"
 							>
 								{" "}
-								Especies y Normas 059
+								Especies en peligro de extinción
 							</a>
 						</div>
 						
@@ -303,7 +308,7 @@ class Mapapp extends React.Component {
 							<div>
 							<div>
 							<a
-								className="btn btn-primary m-2 btn-sm mapInfoButton"
+								className="btn btn-info m-2 btn-sm button"
 								href={
 									"/mostrarnormas/ae/" +
 									this.state.currentUdpId +'u'
@@ -314,7 +319,7 @@ class Mapapp extends React.Component {
 								Attributos Ecologicos{" "}
 							</a>
 							<a
-							className="btn btn-primary m-2 btn-sm mapInfoButton"
+							className="btn btn-info m-2 btn-sm button"
 							href={
 								"/mostrarnormas/normas/" +
 								this.state.currentUdpId +'u'
@@ -323,10 +328,8 @@ class Mapapp extends React.Component {
 							>
 							{" "}
 							Especies y Normas 059
-							</a>
-							
 							<a
-								className="btn btn-primary m-2 btn-sm mapInfoButton"
+								className="btn btn-info m-2 btn-sm button"
 								href={
 									"/udpmapa/inf/" +
 									this.state.currentUdpId +
@@ -354,13 +357,12 @@ class Mapapp extends React.Component {
 								role="button"
 							>
 								{" "}
-								Infrastructura{" "}
+								Infraestructura{" "}
 							</a>
 							</div>
 							<div>
-							
 							<a
-								className="btn btn-primary m-2 btn-sm mapInfoButton"
+								className="btn btn-primary m-2 btn-sm button"
 								href={
 									"/mostrarnormas/in/" +
 									this.state.currentUdpId
@@ -372,7 +374,7 @@ class Mapapp extends React.Component {
 						</a>
 							
                                 <a
-                                    className="btn btn-primary m-2 btn-sm mapInfoButton"
+                                    className="btn btn-primary m-2 btn-sm button"
                                     href={
                                         "/udpmapa/sue/" +
                                         this.state.currentUdpId +

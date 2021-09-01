@@ -11,8 +11,11 @@ import "../../leaflet_assets/images/marker-shadow.png";
 import "../../leaflet_assets/images/marker-icon-2x.png";
 const upstreamLinea = {estado:'nombre',municipio:'nombre',predio:'iden_muni_predio'}
 const upstreamActividad = {estado:'nombre',municipio:'nombre'}
-const actividadSelectObject={tipo:['','taller','plactica', 'capacitacion','instalacion','reunion de coordinacion en torno', 'otro'],
-	tipo_geom:['','punto','poligono']}
+const actividadSelectObject={tipo:['','taller','platica', 'capacitacion','instalacion','reunion de coordinacion en torno', 'otro'],
+    tipo_geom:['','punto','poligono']}
+const upstreamCultivo = { estado: 'nombre', municipio: 'nombre' };
+const cultivoSelectObject={ tipo: ['', 'parcela', 'terreno', 'jardin', 'otro'],
+    tipo_geom:['','punto','poligono']}
 const components = {
     udp: <UDPMapapp />,
     in: <Intersection />,
@@ -30,6 +33,13 @@ const components = {
 		displayColumn='descripcion'
 		upstreamTables={upstreamActividad}
 		selectObject={actividadSelectObject}
+		extra={true}
+    />,
+    cultivo:<UpdateBuilder
+		table="cultivo"
+		displayColumn='descripcion'
+		upstreamTables={upstreamCultivo}
+		selectObject={cultivoSelectObject}
 		extra={true}
 	/>,
 };

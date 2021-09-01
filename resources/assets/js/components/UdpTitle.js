@@ -13,7 +13,7 @@ function UdpTitle(props) {
     <div>
       <h6 id="updtitle">
         {" "}
-        PROPUESTA DE MONITOREO ARTICULADO DE LA BIODIVERSIDAD (MTP + SMC):
+        SISTEMA DE INFORMACIÓN PARA LA PLANEACIÓN DE LOS PAISAJES SOSTENIBLES PROVINCIA DE OXAPAMPA PERÚ ARTICULADO DE LA BIODIVERSIDAD (TIM + SMC):
         SECTOR FORESTAL
       </h6>
 
@@ -21,7 +21,7 @@ function UdpTitle(props) {
         <h6 id="framentation"> MAPA DE FRAGMENTACIÓN {maptype=='sue'?'AMBIENTAL':maptype=='inf'?'INFRASTRUCTURA':null}</h6>
         <h6 id="muniudp">
           {" "}
-          MUNICIPIO DE {munilist} PUEBLA, UNIDAD DE PAISAJE {idennum}
+          PROVINCIA DE {munilist} OXAPAMPA, {uAnalisis} {idennum}
         </h6>
       </div>
     </div>

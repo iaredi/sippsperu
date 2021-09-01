@@ -10,8 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/index', 'PagesController@index');
+Route::get('/', 'PagesController@index');
+Route::get('/index', 'PagesController@login');
 Route::get('/ingresardatos', 'PagesController@ingresardatos');
 Route::get('/login', 'PagesController@login');
 Route::get('/logout', 'PagesController@logout');
@@ -20,14 +20,16 @@ Route::get('/ingresarexcel', 'PagesController@ingresarexcel');
 Route::get('/descargar', 'PagesController@descargar');
 Route::get('/mostrarmapas', 'PagesController@mostrarmapas');
 Route::get('/admin', 'PagesController@admin');
-Route::get('/', 'PagesController@login');
 Route::get('/thanks', 'PagesController@thanks');
 Route::get('/reset_1', 'PagesController@reset_1');
 Route::get('/reset_2', 'PagesController@reset_2');
 Route::get('/cargarshapes', 'PagesController@cargarshapes');
 Route::get('/cargarshapesadmin', 'PagesController@cargarshapesadmin');
 Route::get('/privacidad', 'PagesController@privacy');
+Route::get('/processUsershapes', 'PagesController@processUsershapes');
 Route::get('/actividad', 'PagesController@actividad');
+Route::get('/cultivo', 'PagesController@cultivo');
+Route::get('/contaminantes', 'PagesController@contaminantes');
 
 Route::get('/cambiar/{infotype}', function ($infotype){
 	return view('pages/cambiar',['infotype'=>$infotype]);
@@ -42,10 +44,8 @@ Route::get('/udpmapa/{maptype}/{idennum}/{shannon}', function ($maptype,$idennum
 
 
 
-Route::post('/', 'PagesController@login');
 Route::post('/admin', 'PagesController@admin');
 Route::post('/dlexample', 'PagesController@dlexample');
-
 Route::post('/descargarfile', 'PagesController@descargarfile');
 Route::post('/login', 'PagesController@login');
 Route::post('/register', 'PagesController@register');
@@ -60,6 +60,8 @@ Route::post('/mostrarnormas', 'PagesController@mostrarnormas');
 Route::post('/privacidad', 'PagesController@privacy');
 //Route::post('/cambiarlinea', 'PagesController@cambiarlinea');
 Route::post('/actividad', 'PagesController@actividad');
+Route::post('/cultivo', 'PagesController@cultivo');
+Route::post('/contaminantes', 'PagesController@contaminantes');
 Route::post('/cambiar/{infotype}', function ($infotype){
 	return view('pages/cambiar',['infotype'=>$infotype]);
   });
@@ -175,10 +177,4 @@ if($size>0){
 }else{
   echo "No hay especies para {$orignallifeform}";
 }
-
-
-    
-
-
-
 });

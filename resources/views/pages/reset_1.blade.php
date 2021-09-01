@@ -1,3 +1,4 @@
+
 <?php
     session_start();
     session(['error' => []]);
@@ -28,9 +29,9 @@
 			ini_set('sendmail_from', $from_email);
 			if(mail($to, $subject, $body, implode("\r\n",$headers), "-f admin@biodiversidadpuebla.online")){
 				
-				session(['mailmessage' => "Se hemos mandado un correo a {$to}. Buscalo en su archivo de spam!"]);
+				session(['mailmessage' => "Hemos mandado un correo a {$to}. Por favor, verifique la carpeta de spam!"]);
 			}else{
-				session(['mailmessage' => "Email no ha mandado"]);
+				session(['mailmessage' => "Email no enviado"]);
 			}
 			
 
@@ -39,7 +40,7 @@
             //return redirect()->to('/reset_2')->send();
 
         } else {
-            session(['error' => ['email no existe']]);
+            session(['error' => ['Error al iniciar sesión. Verifique sus datos.']]);
         }
     } else {
         $email="";
@@ -48,37 +49,31 @@
     
 ?>
 
-    @include('inc/header')
-        @include('inc/nav')
-       
-                    
-    <div class="display: flex" style="text-align:center;">
-        <div class=" d-inline-flex flex-column justify-content-center" style='width: 350px'>
-            <?php 
-                if (session('error')) {
-                    foreach (session('error') as $msg) {
-                        echo "<p class='bg-danger2 text-center'>{$msg}</p>";
-                    }
-                }
-            ?>
-            <form id="login-form"  method="post" role="form" style="display: block;">
-                {{ csrf_field() }}
-                <div class="form-group p-2">
-                    <input type="text" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value='<?php echo $email; ?>' required>
-                </div>
-
-            <div class="form-group pt-2 pb-2 pl-5 pr-5 ">
-                <div class="row">
-                        <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-success p-15" value="Mandar email">
+@include('inc/header')
+@include('inc/nav')
+    
+<div class='bodycontainer' id="main">
+    <section class="four">
+        <div class="container">
+            <header><h2>Recuperar contraseña</h2></header>      
+            <div class="display: flex" style="text-align:center;">
+                <div class=" d-inline-flex flex-column justify-content-center" style='width: 350px'>
+                    <?php 
+                        if (session('error')) {
+                            foreach (session('error') as $msg) {
+                                echo "<p class='bg-danger2 text-center'>{$msg}</p>";
+                            }
+                        }
+                    ?>
+                    <form id="login-form"  method="post" role="form" style="display: block;">
+                        {{ csrf_field() }}
+                        <div class="row">
+                            <div class="col-12"><input type="text" name="email" id="email" placeholder="Email" value='<?php echo $email; ?>' required /></div>
+                            <div class="col-12"><input type="submit" name="login-submit" id="login-submit" value="Mandar email"></div>
+                        </div>
+                    </form>      
                 </div>
             </div>
-
-            
-            
-                
-            </form>
-                               
-        </div>
         </div>
         @include('inc/footer')
-   
+    </section>

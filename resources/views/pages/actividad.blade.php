@@ -20,33 +20,41 @@
 
 @include('inc/header')
 @include('inc/nav')
-<img src="{{ asset('img/popo.jpg') }}"  alt="Italian Trulli" style="height:250px; width:380px;">
-	<div class=" warnings">
-		<?php
-			$hintlist = [
-				"Si no sabe con certeza algún dato, ingrese 00.",
-				"Todos los medidas son de 3 grados de precision. Por ejemplo 1.792",
-				"Todos las coordenadas son de 4 grados de precision. Por ejemplo -110.8170"
-			];
-			foreach ($hintlist as $hint) {
-				echo "<p class='text-dark text-center'style='background-color: lightsteelblue;'>{$hint}</p>";
-			}
-			foreach (session('error') as $msg) {
-				echo "<p class='bg-danger2 text-center'>{$msg}</p>";
-			}
-		?>
-</div>
-	<script> 
+<div class='bodycontainer' id="main">
+    <section class="four">
+        <div class="container">
+            <header><h2>Monitoreo de Acciones</h2></header>
+                <div class=" warnings">
+                    <?php
+                        $hintlist = [
+                            "Si no sabe con certeza algún dato, ingrese 00.",
+                            "Escriba las medidas con 3 grados de precision. Ejemplo: 1.792.",
+                            "Escriba las coordenadas con 4 grados de precision. Ejemplo: -110.8170."
+                        ];
+                        foreach ($hintlist as $hint) {
+                            echo "<div class=''>{$hint}</div>";
+                        }
+                        if (count(session("error"))>0){
+                            echo "<div class='bg-danger2 text-center'>";
+                            foreach (session('error') as $msg) {
+                                echo "<span>{$msg}</span>";
+                            }
+                            echo "</div>";
+                        }
+                    ?>
+            </div>
+                <script> 
 
-		var csrf_token = '<?php echo csrf_token(); ?>'; 
-	</script>
-	<div id="app"></div>
-	
+                    var csrf_token = '<?php echo csrf_token(); ?>'; 
+                </script>
+                <div id="app"></div>
+                
 
-<link rel="stylesheet" href="leaflet_assets/leaflet.css">
-<script>
-	var infotype ='actividad'
-</script>
-<script src="{{ asset('js/index.js') }}"></script>
-
-@include('inc/footer')
+            <link rel="stylesheet" href="leaflet_assets/leaflet.css">
+            <script>
+                var infotype ='actividad'
+            </script>
+            <script src="{{ asset('js/index.js') }}"></script>
+        </div>
+        @include('inc/footer')
+    </section>

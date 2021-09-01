@@ -4,6 +4,7 @@
 
 
 <?php
+
 $jsoninfotype=json_encode($infotype);
 	if (!session('email')){
 		return redirect()->to('/login')->send();
@@ -22,33 +23,39 @@ $jsoninfotype=json_encode($infotype);
 
 @include('inc/header')
 @include('inc/nav')
-@include('inc/checkdata')
-<img src="{{ asset('img/popo.jpg') }}"  alt="Italian Trulli" style="height:250px; width:380px;">
-	<div class=" warnings">
-		<?php
-			$hintlist = [
-				"Todos los medidas son de 3 grados de precision. Por ejemplo 1.792",
-				"Todos las coordenadas son de 4 grados de precision. Por ejemplo -110.8170"
-			];
-			foreach ($hintlist as $hint) {
-				echo "<p class='text-dark text-center'style='background-color: lightsteelblue;'>{$hint}</p>";
-			}
-			foreach (session('error') as $msg) {
-				echo "<p class='bg-danger2 text-center'>{$msg}</p>";
-			}
-		?>
-</div>
-	<script> 
+<div class='bodycontainer' id="main">
+    <section class="four">
+        <div class="container">
+            @include('inc/checkdata')
+            <h3 id="measurement3">L&iacute;nea de Monitoreo Transecto Punto(MTP)</h3>
+            <div style="font-size:28px;">Metodología TIM Perú</div>
+            <div class=" warnings">
+                <?php
+                    $hintlist = [
+                        "Las medidas son de 3 grados de precisión. Ejemplo: 1.792",
+                        "Las coordenadas son de 4 grados de precisión. Ejemplo: -110.8170"
+                    ];
+                    foreach ($hintlist as $hint) {
+                        echo "<div class='' '>{$hint}</div>";
+                    }
+                    foreach (session('error') as $msg) {
+                        echo "<div class='bg-danger2 text-center'>{$msg}</div>";
+                    }
+                ?>
+            </div>
+            <script> 
 
-		var csrf_token = '<?php echo csrf_token(); ?>'; 
-	</script>
-	<div id="app"></div>
-	
+                var csrf_token = '<?php echo csrf_token(); ?>'; 
+            </script>
+            <div id="app"></div>
+                
 
-<link rel="stylesheet" href="leaflet_assets/leaflet.css">
-<script>
-	var infotype = {!! $jsoninfotype !!};
-</script>
-<script src="{{ asset('js/index.js') }}"></script>
+            <link rel="stylesheet" href="leaflet_assets/leaflet.css">
+            <script>
+                var infotype = {!! $jsoninfotype !!};
+            </script>
+            <script src="{{ asset('js/index.js') }}"></script>
+        </div>
 
-@include('inc/footer')
+        @include('inc/footer')
+    </section>

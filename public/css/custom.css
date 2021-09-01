@@ -1,0 +1,150 @@
+.bg-danger2 > span{
+    display:block;
+}
+.shapelabel{
+    display: inline;
+
+}
+.shapenombrediv{
+    text-align: left;
+    padding-top:15px;
+    padding-bottom: 15px;
+}
+#mapcontrol{
+    text-align: left;
+    margin-left: 1em;
+    margin-top: 10px;;
+}
+.boton{
+    display: block;
+    margin: auto;
+    margin-top: 1em;
+}
+.warningMsg{
+    background: linear-gradient(0deg, rgba(244, 223, 104, 0.8) 0%, rgba(246, 249, 42, 0.51) 35%, rgba(248, 251, 189, 0.04) 100%);
+    font-size: 0.75em;
+    padding: 1em;
+    line-height: normal;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+.errorMsg{
+    background: rgb(236, 206, 206);
+    background: linear-gradient(0deg, rgb(208, 40, 40) 0%, rgba(230, 47, 26, 0.46) 75%, rgba(255, 120, 120, 0.08) 100%);
+    font-size: 0.75em;
+    padding: 1em;
+    line-height: normal;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    color: #fff;
+}
+.okMsg{
+    background: rgb(58,139,0);
+    background: linear-gradient(0deg, rgb(75, 138, 29) 0%, rgba(119, 170, 86, 0.9) 35%, rgba(192, 255, 189, 0.26) 100%);
+    font-size: 0.75em;
+    padding: 1em;
+    line-height: normal;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    color: #042407;
+}
+.trheader{
+    font-size:0.75em;
+    line-height: normal;
+}
+.linea_mtpcolumnrow {
+    font-size: 15px;
+    line-height: normal;
+}
+.botoncito{
+    font-size:0.6em;
+}
+td > button{
+    padding: 1px;
+    width: 30px;
+    height: 30px;
+    margin-left:10px
+}
+
+/** ADD YOUR AWESOME CODES HERE **/
+.table thead th{
+    font-size: 0.8em;
+    background-color: #7aa5a3;
+    text-align: center;
+    line-height: normal;
+    color: #fff;
+    font-weight: bold;
+}
+.react-bootstrap-table table{
+    table-layout: unset;
+}
+.separador{
+    margin-bottom: 30px;
+}
+
+.warnings{
+    width: 70%;
+}
+.overflowSpan{
+    display: grid;
+    grid-template-columns: 250px 250px 250px 250px 250px 250px 250px 250px 250px 250px 250px 250px 250px 250px 250px;
+    font-size: 0.8em;
+    line-height: normal;
+}
+.overflowDiv{
+    overflow: auto;
+}
+.observacion_arbolinputrow > td > input,
+.observacion_arbolinputrow > td > select{
+    font-size:0.7em;
+}
+.observacion_arbolinputrow > td > input[type="file"]{
+    font-size: 0.7em;
+}
+.cap{
+    text-transform: capitalize;
+}
+#prediocolumnsrow{
+    font-size: 0.7em;
+    line-height: normal;
+}
+.cuadranteinput{
+    width:75px;
+}
+#measurementTBodyForm input[type="text"]{
+    width: 150px;
+}
+
+.allinputs{
+    width: 215px;
+}
+.centered{
+    text-align: center;
+}
+.loginfield{
+    width: 98%;
+    margin-right: 10px;
+}
+.zindextop{
+    z-index: 10000;
+}
+.creditos{
+    line-height: normal;
+}
+#notas{
+    width: 81%;
+}
+.btnEnviar{
+    margin-top: 20px;
+}
+.divFormulario{
+    display: grid;
+    grid-template-columns: 200px 40vw;
+    margin-bottom: 15px;
+}
+.leftAlign{
+    text-align: left;;
+}
+#measurementlinea_mtpSelect{
+    width:80%
+}

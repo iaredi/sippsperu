@@ -26,7 +26,7 @@ class DBDropdown extends React.Component {
                 >
                     { this.props.items.sort().map(item => (
                         <option key={item} value={item===''?'notselected':item}>
-                            {item}
+                            {item.charAt(0).toUpperCase()+item.slice(1)}
                         </option>
                     ))}
                 </select>

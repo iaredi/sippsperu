@@ -21,14 +21,22 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('getintersection', function(Request $request) {
 	$result=[];
 	$addcolumnssql = "SELECT tablename, displayname, featurecolumn FROM additional_layers WHERE category='Gestion del Territorio'";
-	$addcolumns = DB::select($addcolumnssql,[]);
+    $addcolumns = DB::select($addcolumnssql,[]);
+    $headertype=substr($request->udpiden, -1);
+    $idenudp=!is_numeric($headertype)?substr($request->udpiden, 0, -1):$request->udpiden;
 	foreach ($addcolumns as $table) {
 		$tablename=$table->tablename;
 		$displayname=$table->displayname;
 		$featurecolumn=$table->featurecolumn;
-
-		$featurecolumnsql = "SELECT {$featurecolumn} as val FROM {$tablename} WHERE ST_Intersects(geom,(select geom from udp_puebla_4326 where iden=?))";
-		$rawvalue=DB::select($featurecolumnsql,[$request->udpiden]);
+        if($headertype=='p'){
+            //si es un polígono
+            $featurecolumnsql = "SELECT {$featurecolumn} as val FROM {$tablename} WHERE ST_Intersects(geom,(select geom from usershapes where gid=?))";
+        }else{
+            //Si es unidad de paisaje
+            $featurecolumnsql = "SELECT {$featurecolumn} as val FROM {$tablename} WHERE ST_Intersects(geom,(select geom from udp_puebla_4326 where iden=?))";
+        }
+		
+		$rawvalue=DB::select($featurecolumnsql,[$idenudp]);
 		foreach ($rawvalue as $val) {
 			$result[]=array('object'=>$displayname, 'name'=>$val->val);
 		}
@@ -67,23 +75,29 @@ Route::post('getinffeatures', function(Request $request) {
   $west =  $request->west;
   $udpiden = $request->udpiden;
 
+  $tableName='udp_puebla_4326';
+  $idColumn='iden';
+  if($request->headerType=='p'){
+    $tableName='usershapes';
+    $idColumn='gid';
+  }
 
   $sqludplineainf =   
     "SELECT gid, nombre 
     FROM infra_linea 
     where ST_Intersects(infra_linea.geom,
-    (select geom from udp_puebla_4326 where iden={$udpiden}))";
+    (select geom from {$tableName} where {$idColumn}={$udpiden}))";
     //udp and water points
   $sqludppuntoinf =   
     "SELECT gid, nombre 
     FROM infra_punto 
     where ST_Intersects(infra_punto.geom,
-    (select geom from udp_puebla_4326 where iden={$udpiden}))";
+    (select geom from {$tableName} where {$idColumn}={$udpiden}))";
   $sqludpmuni =   
     "SELECT nombre 
     FROM municipio
     where ST_Intersects(ST_SetSRID(municipio.geom, 4326),
-    (select geom from udp_puebla_4326 where iden={$udpiden}))";
+    (select geom from {$tableName} where {$idColumn}={$udpiden}))";
       
   $resultudplineainf = DB::select($sqludplineainf,[]);
   $resultudppuntoinf = DB::select($sqludppuntoinf,[]);
@@ -92,17 +106,16 @@ Route::post('getinffeatures', function(Request $request) {
   foreach ($resultudpmuni as $munirow) {
     $munilist[] = $munirow->nombre;
   }
-
 //Get length of inf lines
-
-$infClasses=['BORDO','CALLE','CAMINO','CARRETERA','LINEA DE TRANSMISION'];
+$infClasses=['AFIRMADO', 'ASFALTADO', 'PAVIMENTO BASICO', 'PAVIMENTO RIGIDO', 'PROYECTADO', 'SIN AFIRMAR','RED VECINAL SIN INFORMACION','TROCHA'];
 $newrow = new stdClass();
 foreach ($infClasses as $infClass) {
+  $tmpInfClass=str_replace('_',' ',$infClass);
   $inflength = 0;
   foreach($resultudplineainf AS $row2) {
     $infolinegid = $row2->gid;
-    $lengthsql="SELECT ST_Length(ST_Transform(ST_INTERSECTION((select geom from infra_linea where gid = :gid and geografico = :infClass), (select geom from  udp_puebla_4326 where iden=:udpiden)),3857))";
-    $lengthresult = DB::select($lengthsql,['gid'=>$infolinegid, 'infClass'=>$infClass, 'udpiden'=>$udpiden]);
+    $lengthsql="SELECT ST_Length(ST_Transform(ST_INTERSECTION((select geom from infra_linea where gid = :gid and geografico = :infClass), (select geom from  {$tableName} where {$idColumn}=:udpiden)),3857))";
+    $lengthresult = DB::select($lengthsql,['gid'=>$infolinegid, 'infClass'=>$tmpInfClass, 'udpiden'=>$udpiden]);
     $inflength = $inflength + (float)($lengthresult[0]->st_length);
   }
   $lowerinfClass=strtolower($infClass);
@@ -119,22 +132,28 @@ foreach ($infClasses as $infClass) {
 });
 
 
-  
-
-
 
 
 
 
 Route::post('getsuefeatures', function(Request $request) {
-    $result="There was an error";
+    $result="Ucurrio un error";
     $north =  $request->north;
     $east =  $request->east;
     $south =  $request->south;
     $west =  $request->west;
+    $headertype=$request->headerType;
     $udpiden = $request->udpiden;
+    if($headertype=='p'){
+        $tableName = 'usershapes';
+        $idFieldName='gid';
+    }else{
+        $tableName = 'udp_puebla_4326';
+        $idFieldName='iden';
+    }
 
-    $totalsql = "SELECT ST_Area((select geom from udp_puebla_4326 where iden={$udpiden}))";
+    $totalsql = "SELECT ST_Area((select geom from {$tableName} where {$idFieldName}={$udpiden}),false)/10000 as st_area";/// se divide entre 10 mil para obtener las hectáreas cuadradas
+    
     $totalarea=DB::select($totalsql,[])[0]->st_area;
     //Bounding box and soils 
     $sql =   
@@ -147,33 +166,33 @@ Route::post('getsuefeatures', function(Request $request) {
       "SELECT gid, descripcio, color, 2 as aislado, {$totalarea} as totalarea, false as ismulti
       FROM usos_de_suelo4 
       where ST_Intersects(usos_de_suelo4.geom,
-      (select geom from udp_puebla_4326 where iden={$udpiden}))";
+      (select geom from {$tableName} where {$idFieldName}={$udpiden}))";
     //udp and water lines 
     $sqludplineaagua =   
       "SELECT gid, nombre 
       FROM agua_lineas 
       where ST_Intersects(agua_lineas.geom,
-      (select geom from udp_puebla_4326 where iden={$udpiden}))";
+      (select geom from {$tableName} where {$idFieldName}={$udpiden}))";
       //udp and water points
     $sqludppuntoagua =   
       "SELECT gid, nombre 
       FROM agua_puntos 
       where ST_Intersects(agua_puntos.geom,
-      (select geom from udp_puebla_4326 where iden={$udpiden}))";
+      (select geom from {$tableName} where {$idFieldName}={$udpiden}))";
 
       //udp and water poli
     $sqludppoliagua =   
     "SELECT gid, nombre 
     FROM agua_poligonos 
     where ST_Intersects(agua_poligonos.geom,
-    (select geom from udp_puebla_4326 where iden={$udpiden}))";
+    (select geom from {$tableName} where {$idFieldName}={$udpiden}))";
 
     //which munis interect with udp
     $sqludpmuni =   
     "SELECT nombre 
     FROM municipio
     where ST_Intersects(ST_SetSRID(municipio.geom, 4326),
-    (select geom from udp_puebla_4326 where iden={$udpiden}))";
+    (select geom from {$tableName} where {$idFieldName}={$udpiden}))";
       
     if (is_numeric($north) && is_numeric($east) && is_numeric($south) && is_numeric($west)){
       $result = DB::select($sql,[]);
@@ -198,7 +217,7 @@ Route::post('getsuefeatures', function(Request $request) {
  
       //get length of water lines in udp
 
-      $lengthsql="SELECT ST_Length(ST_Transform(ST_INTERSECTION((select geom from agua_lineas where gid = ?), (select geom from  udp_puebla_4326 where iden=?)),3857))";
+      $lengthsql="SELECT ST_Length(ST_Transform(ST_INTERSECTION((select geom from agua_lineas where gid = ?), (select geom from  {$tableName} where {$idFieldName}=?)),3857))";
       $lengthresult = DB::select($lengthsql,[$agualinegid,$udpiden]);
       $agualength= $agualength + (float)($lengthresult[0]->st_length);
     }
@@ -206,21 +225,21 @@ Route::post('getsuefeatures', function(Request $request) {
     foreach($resultudppoliagua AS $row3) {
       $aguapoligid = $row3->gid;
       //get length of water lines in udp
-      $areasql="SELECT ST_Area(ST_Transform(ST_INTERSECTION((select geom from agua_poligonos where gid = ?), (select geom from  udp_puebla_4326 where iden=?)),3857))";
+      $areasql="SELECT ST_Area(ST_Transform(ST_INTERSECTION((select geom from agua_poligonos where gid = ?), (select geom from  {$tableName} where {$idFieldName}=?)),3857)) as st_area";//se divide entre 10000 para obtener hectareas cuadradas
       $arearesult = DB::select($areasql,[$aguapoligid,$udpiden]);
       $aguaarea= $aguaarea + (float)($arearesult[0]->st_area);
     }
 
     $multisql =" SELECT (ST_DUMP(ST_INTERSECTION((select geom from usos_de_suelo4 where gid = ?), 
-          (select geom from udp_puebla_4326 where iden=?)
-          ))).geom::geometry(Polygon,4326)";
+          (select geom from {$tableName} where {$idFieldName}=?)
+          ))).geom";
 
     $newrows=[];
   
-    foreach($resultudp AS $row) {
+    foreach($resultudp AS $i=>$row) {
       $gid = $row->gid;
       //If soil is completely within, within set to 1. Unassigned is 2
-      $withinsql ="SELECT ST_Within(usos_de_suelo4.geom, (select geom from udp_puebla_4326 where iden=?)) from usos_de_suelo4 where gid = ?";
+      $withinsql ="SELECT ST_Within(usos_de_suelo4.geom, (select geom from {$tableName} where {$idFieldName}=?)) from usos_de_suelo4 where gid = ?";
       $withinresult = DB::select($withinsql,[$udpiden,$gid]);
       if ($withinresult[0]->st_within){
         $row->aislado=1;
@@ -231,7 +250,7 @@ Route::post('getsuefeatures', function(Request $request) {
       
       $multiresult = DB::select($multisql,[$gid,$udpiden]);
       foreach($multiresult AS $patchrow) {
-        $areasql ="SELECT ST_Area(?)";
+        $areasql ="SELECT ST_Area(?,false) as st_area";
         $arearesult = DB::select($areasql,[$patchrow->geom]);
         $newrow = new stdClass();
         $newrow->area=(float)($arearesult[0]->st_area);
@@ -446,6 +465,7 @@ Route::post('getColumns', function(Request $request) {
 
 Route::post('getspecies', function(Request $request) {
     $lifeform = $request->lifeform;
+    $lifeformTemp=$lifeform=='herpetofauna'?'herpeto':$lifeform;
     $idtype = $request->idtype;
     $idnumber= $request->idnumber;
     $useremail = $request->useremail;
@@ -463,62 +483,132 @@ Route::post('getspecies', function(Request $request) {
         $transpunto='transecto';
     }
     $lifeform_riesgo=$lifeform;
+    $sqlLifeForm="'{$lifeform}'";
     if ($lifeform=='hierba'||$lifeform=='arbol' ||$lifeform=='arbusto'){
         $lifeform_riesgo='planta';
+        $sqlLifeForm="'hierba','arbusto','arbol'";
     }
     $lineaextra='';
     if ($idtype=="linea_mtp"){
         $lineaextra="JOIN medicion ON {$transpunto}_{$lifeform}.iden_medicion = medicion.iden";
     }
+
     $arbolarbustoextra='';
-    if ($lifeform=="arbusto" || $lifeform=="arbol" ){
+    if($idtype=='poligono' && ($lifeform=="arbusto" || $lifeform=="arbol" )){
+        //si es un shape de usuario (uda)
+        $arbolarbustoextra="AVG(pi() * (((obs.dn)::real) / 2 ) ^2 )as ab,
+        sum((obs.distancia)::real) as distancia,
+        AVG((obs.dn)::real) as dn_raw,
+        AVG((obs.altura)::real) as altura_raw,
+        ";
+    }elseif ($lifeform=="arbusto" || $lifeform=="arbol" ){
+        //si es una udp
         $arbolarbustoextra="AVG(pi() * (((observacion_{$lifeform}.dn)::real) / 2 ) ^2 )as ab,
 		sum((observacion_{$lifeform}.distancia)::real) as distancia,
         AVG((observacion_{$lifeform}.dn)::real) as dn_raw,
         AVG((observacion_{$lifeform}.altura)::real) as altura_raw,
         ";
     }
+
+
+
     $hierbaextra='';
-    if ($lifeform=="hierba"){
+    if($idtype=='poligono' && $lifeform=="hierba"){
+        /*
+        si es un shape de usuario (uda)
+        ind=dn
+        m=distancia
+        i=altura
+        */
+        $hierbaextra="SUM((obs.altura)::real) as sumi,
+		SUM(1/(NULLIF(obs.distancia::real,0))::real) as summ,
+		count(lower(espe.cientifico)) AS intervalo,
+        count(DISTINCT(obs.iden_especie, obs.iden_punto,obs.dn)) as cientifico_hierba,
+        ";
+    } elseif ($lifeform=="hierba"){
         $hierbaextra="SUM((observacion_hierba.i)::real) as sumi,
 		SUM(1/(NULLIF(observacion_hierba.m::real,0))::real) as summ,
 		count(lower(especie_hierba.cientifico)) AS intervalo,
         count(DISTINCT(observacion_hierba.iden_especie, observacion_hierba.iden_transecto,observacion_hierba.ind)) as cientifico_hierba,
         ";
     }
-    $sql= "SELECT
-        lower(especie_{$lifeform}.comun) as comun,
-        lower(especie_{$lifeform}.cientifico) as cientifico ,
-        especie_{$lifeform}.invasor,
-        riesgo_{$lifeform_riesgo}.categoria,
-        riesgo_{$lifeform_riesgo}.distribution,
-        riesgo_{$lifeform_riesgo}.subespecie,
-        count(DISTINCT(observacion_{$lifeform}.iden_{$transpunto})) as sitios,
-        {$arbolarbustoextra}
-        {$hierbaextra}
-        count(lower(especie_{$lifeform}.cientifico)) AS total_cientifico
-        FROM especie_{$lifeform}
-            JOIN
-        observacion_{$lifeform} ON especie_{$lifeform}.iden = observacion_{$lifeform}.iden_especie
+
+
+    if($idtype=='poligono'){
+        $sql= "select lower(espe.comun) as comun,
+                lower(espe.cientifico) as cientifico,
+                espe.invasor,
+                rie.categoria,
+                rie.distribution,
+                rie.subespecie,
+                count(DISTINCT(obs.iden_punto)) as sitios,
+                {$arbolarbustoextra}
+                {$hierbaextra}
+                count(lower(espe.comun_cientifico)) AS total_cientifico,
+                case when mam.registroprevio then 'Confirmada' else 'Por Confirmar' end registrop
+            from all_especies espe
+                inner join especies e on e.iden=espe.catespecie_iden
+                join all_observaciones obs on obs.iden_especie=espe.iden and obs.catespecie_iden=espe.catespecie_iden
+                left join puntosmtp_udas pnts_uda on pnts_uda.iden_punto=obs.iden_punto and pnts_uda.catespecie_iden=espe.catespecie_iden
+                left join all_riesgos rie on trim(lower(espe.cientifico)) = lower(CONCAT(trim(rie.genero),' ',trim(rie.especie))) and rie.catespecie_iden=espe.catespecie_iden
+                left join (
+                    select genero, especie, true as registroprevio
+                    from especies_registros_previos temp_erp 
+                    inner join especies as temp_e on temp_e.iden=temp_erp.especie_iden 
+                    where temp_e.nombre in ('{$lifeformTemp}')
+                ) mam on trim(lower(espe.cientifico)) = lower(CONCAT(trim(mam.genero),' ',trim(mam.especie)))
+            where e.nombre='{$lifeformTemp}' and iden_uda={$idnumber} and obs.iden_email like '{$useremailval}' and espe.cientifico!='0000' 
+                and espe.cientifico!='000' and espe.cientifico!='00'
+            GROUP BY lower(espe.cientifico),lower(espe.comun),rie.categoria, 
+                rie.distribution,espe.invasor, rie.subespecie, mam.registroprevio";
+    }else{
+        //para lineas mtp o udp
+        $sql= "SELECT
+            lower(especie_{$lifeform}.comun) as comun,
+            lower(especie_{$lifeform}.cientifico) as cientifico ,
+            especie_{$lifeform}.invasor,
+            riesgo_{$lifeform_riesgo}.categoria,
+            riesgo_{$lifeform_riesgo}.distribution,
+            riesgo_{$lifeform_riesgo}.subespecie,
+            count(DISTINCT(observacion_{$lifeform}.iden_{$transpunto})) as sitios,
+            {$arbolarbustoextra}
+            {$hierbaextra}
+            count(lower(especie_{$lifeform}.cientifico)) AS total_cientifico,
+            case when erp.registroprevio then 'Confirmada' else 'Por Confirmar' end registrop
+            FROM especie_{$lifeform}
+                JOIN observacion_{$lifeform} ON especie_{$lifeform}.iden = observacion_{$lifeform}.iden_especie
+                JOIN {$transpunto}_{$lifeform} ON observacion_{$lifeform}.iden_{$transpunto} = {$transpunto}_{$lifeform}.iden {$lineaextra}
+                left JOIN riesgo_{$lifeform_riesgo} ON trim(lower(especie_{$lifeform}.cientifico)) = lower(CONCAT(trim(riesgo_{$lifeform_riesgo}.genero),' ',trim(riesgo_{$lifeform_riesgo}.especie)))
+                left join (
+                    select genero, especie, true as registroprevio
+                    from especies_registros_previos temp_erp 
+                    inner join especies as temp_e on temp_e.iden=temp_erp.especie_iden 
+                    where temp_e.nombre in ({$sqlLifeForm})
+                ) erp on trim(lower(especie_{$lifeform}.cientifico)) = lower(CONCAT(trim(erp.genero),' ',trim(erp.especie)))
+            where iden_{$idtype}={$idnumber} and observacion_{$lifeform}.iden_email like '{$useremailval}' and especie_{$lifeform}.cientifico!='0000' and especie_{$lifeform}.cientifico!='000' and especie_{$lifeform}.cientifico!='00'
+            GROUP BY lower(especie_{$lifeform}.cientifico),lower(especie_{$lifeform}.comun),riesgo_{$lifeform_riesgo}.categoria, riesgo_{$lifeform_riesgo}.distribution,especie_{$lifeform}.invasor, riesgo_{$lifeform_riesgo}.subespecie, erp.genero, erp.especie, erp.registroprevio";
+    }
+    
+    $obresult = DB::select($sql, []);
+    if($idtype=='poligono'){
+        $transpuntosql="SELECT obs.iden
+            FROM all_observaciones as obs
+                JOIN all_puntos pnts ON pnts.iden = obs.iden_punto AND pnts.catespecie_iden = obs.catespecie_iden
+                JOIN puntosmtp_udas pto_uda ON pto_uda.iden_punto = pnts.iden AND pto_uda.catespecie_iden = obs.catespecie_iden
+                INNER JOIN especies e ON e.iden=obs.catespecie_iden AND e.nombre='{$lifeformTemp}'
+            WHERE iden_uda={$idnumber} AND obs.iden_email LIKE '%' AND obs.iden_especie!=1
+            GROUP BY obs.iden";
+    }else{
+        $transpuntosql="SELECT
+        observacion_{$lifeform}.iden_{$transpunto}
+        FROM observacion_{$lifeform}
             JOIN
             {$transpunto}_{$lifeform} ON observacion_{$lifeform}.iden_{$transpunto} = {$transpunto}_{$lifeform}.iden
             {$lineaextra}
-            left JOIN
-        riesgo_{$lifeform_riesgo} ON trim(lower(especie_{$lifeform}.cientifico)) = lower(CONCAT(trim(riesgo_{$lifeform_riesgo}.genero),' ',trim(riesgo_{$lifeform_riesgo}.especie)))
-        where iden_{$idtype}={$idnumber} and observacion_{$lifeform}.iden_email like '{$useremailval}' and especie_{$lifeform}.cientifico!='0000' and especie_{$lifeform}.cientifico!='000' and especie_{$lifeform}.cientifico!='00'
-        GROUP BY lower(especie_{$lifeform}.cientifico),lower(especie_{$lifeform}.comun),riesgo_{$lifeform_riesgo}.categoria, riesgo_{$lifeform_riesgo}.distribution,especie_{$lifeform}.invasor, riesgo_{$lifeform_riesgo}.subespecie";
- 
-    $obresult = DB::select($sql, []);
-
-    $transpuntosql="SELECT
-    observacion_{$lifeform}.iden_{$transpunto}
-    FROM observacion_{$lifeform}
-        JOIN
-        {$transpunto}_{$lifeform} ON observacion_{$lifeform}.iden_{$transpunto} = {$transpunto}_{$lifeform}.iden
-        {$lineaextra}
-    where iden_{$idtype}={$idnumber} and observacion_{$lifeform}.iden_email like '%' and observacion_{$lifeform}.iden_especie!=1 
-    GROUP BY observacion_{$lifeform}.iden_{$transpunto}
-    ";
+        where iden_{$idtype}={$idnumber} and observacion_{$lifeform}.iden_email like '%' and observacion_{$lifeform}.iden_especie!=1 
+        GROUP BY observacion_{$lifeform}.iden_{$transpunto}
+        ";
+    }
 
 
     $distsum=0;
@@ -544,10 +634,14 @@ Route::post('getspecies', function(Request $request) {
         $distsum=0;
         $numeroindiviudos=0;
         foreach ($obresult as $row){
-          $row->dn= round(($row->dn_raw),4);
-          $row->altura= round(($row->altura_raw),4);
-          $distsum+=$row->distancia;
-          $numeroindiviudos+=$row->total_cientifico;
+
+            if($idtype=='poligono'){
+                
+            }
+            $row->dn= round(($row->dn_raw),4);
+            $row->altura= round(($row->altura_raw),4);
+            $distsum+=$row->distancia;
+            $numeroindiviudos+=$row->total_cientifico;
         } 
         if ($numeroindiviudos>0){
 			$distsum= 3406.223;

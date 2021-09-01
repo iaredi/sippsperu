@@ -7,25 +7,33 @@ if (!session('email')){
 if (!session('readpp')){
     return redirect()->to('/privacidad')->send();
 }
+
 $geojsonidennum=json_encode($idenudp);
 $geojsoninfotype=json_encode($infotype);
-$myheader= 'Especies y Normas 059 de UDP '. $idenudp;
+$myheader= 'Especies en peligro de extinción de UDP '. $idenudp;
 $disclaimer= '';
+$headertype=substr($idenudp, -1);
 if ($infotype=='normas'){
-	$headertype= substr($idenudp, -1)=='u'?'UDP':'Linea MTP';
-	  $myheader= 'Especies y Normas 059 de '.$headertype.' '. substr($idenudp, 0, -1);
-	  $disclaimer= 'En este reporte el sistema indica, para el caso de que así sea aplicable, cuales subespecies están incluidas en la lista de especies en riesgo de la NOM-059-SEMARNAT-2010. Es necesario verificar si el organismo reportado pertenece a dicha subcategoria taxonómica.
-		Cuando no se muestra subespecie pero si alguna categoría de riesgo, es porque la especie es el nivel taxonómico enlistado.
-		Si se muestra una especie sin categoría es porque no se haya presente en la NOM.';
-}
-if ($infotype=='ae'){
-	$headertype= substr($idenudp, -1)=='u'?'UDP '.substr($idenudp, 0, -1):'Linea MTP ' . explode("*",askforkey('linea_mtp','nombre_iden', 'iden', substr($idenudp, 0, -1)))[0];
+    $headertype=$headertype == 'u' ? 'UDP' : ($headertype=='p' ? 'Pol&iacute;gono' : 'L&iacute;nea TIM');
+    $myheader= 'Especies en peligro de extinción de '.$headertype.' '. substr($idenudp, 0, -1);
+    $disclaimer= 'En este reporte el sistema indica, para el caso de que así sea aplicable, cuáles especies
+        están incluidas en la lista de riesgo considerada como referente (Lista Roja de la UICN). Es
+        necesario verificar si el organismo reportado pertenece a alguna subespecie con categoría
+        diferente, pues el sistema hace el análisis sólo a nivel de especie. Si se muestra una especie
+        sin categoría es porque no se halla presente en la Lista de Riesgo.';
+}elseif ($infotype=='ae'){
+	$headertype= $headertype=='u'?'UDP '.substr($idenudp, 0, -1):  ($headertype=='p'?'Pol&iacute;gono '.substr($idenudp, 0, -1):'Linea TIM ' . explode("*",askforkey('linea_mtp','nombre_iden', 'iden', substr($idenudp, 0, -1)))[0]);
+    $myheader= 'Atributos Ecol&oacute;gicos de '.$headertype;
 
-  $myheader= 'Atributos Ecologicos de '.$headertype;
-
-} 
-if ($infotype=='in'){
-  $myheader= 'Instrumentos de Gestion Territorial de UDP '.$idenudp;
+} else if ($infotype=='in'){
+    $idenudpTmp=substr($idenudp, 0, -1);
+    
+    if(!is_numeric($idenudpTmp)){
+        $idenudp=substr($idenudp, 0, -1);
+    }
+    
+    $myheader='Instrumentos de Gesti&oacute;n Territorial de ';
+    $myheader.= is_numeric($headertype) ? 'UDP '.$idenudp : ($headertype=='p'?'Pol&iacute;gono '.$idenudp:'');
 } 
 ?>
   <script>
@@ -35,16 +43,19 @@ if ($infotype=='in'){
 
   @include('inc/header')
   @include('inc/nav')
+  <div class='bodycontainer' id="main">
+    <section class="three">
+        <div class="container">
+            <h3 class="text-center"><?php echo $myheader ?></h3>
+            <h6 class="text-center">
+                <?php echo $disclaimer ?>
+            </h6>
 
-  <div class="container">
-    <h3 class="text-center">
-      <?php echo $myheader ?>
-	</h3>
-	<h6 class="text-center">
-		<?php echo $disclaimer ?>
-	</h6>
-  </div>
+            <article><div id="app"></div></article>
+        </div>
 
-  <div id="app"></div>
-  <script src="{{ asset('/js/index.js') }}"></script>
-  @include('inc/footer')
+    
+    <script src="{{ asset('js/index.js') }}"></script>
+    @include('inc/footer')
+</section>
+  

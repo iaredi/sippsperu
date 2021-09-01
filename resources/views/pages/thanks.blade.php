@@ -1,27 +1,28 @@
 @include('inc/header')
-  @include('inc/nav')
+@include('inc/nav')
+<div class='bodycontainer' id="main">
+    <section class="two">
+        <div class="container">
+            <header><h2>Sus datos se han guardado con &eacute;xito.</h2></header>
+            <h3>&iexcl;Gracias!</h3>
+            <br><br><br><br><br>
 
-<div class="display: flex p-5 m-5" style="text-align:center;">
-  <div class=" d-inline-flex flex-column justify-content-center" style='width: 350px'>
-    <h5 class="text-center h5">Sus datos se han guardado con exito.</h5>
-    <br>
-    <h5 class="text-center h5">Gracias!</h5>
-
-    {{--<a href="/ingresardatos" class="btn btn-success p-15">Regresar </a>--}}
-  </div>
-</div>
-<br>
-<br>
-
-<br>
-
-<br>
-  @include('inc/footer')
-<?php
-  if (null!==(session('testvar'))){
-    echo '<script>console.log('.json_encode(session('testvar')).')</script>';
-  }
-  echo '<script>console.log('.json_encode(session('resultofquery')).')</script>';
-  $emptyarray=[];
-  session(['resultofquery' => $emptyarray]);
-?>
+            <?php
+            if(session('okButWithComments')){
+                echo'<div class="warningMsg">';
+                $errors=session('okButWithComments');
+                foreach($errors as $error){
+                    echo "<div>{$error}</div>";
+                }
+                echo '</div>';
+            }
+            ?>
+        </div>
+        @include('inc/footer')
+    </section>
+    
+    
+    <?php
+        session(['resultofquery' => []]);
+        session(['adminerror' => []]);
+    ?>

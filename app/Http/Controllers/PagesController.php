@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class PagesController extends Controller
 {
     public function index(){
-        return view('pages/index');
+        return view('pages/mostrarmapas');
     }
     public function login(){
         return view('pages/login');
@@ -17,6 +17,9 @@ class PagesController extends Controller
 	}
 	public function actividad(){
         return view('pages/actividad');
+    }
+    public function cultivo(){
+        return view('pages/cultivo');
     }
     public function admin(){
         return view('pages/admin');
@@ -71,6 +74,12 @@ class PagesController extends Controller
     }  
     public function privacy(){
       return view('pages/privacy');
-  }  
+    }
+    public function processUsershapes(){
+        return view('pages/processUsershapes');
+    }
+    public function contaminantes(){
+        return view('pages/contaminantes');
+    }
 }
 

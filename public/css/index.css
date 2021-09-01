@@ -1,0 +1,265 @@
+@import url('https://fonts.googleapis.com/css?family=Rubik:300,300i,400,400i,500,500i,700,700i,900,900i');
+@font-face {
+    font-family: 'AdelleSans';
+    src: url('../fonts/AdelleSans/AdelleSans-Bold.otf'),
+        url('../fonts/AdelleSans/AdelleSans-BoldItalic.otf'),
+        url('../fonts/AdelleSans/AdelleSans-ExtraBoldItalic.otf'),
+        url('../fonts/AdelleSans/AdelleSans-Heavy.otf'),
+        url('../fonts/AdelleSans/AdelleSans-HeavyItalic.otf'),
+        url('../fonts/AdelleSans/AdelleSans-Italic.otf'),
+        url('../fonts/AdelleSans/AdelleSans-Light.otf'),
+        url('../fonts/AdelleSans/AdelleSans-LightItalic.otf')
+        url('../fonts/AdelleSans/AdelleSans-Regular.otf'),
+        url('../fonts/AdelleSans/AdelleSans-SemiBold.otf'),
+        url('../fonts/AdelleSans/AdelleSans-SemiBoldItalic.otf'),
+        url('../fonts/AdelleSans/AdelleSans-Thin.otf'),
+        url('../fonts/AdelleSans/AdelleSans-ThinItalic.otf');
+    }
+@font-face {
+    font-family: 'Heroica';
+    src: url('../fonts/Heroica/Heroica-Black.otf'),
+        url('../fonts/Heroica/Heroica-BlackItalic.otf'),
+        url('../fonts/Heroica/Heroica-Bold.otf'),
+        url('../fonts/Heroica/Heroica-BoldItalic.otf'),
+        url('../fonts/Heroica/Heroica-Light.otf'),
+        url('../fonts/Heroica/Heroica-LightItalic.otf'),
+        url('../fonts/Heroica/Heroica-Regular.otf'),
+        url('../fonts/Heroica/Heroica-RegularItalic.otf');
+    }
+
+
+body{
+    padding: 0;
+    margin: 0;
+    background-image: image();
+    font-family: 'AdelleSans',Verdana,sans-serif;
+    background-image: linear-gradient(rgba(255,255,255,0.57),rgba(255,255,255,0.57)),url(https://verdeyazul.com.mx/wp-content/uploads/2020/11/Fondo-Puebla.jpg);
+}
+a{
+    text-decoration: underline;
+    color: #691c32;
+}
+a:hover{
+    color: #fff;
+}
+a:visited{
+    color: #691c32;
+    text-decoration: underline;
+}
+i:hover{
+    -webkit-transform: rotate(360deg);transform: rotate(360deg);
+}
+h2{
+    text-align: center;
+}
+h3{
+    font-size: 1.1vw;
+    text-align: left;
+}
+iframe{
+    width: 100%;
+    height: 45vh;
+    margin-bottom: 2vh;
+}
+.boton{
+    background-color: #691c32;
+    font-size: 1.2vw;
+    padding: 1vw;
+    border-radius: 5px;
+    color: #fff !important;
+    text-decoration: none;
+    margin-top: 3vh;
+    display: block;
+    width: 15vw;
+    margin: auto;
+    margin-bottom: 2vh;
+    margin-top: 2vh;
+}
+.tituloTabla{
+    font-size: 1.1vw;
+    margin: 1.2vw auto;
+}
+
+.contenedor{
+    width: 100%;
+    /*max-width: 1000px;*/
+    margin: auto;
+}
+.main{
+    width: 60%;;
+}
+/*header{
+    width: 100%;
+    background: rgb(168,18,63);
+    height: 150px;
+}*/
+nav{
+    height: 150px;
+    width: 100%;
+    height: 15vh;
+}
+.rightPanel{
+    background-color: rgba(168,18,63,0.85);
+    float: right;
+    width: 40%;
+    font-size: 18px;
+    color:#fff;
+}
+.leftNav{
+    background: rgb(168,18,63);
+    width: 60%;
+    float: left;
+    height: 100%;
+}
+.righNav{
+    width: 40%;
+    float: right;
+    background-color: rgba(255,255,255,0.32);
+    height: 100%;
+    text-align: center;
+}
+.righNav img{
+    width: 12vw;
+    margin-top: 1vh;
+}
+.left{
+    float: left;
+    text-align: center;
+}
+.right{
+    float: right;
+}
+.center{
+    float: inline-end;
+}
+.clear{
+    clear: both;
+}
+.seia{
+    font-size: 3.2vw;
+    font-weight: 700;
+    text-align: center;
+    width: 30%;
+    color: #3c3c3b;
+}
+.seiaTxt{
+    font-size: 37px;
+    width: 70%;
+    text-align: left;
+    color: #3c3c3b;
+}
+.titlePanel{
+    padding-top: 3em;
+    padding-bottom: 3em;
+    background-color: rgba(105,105,105,0.05);
+    margin: auto;
+    width: 98%;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+ }
+ .titlePanel2{
+    padding-top: 1em;
+    padding-bottom: 1em;
+    background-color: rgba(105,105,105,0.05);
+    margin: auto;
+    width: 98%;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+ }
+.rightPanelContent{
+    height: 100%;
+    width: 90%;
+    margin:auto;
+    text-align: justify;
+    margin-top: 2vh;
+    padding-top: 7vh;
+}
+.content2{
+    text-align: center;
+    padding-top: 2vh;
+}
+.rightPanelContent > p{
+    font-size: 1vw;
+}
+.rightPanelContent > div > p{
+    font-size: 0.8vw;
+}
+.linksPanel{
+    margin: auto;
+}
+.linksPanel2{
+    margin: auto;
+    width: 90%;
+}
+.link{
+    background-color: rgba(171,83,73,0.29);
+    color: #636569;
+    width: 27.3%;
+    min-width: 100px;
+    margin-right: 1%;
+    margin-bottom: 2%;
+    margin-left: 1%;
+    padding-left: 2%;
+    padding-right: 2%;
+    font-size: 0.97vw;
+    padding-top: 5.5vh;
+    padding-bottom: 1.5vh;
+    height: 15vh;
+}
+.info{
+    background-color: rgba(250,245,180, 0.49);
+    padding: 15px;
+}
+.sustancia{
+    cursor: pointer;
+    padding: 15px;
+    float: left;
+    height: 3vh;
+    margin: 0.5vh 0.4vw;
+    background-color: rgba(166,166,168,0.05);
+    border-radius: 2px;
+
+}
+div .tabla{
+    overflow-x: scroll;
+}
+
+
+/****************ACORDEON****************/
+.accordion {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 1.5vw;
+    transition: 0.4s;
+  }
+  
+  .active, .accordion:hover {
+    background-color: #ccc; 
+  }
+
+  .activeTxt, .desplegador:hover {
+    font-weight: 700;
+  }
+  .activeSus, .sustancia:hover{
+      background-color: rgba(105,28,50,0.4);
+  }
+  .pointer{
+      cursor: pointer;
+  }
+  
+  .panel {
+    padding: 0 18px;
+    display: none;
+    background-color: white;
+    overflow: hidden;
+  }
+  .desplegable{
+      display: none;
+  }
+  /****************ACORDEON****************/

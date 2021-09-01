@@ -6664,8 +6664,10 @@ Map.include({
 
 		function createCorner(vSide, hSide) {
 			var className = l + vSide + ' ' + l + hSide;
-
-			corners[vSide + hSide] = create$1('div', className, container);
+            if(vSide=="top" && hSide=="right"){
+                className += ' zindextop';   
+            }    
+            corners[vSide + hSide] = create$1('div', className, container);
 		}
 
 		createCorner('top', 'left');
@@ -15808,7 +15810,7 @@ var Map = function (_React$Component) {
 
             var imagery = _leaflet2.default.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
                 attribution: '&copy; <a href="http://www.esri.com/">Esri</a>i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
-                maxZoom: 18
+                maxZoom: 18, zIndex:1000
             });
             imagery['category'] = 'Base';
 
@@ -15855,7 +15857,7 @@ var Map = function (_React$Component) {
                         style: myStyle
                     });
                 }
-                if (item.tableName == "linea_mtp" || item.tableName == "udp_puebla_4326") {
+                if (item.tableName == "linea_mtp" || item.tableName == "udp_puebla_4326" ) {
                     c2.addTo(mymap);
                 }
                 c2['category'] = item.category;
@@ -15887,9 +15889,9 @@ var Map = function (_React$Component) {
                     overlayMaps[item.displayName] = myLayer;
                 });
 
-                var tempraster = _leaflet2.default.tileLayer("temptiles/{z}/{x}/{y}.png", { enable: true, tms: true, opacity: 0.8, attribution: "" });
+               /* var tempraster = _leaflet2.default.tileLayer("temptiles/{z}/{x}/{y}.png", { enable: true, tms: true, opacity: 0.8, attribution: "" });
                 tempraster.category = 'Referencial';
-                overlayMaps["Escenario85_2099_Temp_UNIATMOS_2015"] = tempraster;
+                overlayMaps["Escenario85_2099_Temp_UNIATMOS_2015"] = tempraster;*/
 
                 var compare = function compare(a, b) {
                     if (a.category == 'Base') {
@@ -15934,7 +15936,7 @@ var Map = function (_React$Component) {
             });
 
             //Sus Datos Legend
-            var susDatosLegend = _leaflet2.default.control({ position: "bottomleft" });
+            var susDatosLegend = _leaflet2.default.control({ position: "bottomleft",zIndex:10 });
             this.makeDiv = function () {
                 var div = _leaflet2.default.DomUtil.create("div", "info legend"),
                     grades = [],

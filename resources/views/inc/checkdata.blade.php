@@ -1,11 +1,10 @@
 <?php
 $errorlist=[];
 if ($_SERVER['REQUEST_METHOD']=="POST") {
-
 	if(isset($_POST['row0*actividad*descripcion'])){
 		$result = DB::select("SELECT descripcion FROM actividad WHERE descripcion  = :value", [':value'=>$_POST['row0*actividad*descripcion']]);
 		if (sizeof($result)>0) {
-			$errorlist[]= "Un accion con este descripcion ya existe, por favor cambie el descripcion";
+			$errorlist[]= "Un acci&oacute;n con esa descripci&oacute;n ya existe. Por favor cambie el descripci&oacute;n.";
 		}
 	}
 
@@ -14,14 +13,14 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
 			$tablename= explode("*" , $postkey2)[1];
 			$postval=$postvalwithoutname['name'];
 			if (DB::select("SELECT iden_foto FROM {$tablename} WHERE iden_foto  = :value", [':value'=>$postval])) {
-				$errorlist[]= "El foto {$postval} ya existe, por favor cambie el nombre del foto";
+				$errorlist[]= "La foto {$postval} ya existe. Por favor cambie el nombre de la foto.";
 			}
 		}
     }
     foreach( $_POST as $postkey=> $postval) {
         if ($postval=='notselected') {
             $selectmenuname= substr($postkey, 6);
-            $errorlist[]= "Los menus desplegables no deben estar vacios";
+            $errorlist[]= "Los men&uacute;s desplegables no deben estar vac&iacute;os.";
         }
         if (substr_count($postkey, '*')==2){
 
@@ -46,34 +45,34 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
                     }
                 }
                 if (!$hidden && $columnname !='notas'){
-                    $errorlist[]= "El campo '{$columnname}' de {$tablename} esta vacio";
+                    $errorlist[]= "El campo '{$columnname}' est&aacute; vac&iacute;o.";
                 }
                 //Handle non-empty fields
             }else{
        
                 if ($columnname=='clave' && !(strlen($postval)==3 && ctype_alpha($postval))) {
-                    $errorlist[]= "El campo 'clave' de {$tablename} tiene que ser 3 letras";
+                    $errorlist[]= "El campo 'clave' tiene que ser de 3 letras.";
                 }
                 if ($columnname=='clave' && DB::select("SELECT {$columnname} FROM {$tablename} WHERE {$columnname}  = :value", [':value'=>$postval])) {
-                    $errorlist[]= "El clave {$postval} ya existe, ingrese un clave diferente";
+                    $errorlist[]= "La clave {$postval} ya existe. Ingrese una clave diferente.";
                 }
                 if (($columnname=='superficie') && !(is_numeric($postval))) {
-                    $errorlist[]= "El campo 'superficie' de {$tablename} tiene que ser numero";
+                    $errorlist[]= "El campo 'superficie' tiene que ser num&eacute;rico.";
                 }
                 if ($columnname=='telefono' && strlen($postval)>0 && !(is_numeric($postval))) {
-                    $errorlist[]= "El campo 'telefono' de {$tablename} tiene que ser solo numeros";
+                    $errorlist[]= "El campo 'tel&eacute;fono' tiene que ser num&eacute;rico.";
                 }
-                if (strpos($columnname, 'itud') !== false && !(is_numeric($postval))) {
-                    $errorlist[]= "El campo '{$columnname}' de {$tablename} tiene que ser numero";
+                if (strpos($columnname, 'latitud') !== false && !(is_numeric($postval))) {
+                    $errorlist[]= "El campo '{$columnname}' tiene que ser num&eacute;rico.";
                 }
-                if (strpos($columnname, 'longitud') !== false && (!($postval<-80) || !($postval>-120))) {
-                    $errorlist[]= "El campo '{$columnname}' de {$tablename} tiene que ser entre -80 y -120 grados";
+                if (strpos($columnname, 'latitud') !== false && (!($postval<0.5) || !($postval>-18.5))) {
+                    $errorlist[]= "El campo '{$columnname}' tiene que ser un n&uacute;mero entre -18.5000 y 0.5000 grados.";
                 }
-                if (strpos($columnname, 'latitud') !== false && (!($postval>14) || !($postval<34))) {
-                    $errorlist[]= "El campo '{$columnname}' de {$tablename} tiene que ser entre 14 y 34 grados";
+                if (strpos($columnname, 'longitud') !== false && (!($postval>-82.49) || !($postval<-67.72))) {
+                    $errorlist[]= "El campo '{$columnname}' tiene que ser un n&uacute;mero entre -82.4900 y -67.7200 grados.";
                 }
                 if ($postval=='notselected' && $columnname !='notas') {
-                    $errorlist[]= "{$tablename} esta vacio";
+                    $errorlist[]= "{$tablename} est&aacute; vac&iacute;o";
                 }
                
                 $listnumcol=array(
@@ -90,39 +89,21 @@ if ($_SERVER['REQUEST_METHOD']=="POST") {
                   if ($columnname == $numcol) {
                     $exploded = explode("." , $postval);
                     if (!is_numeric($postval)){
-                      $errorlist[]= "Hay error en '{$columnname}', hay que ser numero";
+                      $errorlist[]= "El campo '{$columnname}' debe ser num&eacute;rico.";
                     }else{
                       if($precision==0){
                         if ($postval!=0 && (sizeof($exploded)!=1)){
-                          $errorlist[]= "Hay error en '{$columnname}', hay que ser numero con {$precision} numeros despues del punto decimal";
+                          $errorlist[]= "El campo '{$columnname}' debe ser un n&uacute;mero con precisi&oacute;n de {$precision} decimales.";
                         }
                       }elseif($postval!=0 && (sizeof($exploded)!=2 || strlen($exploded[1]) != $precision)){
-                        $errorlist[]= "Hay error en '{$columnname}', hay que ser numero con {$precision} numeros despues del punto decimal";
+                        $errorlist[]= "El campo '{$columnname}' debe ser un n&uacute;mero con precisi&oacute;n de {$precision} decimales.";
                       }
                     }
                   }
                 }
+            }
         }
     }
-  }
-    // for($i=0; $i<countrows($_POST,'observacion_ave'); $i++){
-    //   $micrototal=
-    //     $_POST["row{$i}*observacion_ave*fo_arbol"] + 
-    //     $_POST["row{$i}*observacion_ave*fo_arbusto"] +
-    //     $_POST["row{$i}*observacion_ave*tr_arbol"] +
-    //     $_POST["row{$i}*observacion_ave*tr_arbusto"] +
-    //     $_POST["row{$i}*observacion_ave*ro"] +
-    //     $_POST["row{$i}*observacion_ave*su"];
-    //   if ($micrototal != 0 && $micrototal != 1){
-    //     $realrow=$i+1;
-    //     $errorlist[]= "Hay error en observacion {$realrow}, hay que entrar 1 para solo un lugar, en 0 por los demas";
-    //   } 
-    // }
-
-
-
-
-
-  }
+}
 session(['error' => $errorlist]);
 ?>

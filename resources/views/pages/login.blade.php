@@ -1,7 +1,6 @@
 <?php
     session_start();
     session(['error' => []]);
-
     if ($_SERVER['REQUEST_METHOD']=='POST') {
         $email=$_POST['email'];
         $password=$_POST['password'];
@@ -31,12 +30,17 @@
                 session(['error' => ['']]);
                 DB::update('update usuario set fecha_ultimo_login = CURRENT_DATE where email = ?', [$_POST['email']]);
                 DB::update('update usuario set hora_ultimo_login = CURRENT_TIME where email = ?', [$_POST['email']]);
+
+                //borra los shapes temporales del usuario
+                DB::statement("delete from puntosmtp_udas where iden_uda in (SELECT gid FROM usershapes WHERE iden_email='".session('email')."' and temp_shape=true);");
+                DB::statement("delete from usershapes where iden_email='".session('email')."' and temp_shape=true;");
+
                 return redirect()->to('/mostrarmapas')->send();
             } else {
-                session(['error' => ['contrasenia incorrecto']]);
+                session(['error' => ['Error en los datos de inicio de sesi&oacute;n']]);
             }
         } else {
-            session(['error' => ['email no existe']]);
+            session(['error' => ['Error al iniciar sesión. Verifique sus datos.']]);
         }
     } else {
         $email="";
@@ -46,62 +50,55 @@
 
 @include('inc/header')
 @include('inc/nav')
-<div id="loginGrid">
-	<div id="loginHeader">
-		<h4 class='titleHeaders'>
-			<strong>
-				Monitoreo Integrado para la Planeación<br/>de los Paisajes Sostenibles (MIPPS)
-			</strong>
-		</h4>
-	</div>
+<div class='bodycontainer' id="main">
+    <section class="three">
+        <div class="container">
+            <br>
+            <header><h3>Sistema de Informaci&oacute;n para la Planeaci&oacute;n 
+                de los Paisajes Sostenibles Provincia de Oxapampa Perú</h3></header>  
+            <!------------------>
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-body customer-box">
+                        <div class="tab-content">
+                            <?php 
+                                if (session('error')) {
+                                    foreach (session('error') as $msg) {
+                                        echo "<p class='errorMsg'>{$msg}</p>";
+                                    }
+                                }
+                            ?>
 
-	<div id="loginBody" class="display: flex" style="text-align:center;">
-		<div class=" d-inline-flex flex-column justify-content-center" style='width: 350px'>
-			<?php 
-				if (session('error')) {
-					foreach (session('error') as $msg) {
-						echo "<p class='bg-danger2 text-center'>{$msg}</p>";
-					}
-				}
-			?>
-		
+                <p class='warningMsg'>Debido a los c&aacute;lculos necesarios para mostrar el mapa interactivo, el inicio de sesi&oacute;n puede demorar varios minutos. Por favor sea paciente.</p>
 
-			<form id="login-form" method="post" role="form" style="display: block;">
-				{{ csrf_field() }}
-				<div class="form-group p-2">
-					<input type="text" name="email" id="email" tabindex="1" class="form-control" placeholder="Email" value='<?php echo $email; ?>'
-						required>
-				</div>
-				<div class="form-group p-2">
-					<input type="password" name="password" id="login-password" tabindex="2" class="form-control" placeholder="Contraseña" value='<?php echo $password;?>'
-						required>
-				</div>
-
-				<div class="form-group pt-2 pb-2 pl-5 pr-5 ">
-					<div class="row">
-						<input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-success p-15" value="Log In">
-					</div>
-				</div>
-				<div class="form-group pt-2 pb-2 pl-5 pr-5 ">
-					<div class="row">
-						<a href="/reset_1" tabindex="5" class="form-control btn btn-success p-15">Reiniciar su contraseña</a>
-					</div>
-				</div>
-			</form>
-		</div>
-	</div>
-
-	<div id="loginFooter" class="creditFooter">
-		<h6 class='titleHeaders'>
-			<strong>Desarrollo conceptual y conducción de grupos de trabajo:</strong> <br/> Jesús Hernández Castán, Alfredo Gámez,
-			<br/> Daniel Espinoza, Tonatiuh González <br/>
-
-		</h6>
-		<h6 class='titleHeaders'>
-			<strong>Programación: </strong> <br/> Forest Carter
-			</h6>
-	</div>
-</div>
+                            <form  method="post" class="form-horizontal" role="form">
+                                <div class="row">
+                                    {{ csrf_field() }}
+                                    <div class="col-12"><input class="loginfield" id="email" placeholder="Email" type="text" name="email" tabindex="1" value='<?php echo $email; ?>' required></div>
+                                    <div class="col-12"><input class="loginfield" id="login-password" placeholder="Contrase&ntilde;a" type="password" name="password" tabindex="2" value='<?php echo $password;?>' required></div>
+                                    <div class="col-12">
+                                        <button type="submit" tabindex="3" name="login-submit" id="login-submit">Iniciar sesi&oacute;n</button>
+                                        <a class="for-pwd" href="/reset_1"  tabindex="4">¿Olvidaste tu contraseña?</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!------------------>
+            <div id="loginFooter" class="creditFooter">
+                <p class="creditos"><strong>Desarrollo conceptual :</strong> <br/> Jesús Hernández Castán, Alfredo Gámez,
+                <br/> Daniel Espinoza, Tonatiuh González <br/></p>
+                <br>
+                <p class="creditos">
+                    <strong>Código base de código abierto programado por: </strong> <br/> Forest Carter
+                    <br /><br />
+                    <strong>Puntos de mejora implementados para Perú: </strong> <br/> Yared Sabinas Figueroa
+                </p>
+            </div>
+        </div>
+    </section>
 
 
-@include('inc/footer')
+    @include('inc/footer')

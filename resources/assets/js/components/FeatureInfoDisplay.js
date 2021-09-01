@@ -10,8 +10,10 @@ function FeatureInfoDisplay(props) {
 	}
 	const allTableRows = [];
 	if (
-		props.featureInfo.properties.displayName == "Linea MTP" ||
-		props.featureInfo.properties.displayName == "Unidad de Paisaje"
+		props.featureInfo.properties.displayName == "Linea TIM" ||
+        props.featureInfo.properties.displayName == "Unidad de Paisaje" ||
+        props.featureInfo.properties.displayName == "Poligonos" ||
+        props.featureInfo.properties.displayName == "Microcuencas"
 	) {
 	  	let lifeForms = [
 			"arbol",
@@ -183,10 +185,12 @@ function FeatureInfoDisplay(props) {
 		  condensed
 		  noDataIndication={"No hay datos"}
 		/>
-		{(props.featureInfo.properties.displayName == "Linea MTP" ||
-		props.featureInfo.properties.displayName == "Unidad de Paisaje") && !allComplete  &&
+        {(props.featureInfo.properties.displayName == "Linea TIM" 
+            ||props.featureInfo.properties.displayName == "Unidad de Paisaje" 
+            || props.featureInfo.properties.displayName == "Poligonos"
+            || props.featureInfo.properties.displayName == "Microcuencas") && !allComplete  &&
 			<div className='centeralign'>
-				<p className='makeBold'>{props.featureInfo.properties.displayName == "Unidad de Paisaje"?  "*Hay lineas incompletas en esta UDP*"   :'* significa que datos son de un linea MTP incompleta' }</p>
+				<p className='makeBold'>{props.featureInfo.properties.displayName == "Unidad de Paisaje"?  "*Hay lineas incompletas en esta UDP*"   :'* * estos datos son de una linea TIM incompleta' }</p>
 			</div>
 		}
 	  </div>

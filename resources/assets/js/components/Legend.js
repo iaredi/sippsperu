@@ -39,7 +39,7 @@ function Legend(props) {
   let finalItemsList=[];
   finalItemsList = 
 	maptype=='sue' ? ["CORRIENTE_DE_AGUA", "MANANTIAL"]:
-	maptype=='inf' ? ["CARRETERA", "CALLE","CAMINO", "LINEA_DE_TRANSMISION", "BORDO", "EDIFICACION"]:
+	maptype=='inf' ? ["AFIRMADO", "ASFALTADO", "PAVIMENTO BASICO", "PAVIMENTO RIGIDO", "PROYECTADO", "SIN AFIRMAR","RED VECINAL SIN INFORMACION","TROCHA"]:
   null
     
 
